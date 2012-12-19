@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import java.util.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -11,23 +12,26 @@
 
 <AnchorPane id="AnchorPane" fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="br.jus.tjpi.MainController">
   <children>
-    <SplitPane fx:id="splitPanel" dividerPositions="0.06641604010025062, 0.8709273182957393" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <SplitPane fx:id="splitPanel" dividerPositions="0.06625, 0.99625" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" styleClass="split-pane-divider, topo" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="1020.0">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="1020.0" styleClass="topo">
           <children>
-            <ImageView fx:id="imageView" fitHeight="59.619998931884766" fitWidth="1600.1817626953125" pickOnBounds="true" smooth="false" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-348.18" AnchorPane.topAnchor="-3.62">
+            <ImageView fx:id="imageView" fitHeight="59.619998931884766" fitWidth="1600.1817626953125" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="-4.81" AnchorPane.leftAnchor="-74.56" AnchorPane.rightAnchor="-273.62" AnchorPane.topAnchor="-4.81">
               <image>
-                <Image url="@topoEstacaoPonto.png" preserveRatio="true" smooth="false" />
+                <Image url="@topo.png" preserveRatio="true" smooth="false" />
               </image>
             </ImageView>
           </children>
+          <stylesheets>
+            <URL value="@style.css" />
+          </stylesheets>
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <children>
             <WebView fx:id="webView" prefHeight="182.0" prefWidth="569.9999000000025" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
           </children>
         </AnchorPane>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1022.0">
+        <AnchorPane fx:id="anchorBaixo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1022.0">
           <children>
             <Button layoutX="443.5" layoutY="39.5" mnemonicParsing="false" text="Cadastrar Digitais" />
           </children>
@@ -35,4 +39,7 @@
       </items>
     </SplitPane>
   </children>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
 </AnchorPane>

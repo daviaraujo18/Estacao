@@ -30,7 +30,7 @@ public class EstacaoPonto extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        stage.setTitle("TJPI - Estação de Ponto de Presença");
+        stage.setTitle("TJPI - Estação Ponto de Presença");
         
         // Setando stage para maximized
         Screen screen = Screen.getPrimary();
@@ -42,7 +42,7 @@ public class EstacaoPonto extends Application {
         // -40 por causa da barra do Menu iniciar do windows
         stage.setHeight(bounds.getHeight()-40);
         // Setando tela cheia ON
-//        stage.setFullScreen(true);
+        stage.setFullScreen(true);
         
         
         stage.show();

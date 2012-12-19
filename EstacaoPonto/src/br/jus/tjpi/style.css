@@ -1,0 +1,13 @@
+.split-pane:vertical > * > .split-pane-divider {
+	
+	-fx-border-color: transparent;
+        -fx-border-color: rgba(0 0 0 0);
+        -fx-background-color: rgb(98,110,110);
+	
+}
+
+
+.topo {
+	/*-fx-background: #626e6e;*/
+        -fx-background-color: rgb(98,110,110);
+}
