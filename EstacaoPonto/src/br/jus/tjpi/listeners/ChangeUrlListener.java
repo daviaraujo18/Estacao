@@ -4,15 +4,14 @@
  */
 package br.jus.tjpi.listeners;
 
+import br.jus.tjpi.IntranetURLsConstants;
 import br.jus.tjpi.MainController;
 import br.jus.tjpi.system.utils.EstacaoPontoUtils;
+import br.jus.tjpi.system.utils.LeitorDigital;
 import br.jus.tjpi.utils.Log;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.SplitPane.Divider;
 import javafx.scene.web.WebEngine;
 
 /**
@@ -33,7 +32,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
     public void changed(ObservableValue<? extends Object> ov, Object t, Object t1) {
         
         if(ov.getValue().equals(Worker.State.SCHEDULED)) {
-            if(mainController.getWebEngine().getLocation().contains("global")) {
+			if(urlAtualContem("presenca/Frequentador")) {
                 mainController.getSplitPanel().getDividers().get(1).setPosition(0.5);
             } else {
                 mainController.getSplitPanel().getDividers().get(1).setPosition(0.999);
@@ -41,10 +40,13 @@ public class ChangeUrlListener implements ChangeListener<Object> {
         } else {
         
             if(ov.getValue().equals(Worker.State.SUCCEEDED)) {
-
-                if(mainController.getWebEngine().getLocation().contains("EstacaoPonto?type=create")) {
+				Log.i("Pagina carregada: "+mainController.getWebEngine().getLocation());
+                if(urlAtualContem("EstacaoPonto?type=create")) {
                     Log.i("Injetando codigos no formulário via JavaScript");
                     setarInputCodigos();
+                } else if(urlAtualContem("presenca/IniciarPonto")) {
+					Log.i("Entrei no metodo");
+                    mudarUrlAtualPara(IntranetURLsConstants.INICIALIZAR_PONTO_COM_CODIGOS);
                 }
                 Log.i("Pagina '"+mainController.getWebEngine().getLocation()+"' carregada");
 
@@ -62,5 +64,13 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 + "jQuery('#codigoUnicoMaquina').val('"+codigoUnicoMaquina+"');"
                 + "jQuery('#codigoAtivacao').val('"+codigoAtivacao+"');");
     }
+	
+	private boolean urlAtualContem(String texto) {
+		return mainController.getWebEngine().getLocation().contains(texto);
+	}
+
+	private void mudarUrlAtualPara(String novaURL) {
+		mainController.getWebEngine().load(novaURL);
+	}
     
 }

@@ -13,7 +13,7 @@ public class IntranetURLsConstants {
             EstacaoPontoUtils.getCodigoAtivacaoRegistro()+
             "&codigoUnicoMaquina="+EstacaoPontoUtils.getCodigoUnicoMaquina();
     
-    public static final String BASE_URL = "http://192.168.1.103:8080/intranet";
+    public static final String BASE_URL = "http://localhost:8084/intranet";
     public static final String INICIALIZAR_PONTO = BASE_URL+"/tjpi/presenca/InicializarPonto";
     public static final String INICIALIZAR_PONTO_COM_CODIGOS = BASE_URL+"/tjpi/presenca/InicializarPonto"+CODIGOS;
     
@@ -21,6 +21,7 @@ public class IntranetURLsConstants {
     public static final String BATIMENTO_PONTO = BASE_URL+"/tjpi/presenca/PontoDePresenca";
     
     public static final String BATIMENTO_PONTO_COM_CODIGOS = BATIMENTO_PONTO+CODIGOS;
+	public static final String INICIAR_PONTO = BASE_URL+"/tjpi/presenca/IniciarPonto";
     
     
 }

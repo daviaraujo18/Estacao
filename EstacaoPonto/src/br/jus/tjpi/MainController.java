@@ -26,9 +26,8 @@ public class MainController implements Initializable {
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
         webEngine.setOnAlert(new OnAlertListener(this));
         
-//        webEngine.load("http://10.20.14.108:8080/intranet")
-        System.out.println(IntranetURLsConstants.INICIALIZAR_PONTO_COM_CODIGOS);
-        webEngine.load(IntranetURLsConstants.INICIALIZAR_PONTO_COM_CODIGOS);
+        webEngine.load(IntranetURLsConstants.INICIAR_PONTO);
+
         
     }
     
