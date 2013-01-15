@@ -27,6 +27,7 @@ public class MainController implements Initializable {
         webEngine.setOnAlert(new OnAlertListener(this));
         
         webEngine.load(IntranetURLsConstants.INICIAR_PONTO);
+//        webEngine.load("http://www.google.com");
 
         
     }
