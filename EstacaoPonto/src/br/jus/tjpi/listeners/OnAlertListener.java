@@ -6,6 +6,7 @@ package br.jus.tjpi.listeners;
 
 import br.jus.tjpi.IntranetURLsConstants;
 import br.jus.tjpi.MainController;
+import br.jus.tjpi.system.utils.EstacaoPontoUtils;
 import br.jus.tjpi.utils.Log;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -68,7 +69,13 @@ public class OnAlertListener implements EventHandler {
                 Object data = webEngine.executeScript("jQuery('#codigoAtivacao').val();");
                 
                 System.out.println("Codgio Ativacao: "+data.toString());
-            }
+                
+                EstacaoPontoUtils.registrarCodigoAtivacao(data.toString());
+                
+                webEngine.load(IntranetURLsConstants.INICIALIZAR_PONTO+IntranetURLsConstants.getCodigos());
+            } else if(event.getData().toString().equals("callLeitorDigital")) {
+				mainController.capturarDigital();
+			}
         }
     }
     

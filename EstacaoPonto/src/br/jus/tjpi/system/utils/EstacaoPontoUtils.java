@@ -18,26 +18,31 @@ import java.util.UUID;
 public class EstacaoPontoUtils {
     
     public static String getCodigoAtivacaoRegistro()  {
-        try {
-            RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
-            RegistryKey softwareReg = localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_ALL);
-            RegistryKey estacaoPontoReg = softwareReg.openSubKey("TJPIEstacaoPonto",RegistryKey.ACCESS_READ);
-            
-            String valor = estacaoPontoReg.getStringValue("codigoAtivacao");
-            
-            estacaoPontoReg.closeKey();
-            softwareReg.closeKey();
-            localMachineReg.closeKey();
-            
-            return valor;
-            
-        } catch(Exception e) {
-            return null;
+        
+        if(OSVerifier.isWindows()) {
+            try {
+                RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
+                RegistryKey softwareReg = localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_ALL);
+                RegistryKey estacaoPontoReg = softwareReg.openSubKey("TJPIEstacaoPonto",RegistryKey.ACCESS_READ);
+
+                String valor = estacaoPontoReg.getStringValue("codigoAtivacao");
+
+                estacaoPontoReg.closeKey();
+                softwareReg.closeKey();
+                localMachineReg.closeKey();
+
+                return valor;
+
+            } catch(Exception e) {
+                return null;
+            }
+        } else {
+            return "SistemaOperacionalNaoSuportado";
         }
+    }
 
-	}
-
-        public static boolean registrarCodigoAtivacao(String codigoAtivacao) {
+    public static boolean registrarCodigoAtivacao(String codigoAtivacao) {
+		if(OSVerifier.isWindows()) {
             try {
                 RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
                 RegistryKey softwareReg = localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_ALL);
@@ -57,16 +62,23 @@ public class EstacaoPontoUtils {
             } catch(Exception e) {
                 return false;
             }
-            
-        }
+		} else {
+			return true;
+		}
+    }
         
 	public static String getCodigoUnicoMaquina() {
-		int valorHdSerial = Integer.parseInt(getHDSerial("c"));
-        String hdSerial = Integer.toHexString(valorHdSerial);
-        
-        String serialCriptografado = CryptoUtils.md5UB64(hdSerial);
-        System.out.println(serialCriptografado);
-		return serialCriptografado;
+		
+		if(OSVerifier.isWindows()) {
+			int valorHdSerial = Integer.parseInt(getHDSerial("c"));
+			String hdSerial = Integer.toHexString(valorHdSerial);
+
+			String serialCriptografado = CryptoUtils.md5UB64(hdSerial);
+			System.out.println(serialCriptografado);
+			return serialCriptografado;
+		} else {
+			return "SistemaOperacionalNaoSuportado";
+		}
 	}
     
     
@@ -111,7 +123,7 @@ public class EstacaoPontoUtils {
         String random = uuid.toString();
         
         String codigoCriptografado = CryptoUtils.md5UB64(random);
-        System.out.println(codigoCriptografado);
+//        System.out.println(codigoCriptografado);
         
         return CryptoUtils.md5UB64(random);
     }

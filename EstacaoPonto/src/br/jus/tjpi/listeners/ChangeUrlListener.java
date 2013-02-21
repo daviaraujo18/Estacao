@@ -32,7 +32,8 @@ public class ChangeUrlListener implements ChangeListener<Object> {
     public void changed(ObservableValue<? extends Object> ov, Object t, Object t1) {
         
         if(ov.getValue().equals(Worker.State.SCHEDULED)) {
-			if(urlAtualContem("presenca/Frequentador")) {
+            Log.i("Carregando pagina: "+mainController.getWebEngine().getLocation());
+            if(urlAtualContem("presenca/Frequentador")) {
                 mainController.getSplitPanel().getDividers().get(1).setPosition(0.5);
             } else {
                 mainController.getSplitPanel().getDividers().get(1).setPosition(0.999);
@@ -46,10 +47,8 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                     setarInputCodigos();
                 } else if(urlAtualContem("presenca/IniciarPonto")) {
 					Log.i("Entrei no metodo");
-                    mudarUrlAtualPara(IntranetURLsConstants.INICIALIZAR_PONTO_COM_CODIGOS);
+                    mudarUrlAtualPara(IntranetURLsConstants.INICIALIZAR_PONTO+IntranetURLsConstants.getCodigos());
                 }
-                Log.i("Pagina '"+mainController.getWebEngine().getLocation()+"' carregada");
-
             }
         }
     }
