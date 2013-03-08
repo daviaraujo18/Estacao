@@ -1,11 +1,17 @@
 package br.jus.tjpi.system.utils;
 
 
+import br.jus.tjpi.utils.Log;
 import com.nitgen.SDK.BSP.NBioBSPJNI;
 import com.nitgen.SDK.BSP.NBioBSPJNI.DEVICE_ENUM_INFO;
 import com.nitgen.SDK.BSP.NBioBSPJNI.FIR_TEXTENCODE;
+import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch;
+import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch.FP_INFO;
+import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch.SAMPLE_INFO;
 import com.nitgen.SDK.BSP.NBioBSPJNI.WINDOW_OPTION;
 import java.lang.reflect.Field;
+import java.util.Iterator;
+import java.util.Map;
 
 /*
  * To change this template, choose Tools | Templates
@@ -19,11 +25,81 @@ import java.lang.reflect.Field;
 public class LeitorDigital {
     
     private static NBioBSPJNI bsp;
+	private IndexSearch indexSearchEngine;
 	private static NBioBSPJNI.INIT_INFO_0 initInfo;
     private static NBioBSPJNI.DEVICE_ENUM_INFO deviceEnumInfo;
     private static NBioBSPJNI.WINDOW_OPTION winOption;
     
-    public LeitorDigital() {}
+    public LeitorDigital() {
+		abrirLeitor();
+		indexSearchEngine = bsp.new IndexSearch();
+		fecharLeitor();
+	}
+	
+	
+	public IndexSearch getIndexSearchEngine() {
+		return indexSearchEngine;
+	}
+	
+	public void addDigitalToIndexSearch(Map<String,String> mapaIdHashFrequentadores) {
+		
+		Log.i("Guardando frequentadores na memória...");
+                
+        double inicioMontagem = System.currentTimeMillis();
+		
+		abrirLeitor();
+		
+		NBioBSPJNI.IndexSearch.SAMPLE_INFO sampleInfo = indexSearchEngine.new SAMPLE_INFO();
+		NBioBSPJNI.INPUT_FIR firDigital;
+		NBioBSPJNI.FIR_TEXTENCODE firDigitalTexto;
+		Iterator<String> mapaIterator = mapaIdHashFrequentadores.keySet().iterator();
+		
+		while(mapaIterator.hasNext()) {
+			String idFrequentador = mapaIterator.next();
+			String digitalFrequentador = mapaIdHashFrequentadores.get(idFrequentador);
+			firDigital = bsp.new INPUT_FIR();
+			firDigitalTexto = bsp.new FIR_TEXTENCODE();
+			firDigitalTexto.TextFIR = digitalFrequentador;
+			firDigital.SetTextFIR(firDigitalTexto);
+			indexSearchEngine.AddFIR(firDigital, Integer.parseInt(idFrequentador), sampleInfo);
+		}
+		
+		fecharLeitor();
+		
+		double fimMontagem = System.currentTimeMillis();
+		Log.i("Montagem finalizada");
+		Log.i("Time elapsed: "+(fimMontagem - inicioMontagem)+" ms");
+		
+	} 
+	
+	public int searchDigitalOnIndexSearchEngine(String hashDigital) throws Exception {
+		
+		abrirLeitor();
+		
+		NBioBSPJNI.IndexSearch.FP_INFO fpInfo = indexSearchEngine.new FP_INFO();
+
+		NBioBSPJNI.INPUT_FIR firDigital = bsp.new INPUT_FIR();
+		NBioBSPJNI.FIR_TEXTENCODE firDigitalTexto = bsp.new FIR_TEXTENCODE();
+		firDigitalTexto.TextFIR = hashDigital;
+		firDigital.SetTextFIR(firDigitalTexto);
+		
+		
+		
+		// 0 = maxSearchTime
+        indexSearchEngine.Identify(firDigital,NBioBSPJNI.FIR_SECURITY_LEVEL.NORMAL, fpInfo, 5000);
+		if(bsp.IsErrorOccured()) {
+            throwError();
+			fecharLeitor();
+			return -1;
+		}
+		
+		System.out.println("ID do frequentador: "+fpInfo.ID);
+		
+		fecharLeitor();
+		
+		return fpInfo.ID;
+	}
+	
     
 	/**
 	 * Metodo para fazer a leitura das digitais do usuario
@@ -89,9 +165,9 @@ public class LeitorDigital {
         bsp = new NBioBSPJNI(); // Declare NBioBSPJNI Class Object
         
 		// Setar timeout do leitorDigital
-		initInfo = bsp.new INIT_INFO_0();
-		initInfo.DefaultTimeout = 2000;
-		bsp.SetInitInfo(initInfo);
+//		initInfo = bsp.new INIT_INFO_0();
+//		initInfo.DefaultTimeout = 2000;
+//		bsp.SetInitInfo(initInfo);
 		
         deviceEnumInfo = bsp.new DEVICE_ENUM_INFO();
         winOption = bsp.new WINDOW_OPTION();
@@ -106,8 +182,8 @@ public class LeitorDigital {
         bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
         
     }
-    
-     private void fecharLeitor() {
+	
+	private void fecharLeitor() {
         bsp.CloseDevice(deviceEnumInfo.DeviceInfo[0].NameID,deviceEnumInfo.DeviceInfo[0].Instance);
         deviceEnumInfo = null;
         bsp = null;
@@ -160,6 +236,7 @@ public class LeitorDigital {
 	 */
 	private void throwError() throws IllegalArgumentException, IllegalAccessException, Exception {
 		int errorNumber = bsp.GetErrorCode();
+		System.out.println("Error code: "+bsp.GetErrorCode());
 		String errorName = null;
 		Class aClass = NBioBSPJNI.ERROR.class;
 		Field[] fields = aClass.getFields();

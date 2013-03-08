@@ -8,6 +8,7 @@ import br.jus.tjpi.IntranetURLsConstants;
 import br.jus.tjpi.MainController;
 import br.jus.tjpi.system.utils.EstacaoPontoUtils;
 import br.jus.tjpi.utils.Log;
+import java.util.HashMap;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
@@ -41,8 +42,8 @@ public class OnAlertListener implements EventHandler {
         
         if(t instanceof WebEvent) {
             WebEvent event = (WebEvent) t;
-            if(event.getData().toString().equals("recuperarFrequentadores") &&
-                    webEngine.getLocation().contains("tjpi/presenca/InicializarPonto")) {
+            if(event.getData().toString().equals("callRecuperarFrequentadores") &&
+                    webEngine.getLocation().contains("tjpi/presenca/PontoDePresenca")) {
             
                 Log.i("Iniciando download dos dados dos Frequentadores");
                 
@@ -50,10 +51,35 @@ public class OnAlertListener implements EventHandler {
                 
                 Object data = webEngine.executeScript("window.bdFrequencia");
                 String dataFixed = (String) data.toString().replace("\n", "");
+				
+//				System.out.println("DATA RECEBIDA: "+dataFixed);
                 Log.i("Montando dados");
-                String[] array = ((String)dataFixed).split("'");
-                String[] dados;
+                String[] arrayFrequentadores = ((String)dataFixed).split("'");
+				HashMap<String,String> mapaIdHashFrequentadores = new HashMap<>();
+				
+				
+				
+//				mapaIdHashFrequentadores.putAll(new TesteDigitaisCVS().lerDigitaisCVS());
+				
+				
+				
+				System.out.println("----Frequentadores recebidos: ");
+				if (arrayFrequentadores.length > 0) {
+					for (int i=0; i < arrayFrequentadores.length; i++) {
+						String[] dados = arrayFrequentadores[i].split(";");
+
+						String id = dados[0];
+						String hashDigital = dados[3];
+
+						mapaIdHashFrequentadores.put(id, hashDigital);
+
+					}
+				}
+				
+				mainController.getLeitorDigital().addDigitalToIndexSearch(mapaIdHashFrequentadores);
+				System.out.println("----Fim.");
                 
+ 				 
                 // Adiciona os dados ao NBio_SearchIndex
                 
                 
@@ -61,15 +87,13 @@ public class OnAlertListener implements EventHandler {
                 Log.i("Montagem finalizada");
                 Log.i("Time elapsed: "+(fimDownload - inicioDownload)+" ms");
                 
-                webEngine.load(IntranetURLsConstants.BATIMENTO_PONTO_COM_CODIGOS);
+//                webEngine.load(IntranetURLsConstants.BATIMENTO_PONTO_COM_CODIGOS);
             } else if(event.getData().toString().equals("recuperarCodigoAtivacao") &&
                     webEngine.getLocation().contains("tjpi/presenca/RecuperarCodigoAtivacao")) {
                 Log.i("Recuperando CodigoDeAtivacao e setando no Registro do Windows");
                 
                 Object data = webEngine.executeScript("jQuery('#codigoAtivacao').val();");
-                
-                System.out.println("Codgio Ativacao: "+data.toString());
-                
+				
                 EstacaoPontoUtils.registrarCodigoAtivacao(data.toString());
                 
                 webEngine.load(IntranetURLsConstants.INICIALIZAR_PONTO+IntranetURLsConstants.getCodigos());

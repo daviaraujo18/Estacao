@@ -14,7 +14,7 @@ public class IntranetURLsConstants {
             "&codigoUnicoMaquina="+EstacaoPontoUtils.getCodigoUnicoMaquina();
     
 	
-    public static final String BASE_URL = "http://192.168.1.17:8080/intranet";
+    public static final String BASE_URL = "http://192.168.1.18:8080/intranet";
     public static final String INICIALIZAR_PONTO = BASE_URL+"/tjpi/presenca/InicializarPonto";
     public static String INICIALIZAR_PONTO_COM_CODIGOS = BASE_URL+"/tjpi/presenca/InicializarPonto"+getCodigos();
     
