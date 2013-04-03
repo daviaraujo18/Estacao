@@ -75,8 +75,11 @@ public class OnAlertListener implements EventHandler {
 
 					}
 				}
-				
-				mainController.getLeitorDigital().addDigitalToIndexSearch(mapaIdHashFrequentadores);
+				try {
+					mainController.getLeitorDigital().addDigitalToIndexSearch(mapaIdHashFrequentadores);
+				} catch(Exception e) {
+					Log.i("Leitor nao iniciado: "+e.getMessage());
+				}
 				System.out.println("----Fim.");
                 
  				 

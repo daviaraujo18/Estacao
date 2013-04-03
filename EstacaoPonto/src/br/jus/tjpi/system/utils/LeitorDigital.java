@@ -30,6 +30,9 @@ public class LeitorDigital {
     private static NBioBSPJNI.DEVICE_ENUM_INFO deviceEnumInfo;
     private static NBioBSPJNI.WINDOW_OPTION winOption;
     
+	public static boolean ativo;
+	
+	
     public LeitorDigital() {
 		abrirLeitor();
 		indexSearchEngine = bsp.new IndexSearch();
@@ -118,6 +121,7 @@ public class LeitorDigital {
 		if(bsp.IsErrorOccured()) {
 			
 			throwError();
+			fecharLeitor();
 			return null;
 			
 		} else {
@@ -137,7 +141,7 @@ public class LeitorDigital {
      * @return digital formato texto(String)
      */
     public String capturarDigital() throws Exception {
-        abrirLeitor();
+		abrirLeitor();
         
         NBioBSPJNI.FIR_HANDLE hSavedFIR = bsp.new FIR_HANDLE();
        
@@ -154,7 +158,7 @@ public class LeitorDigital {
             
             fecharLeitor();
             
-            return textSavedFIR.TextFIR;
+			return textSavedFIR.TextFIR;
         }
     }
     
@@ -179,7 +183,9 @@ public class LeitorDigital {
         // Enumerate device
         bsp.EnumerateDevice(deviceEnumInfo);
         
-        bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
+        
+		bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
+		ativo = true;
         
     }
 	
@@ -187,6 +193,7 @@ public class LeitorDigital {
         bsp.CloseDevice(deviceEnumInfo.DeviceInfo[0].NameID,deviceEnumInfo.DeviceInfo[0].Instance);
         deviceEnumInfo = null;
         bsp = null;
+		ativo = false;
     }
 
     public boolean verificaCompatibilidadeDigitais(String digital, String digitalCapturada) {
@@ -246,6 +253,7 @@ public class LeitorDigital {
 				break;
 			}
 		}
+		fecharLeitor();
 		throw new Exception("Erro: "+errorName);
 	}
 	

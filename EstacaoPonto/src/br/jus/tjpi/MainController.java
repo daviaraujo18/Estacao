@@ -28,10 +28,17 @@ import javafx.scene.web.WebView;
  */
 
 public class MainController implements Initializable {
-
+	
+	
     @Override 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         
+		try {
+			ld = new LeitorDigital();
+		} catch(Exception e) {
+			Log.i("Leitor digital nao iniciado: "+e.getMessage());
+		}
+		
 		webEngine = webView.getEngine();
         
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
@@ -62,18 +69,14 @@ public class MainController implements Initializable {
 	
 	@FXML
 	void changeComboBox(KeyEvent event) {
-		if (event.getCode().equals(KeyCode.ENTER)) {
+		if (event.getCode().equals(KeyCode.ENTER) && !LeitorDigital.ativo) {
 			if (webEngine.getLocation().contains("tjpi/presenca/PontoDePresenca")) {
-				The.inserirJavascript(webEngine, "changeRadioType()");
-				
-				
-//				try {
-//					LeitorDigital leitor = new LeitorDigital();
-//					String digital = leitor.capturarDigital();
-//					System.out.println(digital);
-//				} catch (Exception e) {
-//					System.out.println("--- "+e.getMessage());
-//				}
+				boolean modalAtivo = Boolean.parseBoolean(The.inserirJavascript(webEngine, "isModalAtivo()").toString());
+				if(!modalAtivo) {
+					The.inserirJavascript(webEngine, "changeRadioType()");
+				} else {
+					The.inserirJavascript(webEngine, "modal(false)");
+				}
 			}
 		}
 	}
@@ -95,7 +98,8 @@ public class MainController implements Initializable {
 						
 						if (id > 0) {
 							System.out.println("ID Founded: "+id);
-							The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital lida com sucesso! ID: "+id+"</center>')");
+							The.inserirJavascript(webEngine, "baterPonto("+id+")");
+//							The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital lida com sucesso! ID: "+id+"</center>')");
 						} else {
 							The.inserirJavascript(webEngine, "changeMensagemStatus('<center>DIGITAL NÃO ENCONTRADA!</center>')");
 						}
@@ -132,7 +136,7 @@ public class MainController implements Initializable {
 
 	private WebEngine webEngine;
     
-    private final LeitorDigital ld = new LeitorDigital();
+    private LeitorDigital ld;
     
     private Map<Integer,List> digitaisFrequentadores;
     private Map<Integer,List> dadosFrequentadores;
