@@ -3,17 +3,23 @@ package controllers;
 import async.CapturarDigitalService;
 import core.IntranetURLs;
 import core.LeitorDigital;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import utils.Log;
 import utils.The;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,6 +29,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import listeners.ChangeUrlListener;
 import listeners.OnAlertListener;
+import utils.VerificaConexao;
 
 /**
  * @author aers
@@ -33,7 +40,7 @@ public class MainController implements Initializable {
 	
     @Override 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        
+         boolean con = false;
 		try {
 			ld = new LeitorDigital();
 		} catch(Exception e) {
@@ -44,7 +51,19 @@ public class MainController implements Initializable {
         
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
         webEngine.setOnAlert(new OnAlertListener(this));
-        
+        try {
+            con = VerificaConexao.verificaConexao(IntranetURLs.INICIAR_PONTO);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if( con == false)
+        {
+            // mostrar uma mensagem informando que está sem conexão
+           this.labelSemConexao.setVisible(true);
+           return;
+        }
         webEngine.load(IntranetURLs.INICIAR_PONTO);
 //        webEngine.load("http://www.google.com");
 		imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -122,6 +141,9 @@ public class MainController implements Initializable {
     @FXML //  fx:id="imageView"
     private ImageView imageView; // Value injected by FXMLLoader
 
+    @FXML //fx:id="label"
+    private Label labelSemConexao;
+    
     @FXML //  fx:id="mainAnchorPane"
     private AnchorPane mainAnchorPane; // Value injected by FXMLLoader
     
@@ -135,8 +157,8 @@ public class MainController implements Initializable {
     private WebView webView; // Value injected by FXMLLoader
 
 
-	private WebEngine webEngine;
-    
+    private WebEngine webEngine;
+   
     private LeitorDigital ld;
     
     private Map<Integer,List> digitaisFrequentadores;
