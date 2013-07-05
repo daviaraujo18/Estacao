@@ -72,7 +72,6 @@ public class OnAlertListener implements EventHandler {
 						String hashDigital = dados[3];
 
 						mapaIdHashFrequentadores.put(id, hashDigital);
-
 					}
 				}
 				try {
@@ -103,6 +102,22 @@ public class OnAlertListener implements EventHandler {
             } else if(event.getData().toString().equals("callLeitorDigital")) {
 				mainController.capturarDigital();
 			}
+            else if(event.getData().toString().contains("horarioServidorAtual"))
+            {
+                String[] horario = event.getData().toString().split(":");
+                int hora = Integer.parseInt(horario[1]);
+                int minutos = Integer.parseInt(horario[2]);
+                mainController.criarThreadRelogio(hora, minutos);
+            }
+            else if(event.getData().toString().equals("atualizarRelogioLocal"))
+            {                
+                if(mainController.getThreadRelogio()!=null)
+                {
+                    String horario = mainController.getThreadRelogio().atualizarRelogio();
+                    mainController.atualizarHorario(horario);
+                }
+            }
+            
         }
     }
     

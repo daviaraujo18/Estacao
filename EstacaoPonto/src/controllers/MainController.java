@@ -1,6 +1,7 @@
 package controllers;
 
 import async.CapturarDigitalService;
+import async.ThreadRelogio;
 import core.IntranetURLs;
 import core.LeitorDigital;
 import java.io.IOException;
@@ -125,6 +126,7 @@ public class MainController implements Initializable {
 						}
 					} else {
 						The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Não foi possível ler a digital.</center>')");
+                                                //The.inserirJavascript(webEngine, "atualizaRelogioLocal('13:00')");
 					}
 
 				} catch(Exception e) {
@@ -136,8 +138,7 @@ public class MainController implements Initializable {
 		
 		cds.start();
 	}
-
-	
+        
     @FXML //  fx:id="imageView"
     private ImageView imageView; // Value injected by FXMLLoader
 
@@ -160,6 +161,8 @@ public class MainController implements Initializable {
     private WebEngine webEngine;
    
     private LeitorDigital ld;
+    
+    private ThreadRelogio threadRelogio;
     
     private Map<Integer,List> digitaisFrequentadores;
     private Map<Integer,List> dadosFrequentadores;
@@ -201,6 +204,19 @@ public class MainController implements Initializable {
 
     public void setDadosFrequentadores(Map<Integer, List> dadosFrequentadores) {
         this.dadosFrequentadores = dadosFrequentadores;
+    }
+
+    public ThreadRelogio getThreadRelogio() {
+        return threadRelogio;
+    }
+    
+    public void criarThreadRelogio(int hora, int minutos) {
+       threadRelogio = new ThreadRelogio(hora, minutos);
+       threadRelogio.start();
+    }
+
+    public void atualizarHorario(String horario) {
+        The.inserirJavascript(webEngine, "atualizaRelogioLocal('"+horario+"')");
     }
 
     
