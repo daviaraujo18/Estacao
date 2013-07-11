@@ -30,6 +30,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import listeners.ChangeUrlListener;
 import listeners.OnAlertListener;
+import utils.ArquivoRegistros;
 import utils.VerificaConexao;
 
 /**
@@ -119,7 +120,11 @@ public class MainController implements Initializable {
 						
 						if (id > 0) {
 							System.out.println("ID Founded: "+id);
-							The.inserirJavascript(webEngine, "baterPonto("+id+")");
+							//The.inserirJavascript(webEngine, "baterPonto("+id+")");
+                                                        String tipoRegistroFrequencia = (String) The.inserirJavascript(webEngine, "getSelectedTipoRegistroFrequencia()");
+                                                        
+                                                        boolean ret = ArquivoRegistros.escrever(id+ "-" +tipoRegistroFrequencia+"-"+threadRelogio.getHorarioAtual()+";");
+                                                        
 //							The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital lida com sucesso! ID: "+id+"</center>')");
 						} else {
 							The.inserirJavascript(webEngine, "changeMensagemStatus('<center>DIGITAL NÃO ENCONTRADA!</center>')");

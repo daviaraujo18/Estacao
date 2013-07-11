@@ -32,7 +32,14 @@ public class ThreadRelogio extends Service<String> {
             horaAtual+=1;
             minutosAtual=0;
         }
-        horarioAtual = horaAtual+":"+minutosAtual;
+        if(String.valueOf(minutosAtual).length() == 1)
+        {
+            horarioAtual = horarioAtual+":0"+minutosAtual;
+        }
+        else
+        {
+            horarioAtual = horaAtual+":"+minutosAtual;
+        }
         return horarioAtual;
         
     }
@@ -77,4 +84,10 @@ public class ThreadRelogio extends Service<String> {
         };
 
     }
+
+    public String getHorarioAtual() {
+        return horarioAtual;
+    }
+    
+    
 }

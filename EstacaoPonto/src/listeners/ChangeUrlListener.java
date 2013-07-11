@@ -8,11 +8,15 @@ import core.IntranetURLs;
 import controllers.MainController;
 import core.RegistroWindows;
 import core.LeitorDigital;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.Log;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
+import utils.ArquivoRegistros;
 
 /**
  * Classe que verifica toda vez que ocorre uma mudança de página
@@ -45,6 +49,13 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 if(urlAtualContem("EstacaoPonto?type=create")) {
                     Log.i("Injetando codigos no formulário via JavaScript");
                     setarInputCodigos();
+//                    boolean ret = false;
+//                    try {
+//                        ret = criarArquivoBatimentos();
+//                    } catch (IOException ex) {
+//                        Logger.getLogger(ChangeUrlListener.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                    System.out.println("Criou o registro: " + ret);
                 } else if(urlAtualContem("presenca/IniciarPonto")) {
 					Log.i("Entrei no metodo");
                     mudarUrlAtualPara(IntranetURLs.INICIALIZAR_PONTO+IntranetURLs.getCodigos());
@@ -71,5 +82,23 @@ public class ChangeUrlListener implements ChangeListener<Object> {
 	private void mudarUrlAtualPara(String novaURL) {
 		mainController.getWebEngine().load(novaURL);
 	}
+        
+        private boolean criarArquivoBatimentos() throws IOException 
+        {
+            java.io.File diretorio = new java.io.File("C:\\RegistroBatimentos");
+            boolean statusDir = diretorio.mkdir();
+            System.out.print(statusDir);
+            java.io.File arquivo = new java.io.File(diretorio, "registros.txt");
+            ArquivoRegistros.escrever("Jainilene Nascimento - xxxxx - yyyyy");
+            try {
+                boolean statusArq = arquivo.createNewFile();
+                System.out.print(statusArq);
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+     
+    }
     
 }
