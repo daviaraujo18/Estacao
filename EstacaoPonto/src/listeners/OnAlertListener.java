@@ -4,11 +4,18 @@
  */
 package listeners;
 
+import async.ThreadRelogio;
 import core.IntranetURLs;
 import controllers.MainController;
 import core.RegistroWindows;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import utils.Log;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
@@ -105,16 +112,36 @@ public class OnAlertListener implements EventHandler {
             else if(event.getData().toString().contains("horarioServidorAtual"))
             {
                 String[] horario = event.getData().toString().split(":");
-                int hora = Integer.parseInt(horario[1]);
-                int minutos = Integer.parseInt(horario[2]);
-                mainController.criarThreadRelogio(hora, minutos);
+                
+                int dia=Integer.parseInt(horario[1]);
+                int mes=Integer.parseInt(horario[2]);
+                int ano=Integer.parseInt(horario[3]);
+                int hora = Integer.parseInt(horario[4]);
+                int minutos = Integer.parseInt(horario[5]);
+                Calendar dataServidor = Calendar.getInstance();
+                dataServidor.set(ano, mes, dia, hora, minutos);
+                mainController.criarThreadRelogio(dataServidor);
             }
             else if(event.getData().toString().equals("atualizarRelogioLocal"))
             {                
                 if(mainController.getThreadRelogio()!=null)
                 {
                     String horario = mainController.getThreadRelogio().atualizarRelogio();
-                    mainController.atualizarHorario(horario);
+                    try {
+                        mainController.atualizarHorario(horario);
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            else if(event.getData().toString().equals("limparRegistosBatimentos"))
+            {
+                try {
+                    mainController.apagarRegistrosBatimentos();
+                } catch (IOException ex) {
+                    Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             

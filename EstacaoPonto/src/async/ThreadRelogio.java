@@ -1,5 +1,6 @@
 package async;
 
+import java.util.Calendar;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
@@ -9,69 +10,71 @@ import javafx.concurrent.Task;
  */
 public class ThreadRelogio extends Service<String> {
 
-    private int horaAtual;
-    private int minutosAtual;
     private String horarioAtual;
-    private int horaServidorInicial;
-    private int minutosServidorInicial;
+    private Calendar dataServidorInicial;
+    private Calendar dataServidorAtual;
     private long tempoNanoServidorLigado;
 
-    public ThreadRelogio(int horaServidorInicial, int minutosServidorInicial) {
-        this.horaServidorInicial = horaServidorInicial;
-        this.horaAtual = horaServidorInicial;
-        this.minutosServidorInicial = minutosServidorInicial;
-        this.minutosAtual = minutosServidorInicial;
+    public ThreadRelogio(Calendar dtServidorInicial) {
+        Calendar dt = Calendar.getInstance();
+        dt.setTime(dtServidorInicial.getTime());
+        this.dataServidorInicial = dt;
+        this.dataServidorAtual = dtServidorInicial;
         this.tempoNanoServidorLigado = System.nanoTime();
-    }
-    
-    private String incrementaHorario()
-    {
-        this.minutosAtual+=1;
-        if(minutosAtual==60)
-        {
-            horaAtual+=1;
-            minutosAtual=0;
-        }
-        if(String.valueOf(minutosAtual).length() == 1)
-        {
-            horarioAtual = horarioAtual+":0"+minutosAtual;
-        }
-        else
-        {
-            horarioAtual = horaAtual+":"+minutosAtual;
-        }
-        return horarioAtual;
-        
-    }
-    private String calculaHorario()
-    {
-        long nanoH = (long) 3600000000000.00;
-        long nanoM = (long) 60000000000.00;
-        
-        long nanoS = System.nanoTime();
-        long difTempo = nanoS - tempoNanoServidorLigado;
-        
-        long horaDecorrida = difTempo/nanoH;
-        long minutosDecorridos = (difTempo/nanoM) - horaDecorrida*60;
-        
-         int somaMinutos= (int) (minutosServidorInicial+minutosDecorridos);
-         if (somaMinutos>= 60) {
-            horaAtual = horaServidorInicial + (somaMinutos/60);
-            minutosAtual = somaMinutos-60;
-         }
-         else
-         {
-             minutosAtual=somaMinutos;
-             horaAtual = (int) (horaServidorInicial + horaDecorrida);
-         }
-         
-         this.horarioAtual = horaAtual + ":" + minutosAtual;
-         return horarioAtual;
-        
+        System.out.println("\n***CONTRUTOR\n");
     }
 
-    public String atualizarRelogio() {        
-        return incrementaHorario();
+    private String incrementaHorario() {
+        dataServidorAtual.set(Calendar.MINUTE, this.dataServidorAtual.get(Calendar.MINUTE) + 1);
+
+        if (dataServidorAtual.get(Calendar.MINUTE) == 60) {
+            dataServidorAtual.set(Calendar.HOUR_OF_DAY, this.dataServidorAtual.get(Calendar.HOUR_OF_DAY) + 1);
+            dataServidorAtual.set(Calendar.MINUTE, 0);
+        }
+        if (dataServidorAtual.get(Calendar.MINUTE) < 10) {
+            horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":0" + dataServidorAtual.get(Calendar.MINUTE);
+        } else {
+            horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":" + dataServidorAtual.get(Calendar.MINUTE);
+        }
+        return horarioAtual;
+
+    }
+
+    private String calculaHorario() {
+        long nanoH = (long) 3600000000000.00;
+        long nanoM = (long) 60000000000.00;
+
+        long nanoS = System.nanoTime();
+        long difTempo = nanoS - tempoNanoServidorLigado;
+
+        long horaDecorrida = difTempo / nanoH;
+        System.out.println("HORA DECORRIDA: " + horaDecorrida);
+        long minutosDecorridos = (difTempo / nanoM) - horaDecorrida * 60;
+        System.out.println("MINUTOS DECORRIDOS: " + minutosDecorridos);
+        int somaMinutos = (int) (dataServidorInicial.get(Calendar.MINUTE) + minutosDecorridos);
+        if (somaMinutos >= 60) {
+            dataServidorAtual.set(Calendar.HOUR_OF_DAY, dataServidorInicial.get(Calendar.HOUR_OF_DAY) + (somaMinutos / 60));
+            dataServidorAtual.set(Calendar.MINUTE, somaMinutos - 60);
+        } else {
+            dataServidorAtual.set(Calendar.MINUTE, somaMinutos);
+            dataServidorAtual.set(Calendar.HOUR_OF_DAY, (int) (dataServidorInicial.get(Calendar.HOUR_OF_DAY) + horaDecorrida));
+        }
+
+        if (dataServidorAtual.get(Calendar.HOUR_OF_DAY) > 23) {
+            dataServidorAtual.set(Calendar.DAY_OF_YEAR, dataServidorAtual.get(Calendar.DAY_OF_YEAR + 1));
+        }
+        if (dataServidorAtual.get(Calendar.MINUTE) < 10) {
+            horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":0" + dataServidorAtual.get(Calendar.MINUTE);
+        } else {
+            horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":" + dataServidorAtual.get(Calendar.MINUTE);
+        }
+        System.out.println("HORARIO ATUAL: " + horarioAtual);
+        return horarioAtual;
+
+    }
+
+    public String atualizarRelogio() {
+        return calculaHorario();
     }
 
     @Override
@@ -88,6 +91,32 @@ public class ThreadRelogio extends Service<String> {
     public String getHorarioAtual() {
         return horarioAtual;
     }
-    
-    
+
+    public Calendar getDataServidorInicial() {
+        return dataServidorInicial;
+    }
+
+    public Calendar getDataServidorAtual() {
+        return dataServidorAtual;
+    }
+
+    public int getMinutosServidorAtual() {
+        return dataServidorAtual.get(Calendar.MINUTE);
+    }
+
+    public int getHoraServidorAtual() {
+        return dataServidorAtual.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public int getMinutosServidorInicial() {
+        return dataServidorInicial.get(Calendar.MINUTE);
+    }
+
+    public int getHoraServidorInicial() {
+        return dataServidorInicial.get(Calendar.HOUR_OF_DAY);
+    }
+    public String getMomentoBatimento()
+    {
+        return dataServidorAtual.get(Calendar.DAY_OF_MONTH)+":"+dataServidorAtual.get(Calendar.MONTH) +":"+dataServidorAtual.get(Calendar.YEAR)+":"+horarioAtual;
+    }
 }
