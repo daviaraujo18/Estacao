@@ -128,6 +128,7 @@ public class OnAlertListener implements EventHandler {
                 {
                     String horario = mainController.getThreadRelogio().atualizarRelogio();
                     try {
+                        System.out.println("Atualizando...");
                         mainController.atualizarHorario(horario);
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);

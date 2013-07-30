@@ -121,6 +121,11 @@ public class MainController implements Initializable {
                             String tipoRegistroFrequencia = (String) The.inserirJavascript(webEngine, "getSelectedTipoRegistroFrequencia()");
 
                             boolean ret = ArquivoRegistros.escrever(id + "-" + tipoRegistroFrequencia + "-" + threadRelogio.getMomentoBatimento() + ";");
+                            if(ret == true)
+                            {
+                                The.inserirJavascript(webEngine, "baterPontoLocal('"+ id +"','"+tipoRegistroFrequencia+"','"+threadRelogio.getMomentoBatimentoFrequentador()+"')");
+                            }
+                            
 
 //							The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital lida com sucesso! ID: "+id+"</center>')");
                         } else {
@@ -204,12 +209,20 @@ public class MainController implements Initializable {
     }
 
     public void atualizarHorario(String horario) throws FileNotFoundException, IOException {
+        System.out.println("\nMetodo atualizar do mainController...");
         String minutos = horario.split(":")[1];
         int min = Integer.parseInt(minutos);
-        if (min == threadRelogio.getMinutosServidorInicial()) {
-            if (VerificaConexao.verificaConexao(horario)) {
+        //faz a sincronizacao 2 min depois de iniciada a estacao ponto - teste
+        if (min == (threadRelogio.getMinutosServidorInicial() + 2 )) {
+            System.out.println("Vai ler arquivo...");
+            if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
+                System.out.println("lendo o arquivo..");
                 String dados = ArquivoRegistros.ler();
                 The.inserirJavascript(webEngine, "sincronizaPonto('" + dados + "')");
+            }
+            else
+            {
+                System.out.println("\nSem Conexao....");
             }
 
         }

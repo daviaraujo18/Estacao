@@ -1,5 +1,6 @@
 package utils;
 
+import core.RegistroWindows;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,13 +15,20 @@ import java.io.PrintWriter;
  */
 public class ArquivoRegistros {
 
-    private static File arquivo = new File( "C:\\RegistroBatimentos\\registros.txt");
+    private static File arquivo = new File( "C:\\Estacao\\"+RegistroWindows.getCodigoUnicoMaquina().substring(2, 10)+".txt");
     
     public static boolean escrever(String registro) throws IOException {
+        if(registro == null)
+        {
+            return false;
+        }
         try {
             FileWriter fileWriter = new FileWriter(arquivo, true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.println(registro);
+            String registroCriptografado = CryptoUtils.encryptDES("cryp:gpf", registro);
+            System.out.println("REGISRO: " + registro);
+            System.out.println("REGISRO CRIPTOGRAFADO: " + registroCriptografado);
+            printWriter.println(registroCriptografado);
             printWriter.flush();
             printWriter.close();
             return true;
@@ -43,6 +51,7 @@ public class ArquivoRegistros {
         // ou fechamos o arquivo
         fileReader.close();
         bufferedReader.close();
+        System.out.println("CONTEUDO: " + conteudo);
         return conteudo;
     }
     public static void limparArquivo() throws IOException
