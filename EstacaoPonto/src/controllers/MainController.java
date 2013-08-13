@@ -7,10 +7,7 @@ import core.LeitorDigital;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import utils.Log;
-import utils.The;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +20,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -34,6 +30,8 @@ import javafx.scene.web.WebView;
 import listeners.ChangeUrlListener;
 import listeners.OnAlertListener;
 import utils.ArquivoRegistros;
+import utils.Log;
+import utils.The;
 import utils.VerificaConexao;
 
 /**
@@ -210,16 +208,12 @@ public class MainController implements Initializable {
     }
 
     public void atualizarHorario(String horario) throws FileNotFoundException, IOException {
-        System.out.println("\nMetodo atualizar do mainController...");
         String minutos = horario.split(":")[1];
         int min = Integer.parseInt(minutos);
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (min == (threadRelogio.getMinutosServidorInicial() )) {
-            System.out.println("Vai ler arquivo...");
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
-                System.out.println("lendo o arquivo..");
                 String dados = ArquivoRegistros.lerArquivo();
-                System.out.println("Sincronizar Registros: " + dados);
                 The.inserirJavascript(webEngine, "sincronizaPonto('" + dados + "')");
             }
             else
