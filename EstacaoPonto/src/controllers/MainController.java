@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import utils.Log;
 import utils.The;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +121,7 @@ public class MainController implements Initializable {
                             //The.inserirJavascript(webEngine, "baterPonto("+id+")");
                             String tipoRegistroFrequencia = (String) The.inserirJavascript(webEngine, "getSelectedTipoRegistroFrequencia()");
 
-                            boolean ret = ArquivoRegistros.escrever(id + "-" + tipoRegistroFrequencia + "-" + threadRelogio.getMomentoBatimento() + ";");
+                            boolean ret = ArquivoRegistros.escreverRegistro(id + "-" + tipoRegistroFrequencia + "-" + threadRelogio.getMomentoBatimento());
                             if(ret == true)
                             {
                                 The.inserirJavascript(webEngine, "baterPontoLocal('"+ id +"','"+tipoRegistroFrequencia+"','"+threadRelogio.getMomentoBatimentoFrequentador()+"')");
@@ -212,12 +213,13 @@ public class MainController implements Initializable {
         System.out.println("\nMetodo atualizar do mainController...");
         String minutos = horario.split(":")[1];
         int min = Integer.parseInt(minutos);
-        //faz a sincronizacao 2 min depois de iniciada a estacao ponto - teste
-        if (min == (threadRelogio.getMinutosServidorInicial() + 2 )) {
+        //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
+        if (min == (threadRelogio.getMinutosServidorInicial() )) {
             System.out.println("Vai ler arquivo...");
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
                 System.out.println("lendo o arquivo..");
-                String dados = ArquivoRegistros.ler();
+                String dados = ArquivoRegistros.lerArquivo();
+                System.out.println("Sincronizar Registros: " + dados);
                 The.inserirJavascript(webEngine, "sincronizaPonto('" + dados + "')");
             }
             else

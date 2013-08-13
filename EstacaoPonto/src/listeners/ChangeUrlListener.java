@@ -4,20 +4,17 @@
  */
 package listeners;
 
-import core.IntranetURLs;
 import controllers.MainController;
+import core.IntranetURLs;
 import core.RegistroWindows;
-import core.LeitorDigital;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utils.Log;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
-import utils.ArquivoRegistros;
-import utils.CryptoUtils;
+import utils.Log;
 
 /**
  * Classe que verifica toda vez que ocorre uma mudança de página
