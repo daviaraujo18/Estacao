@@ -21,7 +21,7 @@ public class ThreadRelogio extends Service<String> {
         this.dataServidorInicial = dt;
         this.dataServidorAtual = dtServidorInicial;
         this.tempoNanoServidorLigado = System.nanoTime();
-        System.out.println("\n***CONTRUTOR\n");
+        
     }
 
     private String incrementaHorario() {
@@ -48,9 +48,9 @@ public class ThreadRelogio extends Service<String> {
         long difTempo = nanoS - tempoNanoServidorLigado;
 
         long horaDecorrida = difTempo / nanoH;
-        System.out.println("HORA DECORRIDA: " + horaDecorrida);
+        
         long minutosDecorridos = (difTempo / nanoM) - horaDecorrida * 60;
-        System.out.println("MINUTOS DECORRIDOS: " + minutosDecorridos);
+        
         int somaMinutos = (int) (dataServidorInicial.get(Calendar.MINUTE) + minutosDecorridos);
         if (somaMinutos >= 60) {
             dataServidorAtual.set(Calendar.HOUR_OF_DAY, dataServidorInicial.get(Calendar.HOUR_OF_DAY) + (somaMinutos / 60));
@@ -68,7 +68,7 @@ public class ThreadRelogio extends Service<String> {
         } else {
             horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":" + dataServidorAtual.get(Calendar.MINUTE);
         }
-        System.out.println("HORARIO ATUAL: " + horarioAtual);
+        
         return horarioAtual;
 
     }

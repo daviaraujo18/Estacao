@@ -88,8 +88,11 @@ public class ArquivoRegistros {
                 conteudo+=separador;
             }
         }
-        conteudo = conteudo.substring(0, conteudo.length()-1);
-        System.out.println("\n -- Dados arquivo: " + conteudo);
+        if(!conteudo.isEmpty())
+        {
+            conteudo = conteudo.substring(0, conteudo.length()-1);
+            System.out.println("\n -- Dados arquivo: " + conteudo);
+        }
         return conteudo;
     }
     

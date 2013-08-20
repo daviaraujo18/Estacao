@@ -87,7 +87,9 @@ public class ChangeUrlListener implements ChangeListener<Object> {
             java.io.File diretorio = new java.io.File("C:\\Estacao");
             java.io.File arquivo = new java.io.File(diretorio, codUnic+".txt");
             try {
+                boolean statusDir = diretorio.mkdir();
                 boolean statusArq = arquivo.createNewFile();
+                System.out.println("criou o diretorio : " + statusDir );
                 System.out.print(statusArq);
                 return true;
             } catch (IOException e) {

@@ -145,6 +145,10 @@ public class OnAlertListener implements EventHandler {
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            else if(event.getData().toString().equals("Sincronizando"))
+            {
+                System.out.println("ALERT Sincronizando...");
+            }
             
         }
     }
