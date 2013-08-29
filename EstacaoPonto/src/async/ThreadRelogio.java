@@ -24,25 +24,11 @@ public class ThreadRelogio extends Service<String> {
         
     }
 
-    private String incrementaHorario() {
-        dataServidorAtual.set(Calendar.MINUTE, this.dataServidorAtual.get(Calendar.MINUTE) + 1);
-
-        if (dataServidorAtual.get(Calendar.MINUTE) == 60) {
-            dataServidorAtual.set(Calendar.HOUR_OF_DAY, this.dataServidorAtual.get(Calendar.HOUR_OF_DAY) + 1);
-            dataServidorAtual.set(Calendar.MINUTE, 0);
-        }
-        if (dataServidorAtual.get(Calendar.MINUTE) < 10) {
-            horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":0" + dataServidorAtual.get(Calendar.MINUTE);
-        } else {
-            horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":" + dataServidorAtual.get(Calendar.MINUTE);
-        }
-        return horarioAtual;
-
-    }
-
+   
     private String calculaHorario() {
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
+        long nanoSe = (long) 1000000000.00;
 
         long nanoS = System.nanoTime();
         long difTempo = nanoS - tempoNanoServidorLigado;
@@ -50,6 +36,7 @@ public class ThreadRelogio extends Service<String> {
         long horaDecorrida = difTempo / nanoH;
         
         long minutosDecorridos = (difTempo / nanoM) - horaDecorrida * 60;
+        int segundosDecorridos = (int) ((difTempo/nanoSe) - (horaDecorrida*60*60) - (minutosDecorridos*60));
         
         int somaMinutos = (int) (dataServidorInicial.get(Calendar.MINUTE) + minutosDecorridos);
         if (somaMinutos >= 60) {
@@ -68,7 +55,7 @@ public class ThreadRelogio extends Service<String> {
         } else {
             horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":" + dataServidorAtual.get(Calendar.MINUTE);
         }
-        
+        dataServidorAtual.set(Calendar.SECOND, segundosDecorridos);
         return horarioAtual;
 
     }
@@ -117,7 +104,8 @@ public class ThreadRelogio extends Service<String> {
     }
     public String getMomentoBatimento()
     {
-        return dataServidorAtual.get(Calendar.DAY_OF_MONTH)+":"+dataServidorAtual.get(Calendar.MONTH) +":"+dataServidorAtual.get(Calendar.YEAR)+":"+horarioAtual;
+        calculaHorario();
+        return dataServidorAtual.get(Calendar.DAY_OF_MONTH)+":"+dataServidorAtual.get(Calendar.MONTH) +":"+dataServidorAtual.get(Calendar.YEAR)+":"+horarioAtual+ ":"+ dataServidorAtual.get(Calendar.SECOND);
     }
     public String getMomentoBatimentoFrequentador()
     {

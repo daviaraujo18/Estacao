@@ -212,7 +212,7 @@ public class MainController implements Initializable {
         String minutos = horario.split(":")[1];
         int min = Integer.parseInt(minutos);
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
-        if (min == threadRelogio.getMinutosServidorInicial()) {
+        if (min == threadRelogio.getMinutosServidorInicial() ) {
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
                 String dados = ArquivoRegistros.lerArquivo();
                 The.inserirJavascript(webEngine, "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");

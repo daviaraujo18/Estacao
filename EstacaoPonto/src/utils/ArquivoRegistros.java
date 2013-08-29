@@ -121,7 +121,7 @@ public class ArquivoRegistros {
     {
             FileWriter fileWriter = new FileWriter(arquivo, false);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.println("");
+            //printWriter.println("");
             printWriter.flush();
             printWriter.close();
     }
