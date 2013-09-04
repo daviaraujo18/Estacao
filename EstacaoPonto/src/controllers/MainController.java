@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -117,6 +118,7 @@ public class MainController implements Initializable {
 
                         if (id > 0) {
                             System.out.println("ID Founded: " + id);
+                            System.out.println("Dados Freq: " + mapaIdInfoFrequentadores.get(id));
                             //The.inserirJavascript(webEngine, "baterPonto("+id+")");
                             String tipoRegistroFrequencia = (String) The.inserirJavascript(webEngine, "getSelectedTipoRegistroFrequencia()");
 
@@ -162,6 +164,8 @@ public class MainController implements Initializable {
     private ThreadRelogio threadRelogio;
     private Map<Integer, List> digitaisFrequentadores;
     private Map<Integer, List> dadosFrequentadores;
+    private String[] arrayFrequentadores;
+    private HashMap<String,String> mapaIdInfoFrequentadores;
 
     public AnchorPane getMainAnchorPane() {
         return mainAnchorPane;
@@ -203,6 +207,23 @@ public class MainController implements Initializable {
         return threadRelogio;
     }
 
+    public String[] getArrayFrequentadores() {
+        return arrayFrequentadores;
+    }
+
+    public void setArrayFrequentadores(String[] arrayFrequentadores) {
+        this.arrayFrequentadores = arrayFrequentadores;
+    }
+
+    public HashMap<String, String> getMapaIdInfoFrequentadores() {
+        return mapaIdInfoFrequentadores;
+    }
+
+    public void setMapaIdInfoFrequentadores(HashMap<String, String> mapaIdInfoFrequentadores) {
+        this.mapaIdInfoFrequentadores = mapaIdInfoFrequentadores;
+    }
+
+    
     public void criarThreadRelogio(Calendar dtServidor) {
         threadRelogio = new ThreadRelogio(dtServidor);
         threadRelogio.start();

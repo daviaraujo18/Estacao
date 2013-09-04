@@ -61,8 +61,12 @@ public class OnAlertListener implements EventHandler {
 				
 //				System.out.println("DATA RECEBIDA: "+dataFixed);
                 Log.i("Montando dados");
-                String[] arrayFrequentadores = ((String)dataFixed).split("'");
-				HashMap<String,String> mapaIdHashFrequentadores = new HashMap<>();
+                
+                
+                mainController.setArrayFrequentadores(((String)dataFixed).split("'"));
+                String[] frequentadores = mainController.getArrayFrequentadores();
+			HashMap<String,String> mapaIdHashFrequentadores = new HashMap<>();
+			mainController.setMapaIdInfoFrequentadores(new HashMap<String, String>());
 				
 				
 				
@@ -71,13 +75,14 @@ public class OnAlertListener implements EventHandler {
 				
 				
 				System.out.println("----Frequentadores recebidos: ");
-				if (arrayFrequentadores.length > 0) {
-					for (int i=0; i < arrayFrequentadores.length; i++) {
-						String[] dados = arrayFrequentadores[i].split(";");
-
+				if (mainController.getArrayFrequentadores().length > 0) {
+					for (int i=0; i < frequentadores.length; i++) {
+						String[] dados = frequentadores[i].split(";");
 						String id = dados[0];
 						String hashDigital = dados[3];
-
+                                                String dadosF = dados[1]+";"+dados[2];
+                                                System.out.println("Inserindo dados: " + dadosF);
+                                                mainController.getMapaIdInfoFrequentadores().put(id, dadosF);
 						mapaIdHashFrequentadores.put(id, hashDigital);
 					}
 				}
