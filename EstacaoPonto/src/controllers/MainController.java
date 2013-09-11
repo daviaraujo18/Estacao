@@ -9,11 +9,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
@@ -119,13 +121,14 @@ public class MainController implements Initializable {
                         if (id > 0) {
                             System.out.println("ID Founded: " + id);
                             System.out.println("Dados Freq: " + mapaIdInfoFrequentadores.get(id));
+                            String[] dadosF = mapaIdInfoFrequentadores.get(id).split(";");
                             //The.inserirJavascript(webEngine, "baterPonto("+id+")");
                             String tipoRegistroFrequencia = (String) The.inserirJavascript(webEngine, "getSelectedTipoRegistroFrequencia()");
 
-                            boolean ret = ArquivoRegistros.escreverRegistro(id + "-" + tipoRegistroFrequencia + "-" + threadRelogio.getMomentoBatimento());
+                            boolean ret = ArquivoRegistros.escreverRegistro(id + "-" + tipoRegistroFrequencia + "-" + threadRelogio.getMomentoBatimento() );
                             if(ret == true)
                             {
-                                The.inserirJavascript(webEngine, "baterPontoLocal('"+ id +"','"+tipoRegistroFrequencia+"','"+threadRelogio.getMomentoBatimentoFrequentador()+"')");
+                                The.inserirJavascript(webEngine, "baterPontoLocal('"+ id +"','"+tipoRegistroFrequencia+"','"+threadRelogio.getMomentoBatimentoFrequentador()+ "','"+ dadosF[0] + "','" +  dadosF[1] + "','" +  dadosF[1]+"')");
                             }
                             
 
@@ -165,7 +168,7 @@ public class MainController implements Initializable {
     private Map<Integer, List> digitaisFrequentadores;
     private Map<Integer, List> dadosFrequentadores;
     private String[] arrayFrequentadores;
-    private HashMap<String,String> mapaIdInfoFrequentadores;
+    private Map<Integer,String> mapaIdInfoFrequentadores;
 
     public AnchorPane getMainAnchorPane() {
         return mainAnchorPane;
@@ -215,11 +218,11 @@ public class MainController implements Initializable {
         this.arrayFrequentadores = arrayFrequentadores;
     }
 
-    public HashMap<String, String> getMapaIdInfoFrequentadores() {
+    public Map<Integer, String> getMapaIdInfoFrequentadores() {
         return mapaIdInfoFrequentadores;
     }
 
-    public void setMapaIdInfoFrequentadores(HashMap<String, String> mapaIdInfoFrequentadores) {
+    public void setMapaIdInfoFrequentadores(Map<Integer, String> mapaIdInfoFrequentadores) {
         this.mapaIdInfoFrequentadores = mapaIdInfoFrequentadores;
     }
 
@@ -233,10 +236,11 @@ public class MainController implements Initializable {
         String minutos = horario.split(":")[1];
         int min = Integer.parseInt(minutos);
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
-        if (min == threadRelogio.getMinutosServidorInicial() ) {
+        if (threadRelogio.fazerSincronizacao() ) {
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
                 String dados = ArquivoRegistros.lerArquivo();
                 The.inserirJavascript(webEngine, "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
+                threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
             }
             else
             {

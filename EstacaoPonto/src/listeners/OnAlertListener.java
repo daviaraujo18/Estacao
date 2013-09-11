@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import utils.Log;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.Event;
@@ -66,9 +67,9 @@ public class OnAlertListener implements EventHandler {
                 mainController.setArrayFrequentadores(((String)dataFixed).split("'"));
                 String[] frequentadores = mainController.getArrayFrequentadores();
 			HashMap<String,String> mapaIdHashFrequentadores = new HashMap<>();
-			mainController.setMapaIdInfoFrequentadores(new HashMap<String, String>());
+			mainController.setMapaIdInfoFrequentadores(new HashMap<Integer, String>());
 				
-				
+	
 				
 //				mapaIdHashFrequentadores.putAll(new TesteDigitaisCVS().lerDigitaisCVS());
 				
@@ -80,9 +81,9 @@ public class OnAlertListener implements EventHandler {
 						String[] dados = frequentadores[i].split(";");
 						String id = dados[0];
 						String hashDigital = dados[3];
-                                                String dadosF = dados[1]+";"+dados[2];
+                                                String dadosF = dados[1]+";"+dados[2]+";"+dados[3];
                                                 System.out.println("Inserindo dados: " + dadosF);
-                                                mainController.getMapaIdInfoFrequentadores().put(id, dadosF);
+                                                mainController.getMapaIdInfoFrequentadores().put(Integer.parseInt(id), dadosF);
 						mapaIdHashFrequentadores.put(id, hashDigital);
 					}
 				}

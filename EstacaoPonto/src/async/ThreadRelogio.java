@@ -13,6 +13,8 @@ public class ThreadRelogio extends Service<String> {
     private String horarioAtual;
     private Calendar dataServidorInicial;
     private Calendar dataServidorAtual;
+    private Calendar ultimaSincronizacao;
+            
     private long tempoNanoServidorLigado;
 
     public ThreadRelogio(Calendar dtServidorInicial) {
@@ -21,7 +23,7 @@ public class ThreadRelogio extends Service<String> {
         this.dataServidorInicial = dt;
         this.dataServidorAtual = dtServidorInicial;
         this.tempoNanoServidorLigado = System.nanoTime();
-        
+        this.ultimaSincronizacao = dt;
     }
 
    
@@ -110,5 +112,30 @@ public class ThreadRelogio extends Service<String> {
     public String getMomentoBatimentoFrequentador()
     {
         return dataServidorAtual.get(Calendar.DAY_OF_MONTH)+"/"+(dataServidorAtual.get(Calendar.MONTH)+1)+"/"+dataServidorAtual.get(Calendar.YEAR)+"-"+horarioAtual;
+    }
+
+    public Calendar getUltimaSincronizacao() {
+        return ultimaSincronizacao;
+    }
+
+    public void setUltimaSincronizacao(Calendar ultimaSincronizacao) {
+        this.ultimaSincronizacao = ultimaSincronizacao;
+    }
+    
+    public boolean fazerSincronizacao()
+    {
+        atualizarRelogio();
+        long difTempo = dataServidorAtual.getTimeInMillis() - ultimaSincronizacao.getTimeInMillis();
+        System.out.println("difTempo: " + difTempo);
+        double h = difTempo/3600000;
+        //double h = difTempo/300000;
+        System.out.println("Tempo da Ultima sincronizacao em horas : " + h);
+        System.out.println("Ultima Sincronizacao: " + ultimaSincronizacao.getTime().toString());
+        System.out.println("Horario Atual: " + dataServidorAtual.getTime().toString());
+        if(h>=1)
+        {
+            return true;
+        }
+        return false;
     }
 }
