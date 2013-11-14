@@ -14,6 +14,7 @@ public class VerificaConexao {
     
     public static boolean verificaConexao(String sUrl) throws MalformedURLException, IOException
 	{
+           
 		try {
                // URL do destino escolhido
                //URL url = new URL("http://www.yahoo.com");
@@ -27,7 +28,8 @@ public class VerificaConexao {
                Object objData = urlConnect.getContent();
 
            } catch (UnknownHostException e) {
-               e.printStackTrace();
+                    System.out.println("Excecao:: UnknownHostException");
+               //e.printStackTrace();
                return false;
            }
            catch (IOException e) {

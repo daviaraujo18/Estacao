@@ -9,13 +9,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
@@ -29,6 +26,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import listeners.ChangeUrlListener;
@@ -42,16 +40,23 @@ import utils.VerificaConexao;
  * @author aers
  */
 public class MainController implements Initializable {
+    //private String AUDIO_OK = getClass().getResource("/resources/beep/ok.mp3").toString();
+    //private String AUDIO_ERRO = getClass().getResource("/resources/beep/erro.mp3").toString();
+    //private AudioClip audioOk;
+    //private AudioClip audioErro;
+    private boolean erroLeituraDigital = false;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         boolean con = false;
+        //audioOk = new AudioClip(AUDIO_OK);
+        //audioErro = new AudioClip(AUDIO_ERRO);
         try {
             ld = new LeitorDigital();
         } catch (Exception e) {
             Log.i("Leitor digital nao iniciado: " + e.getMessage());
         }
-
+        
         webEngine = webView.getEngine();
 
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
@@ -105,20 +110,21 @@ public class MainController implements Initializable {
     }
 
     public void capturarDigital() {
-
+        
         The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Coloque a digital no leitor</center>')");
-
+        //colocar aqui o audio de 'esperando digital'
         CapturarDigitalService cds = new CapturarDigitalService(ld);
         cds.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent t) {
                 String digitalHash = (String) t.getSource().getValue();
                 try {
-
+                    //audioDigital.play();
                     if (digitalHash != null && !digitalHash.isEmpty()) {
                         int id = ld.searchDigitalOnIndexSearchEngine(digitalHash);
-
                         if (id > 0) {
+                            erroLeituraDigital = false;
+                            //audioOk.play();
                             System.out.println("ID Founded: " + id);
                             System.out.println("Dados Freq: " + mapaIdInfoFrequentadores.get(id));
                             String[] dadosF = mapaIdInfoFrequentadores.get(id).split(";");
@@ -128,15 +134,22 @@ public class MainController implements Initializable {
                             boolean ret = ArquivoRegistros.escreverRegistro(id + "-" + tipoRegistroFrequencia + "-" + threadRelogio.getMomentoBatimento() );
                             if(ret == true)
                             {
-                                The.inserirJavascript(webEngine, "baterPontoLocal('"+ id +"','"+tipoRegistroFrequencia+"','"+threadRelogio.getMomentoBatimentoFrequentador()+ "','"+ dadosF[0] + "','" +  dadosF[1] + "','" +  dadosF[1]+"')");
+                                System.out.println("\n ::: Url Foto: " + dadosF[2]);
+                                The.inserirJavascript(webEngine, "baterPontoLocal('"+ id +"','"+tipoRegistroFrequencia+"','"+threadRelogio.getMomentoBatimentoFrequentador()+ "','"+ dadosF[0] + "','" +  dadosF[1] + "','" +  dadosF[2]+"')");
                             }
-                            
 
 //							The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital lida com sucesso! ID: "+id+"</center>')");
                         } else {
-                            The.inserirJavascript(webEngine, "changeMensagemStatus('<center>DIGITAL NÃO ENCONTRADA!</center>')");
+                            //audioErro.play();
+                            if(erroLeituraDigital == false)
+                            {
+                                erroLeituraDigital = true;
+                                The.inserirJavascript(webEngine, "ativarCronometroSelect()");                          
+                            }
+                            The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital Não Encontrada!</center>')");
                         }
                     } else {
+                        //audioErro.play();
                         The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Não foi possível ler a digital.</center>')");
                         //The.inserirJavascript(webEngine, "atualizaRelogioLocal('13:00')");
                     }
@@ -166,7 +179,6 @@ public class MainController implements Initializable {
     private LeitorDigital ld;
     private ThreadRelogio threadRelogio;
     private Map<Integer, List> digitaisFrequentadores;
-    private Map<Integer, List> dadosFrequentadores;
     private String[] arrayFrequentadores;
     private Map<Integer,String> mapaIdInfoFrequentadores;
 
@@ -197,44 +209,62 @@ public class MainController implements Initializable {
     public void setFrequentadores(Map<Integer, List> digitaisFrequentadores) {
         this.digitaisFrequentadores = digitaisFrequentadores;
     }
-
-    public Map<Integer, List> getDadosFrequentadores() {
-        return dadosFrequentadores;
-    }
-
-    public void setDadosFrequentadores(Map<Integer, List> dadosFrequentadores) {
-        this.dadosFrequentadores = dadosFrequentadores;
-    }
-
+    
+    /*
+     * Recupera a thread do relógio 
+     * @return ThreadRelogio
+     */
     public ThreadRelogio getThreadRelogio() {
         return threadRelogio;
     }
 
+    /*
+     * Recupera o array com as informações dos frequentadores
+     * @return String[] - array com as informações dos frequentadores ("id;matricula;nome;digital;foto")
+     */
     public String[] getArrayFrequentadores() {
         return arrayFrequentadores;
     }
 
+    /*
+     * Altera o array com os dados dos frequemtadores ("id;matricula;nome;digital;foto")
+     * @param String[] - array com os dados dos frequentadores
+     */
     public void setArrayFrequentadores(String[] arrayFrequentadores) {
         this.arrayFrequentadores = arrayFrequentadores;
     }
 
+    /*
+     * Recupera o map com as informações dos frequentadores (id,"matricula;nome;foto")
+     * @return Map<Integer, String> - map com as informações dos frequentadores
+     */
     public Map<Integer, String> getMapaIdInfoFrequentadores() {
         return mapaIdInfoFrequentadores;
     }
-
+    /*
+     * Altera o map com as informações dos frequentadores - (nome, matricula, digital...)
+     * @param Map<Integer, String> - map com as informações dos frequentadores
+     */
     public void setMapaIdInfoFrequentadores(Map<Integer, String> mapaIdInfoFrequentadores) {
         this.mapaIdInfoFrequentadores = mapaIdInfoFrequentadores;
     }
 
-    
+    /*
+     * Cria a thread que controla o relógio da estação
+     * @param Calendar - data do servidor ao iniciar a estação
+     * 
+     */
     public void criarThreadRelogio(Calendar dtServidor) {
         threadRelogio = new ThreadRelogio(dtServidor);
         threadRelogio.start();
     }
-
+    
+    /*
+     * Atualiza o horário atual e sincroniza os registros de ponto, caso tenha chegado o momento.
+     * @param String - Horário no formato HH:MM
+     */
     public void atualizarHorario(String horario) throws FileNotFoundException, IOException {
-        String minutos = horario.split(":")[1];
-        int min = Integer.parseInt(minutos);
+        //String minutos = horario.split(":")[1];
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (threadRelogio.fazerSincronizacao() ) {
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
@@ -242,15 +272,13 @@ public class MainController implements Initializable {
                 The.inserirJavascript(webEngine, "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
                 threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
             }
-            else
-            {
-                System.out.println("\nSem Conexao....");
-            }
-
         }
         The.inserirJavascript(webEngine, "atualizaRelogioLocal('" + horario + "')");
     }
-
+    
+    /*
+     * Apaga todos os registros do arquivo
+     */
     public void apagarRegistrosBatimentos() throws IOException {
         ArquivoRegistros.limparArquivo();
     }

@@ -5,7 +5,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 /**
- *
+ * Classe responsável por fazer o controle do horário. Calcula o horário atual e controla o tempo da sincronizacao.
  * @author Jainilene
  */
 public class ThreadRelogio extends Service<String> {
@@ -14,7 +14,6 @@ public class ThreadRelogio extends Service<String> {
     private Calendar dataServidorInicial;
     private Calendar dataServidorAtual;
     private Calendar ultimaSincronizacao;
-            
     private long tempoNanoServidorLigado;
 
     public ThreadRelogio(Calendar dtServidorInicial) {
@@ -26,7 +25,6 @@ public class ThreadRelogio extends Service<String> {
         this.ultimaSincronizacao = dt;
     }
 
-   
     private String calculaHorario() {
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
@@ -36,10 +34,10 @@ public class ThreadRelogio extends Service<String> {
         long difTempo = nanoS - tempoNanoServidorLigado;
 
         long horaDecorrida = difTempo / nanoH;
-        
+
         long minutosDecorridos = (difTempo / nanoM) - horaDecorrida * 60;
-        int segundosDecorridos = (int) ((difTempo/nanoSe) - (horaDecorrida*60*60) - (minutosDecorridos*60));
-        
+        int segundosDecorridos = (int) ((difTempo / nanoSe) - (horaDecorrida * 60 * 60) - (minutosDecorridos * 60));
+
         int somaMinutos = (int) (dataServidorInicial.get(Calendar.MINUTE) + minutosDecorridos);
         if (somaMinutos >= 60) {
             dataServidorAtual.set(Calendar.HOUR_OF_DAY, dataServidorInicial.get(Calendar.HOUR_OF_DAY) + (somaMinutos / 60));
@@ -104,14 +102,14 @@ public class ThreadRelogio extends Service<String> {
     public int getHoraServidorInicial() {
         return dataServidorInicial.get(Calendar.HOUR_OF_DAY);
     }
-    public String getMomentoBatimento()
-    {
+
+    public String getMomentoBatimento() {
         calculaHorario();
-        return dataServidorAtual.get(Calendar.DAY_OF_MONTH)+":"+dataServidorAtual.get(Calendar.MONTH) +":"+dataServidorAtual.get(Calendar.YEAR)+":"+horarioAtual+ ":"+ dataServidorAtual.get(Calendar.SECOND);
+        return dataServidorAtual.get(Calendar.DAY_OF_MONTH) + ":" + dataServidorAtual.get(Calendar.MONTH) + ":" + dataServidorAtual.get(Calendar.YEAR) + ":" + horarioAtual + ":" + dataServidorAtual.get(Calendar.SECOND);
     }
-    public String getMomentoBatimentoFrequentador()
-    {
-        return dataServidorAtual.get(Calendar.DAY_OF_MONTH)+"/"+(dataServidorAtual.get(Calendar.MONTH)+1)+"/"+dataServidorAtual.get(Calendar.YEAR)+"-"+horarioAtual;
+
+    public String getMomentoBatimentoFrequentador() {
+        return dataServidorAtual.get(Calendar.DAY_OF_MONTH) + "/" + (dataServidorAtual.get(Calendar.MONTH) + 1) + "/" + dataServidorAtual.get(Calendar.YEAR) + "-" + horarioAtual;
     }
 
     public Calendar getUltimaSincronizacao() {
@@ -121,19 +119,19 @@ public class ThreadRelogio extends Service<String> {
     public void setUltimaSincronizacao(Calendar ultimaSincronizacao) {
         this.ultimaSincronizacao = ultimaSincronizacao;
     }
-    
-    public boolean fazerSincronizacao()
-    {
+      
+    /*
+     * Método verifica se já chegou o horário de fazer a sincronização (se já passou uma hora da última sincronização)
+     * return false - Ainda não chegou o momento da sincronização
+     *        true  - Chegou o momento da sincronização
+     */
+    public boolean fazerSincronizacao() {
         atualizarRelogio();
         long difTempo = dataServidorAtual.getTimeInMillis() - ultimaSincronizacao.getTimeInMillis();
         System.out.println("difTempo: " + difTempo);
-        double h = difTempo/3600000;
-        //double h = difTempo/300000;
-        System.out.println("Tempo da Ultima sincronizacao em horas : " + h);
-        System.out.println("Ultima Sincronizacao: " + ultimaSincronizacao.getTime().toString());
-        System.out.println("Horario Atual: " + dataServidorAtual.getTime().toString());
-        if(h>=1)
-        {
+        //double h = difTempo / 3600000;
+        double h = difTempo/300000;
+        if (h >= 1) {
             return true;
         }
         return false;

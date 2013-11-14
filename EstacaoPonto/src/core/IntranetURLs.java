@@ -13,7 +13,8 @@ public class IntranetURLs {
             "&codigoUnicoMaquina="+RegistroWindows.getCodigoUnicoMaquina();
     
 	
-    public static final String BASE_URL = "http://127.0.0.1:8080/intranet";
+    //public static final String BASE_URL = "http://127.0.0.1:8080/intranet";
+    public static final String BASE_URL = "http://localhost:8080/intranet";
     public static final String INICIALIZAR_PONTO = BASE_URL+"/tjpi/presenca/InicializarPonto";
     public static String INICIALIZAR_PONTO_COM_CODIGOS = BASE_URL+"/tjpi/presenca/InicializarPonto"+getCodigos();
     
