@@ -35,9 +35,17 @@ public class ChangeUrlListener implements ChangeListener<Object> {
 
         if (ov.getValue().equals(Worker.State.SCHEDULED)) {
             Log.i("Carregando pagina: " + mainController.getWebEngine().getLocation());
-            if (urlAtualContem("presenca/Frequentador")) {
+            if (urlAtualContem("Frequentador?type=create")) {
+            //if (urlAtualContem("presenca/Frequentador")) {
                 mainController.getSplitPanel().getDividers().get(1).setPosition(0.5);
-            } else {
+                mainController.getBotaoCadastrarDigital().setVisible(true);
+                mainController.getBotaoAtualizarDigital().setVisible(false);
+            }
+            else if(urlAtualContem("Frequentador?type=update")){
+                mainController.getSplitPanel().getDividers().get(1).setPosition(0.5);
+                mainController.getBotaoCadastrarDigital().setVisible(false);
+                mainController.getBotaoAtualizarDigital().setVisible(true);
+            }else {
                 mainController.getSplitPanel().getDividers().get(1).setPosition(0.999);
             }
         } else {

@@ -19,6 +19,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
@@ -88,8 +89,35 @@ public class MainController implements Initializable {
         try {
             Log.i("Cadastrando Digital");
             String digitaisHash = ld.enroll();
+            int id = ld.searchDigitalOnIndexSearchEngine(digitaisHash);
+            System.out.println("ID DA DIGITAL ::: " + id);
             The.inserirJavascript(webEngine, "jQuery('#digitaisHash').val('" + digitaisHash + "');");
             The.inserirJavascript(webEngine, "changeInfoDigital('success','Digitais identificadas!');");
+        } catch (Exception ex) {
+            The.inserirJavascript(webEngine, "changeInfoDigital('error','" + ex.getMessage() + "');");
+        }
+    }
+    
+    @FXML
+    void atualizarDigital(MouseEvent event) {
+        try {
+            Log.i("Atualizando Digital");
+            String digitaisHash = ld.enroll();
+            int id = ld.searchDigitalOnIndexSearchEngine(digitaisHash);
+            System.out.println("Até a linha 107 Ok.");
+            int idF = Integer.parseInt(The.inserirJavascript(webEngine, "getIdFrequentador()").toString());
+            System.out.println("ID: " + idF);
+            if(id == idF)
+            {
+                System.out.println("Digitais Inseridas! ");
+                The.inserirJavascript(webEngine, "jQuery('#digitaisHash').val('" + digitaisHash + "');");
+                The.inserirJavascript(webEngine, "changeInfoDigital('success','Digitais inseridas!');");
+            }
+            else
+            {
+                System.out.println("ID = 0 ou de outro frequentador!");
+                The.inserirJavascript(webEngine, "changeInfoDigital('error','Digitais já existem!');");
+            }
         } catch (Exception ex) {
             The.inserirJavascript(webEngine, "changeInfoDigital('error','" + ex.getMessage() + "');");
         }
@@ -173,6 +201,10 @@ public class MainController implements Initializable {
     private AnchorPane anchorBaixo;
     @FXML //  fx:id="splitPanel"
     private SplitPane splitPanel; // Value injected by FXMLLoader
+    @FXML
+    private Button botaoCadastrarDigital;
+    @FXML
+    private Button botaoAtualizarDigital;
     @FXML //  fx:id="webView"
     private WebView webView; // Value injected by FXMLLoader
     private WebEngine webEngine;
@@ -194,6 +226,16 @@ public class MainController implements Initializable {
         return splitPanel;
     }
 
+    public Button getBotaoCadastrarDigital() {
+        return botaoCadastrarDigital;
+    }
+
+    public Button getBotaoAtualizarDigital() {
+        return botaoAtualizarDigital;
+    }
+
+    
+    
     public WebView getWebView() {
         return webView;
     }
