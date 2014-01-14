@@ -108,8 +108,9 @@ public class OnAlertListener implements EventHandler {
                 RegistroWindows.registrarCodigoAtivacao(data.toString());
 
                 webEngine.load(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
-            } else if (event.getData().toString().equals("callLeitorDigital")) {
+            } else if (event.getData().toString().contains("callLeitorDigital")) {
                 mainController.capturarDigital();
+                
             } else if (event.getData().toString().contains("horarioServidorAtual")) {
                 String[] horario = event.getData().toString().split(":");
 
@@ -141,6 +142,23 @@ public class OnAlertListener implements EventHandler {
                 }
             } else if (event.getData().toString().equals("Sincronizando")) {
                 System.out.println("ALERT Sincronizando...");
+            } else if (event.getData().toString().equals("mensagemMudada"))
+            {
+                System.out.println("mensagemMudada");
+            }
+            else if (event.getData().toString().contains("pontoAtivo"))
+            {
+                System.out.println("pontoAtivo");
+            }
+            else if (event.getData().toString().contains("Sincronizar Agora"))
+            {
+                try {
+                    mainController.iniciarSincronizacao();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         }

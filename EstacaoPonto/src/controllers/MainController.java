@@ -125,10 +125,17 @@ public class MainController implements Initializable {
 
     @FXML
     void changeComboBox(KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER) && !LeitorDigital.ativo) {
+        if (event.getCode().equals(KeyCode.ENTER))
+        {
+               boolean modalAtivo = Boolean.parseBoolean(The.inserirJavascript(webEngine, "isModalAtivo()").toString());
+               if (modalAtivo) {
+                   The.inserirJavascript(webEngine, "modal(false)");
+               }    
+        }
+        if (event.getCode().equals(KeyCode.ENTER) && !LeitorDigital.ativo ) {
             if (webEngine.getLocation().contains("tjpi/presenca/PontoDePresenca")) {
                 boolean modalAtivo = Boolean.parseBoolean(The.inserirJavascript(webEngine, "isModalAtivo()").toString());
-                if (!modalAtivo) {
+                if (!modalAtivo && !ThreadRelogio.sincronizacaoAtiva) {
                     The.inserirJavascript(webEngine, "changeRadioType()");
                 } else {
                     The.inserirJavascript(webEngine, "modal(false)");
@@ -152,7 +159,7 @@ public class MainController implements Initializable {
                         int id = ld.searchDigitalOnIndexSearchEngine(digitalHash);
                         if (id > 0) {
                             erroLeituraDigital = false;
-                            //audioOk.play();
+                            //audioSucesso.play();
                             System.out.println("ID Founded: " + id);
                             System.out.println("Dados Freq: " + mapaIdInfoFrequentadores.get(id));
                             String[] dadosF = mapaIdInfoFrequentadores.get(id).split(";");
@@ -164,29 +171,33 @@ public class MainController implements Initializable {
                             {
                                 System.out.println("\n ::: Url Foto: " + dadosF[2]);
                                 The.inserirJavascript(webEngine, "baterPontoLocal('"+ id +"','"+tipoRegistroFrequencia+"','"+threadRelogio.getMomentoBatimentoFrequentador()+ "','"+ dadosF[0] + "','" +  dadosF[1] + "','" +  dadosF[2]+"')");
+                                
                             }
 
-//							The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital lida com sucesso! ID: "+id+"</center>')");
-                        } else {
-                            //audioErro.play();
-                            if(erroLeituraDigital == false)
-                            {
-                                erroLeituraDigital = true;
-                                The.inserirJavascript(webEngine, "ativarCronometroSelect()");                          
-                            }
-                            The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital Não Encontrada!</center>')");
+			The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Tecle 'ENTER' para escolher tipo de registro</center>')");
+                        } else if(erroLeituraDigital == false)
+                        {
+                             //audioErro.play();
+                             erroLeituraDigital = true;
+                             //The.inserirJavascript(webEngine, "ativarCronometroSelect()");   
+                            // The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Digital Não Encontrada!</center>')");
                         }
-                    } else {
+                            
+                        } else {
                         //audioErro.play();
                         The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Não foi possível ler a digital.</center>')");
                         //The.inserirJavascript(webEngine, "atualizaRelogioLocal('13:00')");
+                        }
+                    The.inserirJavascript(webEngine, "desligarLeitorDigital()");
+                    boolean liberarSincronizacao = Boolean.parseBoolean(The.inserirJavascript(webEngine, "isSincronizacaoSolicitada").toString());
+                    if(liberarSincronizacao)
+                    {
+                        iniciarSincronizacao();
                     }
-
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-
-            }
+            }            
         });
 
         cds.start();
@@ -305,14 +316,13 @@ public class MainController implements Initializable {
      * Atualiza o horário atual e sincroniza os registros de ponto, caso tenha chegado o momento.
      * @param String - Horário no formato HH:MM
      */
-    public void atualizarHorario(String horario) throws FileNotFoundException, IOException {
+    public void atualizarHorario(String horario) throws IOException{
         //String minutos = horario.split(":")[1];
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
-        if (threadRelogio.fazerSincronizacao() ) {
+        if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
-                String dados = ArquivoRegistros.lerArquivo();
-                The.inserirJavascript(webEngine, "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
-                threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
+                threadRelogio.ativarSincronizacao(); 
+                The.inserirJavascript(webEngine, "ativaSincronizacao(true)");
             }
         }
         The.inserirJavascript(webEngine, "atualizaRelogioLocal('" + horario + "')");
@@ -323,5 +333,18 @@ public class MainController implements Initializable {
      */
     public void apagarRegistrosBatimentos() throws IOException {
         ArquivoRegistros.limparArquivo();
+        threadRelogio.desativarSincronizacao();
+        The.inserirJavascript(webEngine, "ativaSincronizacao(false)");
+        The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Tecle enter para escolher tipo de registro</center>')");
+    }
+    
+    public void iniciarSincronizacao() throws FileNotFoundException, IOException
+    {
+        System.out.println("Iniciando Sincronizacao.");
+        The.inserirJavascript(webEngine, "changeMensagemStatus('<center>Aguardando Término da Sincronização</center>')");   
+        String dados = ArquivoRegistros.lerArquivo();
+        The.inserirJavascript(webEngine, "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
+        threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
+        //threadRelogio.desativarSincronizacao();
     }
 }

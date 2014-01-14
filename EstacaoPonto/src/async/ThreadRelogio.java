@@ -15,6 +15,7 @@ public class ThreadRelogio extends Service<String> {
     private Calendar dataServidorAtual;
     private Calendar ultimaSincronizacao;
     private long tempoNanoServidorLigado;
+    public static boolean sincronizacaoAtiva;
 
     public ThreadRelogio(Calendar dtServidorInicial) {
         Calendar dt = Calendar.getInstance();
@@ -26,6 +27,7 @@ public class ThreadRelogio extends Service<String> {
     }
 
     private String calculaHorario() {
+        System.out.println("Calculando horário...");
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
         long nanoSe = (long) 1000000000.00;
@@ -33,23 +35,16 @@ public class ThreadRelogio extends Service<String> {
         long nanoS = System.nanoTime();
         long difTempo = nanoS - tempoNanoServidorLigado;
 
-        long horaDecorrida = difTempo / nanoH;
-
+        int horaDecorrida = (int) (difTempo / nanoH);
         long minutosDecorridos = (difTempo / nanoM) - horaDecorrida * 60;
         int segundosDecorridos = (int) ((difTempo / nanoSe) - (horaDecorrida * 60 * 60) - (minutosDecorridos * 60));
-
         int somaMinutos = (int) (dataServidorInicial.get(Calendar.MINUTE) + minutosDecorridos);
-        if (somaMinutos >= 60) {
-            dataServidorAtual.set(Calendar.HOUR_OF_DAY, dataServidorInicial.get(Calendar.HOUR_OF_DAY) + (somaMinutos / 60));
-            dataServidorAtual.set(Calendar.MINUTE, somaMinutos - 60);
-        } else {
-            dataServidorAtual.set(Calendar.MINUTE, somaMinutos);
-            dataServidorAtual.set(Calendar.HOUR_OF_DAY, (int) (dataServidorInicial.get(Calendar.HOUR_OF_DAY) + horaDecorrida));
-        }
-
-        if (dataServidorAtual.get(Calendar.HOUR_OF_DAY) > 23) {
-            dataServidorAtual.set(Calendar.DAY_OF_YEAR, dataServidorAtual.get(Calendar.DAY_OF_YEAR + 1));
-        }
+        int restoMinutos = somaMinutos%60;
+        Calendar aux = Calendar.getInstance();
+        aux.setTime(dataServidorInicial.getTime());
+        aux.add(Calendar.HOUR_OF_DAY, (horaDecorrida + (somaMinutos / 60)));
+        aux.set(Calendar.MINUTE, restoMinutos);
+        dataServidorAtual = aux;
         if (dataServidorAtual.get(Calendar.MINUTE) < 10) {
             horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":0" + dataServidorAtual.get(Calendar.MINUTE);
         } else {
@@ -57,7 +52,6 @@ public class ThreadRelogio extends Service<String> {
         }
         dataServidorAtual.set(Calendar.SECOND, segundosDecorridos);
         return horarioAtual;
-
     }
 
     public String atualizarRelogio() {
@@ -119,6 +113,16 @@ public class ThreadRelogio extends Service<String> {
     public void setUltimaSincronizacao(Calendar ultimaSincronizacao) {
         this.ultimaSincronizacao = ultimaSincronizacao;
     }
+    
+    public void ativarSincronizacao()
+    {
+        sincronizacaoAtiva = true;
+    }
+      
+    public void desativarSincronizacao()
+    {
+        sincronizacaoAtiva = false;
+    }
       
     /*
      * Método verifica se já chegou o horário de fazer a sincronização (se já passou uma hora da última sincronização)
@@ -126,11 +130,12 @@ public class ThreadRelogio extends Service<String> {
      *        true  - Chegou o momento da sincronização
      */
     public boolean fazerSincronizacao() {
-        atualizarRelogio();
         long difTempo = dataServidorAtual.getTimeInMillis() - ultimaSincronizacao.getTimeInMillis();
         System.out.println("difTempo: " + difTempo);
-        //double h = difTempo / 3600000;
-        double h = difTempo/300000;
+        //double h = difTempo / 3600000; //1hora
+        //double h = difTempo/300000; // 5 minutos
+        double h = difTempo/120000; // 2 minutos
+        //double h = difTempo/60000; // 1 minutos
         if (h >= 1) {
             return true;
         }
