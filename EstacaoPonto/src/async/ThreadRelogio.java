@@ -134,8 +134,8 @@ public class ThreadRelogio extends Service<String> {
         System.out.println("difTempo: " + difTempo);
         //double h = difTempo / 3600000; //1hora
         //double h = difTempo/300000; // 5 minutos
-        double h = difTempo/120000; // 2 minutos
-        //double h = difTempo/60000; // 1 minutos
+        //double h = difTempo/120000; // 2 minutos
+        double h = difTempo/60000; // 1 minutos
         if (h >= 1) {
             return true;
         }

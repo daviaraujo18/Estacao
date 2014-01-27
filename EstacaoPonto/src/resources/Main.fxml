@@ -40,7 +40,7 @@
         <AnchorPane fx:id="anchorBaixo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="1022.0">
           <children>
             <Button fx:id="botaoCadastrarDigital" layoutX="443.5" layoutY="39.5" mnemonicParsing="false" onMouseClicked="#cadastrarDigital" text="Cadastrar Digitais" />
-            <Button fx:id="botaoAtualizarDigital" layoutX="443.5" layoutY="39.5" mnemonicParsing="false" onMouseClicked="#atualizarDigital" text="Atualizar Digitais" />
+            <Button fx:id="botaoAtualizarDigital" layoutX="443.5" layoutY="39.5" mnemonicParsing="false" onMouseClicked="#cadastrarDigital" text="Atualizar Digitais" />
           </children>
         </AnchorPane>
       </items>
