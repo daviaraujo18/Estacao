@@ -13,8 +13,9 @@ public class ThreadRelogio extends Service<String> {
     private String horarioAtual;
     private Calendar dataServidorInicial;
     private Calendar dataServidorAtual;
-    private Calendar ultimaSincronizacao;
     private long tempoNanoServidorLigado;
+
+    private Calendar ultimaSincronizacao;
     public static boolean sincronizacaoAtiva;
 
     public ThreadRelogio(Calendar dtServidorInicial) {
@@ -97,14 +98,15 @@ public class ThreadRelogio extends Service<String> {
         return dataServidorInicial.get(Calendar.HOUR_OF_DAY);
     }
 
-    public String getMomentoBatimento() {
+    public String getMomentoAtual() {
         calculaHorario();
-        return dataServidorAtual.get(Calendar.DAY_OF_MONTH) + ":" + dataServidorAtual.get(Calendar.MONTH) + ":" + dataServidorAtual.get(Calendar.YEAR) + ":" + horarioAtual + ":" + dataServidorAtual.get(Calendar.SECOND);
+        return dataServidorAtual.get(Calendar.DAY_OF_MONTH) + ":" + dataServidorAtual.get(Calendar.MONTH) + ":" + dataServidorAtual.get(Calendar.YEAR) + ":"
+                + horarioAtual + ":" + dataServidorAtual.get(Calendar.SECOND);
     }
 
-    public String getMomentoBatimentoFrequentador() {
-        return dataServidorAtual.get(Calendar.DAY_OF_MONTH) + "/" + (dataServidorAtual.get(Calendar.MONTH) + 1) + "/" + dataServidorAtual.get(Calendar.YEAR) + "-" + horarioAtual;
-    }
+//    public String getMomentoBatimentoFrequentador() {
+//        return dataServidorAtual.get(Calendar.DAY_OF_MONTH) + "/" + (dataServidorAtual.get(Calendar.MONTH) + 1) + "/" + dataServidorAtual.get(Calendar.YEAR) + "-" + horarioAtual;
+//    }
 
     public Calendar getUltimaSincronizacao() {
         return ultimaSincronizacao;

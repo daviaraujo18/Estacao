@@ -1,20 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package listeners;
 
-import controllers.MainController;
 import core.IntranetURLs;
 import core.RegistroWindows;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import utils.Log;
+import view.TelaPonto;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classe que verifica toda vez que ocorre uma mudança de página e faz as
@@ -24,34 +21,34 @@ import utils.Log;
  */
 public class ChangeUrlListener implements ChangeListener<Object> {
 
-    private MainController mainController;
+    private TelaPonto tela;
 
-    public ChangeUrlListener(MainController mainController) {
-        this.mainController = mainController;
+    public ChangeUrlListener(TelaPonto tela) {
+        this.tela = tela;
     }
 
     @Override
     public void changed(ObservableValue<? extends Object> ov, Object t, Object t1) {
 
         if (ov.getValue().equals(Worker.State.SCHEDULED)) {
-            Log.i("Carregando pagina: " + mainController.getWebEngine().getLocation());
+            Log.i("Carregando pagina: " + tela.getWebEngine().getLocation());
             if (urlAtualContem("Frequentador?type=create")) {
             //if (urlAtualContem("presenca/Frequentador")) {
-                mainController.getSplitPanel().getDividers().get(1).setPosition(0.5);
-                mainController.getBotaoCadastrarDigital().setVisible(true);
-                mainController.getBotaoAtualizarDigital().setVisible(false);
+                tela.getSplitPanel().getDividers().get(1).setPosition(0.5);
+                tela.getBotaoCadastrarDigital().setVisible(true);
+                tela.getBotaoAtualizarDigital().setVisible(false);
             }
             else if(urlAtualContem("Frequentador?type=update")){
-                mainController.getSplitPanel().getDividers().get(1).setPosition(0.5);
-                mainController.getBotaoCadastrarDigital().setVisible(false);
-                mainController.getBotaoAtualizarDigital().setVisible(true);
+                tela.getSplitPanel().getDividers().get(1).setPosition(0.5);
+                tela.getBotaoCadastrarDigital().setVisible(false);
+                tela.getBotaoAtualizarDigital().setVisible(true);
             }else {
-                mainController.getSplitPanel().getDividers().get(1).setPosition(0.999);
+                tela.getSplitPanel().getDividers().get(1).setPosition(0.999);
             }
         } else {
 
             if (ov.getValue().equals(Worker.State.SUCCEEDED)) {
-                Log.i("Pagina carregada: " + mainController.getWebEngine().getLocation());
+                Log.i("Pagina carregada: " + tela.getWebEngine().getLocation());
                 if (urlAtualContem("EstacaoPonto?type=create")) {
                     Log.i("Injetando codigos no formulário via JavaScript");
                     setarInputCodigos();
@@ -71,7 +68,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
     }
 
     private void setarInputCodigos() {
-        WebEngine webEngine = mainController.getWebEngine();
+        WebEngine webEngine = tela.getWebEngine();
 
         String codigoAtivacao = RegistroWindows.gerarCodigoAtivacao();
         String codigoUnicoMaquina = RegistroWindows.getCodigoUnicoMaquina();
@@ -81,11 +78,11 @@ public class ChangeUrlListener implements ChangeListener<Object> {
     }
 
     private boolean urlAtualContem(String texto) {
-        return mainController.getWebEngine().getLocation().contains(texto);
+        return tela.getWebEngine().getLocation().contains(texto);
     }
 
     private void mudarUrlAtualPara(String novaURL) {
-        mainController.getWebEngine().load(novaURL);
+        tela.getWebEngine().load(novaURL);
     }
 
     private boolean criarArquivoBatimentos() throws IOException {

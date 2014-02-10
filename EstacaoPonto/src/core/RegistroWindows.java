@@ -61,6 +61,7 @@ public class RegistroWindows {
                 return true;
                 
             } catch(Exception e) {
+                System.out.println("Erro ao criar registro do windows: "+e.getMessage());
                 return false;
             }
 		} else {

@@ -1,13 +1,14 @@
 package async;
 
-import core.LeitorDigital;
+import core.leitura.LeitorDigital;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import utils.Log;
 
 /**
  * Classe que cria um service assincrono(uma nova thread em execucao) no javafx
  * para evitar que a Captura de Digital deixe o sistema travado
- * 
+ *
  * Quando chamada, retorna o hash da digital do usuário. Caso não tenha conseguido
  * realizar a leitura, retorna null
  *
@@ -15,28 +16,51 @@ import javafx.concurrent.Task;
  */
 public class CapturarDigitalService extends Service<String> {
 
-	private LeitorDigital ld;
-	
-	public CapturarDigitalService(LeitorDigital ld) {
-		this.ld = ld;
-	}
-	
-	@Override
-	protected Task<String> createTask() {
-		return new Task<String> () {
+    private LeitorDigital leitor;
 
-			@Override
-			protected String call() {
-				try {
-					System.out.println("Lendo digital!");
-					return ld.capturarDigital();
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-					return null;
-				}
-			}
-			
-		};
-	}
-	
+    public CapturarDigitalService() {
+        try {
+            leitor = new LeitorDigital();
+        } catch (Exception e) {
+            Log.i("Leitor digital nao iniciado: " + e.getMessage());
+        }
+
+    }
+
+    @Override
+    protected Task<String> createTask() {
+        return new Task<String>() {
+
+            @Override
+            protected String call() {
+                try {
+
+                    while (true) {
+                        getLeitor().abrirLeitor();
+
+                        boolean b = getLeitor().temDedo();
+                        if(b){
+                            try {
+                                String leitura = getLeitor().capturarDigital();
+                                Thread.sleep(1000L);
+                                return leitura;
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                return "";
+                            }
+                        }
+                        getLeitor().fecharLeitor();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return "";
+           }
+        };
+    }
+
+    public LeitorDigital getLeitor() {
+        return leitor;
+    }
 }
+
