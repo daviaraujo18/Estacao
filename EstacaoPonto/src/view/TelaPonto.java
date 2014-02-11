@@ -71,6 +71,7 @@ public class TelaPonto {
             @Override
             public void handle(MouseEvent t) {
                 webEngine.load(IntranetURLs.BASE_URL);
+                MainController.INSTANCE.getCds().setUsarLeitor(true);
             }
         });
         return false;

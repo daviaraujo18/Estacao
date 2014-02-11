@@ -1,5 +1,6 @@
 package listeners;
 
+import controllers.MainController;
 import core.IntranetURLs;
 import core.RegistroWindows;
 import javafx.beans.value.ChangeListener;
@@ -62,6 +63,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 } else if (urlAtualContem("presenca/IniciarPonto")) {
                     Log.i("Entrei no metodo");
                     mudarUrlAtualPara(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
+                    MainController.INSTANCE.getCds().setUsarLeitor(false);
                 }
             }
         }

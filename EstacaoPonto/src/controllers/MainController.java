@@ -96,6 +96,10 @@ public class MainController implements Initializable {
         }
     }
 
+    public CapturarDigitalService getCds() {
+        return cds;
+    }
+    
     public void inicializarLeitor() {
         cds = new CapturarDigitalService();
         cds.setOnSucceeded(new CapturaDigitalHandler(cds.getLeitor(), this.tela));
