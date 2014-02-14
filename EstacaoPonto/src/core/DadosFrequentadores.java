@@ -35,14 +35,16 @@ public class DadosFrequentadores {
         HashMap<String, String> mapaIdHashFrequentadores = new HashMap<String, String>();
         this.setMapaIdInfoFrequentadores(new HashMap<Integer, String>());
 
-        System.out.println("----Frequentadores recebidos: ");
         if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
             for (int i = 0; i < frequentadores.length; i++) {
+                // id;matricula;nome;digital;foto
                 String[] dados = frequentadores[i].split(";");
                 String id = dados[0];
                 String hashDigital = dados[3];
+
+                //matricula, nome, digital
                 String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4];// matricula;nome;foto
-                System.out.println("Inserindo dados: " + dadosF);
+
                 this.getMapaIdInfoFrequentadores().put(Integer.parseInt(id), dadosF);
                 mapaIdHashFrequentadores.put(id, hashDigital);
             }

@@ -14,12 +14,12 @@ import utils.Log;
  *
  * @author Anderson Soares < aersandersonsoares@gmail.com >
  */
-public class CapturarDigitalService extends Service<String> {
+public class PreProcessandoService extends Service<String> {
 
     private LeitorDigital leitor;
     private boolean usarLeitor = false;
 
-    public CapturarDigitalService() {
+    public PreProcessandoService() {
         try {
             leitor = new LeitorDigital();
         } catch (Exception e) {
@@ -31,26 +31,25 @@ public class CapturarDigitalService extends Service<String> {
     @Override
     protected Task<String> createTask() {
         return new Task<String>() {
+
             @Override
             protected String call() {
                 try {
 
                     while (true) {
-                        while (!usarLeitor) {
+                        if(!usarLeitor) {
                             getLeitor().abrirLeitor();
-
                             boolean b = getLeitor().temDedo();
                             if (b) {
-                                try {
-                                    String leitura = getLeitor().capturarDigital();
-                                    Thread.sleep(1000L);
-                                    return leitura;
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                    return "";
-                                }
+                                LeitorDigital leitor = new LeitorDigital();
+                                leitor.abrirLeitor();
+                                String leitura  = leitor.capturarDigital();
+                                leitor.fecharLeitor();
+                                return leitura;
                             }
                             getLeitor().fecharLeitor();
+                        }else{
+                            Thread.sleep(1000);
                         }
                     }
                 } catch (Exception e) {
@@ -64,7 +63,6 @@ public class CapturarDigitalService extends Service<String> {
     public LeitorDigital getLeitor() {
         return leitor;
     }
-
     public void setUsarLeitor(boolean usarLeitor) {
         this.usarLeitor = usarLeitor;
     }

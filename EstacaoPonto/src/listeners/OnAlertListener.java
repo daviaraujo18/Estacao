@@ -55,15 +55,15 @@ public class OnAlertListener implements EventHandler {
                 Log.i("Iniciando download dos dados dos Frequentadores");
                 double inicioDownload = System.currentTimeMillis();
                 Object data = webEngine.executeScript("window.bdFrequencia");
-                // id;matricula;nome;digital;foto
+
                 String dataFixed = (String) data.toString().replace("\n", "");
-//				System.out.println("DATA RECEBIDA: "+dataFixed);
+
                 Log.i("Montando dados");
                 DadosFrequentadores.getInstance().init(dataFixed);
                 double fimDownload = System.currentTimeMillis();
                 Log.i("Montagem finalizada");
                 Log.i("Time elapsed: " + (fimDownload - inicioDownload) + " ms");
-
+                MainController.INSTANCE.getCds().start();
 //                webEngine.load(IntranetURLsConstants.BATIMENTO_PONTO_COM_CODIGOS);
             } else if (metodoAlerta.equals("recuperarCodigoAtivacao")
                     && webEngine.getLocation().contains("tjpi/presenca/RecuperarCodigoAtivacao")) {

@@ -1,6 +1,7 @@
 package core.leitura;
 
 
+import controllers.MainController;
 import utils.Log;
 import com.nitgen.SDK.BSP.NBioBSPJNI;
 import com.nitgen.SDK.BSP.NBioBSPJNI.DEVICE_ENUM_INFO;
@@ -9,6 +10,8 @@ import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch;
 import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch.FP_INFO;
 import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch.SAMPLE_INFO;
 import com.nitgen.SDK.BSP.NBioBSPJNI.WINDOW_OPTION;
+import utils.The;
+
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
@@ -147,6 +150,8 @@ public class LeitorDigital {
             throwError();
             return null;
         } else {
+            //The.inserirJavascript(MainController.INSTANCE.tela.webEngine, "process('LEITURA_EM_ANALISE')");
+//            MainController.INSTANCE.tela.webEngine.executeScript("process('LEITURA_EM_ANALISE')");
             //Recupera a digital em formato de texto
             NBioBSPJNI.FIR_TEXTENCODE textSavedFIR = bsp.new FIR_TEXTENCODE();
             bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);

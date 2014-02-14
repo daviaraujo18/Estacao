@@ -1,11 +1,10 @@
 package controllers;
 
-import async.CapturarDigitalService;
+import async.PreProcessandoService;
 import async.ThreadRelogio;
 import core.IntranetURLs;
-import core.leitura.CapturaDigitalHandler;
-import core.leitura.LeitorDigital;
 import core.RegistroWindows;
+import core.leitura.LeitorDigital;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -25,8 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -53,7 +50,7 @@ public class MainController implements Initializable {
 
     private ThreadRelogio threadRelogio;
 
-    private CapturarDigitalService cds;
+    private PreProcessandoService cds;
     public TelaPonto tela;
 
     public static MainController INSTANCE;
@@ -96,15 +93,14 @@ public class MainController implements Initializable {
         }
     }
 
-    public CapturarDigitalService getCds() {
+    public PreProcessandoService getCds() {
         return cds;
     }
     
     public void inicializarLeitor() {
-        cds = new CapturarDigitalService();
-        cds.setOnSucceeded(new CapturaDigitalHandler(cds.getLeitor(), this.tela));
-        cds.start();
-
+        cds = new PreProcessandoService();
+        cds.setOnSucceeded( new PreProcessandoHandler());
+//        cds.start();
     }
 
     public LeitorDigital getLeitorDigital() {

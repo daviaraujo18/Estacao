@@ -64,6 +64,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                     Log.i("Entrei no metodo");
                     mudarUrlAtualPara(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
                     MainController.INSTANCE.getCds().setUsarLeitor(false);
+
                 }
             }
         }

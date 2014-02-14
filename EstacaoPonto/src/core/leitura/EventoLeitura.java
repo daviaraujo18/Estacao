@@ -1,6 +1,7 @@
 package core.leitura;
 
 import core.DadosFrequentadores;
+import sun.org.mozilla.javascript.internal.ast.TryStatement;
 import utils.ArquivoRegistros;
 import utils.The;
 import view.TelaPonto;
@@ -10,7 +11,10 @@ import java.util.Map;
 public enum EventoLeitura {
     NULO,
 
+
     DEDO_POSICINADO,
+
+    LEITURA_EM_ANALISE,
 
     DIGITAL_RECONHECIDA{
         @Override
@@ -26,7 +30,9 @@ public enum EventoLeitura {
             String nome = dados[0];
             String matricula = dados[1];
             String urlFoto = dados[2];
-            String dad = "'"+leitura.getIdFrequentador() + "','" + leitura.getMomento() + "','" + nome + "','" + matricula + "','" + urlFoto + "'";
+//            String dad = "'"+leitura.getIdFrequentador() + "','" + leitura.getMomento() + "','" + nome + "','" + matricula + "','" + urlFoto + "'";
+            String dad = "'"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + nome + "," + matricula + "," + urlFoto+"'";
+            System.out.println("Dad "+dad);
             return dad;
         }
 
@@ -48,7 +54,13 @@ public enum EventoLeitura {
     public void process(TelaPonto tela, Leitura leitura) {
         boolean bf = before(leitura);
         if(bf){
-            The.inserirJavascript(tela.webEngine, "process('" + this.name()+"', "+getData(tela, leitura)+")");
+            try {
+
+                The.inserirJavascript(tela.webEngine, "process('" + this.name()+"', "+getData(tela, leitura)+")");
+            }catch (RuntimeException e){
+                e.printStackTrace();
+            }
+
 
             after(tela);
         }

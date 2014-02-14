@@ -1,5 +1,7 @@
 package core.leitura;
 
+import core.DadosFrequentadores;
+
 /**
  * Created by Danilo on 10/02/14.
  */
