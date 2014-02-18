@@ -1,7 +1,6 @@
 package core.leitura;
 
 import core.DadosFrequentadores;
-import sun.org.mozilla.javascript.internal.ast.TryStatement;
 import utils.ArquivoRegistros;
 import utils.The;
 import view.TelaPonto;
@@ -35,7 +34,7 @@ public enum EventoLeitura {
             System.out.println("Dad "+dad);
             return dad;
         }
-
+        
         public void after(TelaPonto tela) {
             tela.sound.playOK();
         }
@@ -49,7 +48,12 @@ public enum EventoLeitura {
         }
     },
 
-    ERRO_LEITURA;
+    ERRO_LEITURA{
+        @Override
+        public void after(TelaPonto tela) {
+            tela.sound.playError();
+        }
+    };
 
     public void process(TelaPonto tela, Leitura leitura) {
         boolean bf = before(leitura);
