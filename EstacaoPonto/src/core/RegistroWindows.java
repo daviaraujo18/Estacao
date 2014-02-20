@@ -47,7 +47,7 @@ public class RegistroWindows {
             try {
                 RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
                 RegistryKey softwareReg = localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_ALL);
-
+                
                 RegistryKey estacaoPontoReg = softwareReg.createSubKey("TJPIEstacaoPonto", "REG_SZ");
 
                 RegStringValue valor = new RegStringValue(estacaoPontoReg,"codigoAtivacao");
@@ -76,7 +76,8 @@ public class RegistroWindows {
 			String hdSerial = Integer.toHexString(valorHdSerial);
 
 			String serialCriptografado = CryptoUtils.md5UB64(hdSerial);
-			System.out.println(serialCriptografado);
+                        System.out.println("\n*HDSERIAL: " + hdSerial);
+			System.out.println("\n**SERIAL CRIPTOGRAFADO: "+serialCriptografado);
 			return serialCriptografado;
 		} else {
 			return "SistemaOperacionalNaoSuportado";

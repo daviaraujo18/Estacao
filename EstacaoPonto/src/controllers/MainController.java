@@ -138,6 +138,7 @@ public class MainController implements Initializable {
                 iniciarSincronizacao();
             }
         }
+        System.out.println("Atualizando horário na página..");
         The.inserirJavascript(this.tela.webEngine, "atualizaRelogioLocal('" + horario + "')");
     }
 

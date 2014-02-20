@@ -1,5 +1,6 @@
 package async;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -14,6 +15,8 @@ public class ThreadRelogio extends Service<String> {
     private Calendar dataServidorInicial;
     private Calendar dataServidorAtual;
     private long tempoNanoServidorLigado;
+    private static ArrayList<String> diasDaSemana = new ArrayList<String>();
+    private static ArrayList<String> mesExtenso = new ArrayList<String>();
 
     private Calendar ultimaSincronizacao;
     public static boolean sincronizacaoAtiva;
@@ -25,10 +28,16 @@ public class ThreadRelogio extends Service<String> {
         this.dataServidorAtual = dtServidorInicial;
         this.tempoNanoServidorLigado = System.nanoTime();
         this.ultimaSincronizacao = dt;
+        inicializaDiasDaSemana();
+        inicializaMesExtenso();
     }
-
+    
+    /*
+     * Retorna DiaDaSemana, DiaDoMes, Mes, Ano, Horario(HH:MM)
+     */
     private String calculaHorario() {
         System.out.println("Calculando horário...");
+        String dataCompleta = "";
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
         long nanoSe = (long) 1000000000.00;
@@ -52,7 +61,12 @@ public class ThreadRelogio extends Service<String> {
             horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":" + dataServidorAtual.get(Calendar.MINUTE);
         }
         dataServidorAtual.set(Calendar.SECOND, segundosDecorridos);
-        return horarioAtual;
+        dataCompleta = diasDaSemana.get(dataServidorAtual.get(Calendar.DAY_OF_WEEK))+","
+        + dataServidorAtual.get(Calendar.DAY_OF_MONTH) +","
+        + mesExtenso.get(dataServidorAtual.get(Calendar.MONTH))+","
+        +dataServidorAtual.get(Calendar.YEAR)+","+horarioAtual;
+        System.out.println("DataCompleta::: " + dataCompleta);
+        return dataCompleta;
     }
 
     public String atualizarRelogio() {
@@ -142,5 +156,31 @@ public class ThreadRelogio extends Service<String> {
             return true;
         }
         return false;
+    }
+    
+    public void inicializaDiasDaSemana()
+    {
+        diasDaSemana.add("Domingo");
+        diasDaSemana.add("Segunda");
+        diasDaSemana.add("Terça");
+        diasDaSemana.add("Quarta");
+        diasDaSemana.add("Quinta");
+        diasDaSemana.add("Sexta");
+        diasDaSemana.add("Sábado");
+    }
+
+    private void inicializaMesExtenso() {
+        mesExtenso.add("Janeiro");
+        mesExtenso.add("Fevereiro");
+        mesExtenso.add("Março");
+        mesExtenso.add("Abril");
+        mesExtenso.add("Maio");
+        mesExtenso.add("Junho");
+        mesExtenso.add("Julho");
+        mesExtenso.add("Agosto");
+        mesExtenso.add("Setembro");
+        mesExtenso.add("Outubro");
+        mesExtenso.add("Novembro");
+        mesExtenso.add("Dezembro");
     }
 }

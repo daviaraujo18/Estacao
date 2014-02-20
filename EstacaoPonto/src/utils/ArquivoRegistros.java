@@ -125,4 +125,4 @@ public class ArquivoRegistros {
             printWriter.flush();
             printWriter.close();
     }
-}
+    }

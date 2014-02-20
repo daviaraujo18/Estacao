@@ -52,7 +52,7 @@ public class TelaPonto {
         boolean con = false;
         webEngine = webView.getEngine();
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
-        webEngine.setOnAlert(new OnAlertListener(MainController.INSTANCE));
+        webEngine.setOnAlert(new OnAlertListener());
         try {
             con = VerificaConexao.verificaConexao(IntranetURLs.INICIAR_PONTO);
         } catch (MalformedURLException ex) {

@@ -32,11 +32,7 @@ import utils.Log;
  */
 public class OnAlertListener implements EventHandler {
 
-    private final MainController mainController;
-
-    public OnAlertListener(MainController mainController) {
-        this.mainController = mainController;
-    }
+   
 
     /*
         REFACTOR TO CHAIN OF RESPONSABILITY
@@ -44,7 +40,7 @@ public class OnAlertListener implements EventHandler {
     @Override
     public void handle(Event t) {
 
-        WebEngine webEngine = mainController.tela.getWebEngine();
+        WebEngine webEngine = MainController.INSTANCE.tela.getWebEngine();
 
         if (t instanceof WebEvent) {
             WebEvent event = (WebEvent) t;
@@ -57,12 +53,18 @@ public class OnAlertListener implements EventHandler {
                 Object data = webEngine.executeScript("window.bdFrequencia");
 
                 String dataFixed = (String) data.toString().replace("\n", "");
-
+                //System.out.println("dados Baixados: " + dataFixed);
                 Log.i("Montando dados");
-                DadosFrequentadores.getInstance().init(dataFixed);
+                    DadosFrequentadores.getInstance().init(dataFixed);
                 double fimDownload = System.currentTimeMillis();
                 Log.i("Montagem finalizada");
                 Log.i("Time elapsed: " + (fimDownload - inicioDownload) + " ms");
+                String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
+                try {
+                    MainController.INSTANCE.atualizarHorario(horario);
+                } catch (IOException ex) {
+                    Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 MainController.INSTANCE.getCds().start();
 //                webEngine.load(IntranetURLsConstants.BATIMENTO_PONTO_COM_CODIGOS);
             } else if (metodoAlerta.equals("recuperarCodigoAtivacao")
@@ -84,13 +86,14 @@ public class OnAlertListener implements EventHandler {
                 int minutos = Integer.parseInt(horario[5]);
                 Calendar dataServidor = Calendar.getInstance();
                 dataServidor.set(ano, mes, dia, hora, minutos);
-                mainController.criarThreadRelogio(dataServidor);
+                MainController.INSTANCE.criarThreadRelogio(dataServidor);
             } else if (metodoAlerta.equals("atualizarRelogioLocal")) {
-                if (mainController.getThreadRelogio() != null) {
-                    String horario = mainController.getThreadRelogio().atualizarRelogio();
+                System.out.println("Recebendo requisição para atualizar horário na página");
+                if (MainController.INSTANCE.getThreadRelogio() != null) {
+                    String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
                     try {
                         System.out.println("Atualizando...");
-                        mainController.atualizarHorario(horario);
+                        MainController.INSTANCE.atualizarHorario(horario);
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -99,7 +102,7 @@ public class OnAlertListener implements EventHandler {
                 }
             } else if (metodoAlerta.equals("limparRegistosBatimentos")) {
                 try {
-                    mainController.apagarRegistrosBatimentos();
+                    MainController.INSTANCE.apagarRegistrosBatimentos();
                 } catch (IOException ex) {
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -110,7 +113,7 @@ public class OnAlertListener implements EventHandler {
             {
                 System.out.println("Sincronizando...");
                 try {
-                    mainController.iniciarSincronizacao();
+                    MainController.INSTANCE.iniciarSincronizacao();
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {

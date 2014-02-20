@@ -62,7 +62,11 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                     System.out.println("Criou o registro: " + ret);
                 } else if (urlAtualContem("presenca/IniciarPonto")) {
                     Log.i("Entrei no metodo");
-                    mudarUrlAtualPara(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
+                    String codigos = IntranetURLs.getCodigos();
+                    Log.i("codigos: " + codigos) ;
+                    String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
+                    Log.i(url);
+                    mudarUrlAtualPara(url);
                     MainController.INSTANCE.getCds().setUsarLeitor(false);
 
                 }
