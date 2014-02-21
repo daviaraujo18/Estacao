@@ -61,7 +61,7 @@ public class ThreadRelogio extends Service<String> {
             horarioAtual = dataServidorAtual.get(Calendar.HOUR_OF_DAY) + ":" + dataServidorAtual.get(Calendar.MINUTE);
         }
         dataServidorAtual.set(Calendar.SECOND, segundosDecorridos);
-        dataCompleta = diasDaSemana.get(dataServidorAtual.get(Calendar.DAY_OF_WEEK))+","
+        dataCompleta = diasDaSemana.get(dataServidorAtual.get(Calendar.DAY_OF_WEEK)-1)+","
         + dataServidorAtual.get(Calendar.DAY_OF_MONTH) +","
         + mesExtenso.get(dataServidorAtual.get(Calendar.MONTH))+","
         +dataServidorAtual.get(Calendar.YEAR)+","+horarioAtual;

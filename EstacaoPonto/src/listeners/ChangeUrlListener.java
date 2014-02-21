@@ -67,7 +67,6 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                     String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
                     Log.i(url);
                     mudarUrlAtualPara(url);
-                    MainController.INSTANCE.getCds().setUsarLeitor(false);
 
                 }
             }

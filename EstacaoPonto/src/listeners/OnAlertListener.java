@@ -65,7 +65,16 @@ public class OnAlertListener implements EventHandler {
                 } catch (IOException ex) {
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                MainController.INSTANCE.getCds().start();
+                
+                
+                if(MainController.INSTANCE.getCds().isRunning())
+                {
+                    MainController.INSTANCE.getCds().setUsarLeitor(false);
+                }
+                else
+                {
+                    MainController.INSTANCE.getCds().start();
+                }
 //                webEngine.load(IntranetURLsConstants.BATIMENTO_PONTO_COM_CODIGOS);
             } else if (metodoAlerta.equals("recuperarCodigoAtivacao")
                     && webEngine.getLocation().contains("tjpi/presenca/RecuperarCodigoAtivacao")) {
