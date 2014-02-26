@@ -35,6 +35,7 @@ public class RegistroWindows {
                 return valor;
 
             } catch(Exception e) {
+                e.printStackTrace();
                 return null;
             }
         } else {
