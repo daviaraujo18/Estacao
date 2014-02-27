@@ -23,7 +23,7 @@ public class RegistroWindows {
         if(OSVerifier.isWindows()) {
             try {
                 RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
-                RegistryKey softwareReg =  localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_ALL);
+                RegistryKey softwareReg =  localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_READ);
                 RegistryKey estacaoPontoReg = softwareReg.openSubKey("TJPIEstacaoPonto",RegistryKey.ACCESS_READ);
 
                 String valor = estacaoPontoReg.getStringValue("codigoAtivacao");
@@ -129,5 +129,5 @@ public class RegistroWindows {
         
         return CryptoUtils.md5UB64(random);
     }
-	
+
 }
