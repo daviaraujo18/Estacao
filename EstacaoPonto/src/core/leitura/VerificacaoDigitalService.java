@@ -26,7 +26,6 @@ public class VerificacaoDigitalService extends Service<Leitura>{
 
                 try {
                     LeitorDigital ld = MainController.INSTANCE.getLeitorDigital();
-                    ld.abrirLeitor();
                     id = ld.searchDigitalOnIndexSearchEngine(digitalHash);
                     ld.fecharLeitor();
                 } catch (Exception e) {

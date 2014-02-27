@@ -31,12 +31,20 @@ public class LeitorDigital {
 
     public static boolean ativo;
 
-    public LeitorDigital() {
+    private static LeitorDigital INSTANCE = null;
+    private LeitorDigital() {
+        INSTANCE = this;
         abrirLeitor();
         indexSearchEngine = bsp.new IndexSearch();
         fecharLeitor();
     }
 
+    public static LeitorDigital getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new LeitorDigital();
+        }
+        return INSTANCE;
+    }
 
     public IndexSearch getIndexSearchEngine() {
         return indexSearchEngine;

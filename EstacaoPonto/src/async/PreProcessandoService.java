@@ -21,11 +21,10 @@ public class PreProcessandoService extends Service<String> {
 
     public PreProcessandoService() {
         try {
-            leitor = new LeitorDigital();
+            leitor = LeitorDigital.getInstance();
         } catch (Exception e) {
             Log.i("Leitor digital nao iniciado: " + e.getMessage());
         }
-
     }
 
     @Override
@@ -35,22 +34,18 @@ public class PreProcessandoService extends Service<String> {
             @Override
             protected String call() {
                 try {
-
+                    long anterior = System.currentTimeMillis();
+                    getLeitor().abrirLeitor();
                     while (true) {
                         if(!usarLeitor) {
-                            getLeitor().abrirLeitor();
+                            long zero = System.currentTimeMillis();
                             boolean b = getLeitor().temDedo();
                             if (b) {
-                                LeitorDigital leitor = new LeitorDigital();
-                                leitor.abrirLeitor();
+                                LeitorDigital leitor = LeitorDigital.getInstance();// new LeitorDigital();
                                 String leitura  = leitor.capturarDigital();
-                                leitor.fecharLeitor();
                                 return leitura;
                             }
-                            getLeitor().fecharLeitor();
-                        }else{
-                            Thread.sleep(1000);
-                        }
+                          }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -61,7 +56,7 @@ public class PreProcessandoService extends Service<String> {
     }
 
     public LeitorDigital getLeitor() {
-        return leitor;
+        return LeitorDigital.getInstance();
     }
     public void setUsarLeitor(boolean usarLeitor) {
         this.usarLeitor = usarLeitor;
