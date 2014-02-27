@@ -153,7 +153,9 @@ public class MainController implements Initializable {
     public void iniciarSincronizacao() throws FileNotFoundException, IOException
     {
         String dados = ArquivoRegistros.lerArquivo();
-        The.inserirJavascript(this.tela.webEngine, "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
+        String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
+        System.out.println("\\Estação >> Iniciando sincronização...Código de ativação: "+codAtivacao);
+        The.inserirJavascript(this.tela.webEngine, "sincronizaPonto('" + dados + "','"+codAtivacao+"')");
         threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
         //threadRelogio.desativarSincronizacao();
     }
