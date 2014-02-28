@@ -36,6 +36,7 @@ public class RegistroWindows {
 
             } catch(Exception e) {
                 System.out.println("\\Estação >> ERRO na busca do código de ativação.");
+                System.out.println("\\Estação >>" + e.getMessage() + " Causa: "+e.getCause().toString()+" Nome da classe: "+ e.getCause().getClass().getName());
                 e.printStackTrace();
                 return null;
             }
