@@ -1,12 +1,11 @@
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.media.AudioClip;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import utils.KeyHook;
 
 /**
  * Classe principal da EstacaoPonto
@@ -23,6 +22,7 @@ public class EstacaoPonto extends Application {
 	@Override
 	public void init() throws Exception {
 		System.out.println("INITIALIZING");
+
 		super.init();
 	}
 
@@ -33,7 +33,9 @@ public class EstacaoPonto extends Application {
 	 */
 	@Override
 	public void stop() throws Exception {
+
 		System.out.println("STOPPING");
+        KeyHook.unblockWindowsKey();
 		super.stop();
 	}
 
@@ -42,8 +44,11 @@ public class EstacaoPonto extends Application {
 	Parent root = FXMLLoader.load(getClass().getResource("/resources/Main.fxml"));
         
         Scene scene = new Scene(root);
+
+        KeyHook.blockWindowsKey();
         
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.setTitle("TJPI - Estação Ponto de Presença");
         
         // Setando stage para maximized
@@ -59,6 +64,7 @@ public class EstacaoPonto extends Application {
         //stage.setFullScreen(true);
         
         stage.show();
+
 
     }
 
