@@ -1,11 +1,12 @@
 package core;
 
+import async.DownloadFotos;
+import com.sun.deploy.net.HttpResponse;
 import controllers.MainController;
-import utils.Log;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import org.apache.http.client.methods.HttpGet;
+import utils.Log;
 
 /**
  * Created by Danilo on 10/02/14.
@@ -16,6 +17,7 @@ public class DadosFrequentadores {
 
     private String[] arrayFrequentadores;
     private Map<Integer,String> mapaIdInfoFrequentadores;
+    private Map<Integer,String> mapaIdFotosFrequentadores;
 
     public static DadosFrequentadores getInstance(){
         if(INSTANCE == null){
@@ -34,32 +36,48 @@ public class DadosFrequentadores {
 
         HashMap<String, String> mapaIdHashFrequentadores = new HashMap<String, String>();
         this.setMapaIdInfoFrequentadores(new HashMap<Integer, String>());
-
+        this.setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
+        int total=0;
         if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
             for (int i = 0; i < frequentadores.length; i++) {
                 // id;matricula;nome;digital;foto
                 String[] dados = frequentadores[i].split(";");
                 String id = dados[0];
                 String hashDigital = dados[3];
+                
+                int matricula = Integer.parseInt(dados[1]);
+                String foto = dados[4];
 
                 //matricula, nome, digital
                 String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4];// matricula;nome;foto
 
                 this.getMapaIdInfoFrequentadores().put(Integer.parseInt(id), dadosF);
+                this.getmapaIdFotosFrequentadores().put(matricula,foto);
                 mapaIdHashFrequentadores.put(id, hashDigital);
+                total = i;
             }
         }
-
+        System.out.println("Total de frequentadores: "+total);
         // Adiciona os dados ao NBio_SearchIndex
         try {
             MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(mapaIdHashFrequentadores);
         } catch (Exception e) {
             Log.i("Leitor nao iniciado: " + e.getMessage());
         }
+        
+        String endereco = this.getmapaIdFotosFrequentadores().get(3690);
+        System.out.println("Matrícula: 3690 Endereco: "+endereco);
+        
+       DownloadFotos servico = new DownloadFotos();
+       
+       servico.baixaFotos(endereco);
+        
+        
+        
         System.out.println("----Fim.");
 
-
     }
+    
 
 
     /*
@@ -92,6 +110,14 @@ public class DadosFrequentadores {
      */
     public void setMapaIdInfoFrequentadores(Map<Integer, String> mapaIdInfoFrequentadores) {
         this.mapaIdInfoFrequentadores = mapaIdInfoFrequentadores;
+    }
+
+    private Map<Integer, String> getmapaIdFotosFrequentadores() {
+        return mapaIdFotosFrequentadores;
+    }
+
+    private void setMapaIdFotosFrequentadores(Map<Integer, String> mapaIdFotosFrequentadores) {
+        this.mapaIdFotosFrequentadores = mapaIdFotosFrequentadores;
     }
 
 
