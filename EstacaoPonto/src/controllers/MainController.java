@@ -81,7 +81,6 @@ public class MainController implements Initializable {
     @FXML
     void cadastrarDigital(MouseEvent event) {
         try {
-            Log.i("Cadastrando Digital");
             String digitaisHash = getLeitorDigital().enroll();
             int id = getLeitorDigital().searchDigitalOnIndexSearchEngine(digitaisHash);
             System.out.println("ID DA DIGITAL ::: " + id);
@@ -96,7 +95,7 @@ public class MainController implements Initializable {
     public PreProcessandoService getCds() {
         return cds;
     }
-    
+
     public void inicializarLeitor() {
         cds = new PreProcessandoService();
         cds.setOnSucceeded( new PreProcessandoHandler());
@@ -134,7 +133,6 @@ public class MainController implements Initializable {
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
-//                threadRelogio.ativarSincronizacao();
                 iniciarSincronizacao();
             }
         }
@@ -153,9 +151,7 @@ public class MainController implements Initializable {
     public void iniciarSincronizacao() throws FileNotFoundException, IOException
     {
         String dados = ArquivoRegistros.lerArquivo();
-        String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        System.out.println("\\Estação >> Iniciando sincronização...Código de ativação: "+codAtivacao);
-        The.inserirJavascript(this.tela.webEngine, "sincronizaPonto('" + dados + "','"+codAtivacao+"')");
+        The.inserirJavascript(this.tela.webEngine, "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
         threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
         //threadRelogio.desativarSincronizacao();
     }
