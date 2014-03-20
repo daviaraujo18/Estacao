@@ -12,11 +12,19 @@ import com.sun.jna.platform.win32.WinUser.MSG;
 
 
 public class KeyHook {
+
     private static HHOOK hhk;
     private static LowLevelKeyboardProc keyboardHook;
     private static User32 lib;
+    private static KeyHook INSTANCE = new KeyHook();
 
-    public static void blockWindowsKey() {
+    private KeyHook(){}
+
+    public static KeyHook getInstance() {
+        return INSTANCE;
+    }
+
+    public void blockWindowsKey() {
         if (isWindows()) {
             new Thread(new Runnable() {
 
@@ -42,9 +50,11 @@ public class KeyHook {
                                     case 0x5D://APPS
                                     case 0x5B://LWIN
                                     case 0x5C://RWIN
-                                    case 0x73://F4
-                                        return new LRESULT(1);
-                                    default: //do nothing
+                                    case 0x73:
+                                       return new LRESULT(1);
+
+                                    default:
+                                        System.out.println("Clicado "+nCode);//do nothing
                                 }
                             }
                             return lib.CallNextHookEx(hhk, nCode, wParam, info.getPointer());
@@ -69,13 +79,13 @@ public class KeyHook {
         }
     }
 
-    public static void unblockWindowsKey() {
+    public void unblockWindowsKey() {
         if (isWindows() && lib != null) {
             lib.UnhookWindowsHookEx(hhk);
         }
     }
 
-    public static boolean isWindows(){
+    public boolean isWindows(){
         String os = System.getProperty("os.name").toLowerCase();
         return (os.indexOf( "win" ) >= 0);
     }
