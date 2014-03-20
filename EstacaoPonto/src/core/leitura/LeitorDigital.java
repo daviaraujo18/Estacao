@@ -1,16 +1,10 @@
 package core.leitura;
 
 
-import controllers.MainController;
 import utils.Log;
 import com.nitgen.SDK.BSP.NBioBSPJNI;
-import com.nitgen.SDK.BSP.NBioBSPJNI.DEVICE_ENUM_INFO;
-import com.nitgen.SDK.BSP.NBioBSPJNI.FIR_TEXTENCODE;
 import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch;
-import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch.FP_INFO;
-import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch.SAMPLE_INFO;
 import com.nitgen.SDK.BSP.NBioBSPJNI.WINDOW_OPTION;
-import utils.The;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -18,7 +12,7 @@ import java.util.Map;
 
 
 /**
- * Classe responsavel por fazer a conexao da EstacaoPonto com o dispositivo biometrico
+ * Classe responsavel por fazer a conexao da core.EstacaoPonto com o dispositivo biometrico
  * @author Anderson Soares
  */
 public class LeitorDigital {
@@ -92,8 +86,6 @@ public class LeitorDigital {
         firDigitalTexto.TextFIR = hashDigital;
         firDigital.SetTextFIR(firDigitalTexto);
 
-
-
         // 0 = maxSearchTime
         indexSearchEngine.Identify(firDigital,NBioBSPJNI.FIR_SECURITY_LEVEL.NORMAL, fpInfo, 5000);
         if(bsp.IsErrorOccured()) {
@@ -101,8 +93,6 @@ public class LeitorDigital {
             fecharLeitor();
             return -1;
         }
-
-        System.out.println("ID do frequentador: "+fpInfo.ID);
 
         fecharLeitor();
 
@@ -141,31 +131,35 @@ public class LeitorDigital {
         }
     }
 
+    public String capturarDigital_popup() throws Exception {
+        this.abrirLeitor();
+        WINDOW_OPTION window_option = bsp.new WINDOW_OPTION();
+        window_option.WindowStyle = NBioBSPJNI.WINDOW_STYLE.POPUP;
+        String digital = capturarDigital(window_option);
+        this.fecharLeitor();
+        return digital; //digital;
+
+    }
+
+    public String capturarDigital() throws Exception {
+        return capturarDigital(winOption);
+    }
+
     /**
      * faz a captura da digital e retorna a mesma em formato texto
      * caso nao haja erro
      * @return digital formato texto(String)
      */
-    public String capturarDigital() throws Exception {
-        //abrirLeitor();
-
+    public String capturarDigital( WINDOW_OPTION window_option) throws Exception {
         NBioBSPJNI.FIR_HANDLE hSavedFIR = bsp.new FIR_HANDLE();
-
-        bsp.Capture(NBioBSPJNI.FIR_PURPOSE.VERIFY, hSavedFIR, -1, null, winOption);
-        //bsp.Capture(hSavedFIR);
-
+        bsp.Capture(NBioBSPJNI.FIR_PURPOSE.VERIFY, hSavedFIR, -1, null, window_option);
         if(bsp.IsErrorOccured()) {
             throwError();
             return null;
         } else {
-            //The.inserirJavascript(MainController.INSTANCE.tela.webEngine, "process('LEITURA_EM_ANALISE')");
-//            MainController.INSTANCE.tela.webEngine.executeScript("process('LEITURA_EM_ANALISE')");
             //Recupera a digital em formato de texto
             NBioBSPJNI.FIR_TEXTENCODE textSavedFIR = bsp.new FIR_TEXTENCODE();
             bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);
-
-            //fecharLeitor();
-
             return textSavedFIR.TextFIR;
         }
     }
