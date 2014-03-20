@@ -1,8 +1,11 @@
 package core;
 
+import controllers.MainController;
+import utils.Log;
 
 import controllers.MainController;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import utils.DownloadFoto;
 import utils.Log;
@@ -15,7 +18,8 @@ public class DadosFrequentadores {
     private static DadosFrequentadores INSTANCE;
 
     private String[] arrayFrequentadores;
-    private Map<Integer,String> mapaIdInfoFrequentadores;
+    private Map<Integer,String> frequentadores;
+    private Map<Integer,String> administradores;
     private Map<Integer,String> mapaIdFotosFrequentadores;
 
     public static DadosFrequentadores getInstance(){
@@ -33,8 +37,9 @@ public class DadosFrequentadores {
         this.setArrayFrequentadores(((String) data).split("'"));
         String[] frequentadores = this.getArrayFrequentadores();
 
-        HashMap<String, String> mapaIdHashFrequentadores = new HashMap<String, String>();
-        this.setMapaIdInfoFrequentadores(new HashMap<Integer, String>());
+        HashMap<String, String> hashFrequentadores = new HashMap<String, String>();
+        this.setFrequentadores(new HashMap<Integer, String>());
+        this.setAdministradores(new HashMap<Integer, String>());
         this.setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
         int total=0;
         if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
@@ -43,23 +48,26 @@ public class DadosFrequentadores {
                 String[] dados = frequentadores[i].split(";");
                 String id = dados[0];
                 String hashDigital = dados[3];
+                String isAdmin = dados[5];
                 
                
                 String foto = dados[4];
 
                 //matricula, nome, digital
                 String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4];// matricula;nome;foto
-
-                this.getMapaIdInfoFrequentadores().put(Integer.parseInt(id), dadosF);
+                this.getFrequentadores().put(Integer.parseInt(id), dadosF);
+                if(isAdmin.equals("true")){
+                    this.getAdministradores().put(Integer.parseInt(id),dadosF);
+                }
+                hashFrequentadores.put(id, hashDigital);
                 this.getmapaIdFotosFrequentadores().put(Integer.parseInt(id),foto);
-                mapaIdHashFrequentadores.put(id, hashDigital);
                 total = i;
             }
         }
         System.out.println("Total de frequentadores: "+total);
         // Adiciona os dados ao NBio_SearchIndex
         try {
-            MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(mapaIdHashFrequentadores);
+            MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(hashFrequentadores);
         } catch (Exception e) {
             Log.i("Leitor nao iniciado: " + e.getMessage());
         }
@@ -67,14 +75,10 @@ public class DadosFrequentadores {
       CacheDownloadService.downloadAndCacheFotos(this.getmapaIdFotosFrequentadores());
      //   DownloadFoto.baixaFoto("http://localhost/intranet/uploads/tjpi/cadastramento/1389028020187_68ecfece9fe342492726c3933bd6902f.jpg");
         
-    
-        
-        
-        
         System.out.println("----Fim.");
 
+
     }
-    
 
 
     /*
@@ -97,16 +101,23 @@ public class DadosFrequentadores {
      * Recupera o map com as informações dos frequentadores (id,"matricula;nome;foto")
      * @return Map<Integer, String> - map com as informações dos frequentadores
      */
-    public Map<Integer, String> getMapaIdInfoFrequentadores() {
-        return mapaIdInfoFrequentadores;
+    public Map<Integer, String> getFrequentadores() {
+        return frequentadores;
     }
 
     /*
      * Altera o map com as informações dos frequentadores - (nome, matricula, digital...)
      * @param Map<Integer, String> - map com as informações dos frequentadores
      */
-    public void setMapaIdInfoFrequentadores(Map<Integer, String> mapaIdInfoFrequentadores) {
-        this.mapaIdInfoFrequentadores = mapaIdInfoFrequentadores;
+    public void setFrequentadores(Map<Integer, String> mapaIdInfoFrequentadores) {
+        this.frequentadores = mapaIdInfoFrequentadores;
+    }
+
+
+    public Map<Integer,String> getAdministradores(){return this.administradores;}
+
+    public void setAdministradores(HashMap<Integer,String> administradores) {
+        this.administradores = administradores;
     }
 
     private Map<Integer, String> getmapaIdFotosFrequentadores() {
@@ -116,6 +127,5 @@ public class DadosFrequentadores {
     private void setMapaIdFotosFrequentadores(Map<Integer, String> mapaIdFotosFrequentadores) {
         this.mapaIdFotosFrequentadores = mapaIdFotosFrequentadores;
     }
-
 
 }
