@@ -27,7 +27,7 @@ public enum EventoLeitura {
 
         @Override
         public String getData(TelaPonto tela, Leitura leitura) {
-            Map<Integer, String> mapaIdInfoFrequentadores = DadosFrequentadores.getInstance().getMapaIdInfoFrequentadores();
+            Map<Integer, String> mapaIdInfoFrequentadores = DadosFrequentadores.getInstance().getFrequentadores();
             Integer id = Integer.parseInt(leitura.getIdFrequentador());
             String[] dados = mapaIdInfoFrequentadores.get(id).split(";");
             String matricula = dados[0];
