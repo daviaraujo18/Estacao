@@ -1,5 +1,6 @@
 package controllers;
 
+import async.PreProcessandoService;
 import core.leitura.VerificacaoDigitalHandler;
 import core.leitura.VerificacaoDigitalService;
 import core.leitura.EventoLeitura;
@@ -13,14 +14,12 @@ public class PreProcessandoHandler implements EventHandler<WorkerStateEvent> {
 
     @Override
     public void handle(WorkerStateEvent event) {
-        EventoLeitura.LEITURA_EM_ANALISE.process(MainController.INSTANCE.tela, null);
-        Object digitalOb = event.getSource().getValue();
-        String digitalHash = "";
-        if (digitalOb != null){
-            digitalHash = digitalOb.toString();
+        PreProcessandoService.Result result = (PreProcessandoService.Result) event.getSource().getValue();
+        if(result != null){
+            result.process();
         }
-        VerificacaoDigitalService capturaDigitalService = new VerificacaoDigitalService(digitalHash);
-        capturaDigitalService.setOnSucceeded(new VerificacaoDigitalHandler());
-        capturaDigitalService.start();
+        MainController.INSTANCE.getCds().clickDesbloqueioTela = false;
+        MainController.INSTANCE.getCds().restart();
     }
+
 }
