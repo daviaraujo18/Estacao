@@ -64,8 +64,8 @@ public class DadosFrequentadores {
             Log.i("Leitor nao iniciado: " + e.getMessage());
         }
         
-     // CacheDownloadService.downloadAndCacheFotos(this.getmapaIdFotosFrequentadores());
-        DownloadFoto.baixaFoto("http://localhost/intranet/uploads/tjpi/cadastramento/1389028020187_68ecfece9fe342492726c3933bd6902f.jpg");
+      CacheDownloadService.downloadAndCacheFotos(this.getmapaIdFotosFrequentadores());
+     //   DownloadFoto.baixaFoto("http://localhost/intranet/uploads/tjpi/cadastramento/1389028020187_68ecfece9fe342492726c3933bd6902f.jpg");
         
     
         
