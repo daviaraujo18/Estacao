@@ -1,6 +1,7 @@
 package async;
 
 import core.leitura.LeitorDigital;
+import core.leitura.Operacao;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import utils.Log;
@@ -14,46 +15,56 @@ import utils.Log;
  *
  * @author Anderson Soares < aersandersonsoares@gmail.com >
  */
-public class PreProcessandoService extends Service<String> {
+public class PreProcessandoService extends Service<PreProcessandoService.Result> {
 
-    private LeitorDigital leitor;
     private boolean usarLeitor = false;
-
-    public PreProcessandoService() {
-        try {
-            leitor = LeitorDigital.getInstance();
-        } catch (Exception e) {
-            Log.i("Leitor digital nao iniciado: " + e.getMessage());
-        }
-    }
+    public boolean clickDesbloqueioTela;
 
     @Override
-    protected Task<String> createTask() {
-        return new Task<String>() {
+    protected Task<Result> createTask() {
+        return new Task<Result>() {
 
             @Override
-            protected String call() {
+            protected Result call() {
                 try {
-                    long anterior = System.currentTimeMillis();
                     getLeitor().abrirLeitor();
                     while (true) {
                         if(!usarLeitor) {
-                            long zero = System.currentTimeMillis();
+
                             boolean b = getLeitor().temDedo();
-                            if (b) {
-                                LeitorDigital leitor = LeitorDigital.getInstance();// new LeitorDigital();
-                                String leitura  = leitor.capturarDigital();
-                                return leitura;
+                            if (b && !clickDesbloqueioTela) {
+                                String digital =  getLeitor().capturarDigital();
+                                return new Result(Operacao.REGISTRO_FREQUENCIA, digital);
                             }
-                          }
+                        }
+                        if(clickDesbloqueioTela){
+                            String digital = getLeitor().capturarDigital_popup();
+                            clickDesbloqueioTela = false;
+                            return new Result(Operacao.DESBLOQUEIO, digital);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return "";
+                return null;
             }
         };
     }
+
+    public class Result{
+        Operacao operacao;
+        String digital;
+
+        public Result(Operacao op, String dig){
+            this.digital = dig;
+            this.operacao = op;
+        }
+
+        public void process() {
+            this.operacao.execute(digital);
+        }
+    }
+
 
     public LeitorDigital getLeitor() {
         return LeitorDigital.getInstance();
@@ -61,4 +72,5 @@ public class PreProcessandoService extends Service<String> {
     public void setUsarLeitor(boolean usarLeitor) {
         this.usarLeitor = usarLeitor;
     }
+
 }
