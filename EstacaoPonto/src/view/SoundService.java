@@ -20,9 +20,26 @@ public class SoundService {
     }
 
     public void playOK(){
+        if (audioOk.isPlaying())
+        {
+            System.out.println("//Estação: o som de OK já está tocando.");
+        }
+        else
+        {
+            System.out.println("//Estação: o som de OK vai tocar agora.");
+        }
         audioOk.play();
+        
     }
     public void playError(){
+        if (audioOk.isPlaying())
+        {
+            System.out.println("//Estação: o som de ERRO já está tocando.");
+        }
+        else
+        {
+            System.out.println("//Estação: o som de ERRO vai tocar agora.");
+        }
         audioError.play();
     };
 }

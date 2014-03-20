@@ -1,11 +1,15 @@
 package core.leitura;
 
 import core.DadosFrequentadores;
+import java.io.File;
+import java.io.FileInputStream;
 import utils.ArquivoRegistros;
 import utils.The;
 import view.TelaPonto;
 
 import java.util.Map;
+import org.apache.commons.io.FilenameUtils;
+import utils.CacheManipulation;
 
 public enum EventoLeitura {
     NULO,
@@ -26,12 +30,45 @@ public enum EventoLeitura {
             Map<Integer, String> mapaIdInfoFrequentadores = DadosFrequentadores.getInstance().getMapaIdInfoFrequentadores();
             Integer id = Integer.parseInt(leitura.getIdFrequentador());
             String[] dados = mapaIdInfoFrequentadores.get(id).split(";");
-            String nome = dados[0];
-            String matricula = dados[1];
+            String matricula = dados[0];
+            String nome = dados[1];
             String urlFoto = dados[2];
+            
+            String nomeArquivo = FilenameUtils.getBaseName(urlFoto);
+            nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(urlFoto);
+            FileInputStream fileInputStream=null;
+
+            File file = new File("C:\\Estacao\\imgs\\"+nomeArquivo);
+            if (!CacheManipulation.searchAndEdit(urlFoto))
+            {
+                if (!CacheManipulation.insert(urlFoto))
+                {
+                    file = new File("C:\\Estacao\\imgs\\silhueta_masculina.jpg");
+                }
+            }
+            //File file = new File("C:\\Estacao\\imgs\\a.jpg");
+
+            byte[] bFile = new byte[(int) file.length()];
+
+            try {
+                //convert file into array of bytes
+                fileInputStream = new FileInputStream(file);
+                fileInputStream.read(bFile);
+                fileInputStream.close();
+
+                for (int i = 0; i < bFile.length; i++) {
+                    System.out.print((char)bFile[i]);
+                }
+
+              
+            }catch(Exception e){
+                    e.printStackTrace();
+            }
+            String dataURI =  javax.xml.bind.DatatypeConverter.printBase64Binary(bFile);
+            
 //            String dad = "'"+leitura.getIdFrequentador() + "','" + leitura.getMomento() + "','" + nome + "','" + matricula + "','" + urlFoto + "'";
-            String dad = "'"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + nome + "," + matricula + "," + urlFoto+"'";
-            System.out.println("Dad "+dad);
+            String dad = "'"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome + "," + dataURI+"'";
+        //    System.out.println("Dad "+dad);
             return dad;
         }
         

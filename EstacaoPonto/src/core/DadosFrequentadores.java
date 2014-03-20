@@ -1,11 +1,10 @@
 package core;
 
-import async.DownloadFotos;
-import com.sun.deploy.net.HttpResponse;
+
 import controllers.MainController;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.http.client.methods.HttpGet;
+import utils.DownloadFoto;
 import utils.Log;
 
 /**
@@ -45,14 +44,14 @@ public class DadosFrequentadores {
                 String id = dados[0];
                 String hashDigital = dados[3];
                 
-                int matricula = Integer.parseInt(dados[1]);
+               
                 String foto = dados[4];
 
                 //matricula, nome, digital
                 String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4];// matricula;nome;foto
 
                 this.getMapaIdInfoFrequentadores().put(Integer.parseInt(id), dadosF);
-                this.getmapaIdFotosFrequentadores().put(matricula,foto);
+                this.getmapaIdFotosFrequentadores().put(Integer.parseInt(id),foto);
                 mapaIdHashFrequentadores.put(id, hashDigital);
                 total = i;
             }
@@ -65,12 +64,10 @@ public class DadosFrequentadores {
             Log.i("Leitor nao iniciado: " + e.getMessage());
         }
         
-        String endereco = this.getmapaIdFotosFrequentadores().get(3690);
-        System.out.println("Matrícula: 3690 Endereco: "+endereco);
+     // CacheDownloadService.downloadAndCacheFotos(this.getmapaIdFotosFrequentadores());
+        DownloadFoto.baixaFoto("http://localhost/intranet/uploads/tjpi/cadastramento/1389028020187_68ecfece9fe342492726c3933bd6902f.jpg");
         
-       DownloadFotos servico = new DownloadFotos();
-       
-       servico.baixaFotos(endereco);
+    
         
         
         

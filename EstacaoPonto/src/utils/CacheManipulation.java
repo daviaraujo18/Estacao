@@ -1,0 +1,187 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package utils;
+
+
+import controllers.MainController;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import org.apache.commons.io.FilenameUtils;
+
+/**
+ *
+ * @author Daniel Leite TJPI
+ * Trata da edição do arquivo ./imgs/cache.txt, arquivo responsável por permitir o download das fotos 3x4 para a Estação.
+ */
+public class CacheManipulation {
+   private static final int VALIDADE = 20; //qtd dias para o cache expirar
+   
+   public static boolean searchAndEdit(String enderecoWeb)
+   {
+        boolean encontrado=false;
+        String conteudo="";
+        //search & edit
+        File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); //se já existir, será sobreescrito  
+        String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
+        nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
+        String enderecoLocal="C:\\Estacao\\imgs\\"+nomeArquivo;
+
+        try {
+            FileReader fr = new FileReader(arquivo);  
+            BufferedReader br = new BufferedReader(fr);  
+            
+            String linhaCache = br.readLine(); //lê a primeira linha
+            
+            while (linhaCache!=null)
+            {
+                if (linhaCache.contains(nomeArquivo) && encontrado == false)
+                {//há um registro no cache que a foto foi baixada.
+                       encontrado=true;
+                       System.out.println("Arquivo encontrado: "+linhaCache);
+                       String dadosCache[] = linhaCache.split(" ");
+                       
+                       Calendar dataDownloadFoto = viewDateToCalendar(dadosCache[1]);
+                       dataDownloadFoto.add(Calendar.DAY_OF_YEAR,VALIDADE);
+                       //Calendar today = Calendar.getInstance();
+                       Calendar today =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
+                       
+                       File foto = new File(enderecoLocal);
+                       
+                       if (!foto.exists())
+                       {
+                            System.out.println("Foto inexistente...Baixando...");
+                            if (DownloadFoto.baixaFoto(enderecoWeb))
+                            {
+                                System.out.println("Download terminado.");
+                                conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+"\r\n");
+                            }           
+                            else
+                            {
+                                System.out.println("Problemas no download.");
+                                conteudo+=linhaCache+"\r\n";
+                            }
+                            
+                       }
+                       else
+                       {
+                           System.out.println("Comparando a data: "+dataDownloadFoto.getTime().toString()+" com a do servidor: "+today.getTime().toString());
+                           if (today.after(dataDownloadFoto))
+                           {//foto antiga, baixar novamente.
+                             System.out.println("Validade da foto expirou...Baixando novamente...");
+                             if (DownloadFoto.baixaFoto(enderecoWeb))
+                             {
+                                 System.out.println("Download terminado.");
+                                 conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+" "+"\r\n");
+                             }           
+                             else
+                             {
+                                 System.out.println("Problemas no download.");
+                                 conteudo+=linhaCache+"\r\n";
+                             }
+                           }
+                           else
+                           {
+                               conteudo+=linhaCache+"\r\n";
+                           }
+                       }
+                 }
+                 else
+                 {
+                     conteudo+=linhaCache+"\r\n";
+                 }
+                 linhaCache = br.readLine(); //se tiver mais linhas, lê todas elas 
+            }
+            br.close();
+            fr.close();
+            FileWriter fileWriter = new FileWriter(arquivo, false);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.print(conteudo);
+            printWriter.flush();
+            printWriter.close();  
+        }
+        catch (IOException ex) 
+        {
+           ex.printStackTrace();
+        }
+        return encontrado;
+   }
+   public static boolean insert(String enderecoWeb)
+   {
+        File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); 
+        String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
+        nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
+        boolean insercaoValida = false;
+        try 
+        {   
+            
+
+            FileWriter fw;  
+            
+            fw = new FileWriter(arquivo,true);
+            BufferedWriter bw = new BufferedWriter(fw);
+           
+//            Calendar dataAtual =(Calendar) Calendar.getInstance();
+            Calendar dataAtual =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
+            System.out.println("Baixando foto "+nomeArquivo+"...");
+            if (DownloadFoto.baixaFoto(enderecoWeb))
+            {
+                System.out.println("Download terminado.");
+                bw.write(nomeArquivo+" "+viewDate(dataAtual.getTime()));
+                bw.newLine();
+                insercaoValida= true;
+            }           
+            else
+            {
+                System.out.println("Problemas no download.");
+            }
+            bw.flush();
+            bw.close();
+
+            
+        }
+        catch (IOException ex) 
+        {
+           ex.printStackTrace();
+        }
+        return insercaoValida;
+   }     
+    public static Calendar viewDateToCalendar(String in) {
+
+                DateFormat df =  DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pt", "BR"));
+                df.setLenient(false);
+                
+                try
+                {
+                    Date date = df.parse(in);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    return cal;
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Data inválida.");
+                    return null;
+                }
+                
+    }
+    public static String viewDate(Date date) {
+            if (date == null) {
+                    return "";
+            } else {
+                    return new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR")).format(date).toString();
+            }
+    }
+
+}
