@@ -1,6 +1,7 @@
 package view;
 
 import controllers.MainController;
+import core.EstacaoPonto;
 import core.IntranetURLs;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -37,6 +38,11 @@ public class TelaPonto {
     public WebEngine webEngine;
 
     public SoundService sound;
+    private static TelaPonto INSTANCE = new TelaPonto();
+
+    public static TelaPonto getInstance() {
+        return INSTANCE;
+    }
 
     public void init(){
         initWebEngine();
@@ -70,12 +76,21 @@ public class TelaPonto {
         imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
-                webEngine.load(IntranetURLs.BASE_URL);
-                MainController.INSTANCE.getCds().setUsarLeitor(true);
+                if(!BloqueioTela.getInstance().isBloqueada()){
+                    webEngine.load(IntranetURLs.BASE_URL);
+                    MainController.INSTANCE.getCds().setUsarLeitor(true);
+                }
             }
         });
+
         return false;
     }
+
+    public void onTopClicked(){
+        webEngine.load(IntranetURLs.BASE_URL);
+        MainController.INSTANCE.getCds().setUsarLeitor(true);
+    }
+
 
     public AnchorPane getMainAnchorPane() {
         return mainAnchorPane;
