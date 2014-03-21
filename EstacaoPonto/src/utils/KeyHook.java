@@ -54,7 +54,6 @@ public class KeyHook {
                                        return new LRESULT(1);
 
                                     default:
-                                        System.out.println("Clicado "+nCode);//do nothing
                                 }
                             }
                             return lib.CallNextHookEx(hhk, nCode, wParam, info.getPointer());
