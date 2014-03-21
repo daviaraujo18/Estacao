@@ -99,7 +99,6 @@ public class MainController implements Initializable {
     public void inicializarLeitor() {
         cds = new PreProcessandoService();
         cds.setOnSucceeded( new PreProcessandoHandler());
-//        cds.start();
     }
 
     public LeitorDigital getLeitorDigital() {

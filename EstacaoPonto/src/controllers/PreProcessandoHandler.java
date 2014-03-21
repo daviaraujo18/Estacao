@@ -19,7 +19,7 @@ public class PreProcessandoHandler implements EventHandler<WorkerStateEvent> {
             result.process();
         }
         MainController.INSTANCE.getCds().clickDesbloqueioTela = false;
-        MainController.INSTANCE.getCds().restart();
+
     }
 
 }

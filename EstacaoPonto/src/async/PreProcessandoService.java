@@ -36,11 +36,11 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
                                 String digital =  getLeitor().capturarDigital();
                                 return new Result(Operacao.REGISTRO_FREQUENCIA, digital);
                             }
-                        }
-                        if(clickDesbloqueioTela){
-                            String digital = getLeitor().capturarDigital_popup();
-                            clickDesbloqueioTela = false;
-                            return new Result(Operacao.DESBLOQUEIO, digital);
+                            if(clickDesbloqueioTela){
+                                String digital = getLeitor().capturarDigital_popup();
+                                clickDesbloqueioTela = false;
+                                return new Result(Operacao.DESBLOQUEIO, digital);
+                            }
                         }
                     }
                 } catch (Exception e) {

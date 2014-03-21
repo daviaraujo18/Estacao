@@ -59,7 +59,6 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                     } catch (IOException ex) {
                         Logger.getLogger(ChangeUrlListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    System.out.println("Criou o registro: " + ret);
                 } else if (urlAtualContem("presenca/IniciarPonto")) {
                     Log.i("Entrei no metodo");
                     String codigos = IntranetURLs.getCodigos();

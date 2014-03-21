@@ -90,7 +90,6 @@ public class LeitorDigital {
         indexSearchEngine.Identify(firDigital,NBioBSPJNI.FIR_SECURITY_LEVEL.NORMAL, fpInfo, 5000);
         if(bsp.IsErrorOccured()) {
             throwError();
-            fecharLeitor();
             return -1;
         }
 
@@ -132,13 +131,9 @@ public class LeitorDigital {
     }
 
     public String capturarDigital_popup() throws Exception {
-        this.abrirLeitor();
         WINDOW_OPTION window_option = bsp.new WINDOW_OPTION();
         window_option.WindowStyle = NBioBSPJNI.WINDOW_STYLE.POPUP;
-        String digital = capturarDigital(window_option);
-        this.fecharLeitor();
-        return digital; //digital;
-
+        return capturarDigital(window_option);
     }
 
     public String capturarDigital() throws Exception {
@@ -160,6 +155,7 @@ public class LeitorDigital {
             //Recupera a digital em formato de texto
             NBioBSPJNI.FIR_TEXTENCODE textSavedFIR = bsp.new FIR_TEXTENCODE();
             bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);
+            this.fecharLeitor();
             return textSavedFIR.TextFIR;
         }
     }
@@ -168,6 +164,7 @@ public class LeitorDigital {
      * abre conexao com o leitor de digital
      */
     public void abrirLeitor() {
+
         bsp = new NBioBSPJNI();
         // Setar timeout do leitorDigital
 //		initInfo = bsp.new INIT_INFO_0();
@@ -195,6 +192,7 @@ public class LeitorDigital {
     }
 
     public void fecharLeitor() {
+        System.out.println("LeitorDigital.FecharLeitor");
         //bsp.CloseDevice(deviceEnumInfo.DeviceInfo[0].NameID,deviceEnumInfo.DeviceInfo[0].Instance);
         bsp.CloseDevice();
         deviceEnumInfo = null;

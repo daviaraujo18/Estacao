@@ -24,10 +24,9 @@ public enum Operacao {
 
             }catch (Exception e){
             }
+            MainController.INSTANCE.getCds().restart();
         }
     },
-
-
 
     REGISTRO_FREQUENCIA {
         @Override
