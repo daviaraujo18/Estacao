@@ -28,17 +28,27 @@ import org.apache.commons.io.FilenameUtils;
 public class CacheManipulation {
    private static final int VALIDADE = 20; //qtd dias para o cache expirar
    
+    //verifica se nome do arquivo existe no cache.txt
+    //se existe, retorna true e tenta baixar a foto, alterando a data de download no cache.txt em caso positivo.
    public static boolean searchAndEdit(String enderecoWeb)
    {
         boolean encontrado=false;
         String conteudo="";
         //search & edit
-        File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); //se já existir, será sobreescrito  
+        File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); 
+
+        File dir  = arquivo.getParentFile();
+        dir.mkdirs();
+
+
+        
+        
         String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
         nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
         String enderecoLocal="C:\\Estacao\\imgs\\"+nomeArquivo;
 
         try {
+            arquivo.createNewFile();
             FileReader fr = new FileReader(arquivo);  
             BufferedReader br = new BufferedReader(fr);  
             
@@ -93,6 +103,7 @@ public class CacheManipulation {
                            }
                            else
                            {
+                                System.out.println("Foto dentro da validade. Não há necessidade de download...");
                                conteudo+=linhaCache+"\r\n";
                            }
                        }
@@ -117,6 +128,10 @@ public class CacheManipulation {
         }
         return encontrado;
    }
+   
+   //Tenta baixar a foto e, em caso positivo, insere uma linha no
+   //cache.txt no formato '<nomedoarquivo.jpg> <data_dowload>'.
+   //Se tudo der certo, retorna true.
    public static boolean insert(String enderecoWeb)
    {
         File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); 
