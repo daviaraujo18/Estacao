@@ -49,11 +49,13 @@ public class BloqueioTela {
 
     public void bloquear(){
         KeyHook.getInstance().blockWindowsKey();
+        TelaPonto.getInstance().lock();
         bloqueada = true;
     }
 
     public void desbloquear(){
         KeyHook.getInstance().unblockWindowsKey();
+        TelaPonto.getInstance().unlock();
         bloqueada = false;
     }
 

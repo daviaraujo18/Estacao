@@ -23,6 +23,8 @@ public enum Operacao {
                 }
 
             }catch (Exception e){
+                e.printStackTrace();
+
             }
             MainController.INSTANCE.getCds().restart();
         }

@@ -66,7 +66,7 @@ public class MainController implements Initializable {
     }
 
     private void initTela() {
-        tela = new TelaPonto();
+        tela = TelaPonto.INSTANCE;
         tela.imageView = imageView;
         tela.labelSemConexao = labelSemConexao;
         tela.mainAnchorPane = mainAnchorPane;
@@ -84,9 +84,9 @@ public class MainController implements Initializable {
             String digitaisHash = getLeitorDigital().enroll();
             int id = getLeitorDigital().searchDigitalOnIndexSearchEngine(digitaisHash);
             System.out.println("ID DA DIGITAL ::: " + id);
-            The.inserirJavascript(tela.webEngine, "jQuery('#digitaisHash').val('" + digitaisHash + "');");
-            The.inserirJavascript(tela.webEngine, "jQuery('#digitaisHash').val('" + digitaisHash + "');");
-            The.inserirJavascript(tela.webEngine, "changeInfoDigital('success','Digitais identificadas!');");
+            The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
+            The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
+            The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('success','Digitais identificadas!');");
         } catch (Exception ex) {
 //            The.inserirJavascript(webEngine, "changeInfoDigital('error','" + ex.getMessage() + "');");
         }
@@ -136,7 +136,7 @@ public class MainController implements Initializable {
             }
         }
         System.out.println("Atualizando horário na página..");
-        The.inserirJavascript(this.tela.webEngine, "atualizaRelogioLocal('" + horario + "')");
+        The.inserirJavascript(this.tela.getWebEngine(), "atualizaRelogioLocal('" + horario + "')");
     }
 
     /*
@@ -150,7 +150,7 @@ public class MainController implements Initializable {
     public void iniciarSincronizacao() throws FileNotFoundException, IOException
     {
         String dados = ArquivoRegistros.lerArquivo();
-        The.inserirJavascript(this.tela.webEngine, "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
+        The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
         threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
         //threadRelogio.desativarSincronizacao();
     }

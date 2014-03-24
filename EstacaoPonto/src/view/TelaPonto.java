@@ -15,6 +15,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import listeners.ChangeUrlListener;
 import listeners.OnAlertListener;
+import utils.The;
 import utils.VerificaConexao;
 
 import java.io.IOException;
@@ -35,10 +36,10 @@ public class TelaPonto {
     public Button botaoCadastrarDigital;
     public Button botaoAtualizarDigital;
     public WebView webView;
-    public WebEngine webEngine;
+    private WebEngine webEngine;
 
     public SoundService sound;
-    private static TelaPonto INSTANCE = new TelaPonto();
+    public static TelaPonto INSTANCE = new TelaPonto();
 
     public static TelaPonto getInstance() {
         return INSTANCE;
@@ -113,6 +114,13 @@ public class TelaPonto {
     }
 
     public WebEngine getWebEngine(){return webEngine;}
+
+    public void lock(){
+        The.inserirJavascript(this.webEngine, "lock()");
+    }
+    public void unlock(){
+        The.inserirJavascript(this.webEngine, "unlock()");
+    }
 
 
 }

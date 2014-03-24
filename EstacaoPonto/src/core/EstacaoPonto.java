@@ -47,6 +47,7 @@ public class EstacaoPonto extends Application{
     public void init() throws Exception {
         System.out.println("INITIALIZING");
         super.init();
+        KeyHook.getInstance().blockWindowsKey();
     }
 
     /**
@@ -83,7 +84,7 @@ public class EstacaoPonto extends Application{
         // -40 por causa da barra do Menu iniciar do windows
         stage.setHeight(bounds.getHeight()-40);
         // Setando tela cheia ON
-        stage.setFullScreen(true);
+//        stage.setFullScreen(true);
 
         BloqueioTela.getInstance().addClickTarget(root, MainController.INSTANCE.tela.webView);
 

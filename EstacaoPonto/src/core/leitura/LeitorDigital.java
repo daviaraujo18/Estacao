@@ -155,7 +155,6 @@ public class LeitorDigital {
             //Recupera a digital em formato de texto
             NBioBSPJNI.FIR_TEXTENCODE textSavedFIR = bsp.new FIR_TEXTENCODE();
             bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);
-            this.fecharLeitor();
             return textSavedFIR.TextFIR;
         }
     }
@@ -193,6 +192,11 @@ public class LeitorDigital {
 
     public void fecharLeitor() {
         System.out.println("LeitorDigital.FecharLeitor");
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        for (int i = 0; i<6;i++){
+            System.out.println("----"+stackTrace[i]);
+        }
+
         //bsp.CloseDevice(deviceEnumInfo.DeviceInfo[0].NameID,deviceEnumInfo.DeviceInfo[0].Instance);
         bsp.CloseDevice();
         deviceEnumInfo = null;

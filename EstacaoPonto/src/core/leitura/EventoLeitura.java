@@ -96,7 +96,7 @@ public enum EventoLeitura {
         boolean bf = before(leitura);
         if(bf){
             try {
-                The.inserirJavascript(tela.webEngine, "process('" + this.name()+"', "+getData(tela, leitura)+")");
+                The.inserirJavascript(tela.getWebEngine(), "process('" + this.name()+"', "+getData(tela, leitura)+")");
             }catch (RuntimeException e){
                 e.printStackTrace();
             }
