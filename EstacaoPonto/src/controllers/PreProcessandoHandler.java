@@ -17,6 +17,8 @@ public class PreProcessandoHandler implements EventHandler<WorkerStateEvent> {
         PreProcessandoService.Result result = (PreProcessandoService.Result) event.getSource().getValue();
         if(result != null){
             result.process();
+        }else{
+
         }
         MainController.INSTANCE.getCds().clickDesbloqueioTela = false;
 

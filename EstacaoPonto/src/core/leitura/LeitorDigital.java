@@ -149,8 +149,7 @@ public class LeitorDigital {
         NBioBSPJNI.FIR_HANDLE hSavedFIR = bsp.new FIR_HANDLE();
         bsp.Capture(NBioBSPJNI.FIR_PURPOSE.VERIFY, hSavedFIR, -1, null, window_option);
         if(bsp.IsErrorOccured()) {
-            throwError();
-            return null;
+            return "";
         } else {
             //Recupera a digital em formato de texto
             NBioBSPJNI.FIR_TEXTENCODE textSavedFIR = bsp.new FIR_TEXTENCODE();
@@ -182,12 +181,6 @@ public class LeitorDigital {
         //bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
         ativo = true;
         bsp.OpenDevice();
-    }
-    private void configCadastro() {
-
-    }
-    private void config() {
-
     }
 
     public void fecharLeitor() {
