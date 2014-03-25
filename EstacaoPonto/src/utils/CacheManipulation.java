@@ -44,7 +44,7 @@ public class CacheManipulation {
         
         
         String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
-        nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
+        //nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
         String enderecoLocal="C:\\Estacao\\imgs\\"+nomeArquivo;
 
         try {
@@ -136,7 +136,7 @@ public class CacheManipulation {
    {
         File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); 
         String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
-        nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
+        //nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
         boolean insercaoValida = false;DownloadFoto dw =new DownloadFoto();
         try 
         {   
