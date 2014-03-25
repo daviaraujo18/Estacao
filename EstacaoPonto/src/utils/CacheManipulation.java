@@ -48,9 +48,9 @@ public class CacheManipulation {
         String enderecoLocal="C:\\Estacao\\imgs\\"+nomeArquivo;
 
         try {
-            arquivo.createNewFile();
+               arquivo.createNewFile();
             FileReader fr = new FileReader(arquivo);  
-            BufferedReader br = new BufferedReader(fr);  
+            BufferedReader br = new BufferedReader(fr); 
             
             String linhaCache = br.readLine(); //lê a primeira linha
             
@@ -130,14 +130,14 @@ public class CacheManipulation {
    }
    
    //Tenta baixar a foto e, em caso positivo, insere uma linha no
-   //cache.txt no formato '<nomedoarquivo.jpg> <data_dowload>'.
+   //cache.txt no formato '<nome_do_arquivo.jpg> <data_dowload>'.
    //Se tudo der certo, retorna true.
    public static boolean insert(String enderecoWeb)
    {
         File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); 
         String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
         nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
-        boolean insercaoValida = false;
+        boolean insercaoValida = false;DownloadFoto dw =new DownloadFoto();
         try 
         {   
             
@@ -150,7 +150,7 @@ public class CacheManipulation {
 //            Calendar dataAtual =(Calendar) Calendar.getInstance();
             Calendar dataAtual =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
             System.out.println("Baixando foto "+nomeArquivo+"...");
-            if (DownloadFoto.baixaFoto(enderecoWeb))
+            if (dw.baixaFoto(enderecoWeb))
             {
                 System.out.println("Download terminado.");
                 bw.write(nomeArquivo+" "+viewDate(dataAtual.getTime()));

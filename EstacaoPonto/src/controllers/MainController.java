@@ -5,6 +5,11 @@ import async.ThreadRelogio;
 import core.IntranetURLs;
 import core.RegistroWindows;
 import core.leitura.LeitorDigital;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,16 +20,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import utils.ArquivoRegistros;
-import utils.Log;
 import utils.The;
 import utils.VerificaConexao;
 import view.TelaPonto;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Calendar;
-import java.util.ResourceBundle;
 
 /**
  * @author aers

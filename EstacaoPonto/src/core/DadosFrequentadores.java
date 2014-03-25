@@ -34,10 +34,11 @@ public class DadosFrequentadores {
     }
 
     public void init(String data){
+         
         this.setArrayFrequentadores(((String) data).split("'"));
         String[] frequentadores = this.getArrayFrequentadores();
 
-        HashMap<String, String> hashFrequentadores = new HashMap<String, String>();
+        HashMap<String, String> hashFrequentadores = new HashMap();
         this.setFrequentadores(new HashMap<Integer, String>());
         this.setAdministradores(new HashMap<Integer, String>());
         this.setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
@@ -52,9 +53,10 @@ public class DadosFrequentadores {
                 
                
                 String foto = dados[4];
+                String sexo = dados[6];
 
                 //matricula, nome, digital
-                String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4];// matricula;nome;foto
+                String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6];// matricula;nome;foto;sexo
                 this.getFrequentadores().put(Integer.parseInt(id), dadosF);
                 if(isAdmin.equals("true")){
                     this.getAdministradores().put(Integer.parseInt(id),dadosF);
@@ -72,9 +74,8 @@ public class DadosFrequentadores {
             Log.i("Leitor nao iniciado: " + e.getMessage());
         }
         
-      CacheDownloadService.downloadAndCacheFotos(this.getmapaIdFotosFrequentadores());
-     //   DownloadFoto.baixaFoto("http://localhost/intranet/uploads/tjpi/cadastramento/1389028020187_68ecfece9fe342492726c3933bd6902f.jpg");
-        
+    CacheDownloadService.downloadAndCacheFotos(this.getmapaIdFotosFrequentadores());
+    
         System.out.println("----Fim.");
 
 
