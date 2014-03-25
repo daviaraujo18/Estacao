@@ -141,7 +141,7 @@ public class jWMI
 		process = null;
 		return output.trim();
 	}
-        public static String montaCodAtivacao() {  
+        public static String montaCodUnico() {  
   
         try {    
 

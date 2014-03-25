@@ -72,7 +72,7 @@ public class RegistroWindows {
 		
 		if(OSVerifier.isWindows()) {
 			
-			String hdSerial = jWMI.montaCodAtivacao();
+			String hdSerial = jWMI.montaCodUnico();
                         if (hdSerial.isEmpty())
                         {
                             return "Erro na construção do código de ativação.";
