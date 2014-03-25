@@ -184,13 +184,6 @@ public class LeitorDigital {
     }
 
     public void fecharLeitor() {
-        System.out.println("LeitorDigital.FecharLeitor");
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        for (int i = 0; i<6;i++){
-            System.out.println("----"+stackTrace[i]);
-        }
-
-        //bsp.CloseDevice(deviceEnumInfo.DeviceInfo[0].NameID,deviceEnumInfo.DeviceInfo[0].Instance);
         bsp.CloseDevice();
         deviceEnumInfo = null;
         ativo = false;
@@ -221,17 +214,16 @@ public class LeitorDigital {
         boolean ocorreuErro = bsp.IsErrorOccured();
         fecharLeitor();
         if(ocorreuErro == false) {
-            // nao teve erro
             if(bResult) {
-                System.out.println("INFO: Digitais conferem");
+                Log.i("Digitais conferem");
                 return true;
             }
             else {
-                System.out.println("INFO: Digitais nao conferem");
+                Log.i("Digitais nao conferem");
                 return false;
             }
         } else {
-            System.out.println("INFO: Erro na Verificacao. Verifique o Hardware");
+            Log.e("Erro na Verificacao. Verifique o Hardware");
             return false;
         }
     }
@@ -243,7 +235,7 @@ public class LeitorDigital {
      */
     private void throwError() throws IllegalArgumentException, IllegalAccessException, Exception {
         int errorNumber = bsp.GetErrorCode();
-        System.out.println("Error code: "+bsp.GetErrorCode());
+        Log.e("Error code: "+bsp.GetErrorCode());
         String errorName = null;
         Class aClass = NBioBSPJNI.ERROR.class;
         Field[] fields = aClass.getFields();

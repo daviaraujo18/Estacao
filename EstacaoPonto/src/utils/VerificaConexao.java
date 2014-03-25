@@ -28,7 +28,7 @@ public class VerificaConexao {
                Object objData = urlConnect.getContent();
 
            } catch (UnknownHostException e) {
-                    System.out.println("Excecao:: UnknownHostException");
+                Log.e("Excecao:: UnknownHostException");
                //e.printStackTrace();
                return false;
            }

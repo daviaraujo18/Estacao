@@ -81,7 +81,6 @@ public class MainController implements Initializable {
         try {
             String digitaisHash = getLeitorDigital().enroll();
             int id = getLeitorDigital().searchDigitalOnIndexSearchEngine(digitaisHash);
-            System.out.println("ID DA DIGITAL ::: " + id);
             The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
             The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
             The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('success','Digitais identificadas!');");
@@ -133,7 +132,6 @@ public class MainController implements Initializable {
                 iniciarSincronizacao();
             }
         }
-        System.out.println("Atualizando horário na página..");
         The.inserirJavascript(this.tela.getWebEngine(), "atualizaRelogioLocal('" + horario + "')");
     }
 

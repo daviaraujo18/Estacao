@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import utils.KeyHook;
+import utils.Log;
 import view.BloqueioTela;
 
 
@@ -38,7 +39,7 @@ public class EstacaoPonto extends Application{
      */
     @Override
     public void init() throws Exception {
-        System.out.println("INITIALIZING");
+        Log.i("INITIALIZING");
         super.init();
         KeyHook.getInstance().blockWindowsKey();
     }
@@ -51,7 +52,7 @@ public class EstacaoPonto extends Application{
     @Override
     public void stop() throws Exception {
 
-        System.out.println("STOPPING");
+        Log.i("STOPPING");
         KeyHook.getInstance().unblockWindowsKey();
         super.stop();
     }

@@ -140,9 +140,7 @@ public class CacheManipulation {
         boolean insercaoValida = false;DownloadFoto dw =new DownloadFoto();
         try 
         {   
-            
-
-            FileWriter fw;  
+            FileWriter fw;
             
             fw = new FileWriter(arquivo,true);
             BufferedWriter bw = new BufferedWriter(fw);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import utils.Log;
 
 /**
  * Classe responsável por fazer o controle do horário. Calcula o horário atual e controla o tempo da sincronizacao.
@@ -36,7 +37,7 @@ public class ThreadRelogio extends Service<String> {
      * Retorna DiaDaSemana, DiaDoMes, Mes, Ano, Horario(HH:MM)
      */
     private String calculaHorario() {
-        System.out.println("Calculando horário...");
+        Log.i("Calculando horário...");
         String dataCompleta = "";
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
@@ -65,7 +66,7 @@ public class ThreadRelogio extends Service<String> {
         + dataServidorAtual.get(Calendar.DAY_OF_MONTH) +","
         + mesExtenso.get(dataServidorAtual.get(Calendar.MONTH))+","
         +dataServidorAtual.get(Calendar.YEAR)+","+horarioAtual;
-        System.out.println("DataCompleta::: " + dataCompleta);
+        Log.i("DataCompleta::: " + dataCompleta);
         return dataCompleta;
     }
 
@@ -147,7 +148,6 @@ public class ThreadRelogio extends Service<String> {
      */
     public boolean fazerSincronizacao() {
         long difTempo = dataServidorAtual.getTimeInMillis() - ultimaSincronizacao.getTimeInMillis();
-        System.out.println("difTempo: " + difTempo);
         //double h = difTempo / 3600000; //1hora
         //double h = difTempo/300000; // 5 minutos
         //double h = difTempo/120000; // 2 minutos

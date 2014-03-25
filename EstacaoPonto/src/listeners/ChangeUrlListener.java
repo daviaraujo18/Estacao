@@ -97,8 +97,8 @@ public class ChangeUrlListener implements ChangeListener<Object> {
         try {
             boolean statusDir = diretorio.mkdir();
             boolean statusArq = arquivo.createNewFile();
-            System.out.println("criou o diretorio : " + statusDir);
-            System.out.print(statusArq);
+            Log.i("criou o diretorio : " + statusDir);
+            Log.i(statusArq);
             return true;
         } catch (IOException e) {
             e.printStackTrace();

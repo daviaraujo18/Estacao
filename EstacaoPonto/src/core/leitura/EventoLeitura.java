@@ -2,12 +2,14 @@ package core.leitura;
 
 import core.DadosFrequentadores;
 import java.io.File;
+import java.io.FileInputStream;
+
+import org.apache.commons.io.FileUtils;
 import utils.ArquivoRegistros;
 import utils.The;
 import view.TelaPonto;
 
 import java.util.Map;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import utils.CacheManipulation;
 
