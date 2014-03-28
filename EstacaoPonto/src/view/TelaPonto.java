@@ -35,6 +35,7 @@ public class TelaPonto {
     public Button botaoCadastrarDigital;
     public Button botaoAtualizarDigital;
     public ProgressBar progressBar;
+    public Label labelProgressBar;
     public WebView webView;
     private WebEngine webEngine;
 
@@ -108,7 +109,9 @@ public class TelaPonto {
     public ProgressBar getProgressBar() {
         return progressBar;
     }
-
+    public Label getLabelProgressBar() {
+        return labelProgressBar;
+    }
     public Button getBotaoAtualizarDigital() {
         return botaoAtualizarDigital;
     }

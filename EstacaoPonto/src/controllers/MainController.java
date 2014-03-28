@@ -45,6 +45,8 @@ public class MainController implements Initializable {
     @FXML
     private ProgressBar progressBar;
     @FXML
+    private Label labelProgressBar;
+    @FXML
     private Button botaoAtualizarDigital;
     @FXML //  fx:id="webView"
     private WebView webView; // Value injected by FXMLLoader
@@ -75,6 +77,7 @@ public class MainController implements Initializable {
         tela.splitPanel = splitPanel;
         tela.botaoCadastrarDigital = botaoCadastrarDigital;
         tela.progressBar = progressBar;
+        tela.labelProgressBar = labelProgressBar;
         tela.botaoAtualizarDigital = botaoAtualizarDigital;
         tela.webView = webView;
         tela.init();

@@ -4,7 +4,7 @@ package core;
 import controllers.MainController;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.concurrent.Service;
+import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -86,10 +86,6 @@ public class DadosFrequentadores  {
        }
    };
 
-
-        
-
-
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
 
             @Override
@@ -113,6 +109,7 @@ public class DadosFrequentadores  {
                         TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
                         TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
                         TelaPonto.INSTANCE.getProgressBar().setVisible(false);
+                        TelaPonto.INSTANCE.getLabelProgressBar().setVisible(false);
                     }
 
                 });
@@ -120,9 +117,11 @@ public class DadosFrequentadores  {
                 TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
                 TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
                 TelaPonto.INSTANCE.getProgressBar().setVisible(true);
-
+                TelaPonto.INSTANCE.getLabelProgressBar().setVisible(true);
+                
                 novo.start();
                 TelaPonto.INSTANCE.getProgressBar().progressProperty().bind(downloads.progressProperty());
+                TelaPonto.INSTANCE.getLabelProgressBar().textProperty().bind(downloads.messageProperty());
             }
             
         });
