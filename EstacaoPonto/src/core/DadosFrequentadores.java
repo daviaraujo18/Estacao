@@ -4,6 +4,8 @@ package core;
 import controllers.MainController;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import utils.Log;
@@ -21,7 +23,8 @@ public class DadosFrequentadores  {
     private Map<Integer,String> frequentadores;
     private Map<Integer,String> administradores;
     private Map<Integer,String> mapaIdFotosFrequentadores;
-
+    private String data;
+    
     public static DadosFrequentadores getInstance(){
         if(INSTANCE == null){
             INSTANCE = new DadosFrequentadores();
@@ -34,8 +37,14 @@ public class DadosFrequentadores  {
     }
 
     public void init(String data){
+        this.data = data;
+        Task task;
+        task = new Task<Void>() {
 
-            setArrayFrequentadores(((String) data).split("'"));
+       @Override 
+       protected Void call() throws Exception {
+           setArrayFrequentadores(((String) DadosFrequentadores.getInstance().getData()).split("'"));
+
             String[] frequentadores = getArrayFrequentadores();
 
             HashMap<String, String> hashFrequentadores = new HashMap();
@@ -66,46 +75,59 @@ public class DadosFrequentadores  {
                     total = i;
                 }
             }
-
-        System.out.println("Total de frequentadores: "+total);
+            System.out.println("Total de frequentadores: "+total);
         // Adiciona os dados ao NBio_SearchIndex
         try {
             MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(hashFrequentadores);
         } catch (Exception e) {
             Log.i("Leitor nao iniciado: " + e.getMessage());
         }
-        CacheDownloadService downloads = new CacheDownloadService(getmapaIdFotosFrequentadores());
-        Thread novo=new Thread(downloads);
+           return null;
+       }
+   };
+
+
         
-        downloads.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
+
+
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
 
             @Override
             public void handle(WorkerStateEvent t) {
-                 The.inserirJavascript(TelaPonto.INSTANCE.getWebEngine(), "aguardarDigital();");
-                if(MainController.INSTANCE.getCds().isRunning())
-                {
-                    MainController.INSTANCE.getCds().setUsarLeitor(false);
-                }
-                else
-                {
-                    MainController.INSTANCE.getCds().start();
-                }
-               TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.999);   
-                TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
-                TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
-                TelaPonto.INSTANCE.getProgressBar().setVisible(false);
-            }
-            
-        });
+                CacheDownloadService downloads = new CacheDownloadService(getmapaIdFotosFrequentadores());
+                Thread novo=new Thread(downloads);
+                downloads.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
+
+                    @Override
+                    public void handle(WorkerStateEvent t) {
+                         The.inserirJavascript(TelaPonto.INSTANCE.getWebEngine(), "aguardarDigital();");
+                        if(MainController.INSTANCE.getCds().isRunning())
+                        {
+                            MainController.INSTANCE.getCds().setUsarLeitor(false);
+                        }
+                        else
+                        {
+                            MainController.INSTANCE.getCds().start();
+                        }
+                       TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.999);   
+                        TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
+                        TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
+                        TelaPonto.INSTANCE.getProgressBar().setVisible(false);
+                    }
+
+                });
                 TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.5);
                 TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
                 TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
                 TelaPonto.INSTANCE.getProgressBar().setVisible(true);
-        novo.start();
-        TelaPonto.INSTANCE.getProgressBar().progressProperty().bind(downloads.progressProperty());
-        
-        
 
+                novo.start();
+                TelaPonto.INSTANCE.getProgressBar().progressProperty().bind(downloads.progressProperty());
+            }
+            
+        });
+        
+        new Thread(task).start();        
         System.out.println("----Fim.");
     }
 
@@ -156,5 +178,7 @@ public class DadosFrequentadores  {
     private void setMapaIdFotosFrequentadores(Map<Integer, String> mapaIdFotosFrequentadores) {
         this.mapaIdFotosFrequentadores = mapaIdFotosFrequentadores;
     }
-
+    public String getData(){
+        return data;
+    }
 }
