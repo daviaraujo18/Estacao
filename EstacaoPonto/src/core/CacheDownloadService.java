@@ -6,26 +6,33 @@ package core;
 
 import java.util.Iterator;
 import java.util.Map;
+import javafx.concurrent.Task;
 import utils.CacheManipulation;
 
 /**
  *
  * @author Daniel Leite TJPI
  */
-public class CacheDownloadService {
-   
-    public static void downloadAndCacheFotos(Map<Integer,String> mapaIdFotosFrequentadores)
+public class CacheDownloadService extends Task<Void> {
+    Map<Integer,String> mapaIdFotosFrequentadores;
+    CacheDownloadService(Map<Integer,String> mapaIdFotosFrequentadores)
+    {
+        this.mapaIdFotosFrequentadores =mapaIdFotosFrequentadores;
+    }
+    private void downloadAndCacheFotos()
     {
         int numTotal = mapaIdFotosFrequentadores.size();
-        Iterator it = mapaIdFotosFrequentadores.entrySet().iterator();
+        Iterator it = mapaIdFotosFrequentadores.entrySet().iterator(); 
         System.out.println("Iniciando download das fotos...");
         int numAtual = 1;
 
-        while (it.hasNext()) {
+        while (it.hasNext()) {       
             Map.Entry pairs = (Map.Entry)it.next();
             String enderecoWeb = pairs.getValue().toString();
             System.out.println("Endereço Web: "+enderecoWeb);
             System.out.print("Baixando "+numAtual+" de "+numTotal+". ");
+            
+            updateProgress(numAtual, numTotal);
             if (!CacheManipulation.searchAndEdit(enderecoWeb))
             {
                 CacheManipulation.insert(enderecoWeb);
@@ -34,5 +41,14 @@ public class CacheDownloadService {
             it.remove(); // avoids a ConcurrentModificationException
             numAtual++;
         }
+   }
+
+    @Override
+    protected Void call() throws Exception {
+        downloadAndCacheFotos();
+
+        return null;
     }
+   
+
 }

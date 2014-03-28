@@ -13,11 +13,13 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import utils.Log;
+import view.TelaPonto;
 
 /**
  *
@@ -46,8 +48,7 @@ public class OnAlertListener implements EventHandler {
             WebEvent event = (WebEvent) t;
             String metodoAlerta = event.getData().toString();
             if (metodoAlerta.equals("callRecuperarFrequentadores")
-                    && webEngine.getLocation().contains("tjpi/presenca/PontoDePresenca")) {
-
+                    && webEngine.getLocation().contains("tjpi/presenca/PontoDePresenca")) {       
                 Log.i("Iniciando download dos dados dos Frequentadores");
                 double inicioDownload = System.currentTimeMillis();
                 Object data = webEngine.executeScript("window.bdFrequencia");
@@ -56,7 +57,7 @@ public class OnAlertListener implements EventHandler {
                 //System.out.println("dados Baixados: " + dataFixed);
                 Log.i("Montando dados");
                     DadosFrequentadores.getInstance().init(dataFixed);
-                double fimDownload = System.currentTimeMillis();
+                double fimDownload = System.currentTimeMillis();            
                 Log.i("Montagem finalizada");
                 Log.i("Time elapsed: " + (fimDownload - inicioDownload) + " ms");
                 String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
@@ -66,16 +67,6 @@ public class OnAlertListener implements EventHandler {
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-                
-                if(MainController.INSTANCE.getCds().isRunning())
-                {
-                    MainController.INSTANCE.getCds().setUsarLeitor(false);
-                }
-                else
-                {
-                    MainController.INSTANCE.getCds().start();
-                }
-//                webEngine.load(IntranetURLsConstants.BATIMENTO_PONTO_COM_CODIGOS);
             } else if (metodoAlerta.equals("recuperarCodigoAtivacao")
                     && webEngine.getLocation().contains("tjpi/presenca/RecuperarCodigoAtivacao")) {
                 Log.i("Recuperando CodigoDeAtivacao e setando no Registro do Windows");

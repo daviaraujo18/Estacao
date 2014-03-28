@@ -6,6 +6,7 @@ package utils;
 
 import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
@@ -23,23 +24,25 @@ public class DownloadFoto {
         BufferedInputStream in = null;
         ByteArrayOutputStream bais = null;
         //FileOutputStream fout = null;
-       
+       long startTempo = 0; 
+
         try
         {
             String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
-     //       nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
 
             File localFile = new File("C:\\Estacao\\imgs\\"+nomeArquivo); 
             File dir = localFile.getParentFile();
             dir.mkdirs();
            
             URL url = new URL(enderecoWeb);
-            in = new BufferedInputStream(url.openStream());
+            URLConnection  conn = url.openConnection();
+            conn.setConnectTimeout(10);
+            conn.setReadTimeout(10);
+
+            startTempo = System.currentTimeMillis(); 
+            in = new BufferedInputStream(conn.getInputStream());
             
-           
-             
-            
-           // fout = new FileOutputStream(localFile);
+                     
              bais = new ByteArrayOutputStream();
             
             
@@ -49,16 +52,11 @@ public class DownloadFoto {
             while ((count = in.read(data, 0, 1024)) != -1) 
             {    
                 bais.write(data, 0, count);
-               // fout.write(data, 0, count);
             }   
             
             byte bFoto[] = bais.toByteArray();
 
 
-//            MessageDigest md = MessageDigest.getInstance("MD5");
-//            byte[] thedigest = md.digest(bFoto);
-//            thedigest.toString();
-//            
             String dataURI = javax.xml.bind.DatatypeConverter.printBase64Binary(bFoto);
             
             FileWriter fileWriter = new FileWriter(localFile, false);
@@ -76,6 +74,11 @@ public class DownloadFoto {
         }
         finally 
         {
+            long fim = System.currentTimeMillis(); 
+            long resulta = (fim-startTempo);
+
+            System.out.println("delta T: "+(fim-startTempo));
+            
             if (in != null) 
             {
                     try {

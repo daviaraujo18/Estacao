@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -41,6 +42,8 @@ public class MainController implements Initializable {
     private SplitPane splitPanel; // Value injected by FXMLLoader
     @FXML
     private Button botaoCadastrarDigital;
+    @FXML
+    private ProgressBar progressBar;
     @FXML
     private Button botaoAtualizarDigital;
     @FXML //  fx:id="webView"
@@ -71,6 +74,7 @@ public class MainController implements Initializable {
         tela.anchorBaixo = anchorBaixo;
         tela.splitPanel = splitPanel;
         tela.botaoCadastrarDigital = botaoCadastrarDigital;
+        tela.progressBar = progressBar;
         tela.botaoAtualizarDigital = botaoAtualizarDigital;
         tela.webView = webView;
         tela.init();

@@ -44,11 +44,16 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 tela.getBotaoCadastrarDigital().setVisible(false);
                 tela.getBotaoAtualizarDigital().setVisible(true);
             }else {
-                tela.getSplitPanel().getDividers().get(1).setPosition(0.999);
+                tela.getSplitPanel().getDividers().get(1).setPosition(0.999);                
             }
         } else {
 
             if (ov.getValue().equals(Worker.State.SUCCEEDED)) {
+                tela.getSplitPanel().getDividers().get(1).setPosition(0.5);
+                TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
+                TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
+                TelaPonto.INSTANCE.getProgressBar().setVisible(true);
+               
                 Log.i("Pagina carregada: " + tela.getWebEngine().getLocation());
                 if (urlAtualContem("EstacaoPonto?type=create")) {
                     Log.i("Injetando codigos no formulário via JavaScript");

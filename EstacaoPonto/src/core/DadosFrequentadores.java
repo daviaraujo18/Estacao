@@ -1,19 +1,19 @@
 package core;
 
-import controllers.MainController;
-import utils.Log;
 
 import controllers.MainController;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import utils.DownloadFoto;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import utils.Log;
+import utils.The;
+import view.TelaPonto;
 
 /**
  * Created by Danilo on 10/02/14.
  */
-public class DadosFrequentadores {
+public class DadosFrequentadores  {
 
     private static DadosFrequentadores INSTANCE;
 
@@ -28,44 +28,45 @@ public class DadosFrequentadores {
         }
         return INSTANCE;
     }
-
+    
     private DadosFrequentadores(){
 
     }
 
     public void init(String data){
-         
-        this.setArrayFrequentadores(((String) data).split("'"));
-        String[] frequentadores = this.getArrayFrequentadores();
 
-        HashMap<String, String> hashFrequentadores = new HashMap();
-        this.setFrequentadores(new HashMap<Integer, String>());
-        this.setAdministradores(new HashMap<Integer, String>());
-        this.setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
-        int total=0;
-        if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
-            for (int i = 0; i < frequentadores.length; i++) {
-                // id;matricula;nome;digital;foto
-                String[] dados = frequentadores[i].split(";");
-                String id = dados[0];
-                String hashDigital = dados[3];
-                String isAdmin = dados[5];
-                
-               
-                String foto = dados[4];
-                String sexo = dados[6];
+            this.setArrayFrequentadores(((String) data).split("'"));
+            String[] frequentadores = this.getArrayFrequentadores();
 
-                //matricula, nome, digital
-                String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6];// matricula;nome;foto;sexo
-                this.getFrequentadores().put(Integer.parseInt(id), dadosF);
-                if(isAdmin.equals("true")){
-                    this.getAdministradores().put(Integer.parseInt(id),dadosF);
+            HashMap<String, String> hashFrequentadores = new HashMap();
+            this.setFrequentadores(new HashMap<Integer, String>());
+            this.setAdministradores(new HashMap<Integer, String>());
+            this.setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
+            int total=0;
+            if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
+                for (int i = 0; i < frequentadores.length; i++) {
+                    // id;matricula;nome;digital;foto
+                    String[] dados = frequentadores[i].split(";");
+                    String id = dados[0];
+                    String hashDigital = dados[3];
+                    String isAdmin = dados[5];
+
+
+                    String foto = dados[4];
+                    String sexo = dados[6];
+
+                    //matricula, nome, digital
+                    String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6];// matricula;nome;foto;sexo
+                    this.getFrequentadores().put(Integer.parseInt(id), dadosF);
+                    if(isAdmin.equals("true")){
+                        this.getAdministradores().put(Integer.parseInt(id),dadosF);
+                    }
+                    hashFrequentadores.put(id, hashDigital);
+                    this.getmapaIdFotosFrequentadores().put(Integer.parseInt(id),foto);
+                    total = i;
                 }
-                hashFrequentadores.put(id, hashDigital);
-                this.getmapaIdFotosFrequentadores().put(Integer.parseInt(id),foto);
-                total = i;
             }
-        }
+
         System.out.println("Total de frequentadores: "+total);
         // Adiciona os dados ao NBio_SearchIndex
         try {
@@ -73,12 +74,35 @@ public class DadosFrequentadores {
         } catch (Exception e) {
             Log.i("Leitor nao iniciado: " + e.getMessage());
         }
+        CacheDownloadService downloads = new CacheDownloadService(this.getmapaIdFotosFrequentadores());
+        Thread novo=new Thread(downloads);
         
-    CacheDownloadService.downloadAndCacheFotos(this.getmapaIdFotosFrequentadores());
-    
+        downloads.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
+
+            @Override
+            public void handle(WorkerStateEvent t) {
+                 The.inserirJavascript(TelaPonto.INSTANCE.getWebEngine(), "aguardarDigital();");
+                if(MainController.INSTANCE.getCds().isRunning())
+                {
+                    MainController.INSTANCE.getCds().setUsarLeitor(false);
+                }
+                else
+                {
+                    MainController.INSTANCE.getCds().start();
+                }
+               TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.999);   
+                TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
+                TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
+                TelaPonto.INSTANCE.getProgressBar().setVisible(false);
+            }
+            
+        });
+        novo.start();
+        TelaPonto.INSTANCE.getProgressBar().progressProperty().bind(downloads.progressProperty());
+        
+        
+
         System.out.println("----Fim.");
-
-
     }
 
 

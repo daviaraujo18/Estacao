@@ -1,10 +1,8 @@
 package view;
 
 import controllers.MainController;
-import core.EstacaoPonto;
 import core.IntranetURLs;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
@@ -22,6 +20,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.ProgressBar;
 
 /**
  * Created by Danilo on 07/02/14.
@@ -35,6 +34,7 @@ public class TelaPonto {
     public SplitPane splitPanel;
     public Button botaoCadastrarDigital;
     public Button botaoAtualizarDigital;
+    public ProgressBar progressBar;
     public WebView webView;
     private WebEngine webEngine;
 
@@ -103,6 +103,10 @@ public class TelaPonto {
 
     public Button getBotaoCadastrarDigital() {
         return botaoCadastrarDigital;
+    }
+    
+    public ProgressBar getProgressBar() {
+        return progressBar;
     }
 
     public Button getBotaoAtualizarDigital() {

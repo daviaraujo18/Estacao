@@ -41,6 +41,7 @@
                     <children>
                         <Button fx:id="botaoCadastrarDigital" layoutX="443.5" layoutY="39.5" mnemonicParsing="false" onMouseClicked="#cadastrarDigital" text="Cadastrar Digitais" />
                         <Button fx:id="botaoAtualizarDigital" layoutX="443.5" layoutY="39.5" mnemonicParsing="false" onMouseClicked="#cadastrarDigital" text="Atualizar Digitais" />
+                        <ProgressBar fx:id="progressBar" layoutX="360" layoutY="39.5" disable="false" prefWidth="300.0" prefHeight="10.0" progress="0.0" visible="true" />
                     </children>
                 </AnchorPane>
             </items>
