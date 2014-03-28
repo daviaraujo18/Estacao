@@ -35,13 +35,13 @@ public class DadosFrequentadores  {
 
     public void init(String data){
 
-            this.setArrayFrequentadores(((String) data).split("'"));
-            String[] frequentadores = this.getArrayFrequentadores();
+            setArrayFrequentadores(((String) data).split("'"));
+            String[] frequentadores = getArrayFrequentadores();
 
             HashMap<String, String> hashFrequentadores = new HashMap();
-            this.setFrequentadores(new HashMap<Integer, String>());
-            this.setAdministradores(new HashMap<Integer, String>());
-            this.setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
+            setFrequentadores(new HashMap<Integer, String>());
+            setAdministradores(new HashMap<Integer, String>());
+            setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
             int total=0;
             if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
                 for (int i = 0; i < frequentadores.length; i++) {
@@ -57,12 +57,12 @@ public class DadosFrequentadores  {
 
                     //matricula, nome, digital
                     String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6];// matricula;nome;foto;sexo
-                    this.getFrequentadores().put(Integer.parseInt(id), dadosF);
+                    getFrequentadores().put(Integer.parseInt(id), dadosF);
                     if(isAdmin.equals("true")){
-                        this.getAdministradores().put(Integer.parseInt(id),dadosF);
+                        getAdministradores().put(Integer.parseInt(id),dadosF);
                     }
                     hashFrequentadores.put(id, hashDigital);
-                    this.getmapaIdFotosFrequentadores().put(Integer.parseInt(id),foto);
+                    getmapaIdFotosFrequentadores().put(Integer.parseInt(id),foto);
                     total = i;
                 }
             }
@@ -74,7 +74,7 @@ public class DadosFrequentadores  {
         } catch (Exception e) {
             Log.i("Leitor nao iniciado: " + e.getMessage());
         }
-        CacheDownloadService downloads = new CacheDownloadService(this.getmapaIdFotosFrequentadores());
+        CacheDownloadService downloads = new CacheDownloadService(getmapaIdFotosFrequentadores());
         Thread novo=new Thread(downloads);
         
         downloads.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
@@ -97,6 +97,10 @@ public class DadosFrequentadores  {
             }
             
         });
+                TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.5);
+                TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
+                TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
+                TelaPonto.INSTANCE.getProgressBar().setVisible(true);
         novo.start();
         TelaPonto.INSTANCE.getProgressBar().progressProperty().bind(downloads.progressProperty());
         
