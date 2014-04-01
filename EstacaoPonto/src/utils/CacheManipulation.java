@@ -6,6 +6,7 @@ package utils;
 
 
 import controllers.MainController;
+import core.LocalPaths;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,7 +36,7 @@ public class CacheManipulation {
         boolean encontrado=false;
         String conteudo="";
         //search & edit
-        File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); 
+        File arquivo = new File(LocalPaths.PATH_CACHE+"cache.txt"); 
 
         File dir  = arquivo.getParentFile();
         dir.mkdirs();
@@ -45,7 +46,7 @@ public class CacheManipulation {
         
         String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
         //nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
-        String enderecoLocal="C:\\Estacao\\imgs\\"+nomeArquivo;
+        String enderecoLocal=LocalPaths.PATH_CACHE+nomeArquivo;
 
         try {
                arquivo.createNewFile();
@@ -134,7 +135,7 @@ public class CacheManipulation {
    //Se tudo der certo, retorna true.
    public static boolean insert(String enderecoWeb)
    {
-        File arquivo = new File("C:\\Estacao\\imgs\\cache.txt"); 
+        File arquivo = new File(LocalPaths.PATH_CACHE+"cache.txt"); 
         String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
         //nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
         boolean insercaoValida = false;DownloadFoto dw =new DownloadFoto();

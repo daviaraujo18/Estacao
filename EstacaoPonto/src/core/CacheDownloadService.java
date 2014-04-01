@@ -4,12 +4,10 @@
  */
 package core;
 
-import controllers.MainController;
 import java.util.Iterator;
 import java.util.Map;
 import javafx.concurrent.Task;
 import utils.CacheManipulation;
-import view.TelaPonto;
 
 /**
  *
@@ -17,10 +15,12 @@ import view.TelaPonto;
  */
 public class CacheDownloadService extends Task<Void> {
     Map<Integer,String> mapaIdFotosFrequentadores;
+    
     CacheDownloadService(Map<Integer,String> mapaIdFotosFrequentadores)
     {
         this.mapaIdFotosFrequentadores =mapaIdFotosFrequentadores;
     }
+    
     private void downloadAndCacheFotos()
     {
         int numTotal = mapaIdFotosFrequentadores.size();
@@ -29,8 +29,8 @@ public class CacheDownloadService extends Task<Void> {
         int numAtual = 1;
         int progress = 0;
         
-        String message="";
-        while (it.hasNext()) {       
+        String message;
+        while (it.hasNext()) {    
             progress = (int) (((double)numAtual)/((double)numTotal)*100);
             message = "Download fotos: "+progress+"%";
             updateMessage(message);

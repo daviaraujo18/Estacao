@@ -1,18 +1,17 @@
 package listeners;
 
-import controllers.MainController;
 import core.IntranetURLs;
+import core.LocalPaths;
 import core.RegistroWindows;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import utils.Log;
 import view.TelaPonto;
-
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Classe que verifica toda vez que ocorre uma mudança de página e faz as
@@ -93,7 +92,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
 
     private boolean criarArquivoBatimentos() throws IOException {
         String codUnic = RegistroWindows.getCodigoUnicoMaquina().substring(2, 10);
-        java.io.File diretorio = new java.io.File("C:\\Estacao");
+        java.io.File diretorio = new java.io.File(LocalPaths.PATH_REGISTROS);
         java.io.File arquivo = new java.io.File(diretorio, codUnic + ".txt");
         try {
             boolean statusDir = diretorio.mkdir();

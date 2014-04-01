@@ -4,6 +4,7 @@
  */
 package utils;
 
+import core.LocalPaths;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -30,14 +31,14 @@ public class DownloadFoto {
         {
             String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
 
-            File localFile = new File("C:\\Estacao\\imgs\\"+nomeArquivo); 
+            File localFile = new File(LocalPaths.PATH_CACHE+nomeArquivo); 
             File dir = localFile.getParentFile();
             dir.mkdirs();
            
             URL url = new URL(enderecoWeb);
             URLConnection  conn = url.openConnection();
-            conn.setConnectTimeout(10);
-            conn.setReadTimeout(10);
+            conn.setConnectTimeout(50);
+            conn.setReadTimeout(50);
 
             startTempo = System.currentTimeMillis(); 
             in = new BufferedInputStream(conn.getInputStream());
@@ -97,8 +98,5 @@ public class DownloadFoto {
         }
         return baixou;
     }
-
-    
-
 
 }

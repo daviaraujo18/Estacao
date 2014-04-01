@@ -1,5 +1,6 @@
 package utils;
 
+import core.LocalPaths;
 import core.RegistroWindows;
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,7 +9,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 /**
  *
@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class ArquivoRegistros {
 
-    private static File arquivo = new File( "C:\\Estacao\\"+RegistroWindows.getCodigoUnicoMaquina().substring(2, 10)+".txt");
+    private static File arquivo = new File( LocalPaths.PATH_REGISTROS+RegistroWindows.getCodigoUnicoMaquina().substring(2, 10)+".txt");
     
     public static boolean escrever(String registro) throws IOException {
         if(registro == null)

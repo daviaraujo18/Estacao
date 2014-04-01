@@ -2,6 +2,7 @@ package view;
 
 import controllers.MainController;
 import core.IntranetURLs;
+import core.LocalPaths;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,6 +22,7 @@ import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.text.TextAlignment;
 
 /**
  * Created by Danilo on 07/02/14.
@@ -68,8 +70,13 @@ public class TelaPonto {
         } catch (IOException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
         }
-        if (con == false) {
-            // mostrar uma mensagem informando que está sem conexão
+        if (con == false || LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty()) {
+            // mostrar uma mensagem informando que está sem conexão ou sem permissão de escrita
+            if (LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty()){
+                this.labelSemConexao.setText("Sem permissão de escrita.");
+                this.labelSemConexao.setPrefWidth(600);
+                this.labelSemConexao.setLayoutX(380);
+            }
             this.labelSemConexao.setVisible(true);
             return true;
         }
