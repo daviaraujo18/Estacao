@@ -3,9 +3,16 @@ package view;
 import controllers.MainController;
 import core.IntranetURLs;
 import core.LocalPaths;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -16,13 +23,6 @@ import listeners.ChangeUrlListener;
 import listeners.OnAlertListener;
 import utils.The;
 import utils.VerificaConexao;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.text.TextAlignment;
 
 /**
  * Created by Danilo on 07/02/14.
@@ -42,6 +42,7 @@ public class TelaPonto {
     private WebEngine webEngine;
 
     public SoundService sound;
+    public boolean semConexao = true;
     public static TelaPonto INSTANCE = new TelaPonto();
 
     public static TelaPonto getInstance() {
@@ -58,40 +59,77 @@ public class TelaPonto {
         this.sound.init();
     }
 
-    private boolean initWebEngine() {
+    public boolean initWebEngine() {
         boolean con = false;
         webEngine = webView.getEngine();
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
         webEngine.setOnAlert(new OnAlertListener());
-        try {
-            con = VerificaConexao.verificaConexao(IntranetURLs.INICIAR_PONTO);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-        if (con == false || LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty()) {
-            // mostrar uma mensagem informando que está sem conexão ou sem permissão de escrita
-            if (LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty()){
-                this.labelSemConexao.setText("Sem permissão de escrita.");
-                this.labelSemConexao.setPrefWidth(600);
-                this.labelSemConexao.setLayoutX(380);
-            }
+            // mostrar uma mensagem informando que está sem permissão de escrita
+        if (LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty())
+        {
+            this.labelSemConexao.setText("Sem permissão de escrita.");
+            this.labelSemConexao.setPrefWidth(600);
+            this.labelSemConexao.setLayoutX(380);
             this.labelSemConexao.setVisible(true);
             return true;
-        }
-        webEngine.load(IntranetURLs.INICIAR_PONTO);
+        } 
+        
+        // mostrar uma mensagem informando que está sem conexão
+        Task task = new Task() {
 
-        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent t) {
-                if(!BloqueioTela.getInstance().isBloqueada()){
-                    webEngine.load(IntranetURLs.BASE_URL);
-                    MainController.INSTANCE.getCds().setUsarLeitor(true);
+            protected Object call() throws Exception {
+                System.out.println("Entrando no loop de teste de conexão.");
+                while (semConexao){
+
+                    boolean con = false;
+                    
+                    try {
+                        con = VerificaConexao.verificaConexao(IntranetURLs.INICIAR_PONTO);
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                    }
+                    semConexao = !con;
+                    if (semConexao)
+                    {
+                        labelSemConexao.setVisible(true);
+                        Thread.sleep(1000);
+                    }
+                    else
+                    {
+                        labelSemConexao.setVisible(false);
+                    }
+                   
+                    
                 }
+                System.out.println("Fim do teste de conexão");
+                return null;
+            }
+        };
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>()
+        {
+            @Override
+            public void handle(WorkerStateEvent t) 
+            {
+                
+                webEngine.load(IntranetURLs.INICIAR_PONTO);
+                imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent t) {
+                        if(!BloqueioTela.getInstance().isBloqueada()){
+                            webEngine.load(IntranetURLs.BASE_URL);
+                            MainController.INSTANCE.getCds().setUsarLeitor(true);
+                        }
+                    }
+                });
+
             }
         });
-
+        Thread nova = new Thread(task);
+        nova.start();
+        
         return false;
     }
 

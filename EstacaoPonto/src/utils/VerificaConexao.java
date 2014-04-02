@@ -23,6 +23,8 @@ public class VerificaConexao {
                // abre a conexão
                HttpURLConnection urlConnect = (HttpURLConnection)url.openConnection();
 
+               urlConnect.setConnectTimeout(5000);
+               urlConnect.setReadTimeout(5000);
                // tenta buscar conteúdo da URL
                // se não tiver conexão, essa linha irá falhar
                Object objData = urlConnect.getContent();
