@@ -6,20 +6,21 @@ package listeners;
 
 import controllers.MainController;
 import core.DadosFrequentadores;
+import core.EstacaoPonto;
 import core.IntranetURLs;
 import core.RegistroWindows;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.concurrent.Task;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import utils.Log;
-import view.TelaPonto;
 
 /**
  *
@@ -118,6 +119,36 @@ public class OnAlertListener implements EventHandler {
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else if(metodoAlerta.contains("vivooumorto"))
+            {
+                MainController.INSTANCE.iAmStillAlive();
+            }
+            else
+            {
+                if(metodoAlerta.contains("comando"))
+                {
+                    Object comando = webEngine.executeScript("window.comando");
+                    System.out.println("Comando estação: " + comando.toString());
+                    if (!comando.toString().equals("undefined") && !comando.toString().equals("")) {
+                        if (comando.toString().equals("FECHAR")) {
+                            try {
+                                System.out.println("Fechou");
+
+
+String path = new File("..").getCanonicalPath();
+
+System.out.println("Tentando executar: "+path+"\\EstacaoPonto\\runOpenUpdate.bat");
+Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(path+"\\EstacaoPonto") );               
+              
+                                                            Platform.exit();
+                                                            System.exit(0);
+                            } catch (Exception ex) {
+                                Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
                 }
             }
 

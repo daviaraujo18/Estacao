@@ -12,7 +12,7 @@ import java.net.UnknownHostException;
  */
 public class VerificaConexao {
     
-    public static boolean verificaConexao(String sUrl) throws MalformedURLException, IOException
+    public static boolean verificaConexao(String sUrl)
 	{
            
 		try {
@@ -28,12 +28,7 @@ public class VerificaConexao {
                // tenta buscar conteúdo da URL
                // se não tiver conexão, essa linha irá falhar
                Object objData = urlConnect.getContent();
-
-           } catch (UnknownHostException e) {
-                Log.e("Excecao:: UnknownHostException");
-               //e.printStackTrace();
-               return false;
-           }
+                }
            catch (IOException e) {
                return false;
            }

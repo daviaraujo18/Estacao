@@ -2,18 +2,15 @@ package core;
 
 import controllers.MainController;
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import sun.reflect.generics.tree.Tree;
 import utils.KeyHook;
 import utils.Log;
 import view.BloqueioTela;
-import view.TelaPonto;
 
 
 /**
@@ -26,6 +23,7 @@ public class EstacaoPonto extends Application{
 
     private Stage stage;
     private static EstacaoPonto INSTANCE;
+    public static final String NAME_APP = "ESTACAOPONTO";
 
     public EstacaoPonto(){
         super();
@@ -42,6 +40,9 @@ public class EstacaoPonto extends Application{
      */
     @Override
     public void init() throws Exception {
+        //saída em arquivo
+        Log.saidaEmArquivo(true);
+        
         Log.i("INITIALIZING");
         super.init();
         KeyHook.getInstance().blockWindowsKey();

@@ -1,12 +1,10 @@
 package core;
 
 
-import com.ice.jni.registry.RegStringValue;
-import com.ice.jni.registry.Registry;
-import com.ice.jni.registry.RegistryKey;
 import java.util.UUID;
 import utils.CryptoUtils;
 import utils.Log;
+import utils.WinRegistry;
 
 
 /**
@@ -19,15 +17,25 @@ public class RegistroWindows {
         
         if(OSVerifier.isWindows()) {
             try {
-                RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
-                RegistryKey softwareReg =  localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_READ);
-                RegistryKey estacaoPontoReg = softwareReg.openSubKey("TJPIEstacaoPonto",RegistryKey.ACCESS_READ);
+               // RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
+                
+                
+                String value = WinRegistry.readString (
+                    WinRegistry.HKEY_LOCAL_MACHINE,                             //HKEY
+                   "SOFTWARE\\TJPIEstacaoPonto",           //Key
+                   "codigoAtivacao");                                              //ValueName
+  
+    
+    
+//                RegistryKey softwareReg =  localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_READ);
+//                RegistryKey estacaoPontoReg = softwareReg.openSubKey("TJPIEstacaoPonto",RegistryKey.ACCESS_READ);
 
-                String valor = estacaoPontoReg.getStringValue("codigoAtivacao");
+                //String valor = estacaoPontoReg.getStringValue("codigoAtivacao");
+                String valor = value;
 
-                estacaoPontoReg.closeKey();
-                softwareReg.closeKey();
-                localMachineReg.closeKey();
+         //       estacaoPontoReg.closeKey();
+         //       softwareReg.closeKey();
+         //       localMachineReg.closeKey();
                 Log.i("\\Estação >> busca do código de ativação: " +valor);
                 return valor;
 
@@ -43,19 +51,23 @@ public class RegistroWindows {
 
     public static boolean registrarCodigoAtivacao(String codigoAtivacao) {
 		if(OSVerifier.isWindows()) {
-            try {
-                RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
-                RegistryKey softwareReg = localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_ALL);
-                
-                RegistryKey estacaoPontoReg = softwareReg.createSubKey("TJPIEstacaoPonto", "REG_SZ");
-
-                RegStringValue valor = new RegStringValue(estacaoPontoReg,"codigoAtivacao");
-                valor.setData(codigoAtivacao);
-                estacaoPontoReg.setValue(valor);
-
-                estacaoPontoReg.closeKey();
-                softwareReg.closeKey();
-                localMachineReg.closeKey();
+            try {     
+//                RegistryKey localMachineReg = Registry.HKEY_LOCAL_MACHINE;
+//                RegistryKey softwareReg = localMachineReg.openSubKey("SOFTWARE",RegistryKey.ACCESS_ALL);
+//                
+//                RegistryKey estacaoPontoReg = softwareReg.createSubKey("TJPIEstacaoPonto", "REG_SZ");
+//
+//                RegStringValue valor = new RegStringValue(estacaoPontoReg,"codigoAtivacao");
+//                valor.setData(codigoAtivacao);
+//                estacaoPontoReg.setValue(valor);
+//
+//                estacaoPontoReg.closeKey();
+//                softwareReg.closeKey();
+//                localMachineReg.closeKey();
+int hkey = WinRegistry.HKEY_LOCAL_MACHINE;
+String key  = "SOFTWARE\\TJPIEstacaoPonto";
+WinRegistry.createKey(hkey, key);
+WinRegistry.writeStringValue(hkey, key, "codigoAtivacao", codigoAtivacao);
 
                 return true;
                 

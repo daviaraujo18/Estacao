@@ -15,8 +15,8 @@ public class IntranetURLs {
             "&codigoUnicoMaquina="+RegistroWindows.getCodigoUnicoMaquina();
     
 	
-    //public static final String BASE_URL = "http://127.0.0.1:8080/intranet";
-    public static final String BASE_URL = "http://10.254.3.6:8087/presenca";
+    public static final String BASE_URL = "http://127.0.0.1:8080/intranet";
+    //public static final String BASE_URL = "http://10.254.3.6:8087/presenca";
 
     public static final String INICIALIZAR_PONTO = BASE_URL+"/tjpi/presenca/InicializarPonto";
     //public static String INICIALIZAR_PONTO_COM_CODIGOS = BASE_URL+"/tjpi/presenca/InicializarPonto"+getCodigos();
@@ -28,9 +28,9 @@ public class IntranetURLs {
     public static final String INICIAR_PONTO = BASE_URL+"/tjpi/presenca/IniciarPonto";
 
     public static String getCodigos() {
-        System.out.println("Recuperando codigoAtivacao: "+RegistroWindows.getCodigoAtivacaoRegistro());
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        Log.i(codAtivacao);
+        System.out.println("Recuperando codigoAtivacao: "+codAtivacao);
+       // Log.i(codAtivacao);
         String codUnicoM = RegistroWindows.getCodigoUnicoMaquina();
         Log.i(codUnicoM);
         return "?codigoAtivacao="+ codAtivacao+"&codigoUnicoMaquina="+codUnicoM;

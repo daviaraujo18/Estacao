@@ -157,4 +157,8 @@ public class MainController implements Initializable {
         threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
         //threadRelogio.desativarSincronizacao();
     }
+    public void iAmStillAlive(){
+        String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
+        The.inserirJavascript(this.tela.getWebEngine(), "iAmStillAlive('" + codAtivacao + "')");
+    }
 }

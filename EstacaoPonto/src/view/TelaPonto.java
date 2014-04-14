@@ -3,10 +3,6 @@ package view;
 import controllers.MainController;
 import core.IntranetURLs;
 import core.LocalPaths;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -84,13 +80,7 @@ public class TelaPonto {
 
                     boolean con = false;
                     
-                    try {
-                        con = VerificaConexao.verificaConexao(IntranetURLs.INICIAR_PONTO);
-                    } catch (MalformedURLException ex) {
-                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                    }
+                    con = VerificaConexao.verificaConexao(IntranetURLs.INICIAR_PONTO);
                     semConexao = !con;
                     if (semConexao)
                     {
@@ -174,5 +164,5 @@ public class TelaPonto {
         The.inserirJavascript(this.webEngine, "unlock()");
     }
 
-
+    
 }
