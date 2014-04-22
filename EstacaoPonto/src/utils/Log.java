@@ -4,6 +4,7 @@
  */
 package utils;
 
+import core.Configuracoes;
 import core.EstacaoPonto;
 import core.LocalPaths;
 import java.io.File;
@@ -40,7 +41,7 @@ public class Log {
 
             
             String sData = "_"+dia+mes+data.get(Calendar.YEAR);
-            File saida = new File(LocalPaths.PATH_LOG+"log_"+EstacaoPonto.NAME_APP+sData+".txt"); 
+            File saida = new File(LocalPaths.PATH_LOG+"log_"+ Configuracoes.APP_NAME.get()+sData+".txt");
             File dir  = saida.getParentFile();
             dir.mkdirs();
             PrintStream psSaida;
