@@ -23,7 +23,6 @@ public class EstacaoPonto extends Application{
 
     private Stage stage;
     private static EstacaoPonto INSTANCE;
-    public static final String NAME_APP = "ESTACAOPONTO";
 
     public EstacaoPonto(){
         super();
