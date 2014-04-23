@@ -32,7 +32,7 @@ public class RegistroWindows {
 
             //Imprime o resultado completo da busca. Caso necessite de todos os
             //campos basta retornar essa variável (strResultadoBusca).
-            System.out.println(strResultadoBusca);
+            Log.i(strResultadoBusca);
 
             //Verifica qual o caracter utilizado para separação dos campos.
             //Win 7 = " " e Win XP = "\t"
@@ -78,9 +78,9 @@ public class RegistroWindows {
                 + "CurrentVersion\\Run", "TesteInclusaoChaveRegistro", "REG_SZ", "Teste");
 
         if (registro == null) {
-            System.out.println("O registro solicitado não foi encontrado.");
+            Log.i("O registro solicitado não foi encontrado.");
         } else {
-            System.out.println(registro);
+            Log.i(registro);
         }
     }
 }
