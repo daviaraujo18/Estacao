@@ -84,8 +84,8 @@ public class RecoverSerialHD {
   
     public static void main(String[] args) {  
         int valor = Integer.parseInt(getHDSerial("c"));
-        System.out.println("Serial do HD: " + Integer.toHexString(valor));  
-        System.out.println("Serial da CPU: " + getCPUSerial());  
+        Log.i("Serial do HD: " + Integer.toHexString(valor));
+        Log.i("Serial da CPU: " + getCPUSerial());
     }  
   
 }
