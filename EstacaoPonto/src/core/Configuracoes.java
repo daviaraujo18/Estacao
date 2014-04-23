@@ -26,7 +26,4 @@ public enum Configuracoes {
         }
     }
 
-    public static void main(String... args){
-        System.out.println(Configuracoes.APP_NAME.get());
-    }
 }
