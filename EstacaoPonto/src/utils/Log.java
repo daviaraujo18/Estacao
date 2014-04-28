@@ -41,7 +41,7 @@ public class Log {
 
             
             String sData = "_"+dia+mes+data.get(Calendar.YEAR);
-            File saida = new File(LocalPaths.PATH_LOG+"log_"+ Configuracoes.APP_NAME.get()+sData+".txt");
+            File saida = new File(LocalPaths.PATH_LOG+"log_"+ Configuracoes.app_name.get()+sData+".txt");
             File dir  = saida.getParentFile();
             dir.mkdirs();
             PrintStream psSaida;

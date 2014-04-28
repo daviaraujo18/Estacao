@@ -5,7 +5,8 @@ import java.util.Properties;
 
 public enum Configuracoes {
 
-    APP_NAME;
+    app_name,
+    base_intranet_url;
 
     private static Properties props;
     private boolean inicialized = false;

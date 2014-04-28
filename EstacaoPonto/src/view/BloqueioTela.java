@@ -19,8 +19,8 @@ import java.util.List;
 public class BloqueioTela {
 
     private static BloqueioTela instance = new BloqueioTela();
-    private boolean bloqueada = true;
-    EventHandler<MouseEvent> clickHandler;
+    private boolean bloqueada = false;
+//    EventHandler<MouseEvent> clickHandler;
 
     private BloqueioTela(){
         final EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
@@ -35,7 +35,7 @@ public class BloqueioTela {
 
     public void addClickTarget(Node... nodes){
         for (Node node : nodes){
-            node.setOnMouseClicked(clickHandler);
+//            node.setOnMouseClicked(clickHandler);
             onKeyPressed(node);
         }
     }
@@ -48,9 +48,9 @@ public class BloqueioTela {
     }
 
     public void bloquear(){
-        KeyHook.getInstance().blockWindowsKey();
-        TelaPonto.getInstance().lock();
-        bloqueada = true;
+//        KeyHook.getInstance().blockWindowsKey();
+//        TelaPonto.getInstance().lock();
+//        bloqueada = true;
     }
 
     public void desbloquear(){

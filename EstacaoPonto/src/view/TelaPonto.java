@@ -163,6 +163,5 @@ public class TelaPonto {
     public void unlock(){
         The.inserirJavascript(this.webEngine, "unlock()");
     }
-
     
 }

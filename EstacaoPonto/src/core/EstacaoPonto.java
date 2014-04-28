@@ -45,6 +45,7 @@ public class EstacaoPonto extends Application{
         Log.i("INITIALIZING");
         super.init();
         KeyHook.getInstance().blockWindowsKey();
+//        BloqueioTela.getInstance().bloquear();
     }
 
     /**
@@ -57,6 +58,7 @@ public class EstacaoPonto extends Application{
 
         Log.i("STOPPING");
         KeyHook.getInstance().unblockWindowsKey();
+//        BloqueioTela.getInstance().desbloquear();
         super.stop();
     }
 
@@ -67,6 +69,8 @@ public class EstacaoPonto extends Application{
         this.stage = palco;
         Scene scene = new Scene(root);
         KeyHook.getInstance().blockWindowsKey();
+//        BloqueioTela.getInstance().bloquear();
+
 
         stage.setScene(scene);
         stage.setTitle("TJPI - Estação Ponto de Presença");
