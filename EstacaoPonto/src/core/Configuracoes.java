@@ -1,5 +1,7 @@
 package core;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -20,7 +22,8 @@ public enum Configuracoes {
     private void init() {
         props = new Properties();
         try {
-            InputStream is = getClass().getResourceAsStream("../resources/config.properties");
+            String path = new File(".").getCanonicalPath();
+            InputStream is =   new FileInputStream(path+"/build/clsses/resources/config.properties");
             props.load(is);
         } catch (Exception e) {
             e.printStackTrace();
