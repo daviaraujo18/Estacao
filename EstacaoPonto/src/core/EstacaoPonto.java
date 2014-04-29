@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import utils.KeyHook;
 import utils.Log;
 import view.BloqueioTela;
 
@@ -43,9 +42,9 @@ public class EstacaoPonto extends Application{
         Log.saidaEmArquivo(true);
         
         Log.i("INITIALIZING");
-        super.init();
-        KeyHook.getInstance().blockWindowsKey();
-//        BloqueioTela.getInstance().bloquear();
+        BloqueioTela.getInstance().bloquearTeclas();
+
+
     }
 
     /**
@@ -57,8 +56,7 @@ public class EstacaoPonto extends Application{
     public void stop() throws Exception {
 
         Log.i("STOPPING");
-        KeyHook.getInstance().unblockWindowsKey();
-//        BloqueioTela.getInstance().desbloquear();
+        BloqueioTela.getInstance().desbloquearTeclas();
         super.stop();
     }
 
@@ -68,8 +66,7 @@ public class EstacaoPonto extends Application{
 
         this.stage = palco;
         Scene scene = new Scene(root);
-        KeyHook.getInstance().blockWindowsKey();
-//        BloqueioTela.getInstance().bloquear();
+        BloqueioTela.getInstance().bloquearTeclas();
 
 
         stage.setScene(scene);
