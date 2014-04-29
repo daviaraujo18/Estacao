@@ -10,9 +10,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import utils.KeyHook;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Danilo on 14/03/14.
  */
@@ -48,13 +45,13 @@ public class BloqueioTela {
     }
 
     public void bloquear(){
-//        KeyHook.getInstance().blockWindowsKey();
-//        TelaPonto.getInstance().lock();
-//        bloqueada = true;
+        this.bloquearTeclas();
+        TelaPonto.getInstance().lock();
+        bloqueada = true;
     }
 
     public void desbloquear(){
-        KeyHook.getInstance().unblockWindowsKey();
+        this.desbloquearTeclas();
         TelaPonto.getInstance().unlock();
         bloqueada = false;
     }
@@ -89,5 +86,13 @@ public class BloqueioTela {
 
     public boolean isBloqueada() {
         return bloqueada;
+    }
+
+    public void desbloquearTeclas() {
+        KeyHook.getInstance().unblockWindowsKey();
+    }
+
+    public void bloquearTeclas() {
+        KeyHook.getInstance().blockWindowsKey();
     }
 }

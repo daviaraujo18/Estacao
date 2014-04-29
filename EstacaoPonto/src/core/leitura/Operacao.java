@@ -2,7 +2,6 @@ package core.leitura;
 
 import controllers.MainController;
 import core.DadosFrequentadores;
-import utils.KeyHook;
 import view.BloqueioTela;
 
 import java.util.Map;
