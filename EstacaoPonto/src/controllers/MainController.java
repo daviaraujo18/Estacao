@@ -3,8 +3,10 @@ package controllers;
 import async.PreProcessandoService;
 import async.ThreadRelogio;
 import core.IntranetURLs;
+import core.LocalPaths;
 import core.RegistroWindows;
 import core.leitura.LeitorDigital;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import utils.ArquivoRegistros;
+import utils.Log;
 import utils.The;
 import utils.VerificaConexao;
 import view.TelaPonto;
@@ -55,6 +58,8 @@ public class MainController implements Initializable {
 
     private PreProcessandoService cds;
     public TelaPonto tela;
+    public String nomeLog;
+    public String[] arr;
 
     public static MainController INSTANCE;
 
@@ -164,8 +169,45 @@ public class MainController implements Initializable {
         threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
         //threadRelogio.desativarSincronizacao();
     }
-    public void iAmStillAlive(){
+public void iAmStillAlive(){
+        
+        
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        The.inserirJavascript(this.tela.getWebEngine(), "iAmStillAlive('" + codAtivacao + "')");
+        The.inserirJavascript(this.tela.getWebEngine(), "iAmStillAlive('" + codAtivacao + "','"+getNameLogs()+"')");
+        
+    }
+    public void addUploadFile(int size){
+        String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
+        
+        The.inserirJavascript(this.tela.getWebEngine(), "adicionaUpload('"+codAtivacao+"','"+nomeLog+"',"+size+")");
+    }   
+    public void doUploadParte()
+    {   String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
+        for (int i = 0; i<arr.length;i++)
+        {
+            String parte =  arr[i].replace("\'", "\\\'");//arr[i].replace(')', ' ');
+            String js="adicionaParte('" + codAtivacao + "','"+nomeLog+"','"+parte+"',"+i+")";
+            System.out.println("Enviando: "+js);
+            The.inserirJavascript(this.tela.getWebEngine(), js);
+        }
+    }
+    private String getNameLogs()
+    {
+        String logsNames="";
+        File folder = new File(LocalPaths.PATH_LOG);
+        
+        if (folder.exists())
+        {
+            File[] listFiles = folder.listFiles();
+            for (File file:listFiles)
+            {
+                if (file.getName().startsWith(Log.LOG_NAME_BEGIN))
+                {
+                    logsNames= file.getName()+" / "+logsNames;
+                }
+            }
+        }
+        System.out.println(logsNames);
+        return logsNames;
     }
 }

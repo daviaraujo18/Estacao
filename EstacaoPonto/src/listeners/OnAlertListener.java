@@ -5,8 +5,15 @@
 package listeners;
 
 import controllers.MainController;
+import core.LocalPaths;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -49,25 +56,66 @@ public class OnAlertListener implements EventHandler {
         }
     }
 
-    private void processarComando(WebEngine webEngine) {
-        Object comando = webEngine.executeScript("window.comando");
-        System.out.println("Comando estação: " + comando.toString());
-        if (!comando.toString().equals("undefined") && !comando.toString().equals("")) {
-            if (comando.toString().equals("FECHAR")) {
-                try {
-                    System.out.println("Fechou");
+ private void processarComando(WebEngine webEngine) 
+{           
 
-                    String path = new File("..").getCanonicalPath();
+            Object comando = webEngine.executeScript("window.comando");
+            System.out.println("Comando estação: " + comando.toString());
 
-                    System.out.println("Tentando executar: "+path+"\\EstacaoPonto\\runOpenUpdate.bat");
-                    Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(path+"\\EstacaoPonto") );
+            if (!comando.toString().equals("undefined") && !comando.toString().equals("")) {
+                if (comando.toString().equals("FECHAR")) {
+                    try {
+                        System.out.println("Fechou");
+//                        Platform.exit();
+//                        System.exit(0);
+                    } catch (Exception ex) {
+                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                if (comando.toString().startsWith("LOG")) {
+                    
+                    MainController.INSTANCE.nomeLog=comando.toString();
+                    Path path = Paths.get(LocalPaths.PATH_LOG+comando.toString());
 
-                    Platform.exit();
-                    System.exit(0);
-                } catch (Exception ex) {
-                    Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    List<String> lines=null;
+                    try {
+                        lines = Files.readAllLines(path, Charset.forName("UTF-8"));
+                    } catch (IOException ex) {
+                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    MainController.INSTANCE.arr = lines.toArray(new String[lines.size()]);
+                    System.out.println("tamanho: "+MainController.INSTANCE.arr.length);
+                    MainController.INSTANCE.addUploadFile(MainController.INSTANCE.arr.length);
+                 
+                
+                }else{
+                    if (comando.toString().equals("doUpload")) {
+                        System.out.println("adicionando partes");
+                    
+                        MainController.INSTANCE.doUploadParte();
+
+                    }
+                    else{
+                if (comando.toString().equals("INICIAR")) {
+                    try 
+                    {
+                        try {
+                            String path = new File("..").getCanonicalPath();
+                            System.out.println("Tentando executar: "+path+"\\OUA\\runEstacao.bat");
+//                            Process p =  Runtime.getRuntime().exec("cmd.exe /c start runEstacao.bat",null,new File(path+"\\OUA") );
+                        } 
+                        catch (IOException ex) {
+                            Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        System.out.println("Iniciou");
+//                        Platform.exit();
+//                        System.exit(0);
+                    }
+                    catch (Exception ex) 
+                    {
+                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }}}}
             }
         }
-    }
 }

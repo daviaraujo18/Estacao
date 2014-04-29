@@ -20,7 +20,7 @@ import java.util.Calendar;
  * @author Anderson Soares
  */
 public class Log {
-
+    public static final String LOG_NAME_BEGIN = "LOG_";
     public static void i(Object msg) {
         System.out.println("[LOG-INFO] "+msg.toString());
     }
@@ -41,7 +41,7 @@ public class Log {
 
             
             String sData = "_"+dia+mes+data.get(Calendar.YEAR);
-            File saida = new File(LocalPaths.PATH_LOG+"log_"+ Configuracoes.app_name.get()+sData+".txt");
+            File saida = new File(LocalPaths.PATH_LOG+LOG_NAME_BEGIN+ Configuracoes.app_name.get()+sData+".txt");
             File dir  = saida.getParentFile();
             dir.mkdirs();
             PrintStream psSaida;
