@@ -142,6 +142,13 @@ public class MainController implements Initializable {
         The.inserirJavascript(this.tela.getWebEngine(), "atualizaRelogioLocal('" + horario + "')");
     }
 
+    public void reiniciarCapturaDigital(){
+        if(this.getCds().isRunning()){
+            this.inicializarLeitor();
+        }
+        MainController.INSTANCE.getCds().start();
+    }
+
     /*
      * Apaga todos os registros do arquivo
      */
