@@ -187,7 +187,6 @@ public void iAmStillAlive(){
         {
             String parte =  arr[i].replace("\'", "\\\'");//arr[i].replace(')', ' ');
             String js="adicionaParte('" + codAtivacao + "','"+nomeLog+"','"+parte+"',"+i+")";
-            System.out.println("Enviando: "+js);
             The.inserirJavascript(this.tela.getWebEngine(), js);
         }
     }
