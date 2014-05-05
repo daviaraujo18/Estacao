@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -148,10 +150,10 @@ public class MainController implements Initializable {
     }
 
     public void reiniciarCapturaDigital(){
-        if(this.getCds().isRunning()){
+        if(this.getCds().getState().equals(Worker.State.SUCCEEDED)){
             this.inicializarLeitor();
         }
-        MainController.INSTANCE.getCds().start();
+        this.INSTANCE.getCds().start();
     }
 
     /*
