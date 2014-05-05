@@ -110,7 +110,7 @@ public class TelaPonto {
                     public void handle(MouseEvent t) {
                         if(!BloqueioTela.getInstance().isBloqueada()){
                             webEngine.load(IntranetURLs.BASE_URL);
-                            MainController.INSTANCE.getCds().setUsarLeitor(true);
+                            MainController.INSTANCE.getCds().parar(true);
                         }
                     }
                 });
@@ -124,8 +124,9 @@ public class TelaPonto {
     }
 
     public void onTopClicked(){
+        MainController.INSTANCE.getCds().parar(true);
         webEngine.load(IntranetURLs.BASE_URL);
-        MainController.INSTANCE.getCds().setUsarLeitor(true);
+
     }
 
 

@@ -15,42 +15,48 @@ import utils.Log;
  *
  * @author Anderson Soares < aersandersonsoares@gmail.com >
  */
-public class PreProcessandoService extends Service<PreProcessandoService.Result> {
+public class PreProcessandoService extends Service<PreProcessandoService.Result> implements Runnable{
 
-    private boolean usarLeitor = false;
+    private boolean parar = false;
     public boolean clickDesbloqueioTela;
 
     @Override
     protected Task<Result> createTask() {
         return new Task<Result>() {
-
             @Override
             protected Result call() {
-                try {
-                    getLeitor().abrirLeitor();
-                    while (true) {
-                        if(!usarLeitor) {
-
-                            boolean b = getLeitor().temDedo();
-                            if (b && !clickDesbloqueioTela) {
-                                String digital =  getLeitor().capturarDigital();
-                                return new Result(Operacao.REGISTRO_FREQUENCIA, digital);
-                            }
-                            if(clickDesbloqueioTela){
-                                String digital = getLeitor().capturarDigital_popup();
-                                clickDesbloqueioTela = false;
-                                return new Result(Operacao.DESBLOQUEIO, digital);
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    PreProcessandoService.this.restart();
-                    e.printStackTrace();
-                }
-                return null;
+                return getResult();
             }
         };
     }
+
+    private Result getResult() {
+        try {
+            getLeitor().abrirLeitor();
+            while (!parar) {
+                boolean b = getLeitor().temDedo();
+                if (b && !clickDesbloqueioTela) {
+                    String digital =  getLeitor().capturarDigital();
+                    return new Result(Operacao.REGISTRO_FREQUENCIA, digital);
+                }
+                if(clickDesbloqueioTela){
+                    String digital = getLeitor().capturarDigital_popup();
+                    clickDesbloqueioTela = false;
+                    return new Result(Operacao.DESBLOQUEIO, digital);
+                }
+            }
+        } catch (Exception e) {
+            PreProcessandoService.this.restart();
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void run() {
+        this.getResult();
+    }
+
 
     public class Result{
         Operacao operacao;
@@ -66,12 +72,12 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
         }
     }
 
-
     public LeitorDigital getLeitor() {
         return LeitorDigital.getInstance();
     }
-    public void setUsarLeitor(boolean usarLeitor) {
-        this.usarLeitor = usarLeitor;
+
+    public void parar(boolean b) {
+        this.parar  = b;
     }
 
 }
