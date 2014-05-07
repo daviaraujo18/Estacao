@@ -35,13 +35,9 @@ public class Log {
         if (saidaEmArquivo)
         {
             Calendar data = Calendar.getInstance();
-            
-            String mes = adicionaZero(data.get(Calendar.MONTH)+1);
-            String dia = adicionaZero(data.get(Calendar.DAY_OF_MONTH));
+            buildFileSimpleName(data);
 
-            
-            String sData = "_"+dia+mes+data.get(Calendar.YEAR);
-            File saida = new File(LocalPaths.PATH_LOG+LOG_NAME_BEGIN+ Configuracoes.app_name.get()+sData+".txt");
+            File saida = new File(LocalPaths.PATH_LOG+LOG_NAME_BEGIN+ Configuracoes.app_name.get());
             File dir  = saida.getParentFile();
             dir.mkdirs();
             PrintStream psSaida;
@@ -60,6 +56,14 @@ public class Log {
             }
         }
     }
+
+    public static void buildFileSimpleName(Calendar data) {
+        String mes = adicionaZero(data.get(Calendar.MONTH)+1);
+        String dia = adicionaZero(data.get(Calendar.DAY_OF_MONTH));
+        int ano = data.get(Calendar.YEAR);
+        String fileSimpleName = "_"+ano+mes+dia+".txt";
+    }
+
     private static String adicionaZero(int num) {
         String sNum = ""+num;
         if (num<10)
