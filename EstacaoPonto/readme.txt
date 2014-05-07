@@ -1,23 +1,23 @@
 =====Projeto
-O projeto EstacaoPonto foi desenvolvido utilizando a Tecnologia JavaFX a qual permite
-imbutir dentro de uma aplicação Desktop Standalone um browser.
-Com isso, podemos integrar um dispositivo de leitura biometrica ao sistema Intranet do TJPI de forma ágil
-utilizando a linguagem de Programação Java.
+O projeto core.EstacaoPonto foi desenvolvido utilizando a Tecnologia JavaFX a qual permite
+imbutir dentro de uma aplicaï¿½ï¿½o Desktop Standalone um browser.
+Com isso, podemos integrar um dispositivo de leitura biometrica ao sistema Intranet do TJPI de forma ï¿½gil
+utilizando a linguagem de Programaï¿½ï¿½o Java.
 
-Dúvidas: Anderson Soares < aersandersonsoares@gmail.com >
+Dï¿½vidas: Anderson Soares < aersandersonsoares@gmail.com >
 
 
 =====
 Estrutura
 
 src
-	async			-> Contém Serviços que não utilizam a thread principal do JavaFX, e rodam de forma assincrona a aplicação
-	controllers		-> Contém toda a gerência da aplicação
-	core			-> Contém classes que fazem acesso a recursos do sistema operacional/outros dispositivos
-	listeners		-> Contém classes que manipulam eventos do JavaFX, como quando o usuário acessou uma url diferente
-	resources		-> Contém arquivos de 'recurso', como imagens, estilos css e configuracao xml do JavaFX
-	utils			-> Contém classes que contém métodos auxiliares que são utilizados na aplicação
-	EstacaoPonto.java
+	async			-> Contï¿½m Serviï¿½os que nï¿½o utilizam a thread principal do JavaFX, e rodam de forma assincrona a aplicaï¿½ï¿½o
+	controllers		-> Contï¿½m toda a gerï¿½ncia da aplicaï¿½ï¿½o
+	core			-> Contï¿½m classes que fazem acesso a recursos do sistema operacional/outros dispositivos
+	listeners		-> Contï¿½m classes que manipulam eventos do JavaFX, como quando o usuï¿½rio acessou uma url diferente
+	resources		-> Contï¿½m arquivos de 'recurso', como imagens, estilos css e configuracao xml do JavaFX
+	utils			-> Contï¿½m classes que contï¿½m mï¿½todos auxiliares que sï¿½o utilizados na aplicaï¿½ï¿½o
+	core.EstacaoPonto.java
 	
 lib
 	bcprov			-> Criptografia
