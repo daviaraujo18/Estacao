@@ -1,4 +1,3 @@
-
 Plugue o leitor apenas quando solicitado
 
 1.	Baixar o conteúdo em http://svn.tjpi.jus.br:81/svn/pontodigital
@@ -16,7 +15,7 @@ Plugue o leitor apenas quando solicitado
         clique em setup.exe. Quando solicitado, utilize o serial em SERIAL.txt.
         Instale o NetFrameWork se solicitado.
 
-6.	Na pasta de arquivos baixados, renomeie a pasta EstacaoPonto para um nome qualquer.
+6.	Na pasta de arquivos baixados, renomeie a pasta core.EstacaoPonto para um nome qualquer.
 
 7.	Crie um projeto JAVA FX com o nome Estacao Ponto
 	Deixe marcado ”Usar pasta dedicada para Armazenar bibliotecas”
@@ -28,7 +27,7 @@ Plugue o leitor apenas quando solicitado
 
 10.	Na pasta nbproject abra o arquivo project.properties
 
-11.	Procure a linha "javafx.main.class=estacaoponto.EstacaoPonto" e substitua por "javafx.main.class=EstacaoPonto"
+11.	Procure a linha "javafx.main.class=estacaoponto.core.EstacaoPonto" e substitua por "javafx.main.class=core.EstacaoPonto"
 
 12.	Abra o projeto no netBeans e adicione os “.jar” existentes na lib que você copiou (NBioBSPJNI.jar, bcprov-jdk14-132.jar e registry.jar)
 
