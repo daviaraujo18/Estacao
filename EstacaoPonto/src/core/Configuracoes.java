@@ -36,7 +36,8 @@ public enum Configuracoes {
         props = new Properties();
         try {
             String path = new File(".").getCanonicalPath();
-            InputStream is =   new FileInputStream(path+"/build/clsses/resources/config.properties");
+            InputStream is = getClass().getResourceAsStream("../resources/config.properties");
+//            InputStream is =   new FileInputStream(path+"/build/clsses/resources/config.properties");
             props.load(is);
         } catch (Exception e) {
             e.printStackTrace();

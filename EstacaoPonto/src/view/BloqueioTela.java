@@ -1,6 +1,7 @@
 package view;
 
 import controllers.MainController;
+import core.Configuracoes;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -45,9 +46,11 @@ public class BloqueioTela {
     }
 
     public void bloquear(){
-        this.bloquearTeclas();
-        TelaPonto.getInstance().lock();
-        bloqueada = true;
+        if(Configuracoes.bloqueio_tela.getBooleanValue()){
+            this.bloquearTeclas();
+            TelaPonto.getInstance().lock();
+            bloqueada = true;
+        }
     }
 
     public void desbloquear(){
@@ -93,6 +96,8 @@ public class BloqueioTela {
     }
 
     public void bloquearTeclas() {
-        KeyHook.getInstance().blockWindowsKey();
+        if(Configuracoes.bloqueio_tela.getBooleanValue()){
+            KeyHook.getInstance().blockWindowsKey();
+        }
     }
 }
