@@ -8,15 +8,28 @@ import java.util.Properties;
 public enum Configuracoes {
 
     app_name,
-    base_intranet_url;
+    base_intranet_url,
+    tela_cheia,
+    bloqueio_tela;
 
     private static Properties props;
-    private boolean inicialized = false;
+    private boolean inicializado = false;
     public String get(){
-        if(!inicialized){
+        if(!inicializado){
             init();
         }
-        return props.get(this.name()).toString();
+        Object prop = props.get(this.name());
+        if (prop ==  null)
+            prop = "";
+        return prop.toString();
+    }
+
+    public boolean getBooleanValue(){
+        return this.get().toUpperCase().equals("TRUE");
+    }
+
+    public int getIntValue(){
+        return Integer.parseInt(this.get());
     }
 
     private void init() {
