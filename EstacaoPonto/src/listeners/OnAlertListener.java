@@ -79,7 +79,7 @@ public class OnAlertListener implements EventHandler {
 
                     List<String> lines=null;
                     try {
-                        lines = Files.readAllLines(path, Charset.forName("UTF-8"));
+                        lines = Files.readAllLines(path, Charset.forName("ISO-8859-1"));
                     } catch (IOException ex) {
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
