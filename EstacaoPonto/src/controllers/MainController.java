@@ -182,12 +182,16 @@ public void iAmStillAlive(){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
         
         The.inserirJavascript(this.tela.getWebEngine(), "adicionaUpload('"+codAtivacao+"','"+nomeLog+"',"+size+")");
-    }   
+    }
+    
     public void doUploadParte()
     {   String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
+        
         for (int i = 0; i<arr.length;i++)
         {
-            String parte =  arr[i].replace("\'", "\\\'");//arr[i].replace(')', ' ');
+            System.out.println("linha: "+i);
+            String parte =  arr[i].replace("\\", "\\\\"); //  replace \ por \\
+            parte =  parte.replace("\'", "\\\'");//  replace ' por \'
             String js="adicionaParte('" + codAtivacao + "','"+nomeLog+"','"+parte+"',"+i+")";
             The.inserirJavascript(this.tela.getWebEngine(), js);
         }

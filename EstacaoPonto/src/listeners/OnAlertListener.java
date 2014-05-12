@@ -91,7 +91,6 @@ public class OnAlertListener implements EventHandler {
                 }else{
                     if (comando.toString().equals("doUpload")) {
                         System.out.println("adicionando partes");
-                    
                         MainController.INSTANCE.doUploadParte();
 
                     }
