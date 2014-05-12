@@ -28,40 +28,40 @@ public class Log {
     public static void e(Object msg) {
         System.out.println("[LOG-ERROR] "+msg.toString());
     }
-    
+
     public static void saidaEmArquivo(boolean saidaEmArquivo)
     {
         //saída em arquivo
         if (saidaEmArquivo)
         {
             Calendar data = Calendar.getInstance();
-            buildFileSimpleName(data);
-
-            File saida = new File(LocalPaths.PATH_LOG+LOG_NAME_BEGIN+ Configuracoes.app_name.get());
+            String sData = buildFileSimpleName(data);
+            File saida = new File(LocalPaths.PATH_LOG+LOG_NAME_BEGIN+ Configuracoes.app_name.get() + sData);
             File dir  = saida.getParentFile();
             dir.mkdirs();
             PrintStream psSaida;
             try {
-                 saida.createNewFile();
-                
+                saida.createNewFile();
+
                 OutputStream outStream = new FileOutputStream(saida,true);
                 psSaida = new PrintStream(outStream);
                 System.setOut(psSaida);
-                System.setErr(System.out); 
+                System.setErr(System.out);
             } catch (FileNotFoundException ex) {
                 Log.e(ex);
             }
-             catch (IOException ex) {
+            catch (IOException ex) {
                 Log.e(ex);
             }
         }
     }
 
-    public static void buildFileSimpleName(Calendar data) {
+    public static String buildFileSimpleName(Calendar data) {
         String mes = adicionaZero(data.get(Calendar.MONTH)+1);
         String dia = adicionaZero(data.get(Calendar.DAY_OF_MONTH));
         int ano = data.get(Calendar.YEAR);
         String fileSimpleName = "_"+ano+mes+dia+".txt";
+        return fileSimpleName;
     }
 
     private static String adicionaZero(int num) {
