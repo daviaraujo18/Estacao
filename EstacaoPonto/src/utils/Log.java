@@ -39,7 +39,7 @@ public class Log {
         //saída em arquivo
         if (saidaEmArquivo)
         {
-            Calendar data =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
+            Calendar data = Calendar.getInstance();
             sData = buildFileSimpleName(data);
             criaArquivoSetaSaida();
 
