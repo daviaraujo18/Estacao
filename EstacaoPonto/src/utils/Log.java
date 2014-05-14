@@ -4,8 +4,9 @@
  */
 package utils;
 
+import async.ThreadRelogio;
+import controllers.MainController;
 import core.Configuracoes;
-import core.EstacaoPonto;
 import core.LocalPaths;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +22,10 @@ import java.util.Calendar;
  */
 public class Log {
     public static final String LOG_NAME_BEGIN = "LOG_";
+    private static String sData;
+    public static boolean saidaEmArquivo;
+
+    
     public static void i(Object msg) {
         System.out.println("[LOG-INFO] "+msg.toString());
     }
@@ -28,14 +33,20 @@ public class Log {
     public static void e(Object msg) {
         System.out.println("[LOG-ERROR] "+msg.toString());
     }
-
-    public static void saidaEmArquivo(boolean saidaEmArquivo)
+    
+    public static void saidaEmArquivo()
     {
         //saída em arquivo
         if (saidaEmArquivo)
         {
-            Calendar data = Calendar.getInstance();
-            String sData = buildFileSimpleName(data);
+            Calendar data =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
+            sData = buildFileSimpleName(data);
+            criaArquivoSetaSaida();
+
+        }
+    }
+    public static void criaArquivoSetaSaida()
+    {
             File saida = new File(LocalPaths.PATH_LOG+LOG_NAME_BEGIN+ Configuracoes.app_name.get() + sData);
             File dir  = saida.getParentFile();
             dir.mkdirs();
@@ -46,16 +57,26 @@ public class Log {
                 OutputStream outStream = new FileOutputStream(saida,true);
                 psSaida = new PrintStream(outStream);
                 System.setOut(psSaida);
-                System.setErr(System.out);
+                System.setErr(System.out); 
             } catch (FileNotFoundException ex) {
                 Log.e(ex);
             }
             catch (IOException ex) {
                 Log.e(ex);
             }
+    }
+    public static void atualizarDataLog()
+    {
+        if(saidaEmArquivo)
+        {
+            String sDataNew = buildFileSimpleName((Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone());
+            if (sDataNew!=null && !sDataNew.isEmpty()&& !sDataNew.equals(sData))
+            {
+                sData = sDataNew;
+                criaArquivoSetaSaida();
+            }
         }
     }
-
     public static String buildFileSimpleName(Calendar data) {
         String mes = adicionaZero(data.get(Calendar.MONTH)+1);
         String dia = adicionaZero(data.get(Calendar.DAY_OF_MONTH));

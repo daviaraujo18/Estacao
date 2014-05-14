@@ -39,7 +39,8 @@ public class EstacaoPonto extends Application{
     @Override
     public void init() throws Exception {
         //saída em arquivo
-        Log.saidaEmArquivo(true);
+        Log.saidaEmArquivo=true;
+        Log.saidaEmArquivo();
         
         Log.i("INITIALIZING");
         BloqueioTela.getInstance().bloquearTeclas();

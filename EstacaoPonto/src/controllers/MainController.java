@@ -142,6 +142,7 @@ public class MainController implements Initializable {
         //String minutos = horario.split(":")[1];
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
+            Log.atualizarDataLog();
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
                 iniciarSincronizacao();
             }
