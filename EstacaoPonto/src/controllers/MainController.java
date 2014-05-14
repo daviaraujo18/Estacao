@@ -142,8 +142,8 @@ public class MainController implements Initializable {
         //String minutos = horario.split(":")[1];
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
-            Log.atualizarDataLog();
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
+                System.out.println("Iniciando sincronização. Data: "+threadRelogio.getDataServidorAtual().getTime());
                 iniciarSincronizacao();
             }
         }
@@ -169,7 +169,7 @@ public class MainController implements Initializable {
     {
         String dados = ArquivoRegistros.lerArquivo();
         The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
-        threadRelogio.setUltimaSincronizacao(Calendar.getInstance());
+        threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());
         //threadRelogio.desativarSincronizacao();
     }
 public void iAmStillAlive(){
@@ -213,7 +213,6 @@ public void iAmStillAlive(){
                 }
             }
         }
-        System.out.println(logsNames);
         return logsNames;
     }
 }

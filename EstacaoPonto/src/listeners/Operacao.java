@@ -74,6 +74,7 @@ public enum Operacao {
             Calendar dataServidor = Calendar.getInstance();
             dataServidor.set(ano, mes, dia, hora, minutos);
             MainController.INSTANCE.criarThreadRelogio(dataServidor);
+            Log.atualizarDataLog();
         }
     },
     ATUALIZAR_RELOGIO_LOCAL("atualizarRelogioLocal"){
@@ -85,6 +86,7 @@ public enum Operacao {
                 try {
                     System.out.println("Atualizando...");
                     MainController.INSTANCE.atualizarHorario(horario);
+                    Log.atualizarDataLog();
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {

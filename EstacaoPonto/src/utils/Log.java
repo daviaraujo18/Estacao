@@ -4,7 +4,6 @@
  */
 package utils;
 
-import async.ThreadRelogio;
 import controllers.MainController;
 import core.Configuracoes;
 import core.LocalPaths;
@@ -39,8 +38,9 @@ public class Log {
         //saída em arquivo
         if (saidaEmArquivo)
         {
+            //utilizando data local para nome de log enquanto não carrega a página PontoDePresenca.jsp
             Calendar data = Calendar.getInstance();
-            sData = buildFileSimpleName(data);
+            sData = "_localTime"+buildFileSimpleName(data);
             criaArquivoSetaSaida();
 
         }
@@ -57,7 +57,7 @@ public class Log {
                 OutputStream outStream = new FileOutputStream(saida,true);
                 psSaida = new PrintStream(outStream);
                 System.setOut(psSaida);
-                System.setErr(System.out); 
+                System.setErr(System.out);
             } catch (FileNotFoundException ex) {
                 Log.e(ex);
             }
@@ -70,7 +70,7 @@ public class Log {
         if(saidaEmArquivo)
         {
             String sDataNew = buildFileSimpleName((Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone());
-            if (sDataNew!=null && !sDataNew.isEmpty()&& !sDataNew.equals(sData))
+            if (sDataNew!=null && !sDataNew.isEmpty()&& !sData.equals("_localTime"+sDataNew))
             {
                 sData = sDataNew;
                 criaArquivoSetaSaida();
