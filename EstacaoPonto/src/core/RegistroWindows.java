@@ -36,7 +36,6 @@ public class RegistroWindows {
          //       estacaoPontoReg.closeKey();
          //       softwareReg.closeKey();
          //       localMachineReg.closeKey();
-                Log.i("\\Estação >> busca do código de ativação: " +valor);
                 return valor;
 
             } catch(Exception e) {

@@ -139,6 +139,7 @@ public class MainController implements Initializable {
      * @param String - Horário no formato HH:MM
      */
     public void atualizarHorario(String horario) throws IOException{
+        Log.i("Inicia atualização de horário.");//#flag
         //String minutos = horario.split(":")[1];
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
@@ -151,6 +152,7 @@ public class MainController implements Initializable {
     }
 
     public void reiniciarCapturaDigital(){
+        Log.i("Reinicia captura de digital.");//#flag
         if(this.getCds().getState().equals(Worker.State.SUCCEEDED)){
             this.inicializarLeitor();
         }
@@ -161,12 +163,14 @@ public class MainController implements Initializable {
      * Apaga todos os registros do arquivo
      */
     public void apagarRegistrosBatimentos() throws IOException {
+         Log.i("Apagando registro de arquivos.");//#flag
         ArquivoRegistros.limparArquivo();
 //        threadRelogio.desativarSincronizacao();
     }
 
     public void iniciarSincronizacao() throws FileNotFoundException, IOException
     {
+        Log.i("Iniciando sincronização.");//#flag
         String dados = ArquivoRegistros.lerArquivo();
         The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
         threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());

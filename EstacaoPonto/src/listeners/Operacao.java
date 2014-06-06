@@ -64,6 +64,7 @@ public enum Operacao {
     HORARIO_SERVIDOR_ATUAL("horarioServidorAtual"){
         @Override
         public void execute(String metodo, WebEngine engine){
+            Log.i("horário do servidor"); //#flag
             String[] horario = metodo.split(":");
 
             int dia = Integer.parseInt(horario[1]);
