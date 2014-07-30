@@ -64,7 +64,7 @@ public enum Operacao {
     HORARIO_SERVIDOR_ATUAL("horarioServidorAtual"){
         @Override
         public void execute(String metodo, WebEngine engine){
-            Log.i("horário do servidor"); //#flag
+           
             String[] horario = metodo.split(":");
 
             int dia = Integer.parseInt(horario[1]);
@@ -74,7 +74,9 @@ public enum Operacao {
             int minutos = Integer.parseInt(horario[5]);
             Calendar dataServidor = Calendar.getInstance();
             dataServidor.set(ano, mes, dia, hora, minutos);
+            Log.i("horário do servidor: "+((Calendar)(dataServidor.clone())).getTime()); //#flag
             MainController.INSTANCE.criarThreadRelogio(dataServidor);
+            
             Log.atualizarDataLog();
         }
     },
@@ -108,7 +110,12 @@ public enum Operacao {
             }
         }
     },
-
+    NAOSINCRONIZADO("naosincronizado"){
+        @Override
+        public void execute(String metodo, WebEngine engine){
+            Log.i("Não foi possível sincronizar."+MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().getTime());//#flag
+        }
+    },
     SINCRONIZANDO("Sincronizando"){
         @Override
         public void execute(String metodo, WebEngine engine) {

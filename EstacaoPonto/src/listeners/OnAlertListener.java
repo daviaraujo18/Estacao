@@ -60,14 +60,18 @@ public class OnAlertListener implements EventHandler {
 {           
 
             Object comando = webEngine.executeScript("window.comando");
-            System.out.println("Comando estação: " + comando.toString());
+            if (!("NADA".equals(comando.toString())))
+            {
+                System.out.println("Comando estação: " + comando.toString());
+            }
+            
 
             if (!comando.toString().equals("undefined") && !comando.toString().equals("")) {
                 if (comando.toString().equals("FECHAR")) {
                     try {
                         System.out.println("Fechou");
-//                        Platform.exit();
-//                        System.exit(0);
+                        Platform.exit();
+                        System.exit(0);
                     } catch (Exception ex) {
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                     }

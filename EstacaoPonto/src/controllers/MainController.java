@@ -139,7 +139,7 @@ public class MainController implements Initializable {
      * @param String - Horário no formato HH:MM
      */
     public void atualizarHorario(String horario) throws IOException{
-        Log.i("Inicia atualização de horário.");//#flag
+        Log.i("Inicia atualização de horário: "+horario);//#flag
         //String minutos = horario.split(":")[1];
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
@@ -177,8 +177,6 @@ public class MainController implements Initializable {
         //threadRelogio.desativarSincronizacao();
     }
 public void iAmStillAlive(){
-        
-        
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
         The.inserirJavascript(this.tela.getWebEngine(), "iAmStillAlive('" + codAtivacao + "','"+getNameLogs()+"')");
         
@@ -194,12 +192,12 @@ public void iAmStillAlive(){
         
         for (int i = 0; i<arr.length;i++)
         {
-            System.out.println("linha: "+i);
             String parte =  arr[i].replace("\\", "\\\\"); //  replace \ por \\
             parte =  parte.replace("\'", "\\\'");//  replace ' por \'
             String js="adicionaParte('" + codAtivacao + "','"+nomeLog+"','"+parte+"',"+i+")";
             The.inserirJavascript(this.tela.getWebEngine(), js);
         }
+        System.out.println("fim do envio do arquivo "+nomeLog);
     }
     private String getNameLogs()
     {
