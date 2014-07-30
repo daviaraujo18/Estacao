@@ -1,6 +1,5 @@
 package core;
 
-import controllers.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -10,6 +9,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import utils.Log;
 import view.BloqueioTela;
+import controllers.MainController;
 
 
 /**
@@ -83,7 +83,8 @@ public class EstacaoPonto extends Application{
         // -40 por causa da barra do Menu iniciar do windows
         stage.setHeight(bounds.getHeight()-40);
         // Setando tela cheia ON
-//        stage.setFullScreen(true);
+        
+        stage.setFullScreen(Configuracoes.tela_cheia.getBooleanValue());
 
         BloqueioTela.getInstance().addClickTarget(root, MainController.INSTANCE.tela.webView);
 
