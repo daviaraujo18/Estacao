@@ -70,6 +70,8 @@ public class OnAlertListener implements EventHandler {
                 if (comando.toString().equals("FECHAR")) {
                     try {
                         System.out.println("Fechou");
+                        String path = new File("..").getCanonicalPath();
+                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(path+"\\EstacaoPonto") );
                         Platform.exit();
                         System.exit(0);
                     } catch (Exception ex) {
