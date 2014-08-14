@@ -2,9 +2,12 @@ package core.leitura;
 
 
 import utils.Log;
+
 import com.nitgen.SDK.BSP.NBioBSPJNI;
 import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch;
 import com.nitgen.SDK.BSP.NBioBSPJNI.WINDOW_OPTION;
+
+import core.Configuracoes;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -87,7 +90,7 @@ public class LeitorDigital {
         firDigital.SetTextFIR(firDigitalTexto);
 
         // 0 = maxSearchTime
-        indexSearchEngine.Identify(firDigital,NBioBSPJNI.FIR_SECURITY_LEVEL.NORMAL, fpInfo, 5000);
+        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo, 5000);
         if(bsp.IsErrorOccured()) {
             throwError();
             return -1;

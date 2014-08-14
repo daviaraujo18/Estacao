@@ -10,7 +10,8 @@ public enum Configuracoes {
     app_name,
     base_intranet_url,
     tela_cheia,
-    bloqueio_tela;
+    bloqueio_tela,
+    nivel_seguranca_leitor;
 
     private static Properties props;
     private boolean inicializado = false;
