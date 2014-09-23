@@ -3,9 +3,11 @@ package listeners;
 import core.IntranetURLs;
 import core.LocalPaths;
 import core.RegistroWindows;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -48,7 +50,12 @@ public class ChangeUrlListener implements ChangeListener<Object> {
         } else {
 
             if (ov.getValue().equals(Worker.State.SUCCEEDED)) {
-      
+                
+
+                //Document doc = tela.getWebEngine().getDocument();
+                //Element el = doc.getElementById("relogio");
+
+                
                 Log.i("Pagina carregada: " + tela.getWebEngine().getLocation());
                 if (urlAtualContem("EstacaoPonto?type=create")) {
                     Log.i("Injetando codigos no formulário via JavaScript");
@@ -67,6 +74,36 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                     Log.i(url);
                     mudarUrlAtualPara(url);
 
+                }
+                else
+                {
+                    if(urlAtualContem("exception.jsp")||urlAtualContem("500.jsp"))
+                    {
+                    //EstacaoPonto.getInstance().setTitle("econtrado");
+                    //((EventTarget) el).addEventListener("click", tela.listener, false);
+                        Log.i("Shutdown.  D: ");
+                        //mudarUrlAtualPara(IntranetURLs.BATIMENTO_PONTO);
+                        try 
+                        {
+                            
+                            try {
+                                String path = new File("..").getCanonicalPath();
+                                System.out.println("Tentando executar: "+path+"\\EstacaoPonto\\dist\\runOpenUpdate.bat");
+                                Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(path+"\\EstacaoPonto\\dist"));
+                            }
+                            catch (IOException ex) {
+                                Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            System.out.println("Iniciou");
+                            
+                            Platform.exit();
+                            System.exit(0);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
             }
         }

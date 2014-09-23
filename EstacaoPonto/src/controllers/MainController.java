@@ -178,8 +178,7 @@ public class MainController implements Initializable {
     }
 public void iAmStillAlive(){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        The.inserirJavascript(this.tela.getWebEngine(), "iAmStillAlive('" + codAtivacao + "','"+getNameLogs()+"')");
-        
+        The.inserirJavascript(this.tela.getWebEngine(), "iAmStillAlive('" + codAtivacao + "','"+getNameLogs()+"','FUNCIONANDO')");
     }
     public void addUploadFile(int size){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();

@@ -42,7 +42,6 @@ public class Log {
             Calendar data = Calendar.getInstance();
             sData = "_localTime"+buildFileSimpleName(data);
             criaArquivoSetaSaida();
-
         }
     }
     public static void criaArquivoSetaSaida()
