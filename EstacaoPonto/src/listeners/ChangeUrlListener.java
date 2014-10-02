@@ -77,7 +77,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 }
                 else
                 {
-                    if(urlAtualContem("exception.jsp")||urlAtualContem("500.jsp"))
+                    if(urlAtualContem("exception.jsp")||urlAtualContem("500.jsp")||urlAtualContem("404.jsp"))
                     {
                     //EstacaoPonto.getInstance().setTitle("econtrado");
                     //((EventTarget) el).addEventListener("click", tela.listener, false);
@@ -88,8 +88,8 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                             
                             try {
                                 String path = new File("..").getCanonicalPath();
-                                System.out.println("Tentando executar: "+path+"\\EstacaoPonto\\dist\\runOpenUpdate.bat");
-                                Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(path+"\\EstacaoPonto\\dist"));
+                                System.out.println("Tentando executar: "+path+"\\EstacaoPonto\\runOpenUpdate.bat");
+                                Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(path+"\\EstacaoPonto"));
                             }
                             catch (IOException ex) {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);

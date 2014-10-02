@@ -5,10 +5,18 @@
 package listeners;
 
 import controllers.MainController;
+import core.IntranetURLs;
 import core.LocalPaths;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +29,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
+import org.apache.commons.io.FilenameUtils;
+import utils.DownloadFoto;
 
 /**
  *
@@ -57,7 +67,7 @@ public class OnAlertListener implements EventHandler {
     }
 
  private void processarComando(WebEngine webEngine) 
-{           
+{
 
             Object comando = webEngine.executeScript("window.comando");
             if (!("NADA".equals(comando.toString())))
@@ -102,8 +112,8 @@ public class OnAlertListener implements EventHandler {
                     }
                     else{
                 if (comando.toString().equals("INICIAR")) {
-                    try 
-                    {
+//                    try 
+//                    {
                         try {
                             String path = new File("..").getCanonicalPath();
                             System.out.println("Tentando executar: "+path+"\\OUA\\runEstacao.bat");
@@ -115,12 +125,67 @@ public class OnAlertListener implements EventHandler {
                         System.out.println("Iniciou");
 //                        Platform.exit();
 //                        System.exit(0);
-                    }
-                    catch (Exception ex) 
+//                    }
+//                    catch (Exception ex) 
+//                    {
+//                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+                }
+                else
+                {
+                    if (comando.toString().equals("ATUALIZARESTACAO"))
                     {
-                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+              
+                        String url = IntranetURLs.URL_UPDATE;
+                        
+                        String nomeArquivo = FilenameUtils.getName(url);//getBaseName(url)+"."+FilenameUtils.getExtension(url);
+
+                        String pathArquivo = LocalPaths.PATH_CACHE+nomeArquivo;
+                        
+                        
+                        File localFile = new File(pathArquivo); 
+                        File dir = localFile.getParentFile();
+                        dir.mkdirs();
+		 
+                        URL link;
+                        try {
+                            link = new URL(url); 
+
+
+                        
+                        InputStream in = new BufferedInputStream(link.openStream());
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        byte[] buf = new byte[1024];
+                        int n = 0;
+                        while (-1!=(n=in.read(buf)))
+                        {
+                           out.write(buf, 0, n);
+                        }
+                        out.close();
+                        in.close();
+                        byte[] response = out.toByteArray();
+
+                        FileOutputStream fos = new FileOutputStream(pathArquivo);
+                        fos.write(response);
+                        fos.close();
+                        String path = new File("..").getCanonicalPath();
+                        System.out.println("Executando runReplace.bat");
+                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runReplace.bat",null,new File(path+"\\EstacaoPonto") );
+                        
+                        System.out.println("Download finalizado. Abrindo nova versão.");
+                        Platform.exit();
+                        System.exit(0);
+  
+                        
+                             } catch (Exception ex) {
+                            
+                            System.out.println("erro");
+                            ex.printStackTrace();
+                        }                   
+                        System.out.println("atualizarEstacao. Atualizando.");
                     }
-                }}}}
+                }
+                    }}}
             }
         }
 }

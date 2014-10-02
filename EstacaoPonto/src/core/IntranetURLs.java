@@ -19,6 +19,8 @@ public class IntranetURLs {
     public static final String CADASTRO_FREQUENTADOR = BASE_URL+"/tjpi/presenca/Frequentador?type=create";
     public static final String BATIMENTO_PONTO = BASE_URL+"/tjpi/presenca/PontoDePresenca";
     public static final String INICIAR_PONTO = BASE_URL+"/tjpi/presenca/IniciarPonto";
+    //public static final String URL_UPDATE = "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";
+    public static final String URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//servidor de teste
 
     public static String getCodigos() {
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
