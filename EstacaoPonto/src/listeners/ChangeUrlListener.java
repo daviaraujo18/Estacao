@@ -87,9 +87,9 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                         {
                             
                             try {
-                                String path = new File("..").getCanonicalPath();
-                                System.out.println("Tentando executar: "+path+"\\EstacaoPonto\\runOpenUpdate.bat");
-                                Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(path+"\\EstacaoPonto"));
+                                
+                                System.out.println("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
+                                Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(LocalPaths.realPath));
                             }
                             catch (IOException ex) {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);

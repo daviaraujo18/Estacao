@@ -9,14 +9,11 @@ import core.IntranetURLs;
 import core.LocalPaths;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,7 +27,6 @@ import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import org.apache.commons.io.FilenameUtils;
-import utils.DownloadFoto;
 
 /**
  *
@@ -80,8 +76,8 @@ public class OnAlertListener implements EventHandler {
                 if (comando.toString().equals("FECHAR")) {
                     try {
                         System.out.println("Fechou");
-                        String path = new File("..").getCanonicalPath();
-                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(path+"\\EstacaoPonto") );
+                        System.out.println("acessando: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
+                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(LocalPaths.realPath));
                         Platform.exit();
                         System.exit(0);
                     } catch (Exception ex) {
@@ -114,22 +110,22 @@ public class OnAlertListener implements EventHandler {
                 if (comando.toString().equals("INICIAR")) {
 //                    try 
 //                    {
-                        try {
-                            String path = new File("..").getCanonicalPath();
-                            System.out.println("Tentando executar: "+path+"\\OUA\\runEstacao.bat");
-//                            Process p =  Runtime.getRuntime().exec("cmd.exe /c start runEstacao.bat",null,new File(path+"\\OUA") );
-                        } 
-                        catch (IOException ex) {
-                            Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        System.out.println("Iniciou");
-//                        Platform.exit();
-//                        System.exit(0);
-//                    }
-//                    catch (Exception ex) 
-//                    {
-//                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
+//                        try {
+//                            String path = new File("..").getCanonicalPath();
+//                            System.out.println("Tentando executar: "+path+"\\OUA\\runEstacao.bat");
+////                            Process p =  Runtime.getRuntime().exec("cmd.exe /c start runEstacao.bat",null,new File(path+"\\OUA") );
+//                        } 
+//                        catch (IOException ex) {
+//                            Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                        System.out.println("Iniciou");
+////                        Platform.exit();
+////                        System.exit(0);
+////                    }
+////                    catch (Exception ex) 
+////                    {
+////                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+////                    }
                 }
                 else
                 {
@@ -137,11 +133,8 @@ public class OnAlertListener implements EventHandler {
                     {
               
                         String url = IntranetURLs.URL_UPDATE;
-                        
                         String nomeArquivo = FilenameUtils.getName(url);//getBaseName(url)+"."+FilenameUtils.getExtension(url);
-
                         String pathArquivo = LocalPaths.PATH_CACHE+nomeArquivo;
-                        
                         
                         File localFile = new File(pathArquivo); 
                         File dir = localFile.getParentFile();
@@ -149,10 +142,8 @@ public class OnAlertListener implements EventHandler {
 		 
                         URL link;
                         try {
-                            link = new URL(url); 
-
-
-                        
+                            link = new URL(url);
+                            
                         InputStream in = new BufferedInputStream(link.openStream());
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
                         byte[] buf = new byte[1024];
@@ -168,9 +159,9 @@ public class OnAlertListener implements EventHandler {
                         FileOutputStream fos = new FileOutputStream(pathArquivo);
                         fos.write(response);
                         fos.close();
-                        String path = new File("..").getCanonicalPath();
+                        
                         System.out.println("Executando runReplace.bat");
-                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runReplace.bat",null,new File(path+"\\EstacaoPonto") );
+                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runReplace.bat",null,new File(LocalPaths.realPath) );
                         
                         System.out.println("Download finalizado. Abrindo nova versão.");
                         Platform.exit();
