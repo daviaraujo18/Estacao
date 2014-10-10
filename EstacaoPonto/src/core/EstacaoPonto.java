@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import utils.Log;
 import view.BloqueioTela;
 import controllers.MainController;
+import java.io.File;
 
 
 /**
@@ -22,7 +23,7 @@ public class EstacaoPonto extends Application{
 
     private Stage stage;
     private static EstacaoPonto INSTANCE;
-
+    
     public EstacaoPonto(){
         super();
         this.INSTANCE = this;
@@ -41,7 +42,8 @@ public class EstacaoPonto extends Application{
         //saída em arquivo
         Log.saidaEmArquivo=true;
         Log.saidaEmArquivo();
-        
+        LocalPaths.idePath = new File(".").getCanonicalPath();
+        LocalPaths.getPath();
         Log.i("INITIALIZING");
         BloqueioTela.getInstance().bloquearTeclas();
 
