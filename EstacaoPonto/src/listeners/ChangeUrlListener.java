@@ -91,8 +91,9 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                                 System.out.println("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
                                 Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(LocalPaths.realPath));
                             }
-                            catch (IOException ex) {
+                            catch (Exception ex) {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                                Log.i("Problema ao executar o OUA.");
                             }
                             System.out.println("Iniciou");
                             

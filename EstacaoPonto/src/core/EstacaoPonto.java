@@ -23,6 +23,7 @@ public class EstacaoPonto extends Application{
 
     private Stage stage;
     private static EstacaoPonto INSTANCE;
+    public final static String versao = "0.1";
     
     public EstacaoPonto(){
         super();
@@ -44,10 +45,8 @@ public class EstacaoPonto extends Application{
         Log.saidaEmArquivo();
         LocalPaths.idePath = new File(".").getCanonicalPath();
         LocalPaths.getPath();
-        Log.i("INITIALIZING");
+        Log.i("INITIALIZING "+versao);
         BloqueioTela.getInstance().bloquearTeclas();
-
-
     }
 
     /**

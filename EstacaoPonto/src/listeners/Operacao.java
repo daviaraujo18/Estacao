@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.AtualizarEstacao;
 
 /**
  * Created by Danilo on 22/04/14.
@@ -140,6 +141,14 @@ public enum Operacao {
         @Override
         public void execute(String metodo, WebEngine engine){
             MainController.INSTANCE.iAmStillAlive();
+        }
+    }
+,
+    ATUALIZARESTACOES("atualizarEstacoes"){
+
+        public void execute(String metodo, WebEngine engine){
+            Object ultimaVersaoBD = engine.executeScript("window.ultimaVersaoBD");
+            AtualizarEstacao.verificaVersoes(ultimaVersaoBD.toString());
         }
     };
 
