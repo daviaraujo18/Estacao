@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import org.apache.commons.io.FilenameUtils;
+import utils.AtualizarEstacao;
 
 /**
  *
@@ -132,48 +133,7 @@ public class OnAlertListener implements EventHandler {
                     if (comando.toString().equals("ATUALIZARESTACAO"))
                     {
               
-                        String url = IntranetURLs.URL_UPDATE;
-                        String nomeArquivo = FilenameUtils.getName(url);//getBaseName(url)+"."+FilenameUtils.getExtension(url);
-                        String pathArquivo = LocalPaths.PATH_CACHE+nomeArquivo;
-                        
-                        File localFile = new File(pathArquivo); 
-                        File dir = localFile.getParentFile();
-                        dir.mkdirs();
-		 
-                        URL link;
-                        try {
-                            link = new URL(url);
-                            
-                        InputStream in = new BufferedInputStream(link.openStream());
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        byte[] buf = new byte[1024];
-                        int n = 0;
-                        while (-1!=(n=in.read(buf)))
-                        {
-                           out.write(buf, 0, n);
-                        }
-                        out.close();
-                        in.close();
-                        byte[] response = out.toByteArray();
-
-                        FileOutputStream fos = new FileOutputStream(pathArquivo);
-                        fos.write(response);
-                        fos.close();
-                        
-                        System.out.println("Executando runReplace.bat");
-                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runReplace.bat",null,new File(LocalPaths.realPath) );
-                        
-                        System.out.println("Download finalizado. Abrindo nova versão.");
-                        Platform.exit();
-                        System.exit(0);
-  
-                        
-                             } catch (Exception ex) {
-                            
-                            System.out.println("erro");
-                            ex.printStackTrace();
-                        }                   
-                        System.out.println("atualizarEstacao. Atualizando.");
+                        AtualizarEstacao.downloadNovaVersao(null);
                     }
                 }
                     }}}
