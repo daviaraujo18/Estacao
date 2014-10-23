@@ -148,7 +148,10 @@ public enum Operacao {
 
         public void execute(String metodo, WebEngine engine){
             Object ultimaVersaoBD = engine.executeScript("window.ultimaVersaoBD");
-            AtualizarEstacao.verificaVersoes(ultimaVersaoBD.toString());
+            if (ultimaVersaoBD!=null)
+            {
+                AtualizarEstacao.verificaVersoes(ultimaVersaoBD.toString());
+            }
         }
     };
 
