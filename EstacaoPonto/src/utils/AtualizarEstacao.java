@@ -77,18 +77,32 @@ public class AtualizarEstacao {
         System.out.println("Fim de atualizarEstacao.");
    }
    
-   public static void downloadNovaVersao(String fileName)
+   public static void downloadNovaVersao(String versao)
    {
-        if (fileName!= null && !fileName.isEmpty())
+        String url = "";
+        boolean is64bit = false;
+        if (System.getProperty("os.name").contains("Windows")) {
+            is64bit = (System.getenv("ProgramFiles(x86)") != null);
+        } else {
+            is64bit = (System.getProperty("os.arch").indexOf("64") != -1);
+        }
+        System.out.println("é 64? "+is64bit);
+        if (versao!= null && !versao.isEmpty())
         {
-            String url = IntranetURLs.URL_UPDATE_ALL+fileName+"/EstacaoPonto.jar";
-            download(url);
+            if(is64bit)
+            {
+                url = IntranetURLs.URL_UPDATE_ALL+versao+"/X64/EstacaoPonto.jar";
+            }
+            else
+            {
+                url = IntranetURLs.URL_UPDATE_ALL+versao+"/X86/EstacaoPonto.jar";
+            }
         }
         else
         {
-            String url = IntranetURLs.URL_UPDATE;
-            download(url);
+            url = IntranetURLs.URL_UPDATE;
         }
+        download(url);
    }
    public static void verificaVersoes(String ultimaVersaoBD)
    {

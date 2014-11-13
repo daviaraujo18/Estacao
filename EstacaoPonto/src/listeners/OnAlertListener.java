@@ -5,15 +5,9 @@
 package listeners;
 
 import controllers.MainController;
-import core.IntranetURLs;
 import core.LocalPaths;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,7 +20,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
-import org.apache.commons.io.FilenameUtils;
 import utils.AtualizarEstacao;
 
 /**
@@ -51,6 +44,7 @@ public class OnAlertListener implements EventHandler {
             WebEvent event = (WebEvent) t;
             String metodo = event.getData().toString();
             boolean eventoTratado = false;
+  //          Log.i("alert: "+metodo);
             for(Operacao operacao : Operacao.values()){
                 if(operacao.verificarAplicabilidade(metodo, webEngine)){
                     eventoTratado = true;
