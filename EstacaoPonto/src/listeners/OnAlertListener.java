@@ -6,12 +6,16 @@ package listeners;
 
 import controllers.MainController;
 import core.LocalPaths;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,15 +86,46 @@ public class OnAlertListener implements EventHandler {
                 if (comando.toString().startsWith("LOG")) {
                     
                     MainController.INSTANCE.nomeLog=comando.toString();
-                    Path path = Paths.get(LocalPaths.PATH_LOG+comando.toString());
-
-                    List<String> lines=null;
+                    String pathS = LocalPaths.PATH_LOG+comando.toString();
+                    Path path = Paths.get(pathS);
+                    System.out.println("pathS: "+pathS);
+                    //List<String> lines=null;
+                    List<String> result = new ArrayList<>();
                     try {
-                        lines = Files.readAllLines(path, Charset.forName("ISO-8859-1"));
+                        //lines = Files.readAllLines(path, Charset.forName("ISO-8859-1"));
+                        LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(pathS)));
+                        lnr.skip(Long.MAX_VALUE);
+                        System.out.println(lnr.getLineNumber());
+                        // Finally, the LineNumberReader object should be closed to prevent resource leak
+                        lnr.close();
+                        int limite = 50000;
+                        int tam = lnr.getLineNumber();
+                        int inicio = 0;
+                        if (tam>limite)
+                        {
+                            inicio= tam - limite;
+                            System.out.println("tam: "+limite);
+                        }
+                        
+                        try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"))) {
+                            
+                            int i=0;
+                            for (;;) {
+                                String line = reader.readLine();
+                                i++;
+                                if (line == null) {
+                                    break;
+                                }
+                                if (i>inicio)
+                                {
+                                    result.add(line);
+                                }
+                            }
+                        }
                     } catch (IOException ex) {
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    MainController.INSTANCE.arr = lines.toArray(new String[lines.size()]);
+                    MainController.INSTANCE.arr = result.toArray(new String[result.size()]);
                     System.out.println("tamanho: "+MainController.INSTANCE.arr.length);
                     MainController.INSTANCE.addUploadFile(MainController.INSTANCE.arr.length);
                  
