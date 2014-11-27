@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.util.Calendar;
 
@@ -40,7 +41,7 @@ public class Log {
         {
             //utilizando data local para nome de log enquanto não carrega a página PontoDePresenca.jsp
             Calendar data = Calendar.getInstance();
-            sData = "_localTime"+buildFileSimpleName(data);
+            sData = buildFileSimpleName(data, true);
             criaArquivoSetaSaida();
         }
     }
@@ -54,7 +55,8 @@ public class Log {
                 saida.createNewFile();
 
                 OutputStream outStream = new FileOutputStream(saida,true);
-                psSaida = new PrintStream(outStream);
+                
+                psSaida = new PrintStream(outStream, false, "UTF-8");
                 System.setOut(psSaida);
                 System.setErr(System.out);
             } catch (FileNotFoundException ex) {
@@ -68,19 +70,24 @@ public class Log {
     {
         if(saidaEmArquivo)
         {
-            String sDataNew = buildFileSimpleName((Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone());
-            if (sDataNew!=null && !sDataNew.isEmpty()&& !sData.equals("_localTime"+sDataNew))
+            String sDataNew = buildFileSimpleName((Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone(), false);
+            if (sDataNew!=null && !sDataNew.isEmpty()&& !sData.equals(sDataNew))
             {
                 sData = sDataNew;
                 criaArquivoSetaSaida();
             }
         }
     }
-    public static String buildFileSimpleName(Calendar data) {
+    public static String buildFileSimpleName(Calendar data, boolean localTime) {
         String mes = adicionaZero(data.get(Calendar.MONTH)+1);
         String dia = adicionaZero(data.get(Calendar.DAY_OF_MONTH));
         int ano = data.get(Calendar.YEAR);
-        String fileSimpleName = "_"+ano+mes+dia+".txt";
+        String fileSimpleName = "_"+ano+mes+dia;
+        if (localTime)
+        {
+            fileSimpleName = fileSimpleName+"_localTime";
+        }
+        fileSimpleName = fileSimpleName+".txt";
         return fileSimpleName;
     }
 

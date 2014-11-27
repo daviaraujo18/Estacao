@@ -106,8 +106,8 @@ public class AtualizarEstacao {
    }
    public static void verificaVersoes(String ultimaVersaoBD)
    {
-       System.out.println("versaoBD: "+ultimaVersaoBD+" versaoEP: "+EstacaoPonto.getInstance().versao);
-       if (ultimaVersaoBD!=null && !ultimaVersaoBD.isEmpty() && !ultimaVersaoBD.equals(EstacaoPonto.getInstance().versao))
+       //System.out.println("versaoBD: "+ultimaVersaoBD+" versaoEP: "+EstacaoPonto.getInstance().versao);
+       if (1!=1 && ultimaVersaoBD!=null && !ultimaVersaoBD.isEmpty() && !ultimaVersaoBD.equals(EstacaoPonto.getInstance().versao))
        {
             System.out.println("Estação deve ser atualizada.");
             downloadNovaVersao(ultimaVersaoBD);

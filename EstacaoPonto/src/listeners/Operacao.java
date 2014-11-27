@@ -52,9 +52,17 @@ public enum Operacao {
 
             Object data = webEngine.executeScript("jQuery('#codigoAtivacao').val();");
 
-            RegistroWindows.registrarCodigoAtivacao(data.toString());
+            if (RegistroWindows.registrarCodigoAtivacao(data.toString()))
+            {
+                webEngine.load(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
+                
+            }
+            else
+            {
+                webEngine.load(IntranetURLs.PROBLEMA_REGISTRO);
+            }
 
-            webEngine.load(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
+            
         };
 
         @Override

@@ -96,35 +96,51 @@ public class OnAlertListener implements EventHandler {
                         LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(pathS)));
                         lnr.skip(Long.MAX_VALUE);
                         System.out.println(lnr.getLineNumber());
-                        // Finally, the LineNumberReader object should be closed to prevent resource leak
+                        int tamanhoInicial = lnr.getLineNumber();
                         lnr.close();
                         int limite = 50000;
-                        int tam = lnr.getLineNumber();
-                        int inicio = 0;
+                        int tam = lnr.getLineNumber();//101k
+                        
+                        int inicio = 1;
                         if (tam>limite)
                         {
-                            inicio= tam - limite;
-                            System.out.println("tam: "+limite);
+                            inicio= tam + 1 - limite;
+                            tam=limite;
                         }
+                        System.out.println("tam: "+tam+" inicio: "+inicio);
                         
-                        try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"))) {
+                            BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"));
                             
-                            int i=0;
+                            int linha=1;
                             for (;;) {
-                                String line = reader.readLine();
-                                i++;
-                                if (line == null) {
+                                String line ="";
+                                try{
+                                    line = reader.readLine();
+                                }
+                                catch(Exception ex)
+                                {
+                                    ex.printStackTrace();
+                                }
+                                if (line == null )  {
                                     break;
                                 }
-                                if (i>inicio)
+                                if (linha>=inicio)
                                 {
                                     result.add(line);
+                                    
+                                }
+                                linha++;
+                                if (linha>tamanhoInicial)
+                                {
+                                    break;
                                 }
                             }
-                        }
-                    } catch (IOException ex) {
+                        
+                
+                    }catch (IOException ex) {
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    
                     MainController.INSTANCE.arr = result.toArray(new String[result.size()]);
                     System.out.println("tamanho: "+MainController.INSTANCE.arr.length);
                     MainController.INSTANCE.addUploadFile(MainController.INSTANCE.arr.length);
