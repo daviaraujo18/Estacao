@@ -19,10 +19,13 @@ public class IntranetURLs {
     public static final String CADASTRO_FREQUENTADOR = BASE_URL+"/tjpi/presenca/Frequentador?type=create";
     public static final String BATIMENTO_PONTO = BASE_URL+"/tjpi/presenca/PontoDePresenca";
     public static final String INICIAR_PONTO = BASE_URL+"/tjpi/presenca/IniciarPonto";
-    public static final String URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/EstacaoPonto.jar";
-    public static final String URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/versao/";
-//    public static final String URL_UPDATE = "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";//servidor local
-//    public static final String URL_UPDATE_ALL = "http://localhost/intranet_uploads/tjpi/upload_presenca/versao/";//servidor local
+    //    public static final String URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads_producao/tjpi/upload_presenca/EstacaoPonto.jar";//producao
+    //    public static final String URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads_producao/tjpi/upload_presenca/versao/";//producao 
+    public static String URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//teste
+    public static String URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/versao/";//teste
+//    public static  String URL_UPDATE= "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";//desenvolvimento
+//    public static  String URL_UPDATE_ALL = "http://localhost/intranet_uploads/tjpi/upload_presenca/versao/";//desenvolvimento
+    public static String PROBLEMA_REGISTRO=BASE_URL+"/tjpi/presenca/ProblemaRegistro";;
     
     public static String getCodigos() {
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
@@ -30,6 +33,30 @@ public class IntranetURLs {
         Log.i(codUnicoM);
         return "?codigoAtivacao="+ codAtivacao+"&codigoUnicoMaquina="+codUnicoM;
     }
+    public static void init()
+    {
+        if (EstacaoPonto.ambiente.equals("desenvolvimento"))
+        {
+            URL_UPDATE= "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";//desenvolvimento
+            URL_UPDATE_ALL = "http://localhost/intranet_uploads/tjpi/upload_presenca/versao/";//desenvolvimento
+        }
+        else
+        {
+            if (EstacaoPonto.ambiente.equals("teste"))
+            {
+                URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//teste 
+                URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/versao/";//teste
+            }
+            else
+            {
+                if (EstacaoPonto.ambiente.equals("producao"))
+                {
+                    URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads_producao/tjpi/upload_presenca/EstacaoPonto.jar";//producao
+                    URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads_producao/tjpi/upload_presenca/versao/";//producao 
+                }
+            }
+        }
+        
+    }
        
-    
 }

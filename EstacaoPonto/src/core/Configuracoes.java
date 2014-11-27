@@ -36,8 +36,16 @@ public enum Configuracoes {
     private void init() {
         props = new Properties();
         try {
-            String path = new File(".").getCanonicalPath();
-            InputStream is =   new FileInputStream("./config.properties");
+            InputStream is;
+//            if (EstacaoPonto.ambiente.equals("desenvolvimento"))
+//            {
+//                is =   new FileInputStream("C:/Downloads/docs/NetBeans/EstacaoPonto/dist/config.properties");//desenvolvimento
+//            }
+//            else
+//            {
+                is = new FileInputStream("./config.properties");//teste //produção
+//            }
+            
             props.load(is);
         } catch (Exception e) {
             e.printStackTrace();
