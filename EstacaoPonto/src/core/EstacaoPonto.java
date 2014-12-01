@@ -23,7 +23,7 @@ public class EstacaoPonto extends Application{
 
     private Stage stage;
     private static EstacaoPonto INSTANCE;
-    public final static String versao = "0.1.1";
+    public final static String versao = "0.1.0";
    // public final static String ambiente = "desenvolvimento"; //local
 //    public final static String ambiente = "teste"; //3.6
     public final static String ambiente = "producao"; //0.6
