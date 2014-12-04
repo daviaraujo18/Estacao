@@ -36,6 +36,7 @@ public class IntranetURLs {
     }
     public static void init()
     {
+
         if (EstacaoPonto.ambiente.equals("desenvolvimento"))
         {
             URL_UPDATE= "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";//desenvolvimento
@@ -43,17 +44,20 @@ public class IntranetURLs {
         }
         else
         {
+                 String uploadPath = BASE_URL;
+                uploadPath.replace("presenca", "intranet");
             if (EstacaoPonto.ambiente.equals("teste"))
             {
-                URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//teste 
-                URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/versao/";//teste
+;
+                URL_UPDATE = uploadPath+"/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//teste 
+                URL_UPDATE_ALL = uploadPath+"/uploads/tjpi/upload_presenca/versao/";//teste
             }
             else
             {
                 if (EstacaoPonto.ambiente.equals("producao"))
                 {
-                    URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//producao
-                    URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/versao/";//producao 
+                    URL_UPDATE = uploadPath+"/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//producao
+                    URL_UPDATE_ALL = uploadPath+"/uploads/tjpi/upload_presenca/versao/";//producao 
                 }
             }
         }
