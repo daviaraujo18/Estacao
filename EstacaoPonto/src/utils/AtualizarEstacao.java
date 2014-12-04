@@ -71,10 +71,8 @@ public class AtualizarEstacao {
         }
         catch (Exception ex)
         {
-            System.out.println("erro");
-            ex.printStackTrace();
+            System.out.println("Não foi possível baixar a nova versão. Endereço: "+url);
         }
-        System.out.println("Fim de atualizarEstacao.");
    }
    
    public static void downloadNovaVersao(String versao)

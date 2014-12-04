@@ -23,8 +23,8 @@ public class EstacaoPonto extends Application{
 
     private Stage stage;
     private static EstacaoPonto INSTANCE;
-    public final static String versao = "0.1.0";
-   // public final static String ambiente = "desenvolvimento"; //local
+    public final static String versao = "0.1.2";
+//    public final static String ambiente = "desenvolvimento"; //local
 //    public final static String ambiente = "teste"; //3.6
     public final static String ambiente = "producao"; //0.6
     
@@ -44,7 +44,7 @@ public class EstacaoPonto extends Application{
     @Override
     public void init() throws Exception {
         //saída em arquivo
-        System.out.println("teste");System.out.println(System.getProperty("file.encoding"));
+        System.out.println(System.getProperty("file.encoding"));
         if (ambiente.equals("desenvolvimento"))
         {
             Log.saidaEmArquivo=false;
