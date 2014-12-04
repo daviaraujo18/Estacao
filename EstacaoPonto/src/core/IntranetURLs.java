@@ -45,7 +45,7 @@ public class IntranetURLs {
         else
         {
                  String uploadPath = BASE_URL;
-                uploadPath.replace("presenca", "intranet");
+                uploadPath = uploadPath.replace(":8087/presenca", "/intranet");
             if (EstacaoPonto.ambiente.equals("teste"))
             {
 ;
