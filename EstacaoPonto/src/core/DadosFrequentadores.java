@@ -54,7 +54,7 @@ public class DadosFrequentadores  {
                 int total=0;
                 if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
                     for (int i = 0; i < frequentadores.length; i++) {
-                        // id;matricula;nome;digital;foto
+                        // id;matricula;nome;digital;seEhAdminDaEstacao;sexo;foto
                         String[] dados = frequentadores[i].split(";");
                         String id = dados[0];
                         String hashDigital = dados[3];
@@ -63,9 +63,10 @@ public class DadosFrequentadores  {
 
                         String foto = dados[4];
                         String sexo = dados[6];
-
+                        
                         //matricula, nome, digital
-                        String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6];// matricula;nome;foto;sexo
+//                        String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6];// matricula;nome;foto;sexo
+                        String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6]+";"+dados[7]+";";// matricula;nome;foto;sexo;localTrabalho;
                         getFrequentadores().put(Integer.parseInt(id), dadosF);
                         if(isAdmin.equals("true")){
                             getAdministradores().put(Integer.parseInt(id),dadosF);

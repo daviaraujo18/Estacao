@@ -62,6 +62,7 @@ public class MainController implements Initializable {
     public TelaPonto tela;
     public String nomeLog;
     public String[] arr;
+    public String prediosIds;
 
     public static MainController INSTANCE;
 
@@ -176,9 +177,15 @@ public class MainController implements Initializable {
         threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());
         //threadRelogio.desativarSincronizacao();
     }
-public void iAmStillAlive(){
+    public void iAmStillAlive(){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
         The.inserirJavascript(this.tela.getWebEngine(), "iAmStillAlive('" + codAtivacao + "','"+getNameLogs()+"','FUNCIONANDO')");
+    }
+    public void prediosPermitidos(){
+        String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
+        System.out.println("prediosPermitidos "+codAtivacao);
+        The.inserirJavascript(this.tela.getWebEngine(), "prediosPermitidos('" + codAtivacao + "')");
+        System.out.println("fim metodo javascript prediosPermitidos");
     }
     public void addUploadFile(int size){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();

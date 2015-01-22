@@ -1,5 +1,6 @@
 package core.leitura;
 
+import controllers.MainController;
 import core.DadosFrequentadores;
 import core.LocalPaths;
 import java.io.File;
@@ -27,6 +28,63 @@ public enum EventoLeitura {
 
         @Override
         public String getData(TelaPonto tela, Leitura leitura) {
+            return reconheceDigital(leitura);
+        }
+        
+        public void after(TelaPonto tela) {
+            tela.sound.playOK();
+        }
+
+    },
+
+    DIGITAL_NAO_RECONHECIDA{
+        @Override
+        public void after(TelaPonto tela) {
+            tela.sound.playError();
+        }
+    },
+
+    ERRO_LEITURA{
+        @Override
+        public void after(TelaPonto tela) {
+            tela.sound.playError();
+        }
+    }, 
+    DIGITAL_RECONHECIDA_RESSALVA_PREDIO{
+        @Override
+        public boolean before(Leitura leitura) {
+            return ArquivoRegistros.escreverRegistro(leitura.getIdFrequentador()  + "-" + leitura.getMomento());
+        }
+
+        @Override
+        public String getData(TelaPonto tela, Leitura leitura) {
+            return reconheceDigital(leitura);
+        }
+        
+        public void after(TelaPonto tela) {
+            tela.sound.playOK();
+        }
+
+    };
+
+    public void process(TelaPonto tela, Leitura leitura) {
+        boolean bf = before(leitura);
+        if(bf){
+            try {
+                The.inserirJavascript(tela.getWebEngine(), "process('" + this.name()+"', "+getData(tela, leitura)+")");
+            }catch (RuntimeException e){
+                e.printStackTrace();
+            }
+
+
+            after(tela);
+        }
+    }
+    public boolean before(Leitura leitura){return true;}
+    public String getData(TelaPonto tela, Leitura leitura){return "''";}
+    public void after(TelaPonto tela){}
+    private static String reconheceDigital(Leitura leitura)
+    {
             Map<Integer, String> mapaIdInfoFrequentadores = DadosFrequentadores.getInstance().getFrequentadores();
             Integer id = Integer.parseInt(leitura.getIdFrequentador());
             String[] dados = mapaIdInfoFrequentadores.get(id).split(";");
@@ -96,44 +154,6 @@ public enum EventoLeitura {
             String dad = "'"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome + "," + dataURI+"'";
         //    System.out.println("Dad "+dad);
             return dad;
-        }
-        
-        public void after(TelaPonto tela) {
-            tela.sound.playOK();
-        }
-
-    },
-
-    DIGITAL_NAO_RECONHECIDA{
-        @Override
-        public void after(TelaPonto tela) {
-            tela.sound.playError();
-        }
-    },
-
-    ERRO_LEITURA{
-        @Override
-        public void after(TelaPonto tela) {
-            tela.sound.playError();
-        }
-    };
-
-    public void process(TelaPonto tela, Leitura leitura) {
-        boolean bf = before(leitura);
-        if(bf){
-            try {
-                The.inserirJavascript(tela.getWebEngine(), "process('" + this.name()+"', "+getData(tela, leitura)+")");
-            }catch (RuntimeException e){
-                e.printStackTrace();
-            }
-
-
-            after(tela);
-        }
     }
-    public boolean before(Leitura leitura){return true;}
-    public String getData(TelaPonto tela, Leitura leitura){return "''";}
-    public void after(TelaPonto tela){}
-
 
 }

@@ -39,12 +39,21 @@ public enum Operacao {
             } catch (IOException ex) {
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            MainController.INSTANCE.prediosPermitidos();
         };
 
         @Override
         public boolean verificacaoSegundoNivel(WebEngine engine) {
             return engine.getLocation().contains("tjpi/presenca/PontoDePresenca");
         }
+    },
+        RECUPERAR_PREDIOS_PERMITIDOS("prediosPermitidos"){
+
+        public void execute(String metodo, WebEngine engine){
+            MainController.INSTANCE.prediosIds =engine.executeScript("window.prediosPermitidos").toString();
+        };
+
     },
     RECUPERAR_CODIGO_ATIVACAO("recuperarCodigoAtivacao"){
         public void execute(String metodo, WebEngine webEngine){
@@ -61,8 +70,6 @@ public enum Operacao {
             {
                 webEngine.load(IntranetURLs.PROBLEMA_REGISTRO);
             }
-
-            
         };
 
         @Override

@@ -75,7 +75,7 @@ public class TelaPonto {
 
             @Override
             protected Object call() throws Exception {
-                System.out.println("Entrando no loop de teste de conexão.");
+                System.out.println("Entrando no loop de teste de conexão. URL: " +IntranetURLs.INICIAR_PONTO);
                 while (semConexao){
 
                     boolean con = false;
