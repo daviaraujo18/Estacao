@@ -45,7 +45,7 @@ public enum Operacao {
 
         @Override
         public boolean verificacaoSegundoNivel(WebEngine engine) {
-            return engine.getLocation().contains("tjpi/presenca/PontoDePresenca");
+            return engine.getLocation().contains("presenca/PontoDePresenca");
         }
     },
         RECUPERAR_PREDIOS_PERMITIDOS("prediosPermitidos"){
@@ -74,7 +74,7 @@ public enum Operacao {
 
         @Override
         public boolean verificacaoSegundoNivel(WebEngine engine) {
-            return engine.getLocation().contains("tjpi/presenca/RecuperarCodigoAtivacao");
+            return engine.getLocation().contains("presenca/RecuperarCodigoAtivacao");
         }
     },
     HORARIO_SERVIDOR_ATUAL("horarioServidorAtual"){

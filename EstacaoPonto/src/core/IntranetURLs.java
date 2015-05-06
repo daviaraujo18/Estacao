@@ -15,10 +15,10 @@ public class IntranetURLs {
             "&codigoUnicoMaquina="+RegistroWindows.getCodigoUnicoMaquina();
 
     public static final String BASE_URL = Configuracoes.base_intranet_url.get();
-    public static final String INICIALIZAR_PONTO = BASE_URL+"/tjpi/presenca/InicializarPonto";
-    public static final String CADASTRO_FREQUENTADOR = BASE_URL+"/tjpi/presenca/Frequentador?type=create";
-    public static final String BATIMENTO_PONTO = BASE_URL+"/tjpi/presenca/PontoDePresenca";
-    public static final String INICIAR_PONTO = BASE_URL+"/tjpi/presenca/IniciarPonto";
+    public static final String INICIALIZAR_PONTO = BASE_URL+"/presenca/InicializarPonto";
+    public static final String CADASTRO_FREQUENTADOR = BASE_URL+"/presenca/Frequentador?type=create";
+    public static final String BATIMENTO_PONTO = BASE_URL+"/presenca/PontoDePresenca";
+    public static final String INICIAR_PONTO = BASE_URL+"/presenca/IniciarPonto";
     //    public static final String URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads_producao/tjpi/upload_presenca/EstacaoPonto.jar";//producao
     //    public static final String URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads_producao/tjpi/upload_presenca/versao/";//producao 
     public static String URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//teste
@@ -26,7 +26,7 @@ public class IntranetURLs {
     
 //    public static  String URL_UPDATE= "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";//desenvolvimento
 //    public static  String URL_UPDATE_ALL = "http://localhost/intranet_uploads/tjpi/upload_presenca/versao/";//desenvolvimento
-    public static String PROBLEMA_REGISTRO=BASE_URL+"/tjpi/presenca/ProblemaRegistro";;
+    public static String PROBLEMA_REGISTRO=BASE_URL+"/presenca/ProblemaRegistro";;
     
     public static String getCodigos() {
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
