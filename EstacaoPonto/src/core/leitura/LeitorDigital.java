@@ -31,14 +31,19 @@ public class LeitorDigital {
     private static LeitorDigital INSTANCE = null;
     private LeitorDigital() {
         INSTANCE = this;
+    }
+
+    private void iniciar(){
         abrirLeitor();
         indexSearchEngine = bsp.new IndexSearch();
         fecharLeitor();
     }
 
+
     public static LeitorDigital getInstance(){
         if(INSTANCE == null){
             INSTANCE = new LeitorDigital();
+            INSTANCE.iniciar();
         }
         return INSTANCE;
     }
