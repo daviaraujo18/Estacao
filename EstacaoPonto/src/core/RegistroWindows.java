@@ -39,7 +39,7 @@ public class RegistroWindows {
                 return valor;
 
             } catch(Exception e) {
-                Log.e("\\EstaÃ§Ã£o >> ERRO na busca do cÃ³digo de ativaÃ§Ã£o.");
+                Log.e("\\Estação >> ERRO na busca do código de ativação.");
                 e.printStackTrace();
                 return null;
             }
@@ -86,7 +86,7 @@ WinRegistry.writeStringValue(hkey, key, "codigoAtivacao", codigoAtivacao);
 			String hdSerial = jWMI.montaCodUnico();
                         if (hdSerial.isEmpty())
                         {
-                            return "Erro na construÃ§Ã£o do cÃ³digo de ativaÃ§Ã£o.";
+                            return "Erro na construção do código de ativação.";
                         }
                                 
 			String serialCriptografado = CryptoUtils.md5UB64(hdSerial);

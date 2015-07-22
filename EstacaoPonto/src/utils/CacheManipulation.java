@@ -24,7 +24,7 @@ import org.apache.commons.io.FilenameUtils;
 /**
  *
  * @author Daniel Leite TJPI
- * Trata da ediÃ§Ã£o do arquivo ./imgs/cache.txt, arquivo responsÃ¡vel por permitir o download das fotos 3x4 para a EstaÃ§Ã£o.
+ * Trata da edição do arquivo ./imgs/cache.txt, arquivo responsável por permitir o download das fotos 3x4 para a Estação.
  */
 public class CacheManipulation {
    private static final int VALIDADE = 20; //qtd dias para o cache expirar
@@ -53,12 +53,12 @@ public class CacheManipulation {
             FileReader fr = new FileReader(arquivo);  
             BufferedReader br = new BufferedReader(fr); 
             
-            String linhaCache = br.readLine(); //lÃª a primeira linha
+            String linhaCache = br.readLine(); //lê a primeira linha
             
             while (linhaCache!=null)
             {
                 if (linhaCache.contains(nomeArquivo) && encontrado == false)
-                {//hÃ¡ um registro no cache que a foto foi baixada.
+                {//há um registro no cache que a foto foi baixada.
                        encontrado=true;
                        System.out.println("Arquivo encontrado: "+linhaCache);
                        String dadosCache[] = linhaCache.split(" ");
@@ -104,7 +104,7 @@ public class CacheManipulation {
                            }
                            else
                            {
-                                System.out.println("Foto dentro da validade. NÃ£o hÃ¡ necessidade de download...");
+                                System.out.println("Foto dentro da validade. Não há necessidade de download...");
                                conteudo+=linhaCache+"\r\n";
                            }
                        }
@@ -113,7 +113,7 @@ public class CacheManipulation {
                  {
                      conteudo+=linhaCache+"\r\n";
                  }
-                 linhaCache = br.readLine(); //se tiver mais linhas, lÃª todas elas 
+                 linhaCache = br.readLine(); //se tiver mais linhas, lê todas elas 
             }
             br.close();
             fr.close();
@@ -185,7 +185,7 @@ public class CacheManipulation {
                 }
                 catch(Exception e)
                 {
-                    System.out.println("Data invÃ¡lida.");
+                    System.out.println("Data inválida.");
                     return null;
                 }
                 

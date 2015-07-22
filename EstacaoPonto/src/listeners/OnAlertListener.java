@@ -67,7 +67,7 @@ public class OnAlertListener implements EventHandler {
             Object comando = webEngine.executeScript("window.comando");
             if (!("NADA".equals(comando.toString())))
             {
-                System.out.println("Comando estaÃ§Ã£o: " + comando.toString());
+                System.out.println("Comando estação: " + comando.toString());
             }
             
 

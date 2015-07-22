@@ -65,13 +65,13 @@ public class AtualizarEstacao {
             System.out.println("Executando runReplace.bat");
             Process p =  Runtime.getRuntime().exec("cmd.exe /c start runReplace.bat",null,new File(LocalPaths.realPath) );
 
-            System.out.println("Download finalizado. Abrindo nova vers√£o.");
+            System.out.println("Download finalizado. Abrindo nova vers„o.");
             Platform.exit();
             System.exit(0);
         }
         catch (Exception ex)
         {
-            System.out.println("N√£o foi poss√≠vel baixar a nova vers√£o. Endere√ßo: "+url);
+            System.out.println("N„o foi possÌvel baixar a nova vers„o. EndereÁo: "+url);
         }
    }
    
@@ -84,7 +84,7 @@ public class AtualizarEstacao {
         } else {
             is64bit = (System.getProperty("os.arch").indexOf("64") != -1);
         }
-        System.out.println("√© 64? "+is64bit);
+        System.out.println("È 64? "+is64bit);
         if (versao!= null && !versao.isEmpty())
         {
             if(is64bit)
@@ -107,7 +107,7 @@ public class AtualizarEstacao {
        if (ultimaVersaoBD!=null && !ultimaVersaoBD.isEmpty() && !ultimaVersaoBD.equals(EstacaoPonto.getInstance().versao))
        {
             System.out.println("versaoBD: "+ultimaVersaoBD+" versaoEP: "+EstacaoPonto.getInstance().versao);
-            System.out.println("Esta√ß√£o deve ser atualizada.");
+            System.out.println("EstaÁ„o deve ser atualizada.");
             downloadNovaVersao(ultimaVersaoBD);
        }
    }

@@ -118,7 +118,7 @@ public class MainController implements Initializable {
     }
 
     /*
-     * Recupera a thread do relÃ³gio 
+     * Recupera a thread do relógio 
      * @return ThreadRelogio
      */
     public ThreadRelogio getThreadRelogio() {
@@ -126,8 +126,8 @@ public class MainController implements Initializable {
     }
 
     /*
-     * Cria a thread que controla o relÃ³gio da estaÃ§Ã£o
-     * @param Calendar - data do servidor ao iniciar a estaÃ§Ã£o
+     * Cria a thread que controla o relógio da estação
+     * @param Calendar - data do servidor ao iniciar a estação
      * 
      */
     public void criarThreadRelogio(Calendar dtServidor) {
@@ -136,16 +136,16 @@ public class MainController implements Initializable {
     }
 
     /*
-     * Atualiza o horÃ¡rio atual e sincroniza os registros de ponto, caso tenha chegado o momento.
-     * @param String - HorÃ¡rio no formato HH:MM
+     * Atualiza o horário atual e sincroniza os registros de ponto, caso tenha chegado o momento.
+     * @param String - Horário no formato HH:MM
      */
     public void atualizarHorario(String horario) throws IOException{
-        Log.i("Inicia atualizaÃ§Ã£o de horÃ¡rio: "+horario);//#flag
+        Log.i("Inicia atualização de horário: "+horario);//#flag
         //String minutos = horario.split(":")[1];
         //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
-                System.out.println("Iniciando sincronizaÃ§Ã£o. Data: "+threadRelogio.getDataServidorAtual().getTime());
+                System.out.println("Iniciando sincronização. Data: "+threadRelogio.getDataServidorAtual().getTime());
                 iniciarSincronizacao();
             }
         }
@@ -171,7 +171,7 @@ public class MainController implements Initializable {
 
     public void iniciarSincronizacao() throws FileNotFoundException, IOException
     {
-        Log.i("Iniciando sincronizaÃ§Ã£o.");//#flag
+        Log.i("Iniciando sincronização.");//#flag
         String dados = ArquivoRegistros.lerArquivo();
         The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
         threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());

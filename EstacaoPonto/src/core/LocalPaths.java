@@ -47,7 +47,7 @@ public class LocalPaths {
      }
      public static void getPath()
      {
-        //Apenas para pegar o path do EstacaoPonto.jar seja qual for o ambiente em execuÃ§Ã£o
+        //Apenas para pegar o path do EstacaoPonto.jar seja qual for o ambiente em execução
          
         File fileOrPathProjeto = new File("."); 
         try {
@@ -80,7 +80,7 @@ public class LocalPaths {
                 else
                 {
                     if (realPath.endsWith("EstacaoPonto"))
-                    //executando direto do netbeans ou no formato do ambiente de testes/produÃ§Ã£o.
+                    //executando direto do netbeans ou no formato do ambiente de testes/produção.
                     {
                         File arquivosOuDiretorios[]= fileOrPathProjeto.listFiles();
                         File pathInNetBeans = new File(realPath + "\\dist");

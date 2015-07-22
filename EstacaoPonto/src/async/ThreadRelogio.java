@@ -7,7 +7,7 @@ import javafx.concurrent.Task;
 import utils.Log;
 
 /**
- * Classe respons√°vel por fazer o controle do hor√°rio. Calcula o hor√°rio atual e controla o tempo da sincronizacao.
+ * Classe respons·vel por fazer o controle do hor·rio. Calcula o hor·rio atual e controla o tempo da sincronizacao.
  * @author Jainilene
  */
 public class ThreadRelogio extends Service<String> {
@@ -37,7 +37,7 @@ public class ThreadRelogio extends Service<String> {
      * Retorna DiaDaSemana, DiaDoMes, Mes, Ano, Horario(HH:MM)
      */
     private String calculaHorario() {
-        Log.i("Calculando hor√°rio...");
+        Log.i("Calculando hor·rio...");
         String dataCompleta = "";
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
@@ -142,9 +142,9 @@ public class ThreadRelogio extends Service<String> {
     }
       
     /*
-     * M√©todo verifica se j√° chegou o hor√°rio de fazer a sincroniza√ß√£o (se j√° passou uma hora da √∫ltima sincroniza√ß√£o)
-     * return false - Ainda n√£o chegou o momento da sincroniza√ß√£o
-     *        true  - Chegou o momento da sincroniza√ß√£o
+     * MÈtodo verifica se j· chegou o hor·rio de fazer a sincronizaÁ„o (se j· passou uma hora da ˙ltima sincronizaÁ„o)
+     * return false - Ainda n„o chegou o momento da sincronizaÁ„o
+     *        true  - Chegou o momento da sincronizaÁ„o
      */
     public boolean fazerSincronizacao() {
         long difTempo = dataServidorAtual.getTimeInMillis() - ultimaSincronizacao.getTimeInMillis();
@@ -162,17 +162,17 @@ public class ThreadRelogio extends Service<String> {
     {
         diasDaSemana.add("Domingo");
         diasDaSemana.add("Segunda");
-        diasDaSemana.add("Ter√ßa");
+        diasDaSemana.add("TerÁa");
         diasDaSemana.add("Quarta");
         diasDaSemana.add("Quinta");
         diasDaSemana.add("Sexta");
-        diasDaSemana.add("S√°bado");
+        diasDaSemana.add("S·bado");
     }
 
     private void inicializaMesExtenso() {
         mesExtenso.add("Janeiro");
         mesExtenso.add("Fevereiro");
-        mesExtenso.add("Mar√ßo");
+        mesExtenso.add("MarÁo");
         mesExtenso.add("Abril");
         mesExtenso.add("Maio");
         mesExtenso.add("Junho");

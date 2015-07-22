@@ -43,7 +43,7 @@ public enum Configuracoes {
 //            }
 //            else
 //            {
-                is = new FileInputStream("./config.properties");//teste //produÃ§Ã£o
+                is = new FileInputStream("./config.properties");//teste //produção
 //            }
             
             props.load(is);

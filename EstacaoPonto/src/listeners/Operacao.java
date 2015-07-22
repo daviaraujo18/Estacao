@@ -90,7 +90,7 @@ public enum Operacao {
             int minutos = Integer.parseInt(horario[5]);
             Calendar dataServidor = Calendar.getInstance();
             dataServidor.set(ano, mes, dia, hora, minutos);
-            Log.i("hor√°rio do servidor: "+((Calendar)(dataServidor.clone())).getTime()); //#flag
+            Log.i("hor·rio do servidor: "+((Calendar)(dataServidor.clone())).getTime()); //#flag
             MainController.INSTANCE.criarThreadRelogio(dataServidor);
             
             Log.atualizarDataLog();
@@ -99,7 +99,7 @@ public enum Operacao {
     ATUALIZAR_RELOGIO_LOCAL("atualizarRelogioLocal"){
         @Override
         public void execute(String metodo, WebEngine engine){
-            System.out.println("Recebendo requisi√ß√£o para atualizar hor√°rio na p√°gina");
+            System.out.println("Recebendo requisiÁ„o para atualizar hor·rio na p·gina");
             if (MainController.INSTANCE.getThreadRelogio() != null) {
                 String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
                 try {
@@ -129,7 +129,7 @@ public enum Operacao {
     NAOSINCRONIZADO("naosincronizado"){
         @Override
         public void execute(String metodo, WebEngine engine){
-            Log.i("N√£o foi poss√≠vel sincronizar."+MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().getTime());//#flag
+            Log.i("N„o foi possÌvel sincronizar."+MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().getTime());//#flag
         }
     },
     SINCRONIZANDO("Sincronizando"){

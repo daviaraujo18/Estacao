@@ -36,10 +36,10 @@ public class Log {
     
     public static void saidaEmArquivo()
     {
-        //sa√≠da em arquivo
+        //saÌda em arquivo
         if (saidaEmArquivo)
         {
-            //utilizando data local para nome de log enquanto n√£o carrega a p√°gina PontoDePresenca.jsp
+            //utilizando data local para nome de log enquanto n„o carrega a p·gina PontoDePresenca.jsp
             Calendar data = Calendar.getInstance();
             sData = buildFileSimpleName(data, true);
             criaArquivoSetaSaida();

@@ -24,8 +24,8 @@ public class EstacaoPonto extends Application{
     private Stage stage;
     private static EstacaoPonto INSTANCE;
     public final static String versao = "0.1.2";
-//    public final static String ambiente = "desenvolvimento"; //local
-//    public final static String ambiente = "teste"; //3.6
+//   public final static String ambiente = "desenvolvimento"; //local
+//    public final static String ambiente = "teste"; //3.6 Descomentar para apontar para a base de teste e modificar o config.properties
     public final static String ambiente = "producao"; //0.6
     
     public EstacaoPonto(){
@@ -43,14 +43,15 @@ public class EstacaoPonto extends Application{
      */
     @Override
     public void init() throws Exception {
-        //saÃ­da em arquivo
+        //saída em arquivo
         System.out.println(System.getProperty("file.encoding"));
         if (ambiente.equals("desenvolvimento"))
         {
             Log.saidaEmArquivo=false;
         }
         else
-        { System.out.println("teste2");
+        { 
+//			System.out.println("teste2");
             Log.saidaEmArquivo=true;
         }
         IntranetURLs.init();
@@ -84,7 +85,7 @@ public class EstacaoPonto extends Application{
 
 
         stage.setScene(scene);
-        stage.setTitle("TJPI - EstaÃ§Ã£o Ponto de PresenÃ§a");
+        stage.setTitle("TJPI - Estação Ponto de Presença");
 
         // Setando stage para maximized
         Screen screen = Screen.getPrimary();

@@ -21,8 +21,8 @@ public class IntranetURLs {
     public static final String INICIAR_PONTO = BASE_URL+"/presenca/IniciarPonto";
     //    public static final String URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads_producao/tjpi/upload_presenca/EstacaoPonto.jar";//producao
     //    public static final String URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads_producao/tjpi/upload_presenca/versao/";//producao 
-    public static String URL_UPDATE = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//teste
-    public static String URL_UPDATE_ALL = "http://teste.tjpi.jus.br/intranet/uploads/tjpi/upload_presenca/versao/";//teste
+    public static String URL_UPDATE = BASE_URL+"/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//teste
+    public static String URL_UPDATE_ALL = BASE_URL+"/uploads/tjpi/upload_presenca/versao/";//teste
     
 //    public static  String URL_UPDATE= "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";//desenvolvimento
 //    public static  String URL_UPDATE_ALL = "http://localhost/intranet_uploads/tjpi/upload_presenca/versao/";//desenvolvimento

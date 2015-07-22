@@ -68,7 +68,7 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                         }
                         if (!definido)
                         {
-                            System.out.println("fim da comparaÃ§Ã£o");
+                            System.out.println("fim da comparação");
                             resultado = EventoLeitura.DIGITAL_RECONHECIDA_RESSALVA_PREDIO;
                         }
                         

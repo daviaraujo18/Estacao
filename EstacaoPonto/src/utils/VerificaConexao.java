@@ -20,13 +20,13 @@ public class VerificaConexao {
                //URL url = new URL("http://www.yahoo.com");
                URL url = new URL(sUrl);
 
-               // abre a conex√£o
+               // abre a conex„o
                HttpURLConnection urlConnect = (HttpURLConnection)url.openConnection();
 
                urlConnect.setConnectTimeout(5000);
                urlConnect.setReadTimeout(5000);
-               // tenta buscar conte√∫do da URL
-               // se n√£o tiver conex√£o, essa linha ir√° falhar
+               // tenta buscar conte˙do da URL
+               // se n„o tiver conex„o, essa linha ir· falhar
                Object objData = urlConnect.getContent();
                 }
            catch (IOException e) {

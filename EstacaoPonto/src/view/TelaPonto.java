@@ -60,22 +60,22 @@ public class TelaPonto {
         webEngine = webView.getEngine();
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
         webEngine.setOnAlert(new OnAlertListener());
-            // mostrar uma mensagem informando que est√° sem permiss√£o de escrita
+            // mostrar uma mensagem informando que est· sem permiss„o de escrita
         if (LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty())
         {
-            this.labelSemConexao.setText("Sem permiss√£o de escrita.");
+            this.labelSemConexao.setText("Sem permiss„o de escrita.");
             this.labelSemConexao.setPrefWidth(600);
             this.labelSemConexao.setLayoutX(380);
             this.labelSemConexao.setVisible(true);
             return true;
         } 
         
-        // mostrar uma mensagem informando que est√° sem conex√£o
+        // mostrar uma mensagem informando que est· sem conex„o
         Task task = new Task() {
 
             @Override
             protected Object call() throws Exception {
-                System.out.println("Entrando no loop de teste de conex√£o. URL: " +IntranetURLs.INICIAR_PONTO);
+                System.out.println("Entrando no loop de teste de conex„o. URL: " +IntranetURLs.INICIAR_PONTO);
                 while (semConexao){
 
                     boolean con = false;
@@ -94,7 +94,7 @@ public class TelaPonto {
                    
                     
                 }
-                System.out.println("Fim do teste de conex√£o");
+                System.out.println("Fim do teste de conex„o");
                 return null;
             }
         };

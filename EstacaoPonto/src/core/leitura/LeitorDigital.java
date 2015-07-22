@@ -54,7 +54,7 @@ public class LeitorDigital {
 
     public void addDigitalToIndexSearch(Map<String,String> mapaIdHashFrequentadores) {
 
-        Log.i("Guardando frequentadores na mem√≥ria...");
+        Log.i("Guardando frequentadores na memÛria...");
 
         double inicioMontagem = System.currentTimeMillis();
 
@@ -109,7 +109,7 @@ public class LeitorDigital {
 
     /**
      * Metodo para fazer a leitura das digitais do usuario
-     * Uma janela aparecer√° para o cadastrador selecionar os dedos
+     * Uma janela aparecer· para o cadastrador selecionar os dedos
      * que serao cadastrados
      *
      * @return hashDasDigitais
@@ -237,7 +237,7 @@ public class LeitorDigital {
     }
 
     /**
-     * M√©todo para pegar o nome do error, pois nao consegui recuperar o nome
+     * MÈtodo para pegar o nome do error, pois nao consegui recuperar o nome
      * atraves da NBioBSPJNI
      * @aers
      */

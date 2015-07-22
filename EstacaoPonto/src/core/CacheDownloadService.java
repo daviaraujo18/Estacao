@@ -36,7 +36,7 @@ public class CacheDownloadService extends Task<Void> {
 //            updateMessage(message);
 //            Map.Entry pairs = (Map.Entry)it.next();
 //            String enderecoWeb = pairs.getValue().toString();
-//            System.out.println("EndereÃ§o Web: "+enderecoWeb);
+//            System.out.println("Endereço Web: "+enderecoWeb);
 //            System.out.print("Baixando "+numAtual+" de "+numTotal+". ");
 //            
 //            updateProgress(numAtual, numTotal);
