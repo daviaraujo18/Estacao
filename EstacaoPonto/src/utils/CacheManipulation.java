@@ -95,18 +95,18 @@ public class CacheManipulation {
                              {
                                  System.out.println("Download terminado.");
                                  conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+" "+"\r\n");
-                             }           
+                       }
                              else
                              {
                                  System.out.println("Problemas no download.");
                                  conteudo+=linhaCache+"\r\n";
-                             }
+                 }
                            }
-                           else
-                           {
+                 else
+                 {
                                 System.out.println("Foto dentro da validade. Não há necessidade de download...");
-                               conteudo+=linhaCache+"\r\n";
-                           }
+                     conteudo+=linhaCache+"\r\n";
+                 }
                        }
                  }
                  else
@@ -138,7 +138,8 @@ public class CacheManipulation {
         File arquivo = new File(LocalPaths.PATH_CACHE+"cache.txt"); 
         String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
         //nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
-        boolean insercaoValida = false;DownloadFoto dw =new DownloadFoto();
+        boolean insercaoValida = false;
+		DownloadFoto dw =new DownloadFoto();
         try 
         {   
             FileWriter fw;
