@@ -109,7 +109,7 @@ public class TelaPonto {
                     @Override
                     public void handle(MouseEvent t) {
                         if(!BloqueioTela.getInstance().isBloqueada()){
-                            webEngine.load(IntranetURLs.BASE_URL);
+                            webEngine.load(IntranetURLs.BASE_URL+"/presenca/Frequentador?type=explore");
                             MainController.INSTANCE.getCds().parar(true);
                         }
                     }
