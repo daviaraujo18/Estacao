@@ -44,7 +44,7 @@ public class EstacaoPonto extends Application{
     @Override
     public void init() throws Exception {
         //saída em arquivo
-        System.out.println(System.getProperty("file.encoding"));
+//        System.out.println(System.getProperty("file.encoding"));
         if (ambiente.equals("desenvolvimento"))
         {
             Log.saidaEmArquivo=false;
