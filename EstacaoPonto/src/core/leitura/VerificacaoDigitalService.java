@@ -45,21 +45,21 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                         String[] dados = mapaIdInfoFrequentadores.get(id).split(";");
                         String localTrabalho = dados[4];
                         boolean definido =false;
-                        System.out.println("localtrabalho: "+localTrabalho);
+//                        System.out.println("localtrabalho: "+localTrabalho);
                         if (!localTrabalho.equals("0"))
                         {
                             String prediosIds = MainController.INSTANCE.prediosIds;
-                            System.out.println("executado");
-                            System.out.println("prediosIds: "+prediosIds.toString());
+//                            System.out.println("executado");
+//                            System.out.println("prediosIds: "+prediosIds.toString());
                             String [] prediosIdsArray = prediosIds.toString().split(";");
-                            System.out.println("comparando predios");
+//                            System.out.println("comparando predios");
                             
 
                             for (String predioId : prediosIdsArray)
                             {
                                 if (localTrabalho.equals(predioId))
                                 {
-                                    System.out.println("predio igual: "+localTrabalho + " "+predioId);
+//                                    System.out.println("predio igual: "+localTrabalho + " "+predioId);
                                     resultado = EventoLeitura.DIGITAL_RECONHECIDA;
                                     definido = true;
                                     break;
@@ -68,7 +68,7 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                         }
                         if (!definido)
                         {
-                            System.out.println("fim da comparação");
+//                            System.out.println("fim da comparação");
                             resultado = EventoLeitura.DIGITAL_RECONHECIDA_RESSALVA_PREDIO;
                         }
                         
