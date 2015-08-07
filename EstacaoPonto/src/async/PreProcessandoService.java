@@ -57,6 +57,13 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
         this.getResult();
     }
 
+    public LeitorDigital getLeitor() {
+        return LeitorDigital.getInstance();
+    }
+
+    public void parar(boolean b) {
+        this.parar  = b;
+    }
 
     public class Result{
         Operacao operacao;
@@ -71,13 +78,4 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
             this.operacao.execute(digital);
         }
     }
-
-    public LeitorDigital getLeitor() {
-        return LeitorDigital.getInstance();
-    }
-
-    public void parar(boolean b) {
-        this.parar  = b;
-    }
-
 }
