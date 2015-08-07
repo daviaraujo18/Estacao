@@ -95,7 +95,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                                 Log.i("Problema ao executar o OUA.");
                             }
-                            System.out.println("Iniciou");
+//                            System.out.println("Iniciou");
                             
                             Platform.exit();
                             System.exit(0);
