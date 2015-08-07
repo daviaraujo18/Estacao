@@ -30,28 +30,28 @@ public class CacheDownloadService extends Task<Void> {
         int progress = 0;
         
         String message;
-//        while (it.hasNext()) {    
-//            progress = (int) (((double)numAtual)/((double)numTotal)*100);
-//            message = "Download fotos: "+progress+"%";
-//            updateMessage(message);
-//            Map.Entry pairs = (Map.Entry)it.next();
-//            String enderecoWeb = pairs.getValue().toString();
+        while (it.hasNext()) {    
+            progress = (int) (((double)numAtual)/((double)numTotal)*100);
+            message = "Download fotos: "+progress+"%";
+            updateMessage(message);
+            Map.Entry pairs = (Map.Entry)it.next();
+            String enderecoWeb = pairs.getValue().toString();
 //            System.out.println("Endereço Web: "+enderecoWeb);
 //            System.out.print("Baixando "+numAtual+" de "+numTotal+". ");
-//            
-//            updateProgress(numAtual, numTotal);
-//
-//            if (!CacheManipulation.searchAndEdit(enderecoWeb))
-//            {
-//                CacheManipulation.insert(enderecoWeb);
-//            }
-//            
-//            it.remove(); // avoids a ConcurrentModificationException
-//            numAtual++;
-//
-//        }
-   }
+            
+            updateProgress(numAtual, numTotal);
 
+            if (!CacheManipulation.searchAndEdit(enderecoWeb))
+            {
+                CacheManipulation.insert(enderecoWeb);
+            }
+            
+            it.remove(); // avoids a ConcurrentModificationException
+            numAtual++;
+
+        }
+            }
+            
     @Override
     protected Void call() throws Exception {
         downloadAndCacheFotos();
