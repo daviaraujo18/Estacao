@@ -31,7 +31,7 @@ public class ArquivoRegistros {
             {
                 dadosDescriptografados="";
             }
-            System.out.println("ARQUIVO LIDO DESCRIPTOGRAFADO: " + dadosDescriptografados);
+//            System.out.println("ARQUIVO LIDO DESCRIPTOGRAFADO: " + dadosDescriptografados);
             dadosDescriptografados = dadosDescriptografados + registro;
             FileWriter fileWriter = new FileWriter(arquivo, false);
             PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -66,7 +66,7 @@ public class ArquivoRegistros {
         {
             System.out.println("CONTEUDO DO ARQUIVO: " + conteudo);
             String conteudoDes = CryptoUtils.decryptDES("cryp:gpf", conteudo);
-            System.out.println("CONTEUDO DESCRIPTOGRAFADO DO ARQUIVO: " + conteudoDes);
+//            System.out.println("CONTEUDO DESCRIPTOGRAFADO DO ARQUIVO: " + conteudoDes);
         }
         else
         {
