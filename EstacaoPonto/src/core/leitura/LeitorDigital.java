@@ -85,7 +85,7 @@ public class LeitorDigital {
 
     public int searchDigitalOnIndexSearchEngine(String hashDigital) throws Exception {
 
-        abrirLeitor();
+		 abrirLeitor();
 
         NBioBSPJNI.IndexSearch.FP_INFO fpInfo = indexSearchEngine.new FP_INFO();
 
@@ -122,7 +122,6 @@ public class LeitorDigital {
 //		bsp.RollCapture(NBioBSPJNI.FIR_PURPOSE.ENROLL, hSavedFIR, -1, null, winOption);
 
         if(bsp.IsErrorOccured()) {
-
             throwError();
             fecharLeitor();
             return null;
@@ -170,35 +169,40 @@ public class LeitorDigital {
      * abre conexao com o leitor de digital
      */
     public void abrirLeitor() {
+		if(!ativo){
+		
+			bsp = new NBioBSPJNI();
+			// Setar timeout do leitorDigital
+	//		initInfo = bsp.new INIT_INFO_0();
+	//		initInfo.DefaultTimeout = 2000;
+	//		bsp.SetInitInfo(initInfo);
 
-        bsp = new NBioBSPJNI();
-        // Setar timeout do leitorDigital
-//		initInfo = bsp.new INIT_INFO_0();
-//		initInfo.DefaultTimeout = 2000;
-//		bsp.SetInitInfo(initInfo);
+			deviceEnumInfo = bsp.new DEVICE_ENUM_INFO();
+			winOption = bsp.new WINDOW_OPTION();
 
-        deviceEnumInfo = bsp.new DEVICE_ENUM_INFO();
-        winOption = bsp.new WINDOW_OPTION();
+			winOption.WindowStyle = NBioBSPJNI.WINDOW_STYLE.INVISIBLE;
+			//winOption.WindowStyle |= NBioBSPJNI.WINDOW_STYLE.NO_WELCOME;
 
-        winOption.WindowStyle = NBioBSPJNI.WINDOW_STYLE.INVISIBLE;
-        //winOption.WindowStyle |= NBioBSPJNI.WINDOW_STYLE.NO_WELCOME;
+			// Enumerate device
+			bsp.EnumerateDevice(deviceEnumInfo);
 
-        // Enumerate device
-        bsp.EnumerateDevice(deviceEnumInfo);
-
-        //bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
-        ativo = true;
-        bsp.OpenDevice();
+			//bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
+			ativo = true;
+			bsp.OpenDevice();
+		}
     }
 
     public void fecharLeitor() {
-        bsp.CloseDevice();
-        deviceEnumInfo = null;
-        ativo = false;
+		if(ativo){
+		
+			bsp.CloseDevice();
+			deviceEnumInfo = null;
+			ativo = false;
+		}
     }
 
     public boolean verificaCompatibilidadeDigitais(String digital, String digitalCapturada) {
-
+	
         abrirLeitor();
 
         NBioBSPJNI.INPUT_FIR firDigital = bsp.new INPUT_FIR();
