@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import utils.AtualizarEstacao;
+import utils.Log;
 
 /**
  *
@@ -95,7 +96,7 @@ public class OnAlertListener implements EventHandler {
                         //lines = Files.readAllLines(path, Charset.forName("ISO-8859-1"));
                         LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(pathS)));
                         lnr.skip(Long.MAX_VALUE);
-                        System.out.println(lnr.getLineNumber());
+//                        System.out.println(lnr.getLineNumber());
                         int tamanhoInicial = lnr.getLineNumber();
                         lnr.close();
                         int limite = 50000;
@@ -107,7 +108,7 @@ public class OnAlertListener implements EventHandler {
                             inicio= tam + 1 - limite;
                             tam=limite;
                         }
-                        System.out.println("tam: "+tam+" inicio: "+inicio);
+//                        System.out.println("tam: "+tam+" inicio: "+inicio);
                         
                             BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"));
                             
@@ -142,13 +143,13 @@ public class OnAlertListener implements EventHandler {
                     }
                     
                     MainController.INSTANCE.arr = result.toArray(new String[result.size()]);
-                    System.out.println("tamanho: "+MainController.INSTANCE.arr.length);
+//                    System.out.println("tamanho: "+MainController.INSTANCE.arr.length);
                     MainController.INSTANCE.addUploadFile(MainController.INSTANCE.arr.length);
                  
                 
                 }else{
                     if (comando.toString().equals("doUpload")) {
-                        System.out.println("adicionando partes");
+//                        System.out.println("adicionando partes");
                         MainController.INSTANCE.doUploadParte();
 
                     }
