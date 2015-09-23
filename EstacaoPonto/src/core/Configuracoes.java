@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
+import utils.Log;
 
 public enum Configuracoes {
 
@@ -48,7 +49,8 @@ public enum Configuracoes {
             
             props.load(is);
         } catch (Exception e) {
-            e.printStackTrace();
+			Log.e(e.getMessage());
+//            e.printStackTrace();
         }
     }
 

@@ -81,6 +81,7 @@ public class OnAlertListener implements EventHandler {
                         Platform.exit();
                         System.exit(0);
                     } catch (Exception ex) {
+						Log.e(ex.getMessage());
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }else{
@@ -139,6 +140,7 @@ public class OnAlertListener implements EventHandler {
                         
                 
                     }catch (IOException ex) {
+							Log.e(ex.getMessage());
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     

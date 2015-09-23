@@ -64,10 +64,11 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                     try {
                         ret = criarArquivoBatimentos();
                     } catch (IOException ex) {
+						Log.e(ex.getMessage());
                         Logger.getLogger(ChangeUrlListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else if (urlAtualContem("presenca/IniciarPonto")) {
-                    Log.i("Entrei no metodo");
+//                    Log.i("Entrei no metodo");
                     String codigos = IntranetURLs.getCodigos();
                     Log.i("codigos: " + codigos) ;
                     String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
@@ -94,6 +95,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                             catch (Exception ex) {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                                 Log.i("Problema ao executar o OUA.");
+								Log.e(ex.getMessage());
                             }
 //                            System.out.println("Iniciou");
                             
@@ -103,6 +105,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                         catch (Exception ex)
                         {
                             Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+							Log.e(ex.getMessage());
                         }
                     }
                 }
@@ -139,6 +142,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
             Log.i(statusArq);
             return true;
         } catch (IOException e) {
+			Log.e(e.getMessage());
             e.printStackTrace();
             return false;
         }

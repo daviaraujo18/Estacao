@@ -95,7 +95,7 @@ public class LeitorDigital {
         firDigital.SetTextFIR(firDigitalTexto);
 
         // 0 = maxSearchTime
-        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo, 5000);
+        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo, 3500);
         if(bsp.IsErrorOccured()) {
             throwError();
             return -1;
@@ -194,7 +194,6 @@ public class LeitorDigital {
 
     public void fecharLeitor() {
 		if(ativo){
-		
 			bsp.CloseDevice();
 			deviceEnumInfo = null;
 			ativo = false;
@@ -263,7 +262,7 @@ public class LeitorDigital {
 
     public boolean temDedo()
     {
-        Boolean temDedo =false;
+        Boolean temDedo=false;
         bsp.CheckFinger(temDedo);
         return temDedo;
     }

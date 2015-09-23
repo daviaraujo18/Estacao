@@ -72,10 +72,10 @@ public class CacheManipulation {
                        
                        if (!foto.exists())
                        {
-                            System.out.println("Foto inexistente...Baixando...");
+//                            System.out.println("Foto inexistente...Baixando...");
                             if (DownloadFoto.baixaFoto(enderecoWeb))
                             {
-                                System.out.println("Download terminado.");
+//                                System.out.println("Download terminado.");
                                 conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+"\r\n");
                             }           
                             else
@@ -87,13 +87,13 @@ public class CacheManipulation {
                        }
                        else
                        {
-                           System.out.println("Comparando a data: "+dataDownloadFoto.getTime().toString()+" com a do servidor: "+today.getTime().toString());
+//                           System.out.println("Comparando a data: "+dataDownloadFoto.getTime().toString()+" com a do servidor: "+today.getTime().toString());
                            if (today.after(dataDownloadFoto))
                            {//foto antiga, baixar novamente.
                              System.out.println("Validade da foto expirou...Baixando novamente...");
                              if (DownloadFoto.baixaFoto(enderecoWeb))
                              {
-                                 System.out.println("Download terminado.");
+//                                 System.out.println("Download terminado.");
                                  conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+" "+"\r\n");
                        }
                              else
@@ -104,7 +104,7 @@ public class CacheManipulation {
                            }
                  else
                  {
-                                System.out.println("Foto dentro da validade. Não há necessidade de download...");
+//                                System.out.println("Foto dentro da validade. Não há necessidade de download...");
                      conteudo+=linhaCache+"\r\n";
                  }
                        }
@@ -125,6 +125,7 @@ public class CacheManipulation {
         }
         catch (IOException ex) 
         {
+			Log.e(ex.getMessage());
            ex.printStackTrace();
         }
         return encontrado;
@@ -152,7 +153,7 @@ public class CacheManipulation {
             System.out.println("Baixando foto "+nomeArquivo+"...");
             if (dw.baixaFoto(enderecoWeb))
             {
-                System.out.println("Download terminado.");
+//                System.out.println("Download terminado.");
                 bw.write(nomeArquivo+" "+viewDate(dataAtual.getTime()));
                 bw.newLine();
                 insercaoValida= true;
@@ -168,6 +169,7 @@ public class CacheManipulation {
         }
         catch (IOException ex) 
         {
+			Log.e(ex.getMessage());
            ex.printStackTrace();
         }
         return insercaoValida;
@@ -184,9 +186,10 @@ public class CacheManipulation {
                     cal.setTime(date);
                     return cal;
                 }
-                catch(Exception e)
+                catch(Exception ex)
                 {
-                    System.out.println("Data inválida.");
+					Log.e(ex.getMessage());
+//                    System.out.println("Data inválida.");
                     return null;
                 }
                 

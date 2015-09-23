@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.Log;
 
 /**
  *
@@ -154,6 +155,7 @@ public class LocalPaths {
 //            }
 //        }
 } catch (IOException ex) {
+	Log.e(ex.getMessage());
             Logger.getLogger(LocalPaths.class.getName()).log(Level.SEVERE, null, ex);
         }
       

@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.Log;
 
 /**
  * File: jWMI.java
@@ -163,6 +164,7 @@ public class jWMI
             
             return (numSerieComputador+"_"+numeroSerieHD);
         } catch (Exception ex) {  
+			Log.e(ex.getMessage());
             Logger.getLogger(jWMI.class.getName()).log(Level.SEVERE, null, ex);  
         }  
         return "";

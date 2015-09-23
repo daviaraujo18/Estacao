@@ -37,6 +37,7 @@ public enum Operacao {
             try {
                 MainController.INSTANCE.atualizarHorario(horario);
             } catch (IOException ex) {
+					Log.e(ex.getMessage());
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
             }
             
@@ -107,8 +108,10 @@ public enum Operacao {
                     MainController.INSTANCE.atualizarHorario(horario);
                     Log.atualizarDataLog();
                 } catch (FileNotFoundException ex) {
+						Log.e(ex.getMessage());
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
+						Log.e(ex.getMessage());
                     Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -122,6 +125,7 @@ public enum Operacao {
             try {
                 MainController.INSTANCE.apagarRegistrosBatimentos();
             } catch (IOException ex) {
+					Log.e(ex.getMessage());
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -145,8 +149,10 @@ public enum Operacao {
             try {
                 MainController.INSTANCE.iniciarSincronizacao();
             } catch (FileNotFoundException ex) {
+				Log.e(ex.getMessage());
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
+				Log.e(ex.getMessage());
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

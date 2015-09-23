@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import utils.ArquivoRegistros;
 import utils.CacheManipulation;
+import utils.Log;
 import utils.The;
 import view.TelaPonto;
 
@@ -40,6 +41,7 @@ public enum EventoLeitura {
     DIGITAL_NAO_RECONHECIDA{
         @Override
         public void after(TelaPonto tela) {
+			Log.i("ALERT: Digital Não Reconhecida!");
             tela.sound.playError();
         }
     },
@@ -47,6 +49,7 @@ public enum EventoLeitura {
     ERRO_LEITURA{
         @Override
         public void after(TelaPonto tela) {
+			Log.i("ALERT: Erro de Leitura!");
             tela.sound.playError();
         }
     }, 
@@ -73,7 +76,8 @@ public enum EventoLeitura {
             try {
                 The.inserirJavascript(tela.getWebEngine(), "process('" + this.name()+"', "+getData(tela, leitura)+")");
             }catch (RuntimeException e){
-                e.printStackTrace();
+				Log.e(e.getMessage());
+//                e.printStackTrace();
             }
 
 
@@ -92,7 +96,7 @@ public enum EventoLeitura {
             String nome = dados[1];
             String urlFoto = dados[2];
             String sexo = dados[3];
-            System.out.println("Sexo: "+sexo+" urlFoto: "+urlFoto);
+//            System.out.println("Sexo: "+sexo+" urlFoto: "+urlFoto);
             String nomeArquivo = FilenameUtils.getBaseName(urlFoto);
             //nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(urlFoto);
 
@@ -144,6 +148,7 @@ public enum EventoLeitura {
 //                    fileInputStream.close();
 
                 }catch(Exception e){
+					Log.e(e.getMessage());
                         e.printStackTrace();
                 }
                 
@@ -152,6 +157,7 @@ public enum EventoLeitura {
 
 //            String dad = "'"+leitura.getIdFrequentador() + "','" + leitura.getMomento() + "','" + nome + "','" + matricula + "','" + urlFoto + "'";
             String dad = "'"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome + "," + dataURI+"'";
+			Log.i("SUCESS: Digital Reconhecida->"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome );
         //    System.out.println("Dad "+dad);
             return dad;
     }

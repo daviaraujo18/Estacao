@@ -1,9 +1,6 @@
 package controllers;
 
 import async.PreProcessandoService;
-import core.leitura.VerificacaoDigitalHandler;
-import core.leitura.VerificacaoDigitalService;
-import core.leitura.EventoLeitura;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 

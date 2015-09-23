@@ -100,6 +100,7 @@ public class MainController implements Initializable {
             The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
             The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('success','Digitais identificadas!');");
         } catch (Exception ex) {
+			Log.e(ex.getMessage());
 //            The.inserirJavascript(webEngine, "changeInfoDigital('error','" + ex.getMessage() + "');");
         }
     }

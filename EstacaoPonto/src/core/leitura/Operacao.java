@@ -5,6 +5,7 @@ import core.DadosFrequentadores;
 import view.BloqueioTela;
 
 import java.util.Map;
+import utils.Log;
 
 /**
  * Created by Danilo on 18/03/14.
@@ -22,7 +23,8 @@ public enum Operacao {
                 }
 
             }catch (Exception e){
-                e.printStackTrace();
+				Log.e(e.getMessage());
+//                e.printStackTrace();
 
             }
             MainController.INSTANCE.getCds().restart();

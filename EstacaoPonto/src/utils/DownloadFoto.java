@@ -68,8 +68,9 @@ public class DownloadFoto {
 
             baixou=true;
         }
-        catch(Exception e)
+        catch(Exception ex)
         {
+			Log.e(ex.getMessage());
             System.out.println("Arquivo inexistente ou servidor de imagens desligado.");
             return false;
         }
@@ -78,13 +79,14 @@ public class DownloadFoto {
             long fim = System.currentTimeMillis(); 
             long resulta = (fim-startTempo);
 
-            System.out.println("delta T: "+(fim-startTempo));
+//            System.out.println("delta T: "+(fim-startTempo));
             
             if (in != null) 
             {
                     try {
                         in.close();
                     } catch (IOException ex) {
+						Log.e(ex.getMessage());
                         Logger.getLogger(DownloadFoto.class.getName()).log(Level.SEVERE, null, ex);
                     }
             }

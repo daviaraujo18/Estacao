@@ -6,6 +6,7 @@ import java.util.Map;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import utils.Log;
 
 /**
  * Created by Danilo on 12/02/14.
@@ -31,6 +32,7 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                     id = ld.searchDigitalOnIndexSearchEngine(digitalHash);
                     ld.fecharLeitor();
                 } catch (Exception e) {
+					Log.e(e.getMessage());
                     e.printStackTrace();
                 }
 
