@@ -23,7 +23,7 @@ public enum Operacao {
                 }
 
             }catch (Exception e){
-				Log.e(e.getMessage());
+				Log.e(e);
 //                e.printStackTrace();
 
             }

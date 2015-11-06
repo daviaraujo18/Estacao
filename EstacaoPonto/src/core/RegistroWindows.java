@@ -27,6 +27,7 @@ public class RegistroWindows {
 
 			} catch (Exception e) {
 				Log.e("\\Estação >> ERRO na busca do código de ativação.");
+				Log.e(e);
 //				e.printStackTrace();
 				return null;
 			}

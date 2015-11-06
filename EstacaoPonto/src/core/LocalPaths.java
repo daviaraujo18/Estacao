@@ -155,7 +155,7 @@ public class LocalPaths {
 //            }
 //        }
 } catch (IOException ex) {
-	Log.e(ex.getMessage());
+		Log.e(ex);
             Logger.getLogger(LocalPaths.class.getName()).log(Level.SEVERE, null, ex);
         }
       

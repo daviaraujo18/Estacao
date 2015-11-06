@@ -125,8 +125,8 @@ public class CacheManipulation {
         }
         catch (IOException ex) 
         {
-			Log.e(ex.getMessage());
-           ex.printStackTrace();
+			Log.e(ex);
+//           ex.printStackTrace();
         }
         return encontrado;
    }
@@ -169,8 +169,8 @@ public class CacheManipulation {
         }
         catch (IOException ex) 
         {
-			Log.e(ex.getMessage());
-           ex.printStackTrace();
+			Log.e(ex);
+//           ex.printStackTrace();
         }
         return insercaoValida;
    }     
@@ -188,7 +188,7 @@ public class CacheManipulation {
                 }
                 catch(Exception ex)
                 {
-					Log.e(ex.getMessage());
+					Log.e(ex);
 //                    System.out.println("Data inválida.");
                     return null;
                 }

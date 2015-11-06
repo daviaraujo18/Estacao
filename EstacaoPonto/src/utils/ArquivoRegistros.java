@@ -43,8 +43,8 @@ public class ArquivoRegistros {
             printWriter.close();
             return true;
         } catch (IOException e) {
-			Log.e(e.getMessage());
-            e.printStackTrace();
+			Log.e(e);
+//            e.printStackTrace();
             return false;
         }
     }
@@ -113,8 +113,8 @@ public class ArquivoRegistros {
             printWriter.close();
             return true;
         } catch (IOException ex) {
-			Log.e(ex.getMessage());
-            ex.printStackTrace();
+			Log.e(ex);
+//            ex.printStackTrace();
             return false;
         }        
     }

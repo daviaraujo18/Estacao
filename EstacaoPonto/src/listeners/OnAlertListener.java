@@ -121,7 +121,8 @@ public class OnAlertListener implements EventHandler {
                                 }
                                 catch(Exception ex)
                                 {
-                                    ex.printStackTrace();
+                                    Log.e(ex);
+//									ex.printStackTrace();
                                 }
                                 if (line == null )  {
                                     break;

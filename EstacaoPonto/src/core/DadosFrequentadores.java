@@ -81,7 +81,8 @@ public class DadosFrequentadores  {
                 try {
                     MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(hashFrequentadores);
                 } catch (Exception e) {
-                    Log.e("Leitor nao iniciado: " + e.getMessage());
+                    Log.e("Leitor nao iniciado: ");
+					Log.e(e);
                 }
                 return null;
             }

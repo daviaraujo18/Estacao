@@ -70,7 +70,7 @@ public class DownloadFoto {
         }
         catch(Exception ex)
         {
-			Log.e(ex.getMessage());
+			Log.e(ex);
             System.out.println("Arquivo inexistente ou servidor de imagens desligado.");
             return false;
         }
@@ -86,7 +86,7 @@ public class DownloadFoto {
                     try {
                         in.close();
                     } catch (IOException ex) {
-						Log.e(ex.getMessage());
+						Log.e(ex);
                         Logger.getLogger(DownloadFoto.class.getName()).log(Level.SEVERE, null, ex);
                     }
             }

@@ -32,8 +32,8 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                     id = ld.searchDigitalOnIndexSearchEngine(digitalHash);
                     ld.fecharLeitor();
                 } catch (Exception e) {
-					Log.e(e.getMessage());
-                    e.printStackTrace();
+					Log.e(e);
+//                    e.printStackTrace();
                 }
 
                 if (digitalHash == null || digitalHash.isEmpty()) {

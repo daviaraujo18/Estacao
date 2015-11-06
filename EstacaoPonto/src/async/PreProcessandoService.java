@@ -46,7 +46,7 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
                 }
             }
         } catch (Exception e) {
-			Log.e(e.getMessage());
+			Log.e(e);
             PreProcessandoService.this.restart();
 //            e.printStackTrace();
         }

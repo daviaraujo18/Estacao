@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Calendar;
 
 /**
@@ -32,6 +34,11 @@ public class Log {
 
     public static void e(Object msg) {
         System.out.println("[LOG-ERROR] "+msg.toString());
+    }
+    public static void e(Exception ex) {
+		StringWriter errors = new StringWriter();
+		ex.printStackTrace(new PrintWriter(errors));
+        System.out.println("[LOG-ERROR] "+errors.toString());
     }
     
     public static void saidaEmArquivo()

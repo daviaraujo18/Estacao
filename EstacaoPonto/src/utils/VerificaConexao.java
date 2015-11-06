@@ -28,11 +28,11 @@ public class VerificaConexao {
 			Object objData = urlConnect.getContent();
 		}
 		catch (MalformedURLException e) {
-			Log.e("url:"+sUrl+" >>"+e.getMessage());
+			Log.e(e);
 			return false;
 		}
 		catch (IOException e) {
-			Log.e(e.getMessage());
+			Log.e(e);
 			return false;
 		}
 		return true;

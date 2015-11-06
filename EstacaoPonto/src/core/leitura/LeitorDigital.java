@@ -257,7 +257,7 @@ public class LeitorDigital {
             }
         }
         fecharLeitor();
-        throw new Exception("Erro: "+errorName);
+        			Log.e("Erro: "+errorName);
     }
 
     public boolean temDedo()

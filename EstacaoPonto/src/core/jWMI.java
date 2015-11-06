@@ -164,7 +164,7 @@ public class jWMI
             
             return (numSerieComputador+"_"+numeroSerieHD);
         } catch (Exception ex) {  
-			Log.e(ex.getMessage());
+			Log.e(ex);
             Logger.getLogger(jWMI.class.getName()).log(Level.SEVERE, null, ex);  
         }  
         return "";

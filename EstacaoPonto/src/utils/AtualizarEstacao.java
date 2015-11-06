@@ -71,7 +71,7 @@ public class AtualizarEstacao {
         }
         catch (Exception ex)
         {
-			Log.e(ex.getMessage());
+			Log.e(ex);
             System.out.println("Não foi possível baixar a nova versão. Endereço: "+url);
         }
    }

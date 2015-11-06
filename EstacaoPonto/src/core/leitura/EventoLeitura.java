@@ -76,7 +76,7 @@ public enum EventoLeitura {
             try {
                 The.inserirJavascript(tela.getWebEngine(), "process('" + this.name()+"', "+getData(tela, leitura)+")");
             }catch (RuntimeException e){
-				Log.e(e.getMessage());
+				Log.e(e);
 //                e.printStackTrace();
             }
 
@@ -148,8 +148,8 @@ public enum EventoLeitura {
 //                    fileInputStream.close();
 
                 }catch(Exception e){
-					Log.e(e.getMessage());
-                        e.printStackTrace();
+					Log.e(e);
+//                        e.printStackTrace();
                 }
                 
 
