@@ -45,15 +45,15 @@ public class EstacaoPonto extends Application{
     public void init() throws Exception {
         //saída em arquivo
 //        System.out.println(System.getProperty("file.encoding"));
-        if (ambiente.equals("desenvolvimento"))
-        {
-            Log.saidaEmArquivo=false;
-        }
-        else
-        { 
+//        if (ambiente.equals("desenvolvimento"))
+//        {
+//            Log.saidaEmArquivo=false;
+//        }
+//        else
+//        { 
 //			System.out.println("teste2");
             Log.saidaEmArquivo=true;
-        }
+//        }
         IntranetURLs.init();
         Log.saidaEmArquivo();
         LocalPaths.idePath = new File(".").getCanonicalPath();

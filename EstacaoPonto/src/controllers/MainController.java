@@ -143,7 +143,6 @@ public class MainController implements Initializable {
     public void atualizarHorario(String horario) throws IOException{
         Log.i("Inicia atualização de horário: "+horario);//#flag
         //String minutos = horario.split(":")[1];
-        //faz a sincronizacao 1 h depois de iniciada a estacao ponto - teste
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
                 System.out.println("Iniciando sincronização. Data: "+threadRelogio.getDataServidorAtual().getTime());

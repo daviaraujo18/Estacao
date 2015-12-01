@@ -26,7 +26,7 @@ public class IntranetURLs {
     
 //    public static  String URL_UPDATE= "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";//desenvolvimento
 //    public static  String URL_UPDATE_ALL = "http://localhost/intranet_uploads/tjpi/upload_presenca/versao/";//desenvolvimento
-    public static String PROBLEMA_REGISTRO=BASE_URL+"/presenca/ProblemaRegistro";;
+    public static String PROBLEMA_REGISTRO=BASE_URL+"/presenca/ProblemaRegistro";
     
     public static String getCodigos() {
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
@@ -37,18 +37,18 @@ public class IntranetURLs {
     public static void init()
     {
 
+		 String uploadPath = BASE_URL;
         if (EstacaoPonto.ambiente.equals("desenvolvimento"))
         {
-            URL_UPDATE= "http://localhost/intranet_uploads/tjpi/upload_presenca/EstacaoPonto.jar";//desenvolvimento
-            URL_UPDATE_ALL = "http://localhost/intranet_uploads/tjpi/upload_presenca/versao/";//desenvolvimento
+			uploadPath = uploadPath.replace(":8089/intranet", "/");
+            URL_UPDATE= uploadPath+"/intranet_uploads/presenca/upload_presenca/EstacaoPonto.jar";//desenvolvimento
+            URL_UPDATE_ALL =uploadPath+"/intranet_uploads/presenca/upload_presenca/versao/";//desenvolvimento
         }
         else
         {
-                 String uploadPath = BASE_URL;
-                uploadPath = uploadPath.replace(":8086/intranet", "/intranet");
+			uploadPath = uploadPath.replace(":8086/intranet", "/intranet");
             if (EstacaoPonto.ambiente.equals("teste"))
             {
-;
                 URL_UPDATE = uploadPath+"/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//teste 
                 URL_UPDATE_ALL = uploadPath+"/uploads/tjpi/upload_presenca/versao/";//teste
             }
@@ -56,8 +56,8 @@ public class IntranetURLs {
             {
                 if (EstacaoPonto.ambiente.equals("producao"))
                 {
-                    URL_UPDATE = uploadPath+"/uploads/tjpi/upload_presenca/EstacaoPonto.jar";//producao
-                    URL_UPDATE_ALL = uploadPath+"/uploads/tjpi/upload_presenca/versao/";//producao 
+                    URL_UPDATE = uploadPath+"/uploads/presenca/upload_presenca/EstacaoPonto.jar";//producao
+                    URL_UPDATE_ALL = uploadPath+"/uploads/presenca/upload_presenca/versao/";//producao 
                 }
             }
         }

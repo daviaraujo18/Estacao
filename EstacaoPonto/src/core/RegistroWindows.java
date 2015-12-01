@@ -11,15 +11,16 @@ import utils.WinRegistry;
  * @author Anderson Soares <aersandersonsoares@gmail.com>
  */
 public class RegistroWindows {
-
+	public static final String KEY_REGISTRO = "SOFTWARE\\TJPIEstacaoPonto";
+	
 	public static String getCodigoAtivacaoRegistro() {
 
 		if (OSVerifier.isWindows()) {
 			try {
   
 				String value = WinRegistry.readString(
-						WinRegistry.HKEY_LOCAL_MACHINE, //HKEY
-						"SOFTWARE\\TJPIEstacaoPonto", //Key
+						WinRegistry.HKEY_CURRENT_USER, //HKEY
+						KEY_REGISTRO, //Key
 						"codigoAtivacao");                                              //ValueName
 
 				String valor = value;
@@ -39,9 +40,9 @@ public class RegistroWindows {
 	public static boolean registrarCodigoAtivacao(String codigoAtivacao) {
 		if (OSVerifier.isWindows()) {
 			try {
-
-				int hkey = WinRegistry.HKEY_LOCAL_MACHINE;
-				String key = "SOFTWARE\\TJPIEstacaoPonto";
+					
+				int hkey = WinRegistry.HKEY_CURRENT_USER;
+				String key = KEY_REGISTRO;
 				WinRegistry.createKey(hkey, key);
 				WinRegistry.writeStringValue(hkey, key, "codigoAtivacao", codigoAtivacao);
 
