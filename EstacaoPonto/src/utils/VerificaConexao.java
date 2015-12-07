@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 /**
  *
@@ -21,8 +20,8 @@ public class VerificaConexao {
 					// abre a conexão
 					HttpURLConnection urlConnect = (HttpURLConnection) url.openConnection();
 
-			urlConnect.setConnectTimeout(20000);
-			urlConnect.setReadTimeout(20000);
+			urlConnect.setConnectTimeout(10000);
+			urlConnect.setReadTimeout(10000);
                // tenta buscar conteúdo da URL
 			// se não tiver conexão, essa linha irá falhar
 			Object objData = urlConnect.getContent();

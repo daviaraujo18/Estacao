@@ -37,8 +37,8 @@ public class DownloadFoto {
            
             URL url = new URL(enderecoWeb);
             URLConnection  conn = url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
+            conn.setConnectTimeout(3000);
+            conn.setReadTimeout(3000);
 
             startTempo = System.currentTimeMillis(); 
             in = new BufferedInputStream(conn.getInputStream());

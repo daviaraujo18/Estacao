@@ -37,7 +37,7 @@ public class ThreadRelogio extends Service<String> {
      * Retorna DiaDaSemana, DiaDoMes, Mes, Ano, Horario(HH:MM)
      */
     private String calculaHorario() {
-        Log.i("Calculando horário...");
+//        Log.i("Calculando horário...");
         String dataCompleta = "";
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
@@ -66,7 +66,7 @@ public class ThreadRelogio extends Service<String> {
         + dataServidorAtual.get(Calendar.DAY_OF_MONTH) +","
         + mesExtenso.get(dataServidorAtual.get(Calendar.MONTH))+","
         +dataServidorAtual.get(Calendar.YEAR)+","+horarioAtual;
-        Log.i("DataCompleta::: " + dataCompleta);
+//        Log.i("DataCompleta::: " + dataCompleta);
         return dataCompleta;
     }
 
