@@ -12,6 +12,7 @@ public enum Configuracoes {
     base_intranet_url,
     tela_cheia,
     bloqueio_tela,
+	baixa_foto,
     nivel_seguranca_leitor;
 
     private static Properties props;

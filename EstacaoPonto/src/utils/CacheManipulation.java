@@ -7,13 +7,10 @@ package utils;
 
 import controllers.MainController;
 import core.LocalPaths;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,38 +33,39 @@ public class CacheManipulation {
         boolean encontrado=false;
         String conteudo="";
         //search & edit
-        File arquivo = new File(LocalPaths.PATH_CACHE+"cache.txt"); 
-
-        File dir  = arquivo.getParentFile();
-        dir.mkdirs();
+		
+//        File arquivo = new File(LocalPaths.PATH_CACHE+"cache.txt"); 
+//
+//        File dir  = arquivo.getParentFile();
+//        dir.mkdirs();
 
 
         
         
         String nomeArquivo = FilenameUtils.getBaseName(enderecoWeb);
-        //nomeArquivo = nomeArquivo +"."+ FilenameUtils.getExtension(enderecoWeb);
+        
         String enderecoLocal=LocalPaths.PATH_CACHE+nomeArquivo;
 
-        try {
-               arquivo.createNewFile();
-            FileReader fr = new FileReader(arquivo);  
-            BufferedReader br = new BufferedReader(fr); 
+//        try {
+//               arquivo.createNewFile();
+//            FileReader fr = new FileReader(arquivo);  
+//            BufferedReader br = new BufferedReader(fr); 
+//            
+//            String linhaCache = br.readLine(); //lê a primeira linha
             
-            String linhaCache = br.readLine(); //lê a primeira linha
-            
-            while (linhaCache!=null)
-            {
-                if (linhaCache.contains(nomeArquivo) && encontrado == false)
-                {//há um registro no cache que a foto foi baixada.
-                       encontrado=true;
-                       System.out.println("Arquivo encontrado: "+linhaCache);
-                       String dadosCache[] = linhaCache.split(" ");
+//            while (linhaCache!=null)
+//            {
+//                if (linhaCache.contains(nomeArquivo) && encontrado == false)
+//                {//há um registro no cache que a foto foi baixada.
+//                       encontrado=true;
+//                       System.out.println("Arquivo encontrado: "+linhaCache);
+//                       String dadosCache[] = linhaCache.split(" ");
                        
-                       Calendar dataDownloadFoto = viewDateToCalendar(dadosCache[1]);
-                       dataDownloadFoto.add(Calendar.DAY_OF_YEAR,VALIDADE);
-                       //Calendar today = Calendar.getInstance();
-                       Calendar today =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
-                       
+//                       Calendar dataDownloadFoto = viewDateToCalendar(dadosCache[1]);
+//                       dataDownloadFoto.add(Calendar.DAY_OF_YEAR,VALIDADE);
+//                       //Calendar today = Calendar.getInstance();
+//                       Calendar today =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
+//                       
                        File foto = new File(enderecoLocal);
                        
                        if (!foto.exists())
@@ -75,59 +73,63 @@ public class CacheManipulation {
 //                            System.out.println("Foto inexistente...Baixando...");
                             if (DownloadFoto.baixaFoto(enderecoWeb))
                             {
+								encontrado = true;
 //                                System.out.println("Download terminado.");
-                                conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+"\r\n");
+//                                conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+"\r\n");
                             }           
                             else
                             {
                                 System.out.println("Problemas no download.");
-                                conteudo+=linhaCache+"\r\n";
+//                                conteudo+=linhaCache+"\r\n";
                             }
                             
                        }
-                       else
-                       {
-//                           System.out.println("Comparando a data: "+dataDownloadFoto.getTime().toString()+" com a do servidor: "+today.getTime().toString());
-                           if (today.after(dataDownloadFoto))
-                           {//foto antiga, baixar novamente.
-                             System.out.println("Validade da foto expirou...Baixando novamente...");
-                             if (DownloadFoto.baixaFoto(enderecoWeb))
-                             {
-//                                 System.out.println("Download terminado.");
-                                 conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+" "+"\r\n");
-                       }
-                             else
-                             {
-                                 System.out.println("Problemas no download.");
-                                 conteudo+=linhaCache+"\r\n";
-                 }
-                           }
-                 else
-                 {
-//                                System.out.println("Foto dentro da validade. Não há necessidade de download...");
-                     conteudo+=linhaCache+"\r\n";
-                 }
-                       }
-                 }
-                 else
-                 {
-                     conteudo+=linhaCache+"\r\n";
-                 }
-                 linhaCache = br.readLine(); //se tiver mais linhas, lê todas elas 
-            }
-            br.close();
-            fr.close();
-            FileWriter fileWriter = new FileWriter(arquivo, false);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.print(conteudo);
-            printWriter.flush();
-            printWriter.close();  
-        }
-        catch (IOException ex) 
-        {
-			Log.e(ex);
+					   else{
+						  encontrado = true; 
+					   }
+//                       else
+//                       {
+////                           System.out.println("Comparando a data: "+dataDownloadFoto.getTime().toString()+" com a do servidor: "+today.getTime().toString());
+//                           if (today.after(dataDownloadFoto))
+//                           {//foto antiga, baixar novamente.
+//                             System.out.println("Validade da foto expirou...Baixando novamente...");
+//                             if (DownloadFoto.baixaFoto(enderecoWeb))
+//                             {
+////                                 System.out.println("Download terminado.");
+//                                 conteudo += (dadosCache[0]+" "+viewDate(today.getTime())+" "+"\r\n");
+//                       }
+//                             else
+//                             {
+//                                 System.out.println("Problemas no download.");
+//                                 conteudo+=linhaCache+"\r\n";
+//                 }
+//                           }
+//                 else
+//                 {
+////                                System.out.println("Foto dentro da validade. Não há necessidade de download...");
+//                     conteudo+=linhaCache+"\r\n";
+//                 }
+//                       }
+//                 }
+//                 else
+//                 {
+//                     conteudo+=linhaCache+"\r\n";
+//                 }
+//                 linhaCache = br.readLine(); //se tiver mais linhas, lê todas elas 
+//            }
+//            br.close();
+//            fr.close();
+//            FileWriter fileWriter = new FileWriter(arquivo, false);
+//            PrintWriter printWriter = new PrintWriter(fileWriter);
+//            printWriter.print(conteudo);
+//            printWriter.flush();
+//            printWriter.close();  
+//        }
+//        catch (IOException ex) 
+//        {
+//			Log.e(ex);
 //           ex.printStackTrace();
-        }
+//        }
         return encontrado;
    }
    

@@ -23,7 +23,7 @@ public class EstacaoPonto extends Application{
 
     private Stage stage;
     private static EstacaoPonto INSTANCE;
-    public final static String versao = "0.1.3";
+    public final static String versao = "0.1.4";
 //   public final static String ambiente = "desenvolvimento"; //local
 //    public final static String ambiente = "teste"; //3.6 Descomentar para apontar para a base de teste e modificar o config.properties
     public final static String ambiente = "producao"; //0.6

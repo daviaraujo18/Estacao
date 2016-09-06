@@ -1,10 +1,8 @@
 package core.leitura;
 
 import controllers.MainController;
-import javafx.concurrent.Service;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import view.TelaPonto;
 
 /**
  * @author aers

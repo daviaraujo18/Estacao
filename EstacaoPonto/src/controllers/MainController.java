@@ -172,9 +172,11 @@ public class MainController implements Initializable {
     public void iniciarSincronizacao() throws FileNotFoundException, IOException
     {
         Log.i("Iniciando sincronização.");//#flag
-        String dados = ArquivoRegistros.lerArquivo();
-        The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
-        threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());
+        String dados = ArquivoRegistros.lerArquivoSincronizado();
+        if(!dados.isEmpty()){
+			The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
+			threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());
+		}
         //threadRelogio.desativarSincronizacao();
     }
     public void iAmStillAlive(){

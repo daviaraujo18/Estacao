@@ -150,8 +150,9 @@ public class ThreadRelogio extends Service<String> {
         long difTempo = dataServidorAtual.getTimeInMillis() - ultimaSincronizacao.getTimeInMillis();
         //double h = difTempo / 3600000; //1hora
         double h = difTempo/300000; // 5 minutos
+//        double h = difTempo/600000; // 10 minutos
         //double h = difTempo/120000; // 2 minutos
-        //double h = difTempo/60000; // 1 minutos
+//        double h = difTempo/10000; // 1 minutos
         if (h >= 1) {
             return true;
         }

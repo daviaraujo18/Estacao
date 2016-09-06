@@ -1,6 +1,5 @@
 package core.leitura;
 
-import controllers.MainController;
 import core.DadosFrequentadores;
 import core.LocalPaths;
 import java.io.File;
@@ -120,7 +119,7 @@ public enum EventoLeitura {
                     }
                         
                 }
-            }
+			}
             else
             {
                 if (!file.exists())
