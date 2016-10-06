@@ -63,7 +63,7 @@ public class AtualizarEstacao {
             fos.close();
 
             System.out.println("Executando runReplace.bat");
-            Process p =  Runtime.getRuntime().exec("cmd.exe /c start runReplace.bat",null,new File(LocalPaths.realPath) );
+            Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runReplace.bat",null,new File(LocalPaths.realPath) );
 
             System.out.println("Download finalizado. Abrindo nova versão.");
             Platform.exit();
