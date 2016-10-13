@@ -1,4 +1,4 @@
-Plugue o leitor apenas quando solicitado
+﻿Plugue o leitor apenas quando solicitado
 
 1.	Baixar o conteúdo em http://svn.tjpi.jus.br:81/svn/pontodigital
 
@@ -31,6 +31,23 @@ Plugue o leitor apenas quando solicitado
 
 12.	Abra o projeto no netBeans e adicione os “.jar” existentes na lib que você copiou (NBioBSPJNI.jar, bcprov-jdk14-132.jar e registry.jar)
 
+13. 	Encoding do projeto: ISO-8859-9
+
+14. 	Criar config.properties na raiz do projeto com o seguintes parametros:
+
+		app_name=ESTACAOPONTO
+		base_intranet_url=http://localhost:8080/intranet
+		#base_intranet_url=http://www.tjpi.jus.br/intranet
+		tela_cheia=true
+		bloqueio_tela=false
+		# 1-9
+		nivel_seguranca_leitor=8
+		baixa_foto=false
+
+14. 	Se ao executar a aplicação o sistema informar erro: "Sem permissão de escrita", deve-se criar as pastas 
+		c:\Estacao\img
+		c:\Estacao\logs
+	manualmente...
 
     PS: 
     SO, NetBeans, JDK e JavaFX precisam ter a mesma versão de bits.
