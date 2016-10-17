@@ -31,7 +31,7 @@
 
 12.	Abra o projeto no netBeans e adicione os “.jar” existentes na lib que você copiou (NBioBSPJNI.jar, bcprov-jdk14-132.jar e registry.jar)
 
-13. 	Encoding do projeto: ISO-8859-9
+13. 	Encoding do projeto: ISO-8859-1
 
 14. 	Criar config.properties na raiz do projeto com o seguintes parametros:
 
