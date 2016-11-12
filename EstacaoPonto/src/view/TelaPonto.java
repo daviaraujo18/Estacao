@@ -85,7 +85,8 @@ public class TelaPonto {
                     if (semConexao)
                     {
                         labelSemConexao.setVisible(true);
-                        Thread.sleep(1000);
+//                        Thread.sleep(1000);
+                        Thread.sleep(15000); //alteado para 15segs
                     }
                     else
                     {
