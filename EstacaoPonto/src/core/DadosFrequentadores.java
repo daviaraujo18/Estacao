@@ -55,7 +55,7 @@ public class DadosFrequentadores  {
                 if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
                     for (int i = 0; i < frequentadores.length; i++) {
                         // id;matricula;nome;digital;seEhAdminDaEstacao;sexo;foto
-                        String[] dados = frequentadores[i].split(";");
+                        String[] dados = frequentadores[i].trim().split(";");
                         String id = dados[0];
                         String hashDigital = dados[3];
                         String isAdmin = dados[5];
