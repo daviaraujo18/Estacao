@@ -27,11 +27,13 @@ public class VerificaConexao {
 			Object objData = urlConnect.getContent();
 		}
 		catch (MalformedURLException e) {
-			Log.e(e);
+//			Log.e(e);
+			Log.e("VerificarConexao falhou, url mal formada");
 			return false;
 		}
 		catch (IOException e) {
-			Log.e(e);
+//			Log.e(e);
+			Log.e("VerificarConexao falhou, intranet fora do ar? ou Eu estou fora do ar?");
 			return false;
 		}
 		return true;
