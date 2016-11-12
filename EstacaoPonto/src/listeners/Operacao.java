@@ -3,10 +3,12 @@ package listeners;
 import controllers.MainController;
 import core.DadosFrequentadores;
 import core.IntranetURLs;
+import core.LocalPaths;
 import core.RegistroWindows;
 import javafx.scene.web.WebEngine;
 import utils.Log;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
@@ -40,7 +42,7 @@ public enum Operacao {
 					Log.e(ex);
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             MainController.INSTANCE.prediosPermitidos();
         };
 
@@ -65,7 +67,7 @@ public enum Operacao {
             if (RegistroWindows.registrarCodigoAtivacao(data.toString()))
             {
                 webEngine.load(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
-                
+
             }
             else
             {
@@ -81,7 +83,7 @@ public enum Operacao {
     HORARIO_SERVIDOR_ATUAL("horarioServidorAtual"){
         @Override
         public void execute(String metodo, WebEngine engine){
-           
+
             String[] horario = metodo.split(":");
 
             int dia = Integer.parseInt(horario[1]);
@@ -93,7 +95,7 @@ public enum Operacao {
             dataServidor.set(ano, mes, dia, hora, minutos);
             Log.i("horário do servidor: "+((Calendar)(dataServidor.clone())).getTime()); //#flag
             MainController.INSTANCE.criarThreadRelogio(dataServidor);
-            
+
             Log.atualizarDataLog();
         }
     },
@@ -106,6 +108,19 @@ public enum Operacao {
                 try {
                     System.out.println("Atualizando...");
                     MainController.INSTANCE.atualizarHorario(horario);
+
+                    String horarioAtual =MainController.INSTANCE.getThreadRelogio().getHorarioAtual();
+                    System.out.println("horario:"+horario.split(",")[4]);
+                    if(horario.split(",")[4].equals("22:00")){
+                        try {
+//                            Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",null,new File(LocalPaths.realPath) );
+	                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(LocalPaths.realPath));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
                     Log.atualizarDataLog();
                 } catch (FileNotFoundException ex) {
 						Log.e(ex);
