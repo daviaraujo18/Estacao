@@ -144,7 +144,8 @@ public class MainController implements Initializable {
 //        Log.i("Inicia atualização de horário: "+horario);//#flag
         //String minutos = horario.split(":")[1];
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
-            if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
+            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
+            if (temConexaoComIntranet) {
                 iniciarSincronizacao();
             }
         }

@@ -3,6 +3,7 @@ package view;
 import controllers.MainController;
 import core.IntranetURLs;
 import core.LocalPaths;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -75,27 +76,30 @@ public class TelaPonto {
 
             @Override
             protected Object call() throws Exception {
-                System.out.println("Entrando no loop de teste de conexão. URL: " +IntranetURLs.INICIAR_PONTO);
+                int numeroTentativa = 1;
                 while (semConexao){
 
-                    boolean con = false;
-                    
-                    con = VerificaConexao.verificaConexao(IntranetURLs.INICIAR_PONTO);
-                    semConexao = !con;
-                    if (semConexao)
-                    {
+                    boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
+
+                    semConexao = !temConexaoComIntranet;
+                    if (semConexao) {
+
+                        final int finalNumeroTentativa = numeroTentativa;
+                        Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    labelSemConexao.setText("Tentanto conectar com INTRANET #" + finalNumeroTentativa);
+                                }
+                            });
+
                         labelSemConexao.setVisible(true);
 //                        Thread.sleep(1000);
+                        numeroTentativa++;
                         Thread.sleep(15000); //alteado para 15segs
-                    }
-                    else
-                    {
+                    } else {
                         labelSemConexao.setVisible(false);
                     }
-                   
-                    
                 }
-                System.out.println("Fim do teste de conexão");
                 return null;
             }
         };
