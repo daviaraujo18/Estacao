@@ -141,11 +141,10 @@ public class MainController implements Initializable {
      * @param String - Horário no formato HH:MM
      */
     public void atualizarHorario(String horario) throws IOException{
-        Log.i("Inicia atualização de horário: "+horario);//#flag
+//        Log.i("Inicia atualização de horário: "+horario);//#flag
         //String minutos = horario.split(":")[1];
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             if (VerificaConexao.verificaConexao(IntranetURLs.BASE_URL)) {
-                System.out.println("Iniciando sincronização. Data: "+threadRelogio.getDataServidorAtual().getTime());
                 iniciarSincronizacao();
             }
         }
@@ -173,7 +172,7 @@ public class MainController implements Initializable {
     {
         String dados = ArquivoRegistros.lerArquivoSincronizado();
         if(!dados.isEmpty()){
-            Log.i("Iniciando sincronização.");//#flag
+            Log.i("Iniciando sincronização. Data: "+threadRelogio.getDataServidorAtual().getTime());
 			The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
 		}
         threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());
@@ -185,9 +184,7 @@ public class MainController implements Initializable {
     }
     public void prediosPermitidos(){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        System.out.println("prediosPermitidos "+codAtivacao);
         The.inserirJavascript(this.tela.getWebEngine(), "prediosPermitidos('" + codAtivacao + "')");
-        System.out.println("fim metodo javascript prediosPermitidos");
     }
     public void addUploadFile(int size){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
