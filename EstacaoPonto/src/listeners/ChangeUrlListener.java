@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import utils.Log;
+import utils.ScriptsBat;
 import view.TelaPonto;
 
 /**
@@ -90,7 +91,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                             try {
                                 
                                 System.out.println("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
-                                Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(LocalPaths.realPath));
+                                ScriptsBat.restartAplicacao();
                             }
                             catch (Exception ex) {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);

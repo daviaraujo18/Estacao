@@ -6,7 +6,7 @@ import core.IntranetURLs;
 import core.LocalPaths;
 import core.RegistroWindows;
 import javafx.scene.web.WebEngine;
-import utils.Log;
+import utils.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utils.AtualizarEstacao;
 
 /**
  * Created by Danilo on 22/04/14.
@@ -102,19 +101,19 @@ public enum Operacao {
     ATUALIZAR_RELOGIO_LOCAL("atualizarRelogioLocal"){
         @Override
         public void execute(String metodo, WebEngine engine){
-            System.out.println("Recebendo requisição para atualizar horário na página");
+//            System.out.println("Recebendo requisição para atualizar horário na página");
             if (MainController.INSTANCE.getThreadRelogio() != null) {
                 String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
                 try {
-                    System.out.println("Atualizando...");
+//                    System.out.println("Atualizando...");
                     MainController.INSTANCE.atualizarHorario(horario);
 
-                    String horarioAtual =MainController.INSTANCE.getThreadRelogio().getHorarioAtual();
-                    System.out.println("horario:"+horario.split(",")[4]);
-                    if(horario.split(",")[4].equals("22:00")){
+                    Calendar dataRestartDiario = MainController.INSTANCE.getThreadRelogio().getDataRestartDiario();
+                    Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
+
+                    if (CalendarUtils.temMesmoHorario(dataServidorAtual, dataRestartDiario)) {
                         try {
-//                            Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",null,new File(LocalPaths.realPath) );
-	                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(LocalPaths.realPath));
+                            ScriptsBat.restartAplicacao();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

@@ -26,6 +26,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import utils.AtualizarEstacao;
 import utils.Log;
+import utils.ScriptsBat;
 
 /**
  *
@@ -77,9 +78,8 @@ public class OnAlertListener implements EventHandler {
                     try {
                         System.out.println("Fechou");
                         System.out.println("acessando: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
-                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start runOpenUpdate.bat",null,new File(LocalPaths.realPath));
-                        Platform.exit();
-                        System.exit(0);
+
+                        ScriptsBat.restartAplicacao();
                     } catch (Exception ex) {
 						Log.e(ex.getMessage());
                         Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);

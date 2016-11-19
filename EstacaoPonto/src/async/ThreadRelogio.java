@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import utils.CalendarUtils;
 import utils.Log;
+import utils.The;
 
 /**
  * Classe responsável por fazer o controle do horário. Calcula o horário atual e controla o tempo da sincronizacao.
  * @author Jainilene
  */
 public class ThreadRelogio extends Service<String> {
+
+    private Calendar dataRestartDiario;
 
     private String horarioAtual;
     private Calendar dataServidorInicial;
@@ -31,8 +35,16 @@ public class ThreadRelogio extends Service<String> {
         this.ultimaSincronizacao = dt;
         inicializaDiasDaSemana();
         inicializaMesExtenso();
+
+        setarHorarioRestart();
     }
-    
+
+    private void setarHorarioRestart() {
+        int random = The.getRandomNumberBetween(1, 420);
+        dataRestartDiario = CalendarUtils.getHojeAs(22,0); // 22:00
+        dataRestartDiario.add(Calendar.MINUTE, random);
+    }
+
     /*
      * Retorna DiaDaSemana, DiaDoMes, Mes, Ano, Horario(HH:MM)
      */
@@ -94,7 +106,7 @@ public class ThreadRelogio extends Service<String> {
     }
 
     public Calendar getDataServidorAtual() {
-        return dataServidorAtual;
+        return (Calendar) dataServidorAtual.clone();
     }
 
     public int getMinutosServidorAtual() {
@@ -158,7 +170,12 @@ public class ThreadRelogio extends Service<String> {
         }
         return false;
     }
-    
+
+
+    public Calendar getDataRestartDiario() {
+        return (Calendar) dataRestartDiario.clone();
+    }
+
     public void inicializaDiasDaSemana()
     {
         diasDaSemana.add("Domingo");
