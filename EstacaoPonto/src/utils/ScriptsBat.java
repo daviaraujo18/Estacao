@@ -1,6 +1,7 @@
 package utils;
 
 
+import controllers.MainController;
 import core.LocalPaths;
 import javafx.application.Platform;
 
@@ -8,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Calendar;
 
 public class ScriptsBat {
 
@@ -53,7 +55,8 @@ public class ScriptsBat {
     }
 
     public static void restartAplicacao() throws IOException {
-        System.out.println("acessando: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
+        Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
+        System.out.println("["+CalendarUtils.format(dataServidorAtual)+"] Reiniciando aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
         Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
                 null,
                 new File(LocalPaths.realPath));
@@ -62,7 +65,8 @@ public class ScriptsBat {
     }
 
     public static void updateAplicacao() throws IOException {
-        System.out.println("acessando: "+ LocalPaths.realPath+"\\runReplace.bat");
+        Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
+        System.out.println("["+CalendarUtils.format(dataServidorAtual)+"] Update aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
         Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runReplace.bat",
                 null,
                 new File(LocalPaths.realPath));
