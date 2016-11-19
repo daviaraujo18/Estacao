@@ -62,8 +62,8 @@ public class ScriptsBat {
     }
 
     public static void updateAplicacao() throws IOException {
-        System.out.println("acessando: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
-        Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
+        System.out.println("acessando: "+ LocalPaths.realPath+"\\runReplace.bat");
+        Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runReplace.bat",
                 null,
                 new File(LocalPaths.realPath));
 
