@@ -26,12 +26,15 @@ public class ScriptsBat {
 
         FileWriter fw = new FileWriter(runOpenUpdate_bat.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(
-                "taskkill /f /im java.exe\n" +
-                "taskkill /f /im javaw.exe\n" +
-                "START C:\\Estacao\\EstacaoPonto\\EstacaoPonto.jar\n" +
-                "exit 0"
-        );
+        bw.write("taskkill /f /im java.exe");
+        bw.newLine();
+        bw.write("taskkill /f /im javaw.exe");
+        bw.newLine();
+        bw.write("START C:\\Estacao\\EstacaoPonto\\EstacaoPonto.jar");
+        bw.newLine();
+        bw.write("exit 0");
+        bw.newLine();
+
         bw.close();
     }
 
@@ -41,16 +44,23 @@ public class ScriptsBat {
 
         FileWriter fw = new FileWriter(runReplace_bat.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(
-                "chcp 1252\n" +
-                "del \"EstacaoPonto.jar.bak\"\n" +
-                "timeout 3\n" +
-                "rename \"EstacaoPonto.jar\" \"EstacaoPonto.jar.bak\"\n" +
-                "copy \"C:\\Estacao\\imgs\\EstacaoPonto.jar\" \"C:\\Estacao\\EstacaoPonto\" /y\n" +
-                "cd \"C:\\Estacao\\EstacaoPonto\\\"\n" +
-                "START java -jar \"C:\\Estacao\\EstacaoPonto\\EstacaoPonto.jar\"\n" +
-                "exit 0"
-        );
+        bw.write("chcp 1252");
+        bw.newLine();
+        bw.write("del \"EstacaoPonto.jar.bak\"");
+        bw.newLine();
+        bw.write("timeout 3");
+        bw.newLine();
+        bw.write("rename \"EstacaoPonto.jar\" \"EstacaoPonto.jar.bak\"");
+        bw.newLine();
+        bw.write("copy \"C:\\Estacao\\imgs\\EstacaoPonto.jar\" \"C:\\Estacao\\EstacaoPonto\" /y");
+        bw.newLine();
+        bw.write("cd \"C:\\Estacao\\EstacaoPonto\\\"");
+        bw.newLine();
+        bw.write("START java -jar \"C:\\Estacao\\EstacaoPonto\\EstacaoPonto.jar\"");
+        bw.newLine();
+        bw.write("exit 0");
+        bw.newLine();
+
         bw.close();
     }
 
