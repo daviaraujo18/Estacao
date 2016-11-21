@@ -15,7 +15,7 @@ import java.net.URL;
 
 public class PrediosPermitidosService extends Service<String>  {
 
-	String urlString = Configuracoes.base_intranet_url.get() + "/presenca/PrediosPermitidos";
+	String urlString = Configuracoes.base_intranet_url.get() + "/presenca/PrediosPermitidos/";
 
 	@Override
 	protected Task<String> createTask() {
@@ -27,30 +27,19 @@ public class PrediosPermitidosService extends Service<String>  {
 
 					String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
 
+					System.out.println("CodigoAtivacao: " + codAtivacao);
+
+					String urlParameters = "?codAtivacao=" + codAtivacao;
+
+					urlString = urlString + urlParameters;
+
 					URL url = new URL(urlString);
 					HttpURLConnection con = (HttpURLConnection) url.openConnection();
 					//add reuqest header
-					con.setRequestMethod("POST");
-
-					// codAtivacao
-					// arquivosDeLog
-					// estadoEstacao
-					String urlParameters = "codAtivacao=" + codAtivacao;
-
-					// Send post request
-					con.setDoOutput(true);
-					DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-					wr.writeBytes(urlParameters);
-					wr.flush();
-					wr.close();
-
-					int responseCode = con.getResponseCode();
-//					System.out.println("\nSending 'POST' request to URL : " + url);
-//					System.out.println("Post parameters : " + urlParameters);
-//					System.out.println("Response Code : " + responseCode);
+					con.setRequestMethod("GET");
 
 					BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()));
+							new InputStreamReader(con.getInputStream(), "UTF-8"));
 					String inputLine;
 					StringBuffer response = new StringBuffer();
 
@@ -60,11 +49,11 @@ public class PrediosPermitidosService extends Service<String>  {
 					in.close();
 
 					//print result
-//					System.out.println(response.toString());
+					System.out.println("Predios Permitidos: " + response.toString());
 
 					return response.toString();
 				} catch (Exception e) {
-//        			e.printStackTrace();
+        			e.printStackTrace();
 					return "";
 				}
 			}
