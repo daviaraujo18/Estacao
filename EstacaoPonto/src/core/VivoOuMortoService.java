@@ -28,6 +28,7 @@ public class VivoOuMortoService extends Service<Boolean>  {
 					String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
 					String arquivosDeLog = getNameLogs();
 					String estacaoEstacao = "FUNCIONANDO";
+					String versao = EstacaoPonto.versao;
 
 					URL url = new URL(urlString);
 					HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -37,7 +38,7 @@ public class VivoOuMortoService extends Service<Boolean>  {
 					// codAtivacao
 					// arquivosDeLog
 					// estadoEstacao
-					String urlParameters = "codAtivacao=" + codAtivacao + "&arquivosDeLog=" + arquivosDeLog + "&estadoEstacao=" + estacaoEstacao;
+					String urlParameters = "codAtivacao=" + codAtivacao + "&arquivosDeLog=" + arquivosDeLog + "&estadoEstacao=" + estacaoEstacao + "&versao=" + versao;
 
 					// Send post request
 					con.setDoOutput(true);
