@@ -34,7 +34,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
     public void changed(ObservableValue<? extends Object> ov, Object t, Object t1) {
 
         if (ov.getValue().equals(Worker.State.SCHEDULED)) {
-            Log.i("Carregando pagina: " + tela.getWebEngine().getLocation());
+//            Log.i("Carregando pagina: " + tela.getWebEngine().getLocation());
             if (urlAtualContem("Frequentador?type=create")) {
             //if (urlAtualContem("presenca/Frequentador")) {
                 tela.getSplitPanel().getDividers().get(1).setPosition(0.5);
@@ -57,7 +57,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 //Element el = doc.getElementById("relogio");
 
                 
-                Log.i("Pagina carregada: " + tela.getWebEngine().getLocation());
+//                Log.i("Pagina carregada: " + tela.getWebEngine().getLocation());
                 if (urlAtualContem("EstacaoPonto?type=create")) {
                     Log.i("Injetando codigos no formulário via JavaScript");
                     setarInputCodigos();
@@ -71,9 +71,9 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 } else if (urlAtualContem("presenca/IniciarPonto")) {
 //                    Log.i("Entrei no metodo");
                     String codigos = IntranetURLs.getCodigos();
-                    Log.i("codigos: " + codigos) ;
+//                    Log.i("codigos: " + codigos) ;
                     String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
-                    Log.i(url);
+//                    Log.i(url);
                     mudarUrlAtualPara(url);
 
                 }

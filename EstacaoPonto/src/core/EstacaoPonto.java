@@ -1,5 +1,6 @@
 package core;
 
+import controllers.MainController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -13,7 +14,7 @@ import javafx.stage.WindowEvent;
 import utils.Log;
 import utils.ScriptsBat;
 import view.BloqueioTela;
-import controllers.MainController;
+
 import java.io.File;
 
 
@@ -48,6 +49,7 @@ public class EstacaoPonto extends Application{
     @Override
     public void init() throws Exception {
         Log.i("INITIALIZING "+versao);
+        Log.i("CODIGO_UNICO: " + jWMI.montaCodUnico());
         //saída em arquivo
 //        Log.saidaEmArquivo=false;
         Log.saidaEmArquivo=true;

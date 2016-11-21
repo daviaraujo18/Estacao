@@ -2,17 +2,8 @@ package controllers;
 
 import async.PreProcessandoService;
 import async.ThreadRelogio;
-import core.IntranetURLs;
-import core.LocalPaths;
 import core.RegistroWindows;
 import core.leitura.LeitorDigital;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Calendar;
-import java.util.ResourceBundle;
-
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +20,12 @@ import utils.Log;
 import utils.The;
 import utils.VerificaConexao;
 import view.TelaPonto;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.ResourceBundle;
 
 /**
  * @author aers
@@ -179,14 +176,6 @@ public class MainController implements Initializable {
         threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());
         //threadRelogio.desativarSincronizacao();
     }
-    public void iAmStillAlive(){
-        String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        The.inserirJavascript(this.tela.getWebEngine(), "iAmStillAlive('" + codAtivacao + "','"+getNameLogs()+"','FUNCIONANDO')");
-    }
-    public void prediosPermitidos(){
-        String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        The.inserirJavascript(this.tela.getWebEngine(), "prediosPermitidos('" + codAtivacao + "')");
-    }
     public void addUploadFile(int size){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
         
@@ -204,23 +193,5 @@ public class MainController implements Initializable {
             The.inserirJavascript(this.tela.getWebEngine(), js);
         }
         System.out.println("fim do envio do arquivo "+nomeLog);
-    }
-    private String getNameLogs()
-    {
-        String logsNames="";
-        File folder = new File(LocalPaths.PATH_LOG);
-        
-        if (folder.exists())
-        {
-            File[] listFiles = folder.listFiles();
-            for (File file:listFiles)
-            {
-                if (file.getName().startsWith(Log.LOG_NAME_BEGIN))
-                {
-                    logsNames= file.getName()+" / "+logsNames;
-                }
-            }
-        }
-        return logsNames;
     }
 }

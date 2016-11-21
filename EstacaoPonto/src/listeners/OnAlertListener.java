@@ -50,7 +50,7 @@ public class OnAlertListener implements EventHandler {
             WebEvent event = (WebEvent) t;
             String metodo = event.getData().toString();
             boolean eventoTratado = false;
-  //          Log.i("alert: "+metodo);
+            Log.i("alert: "+metodo);
             for(Operacao operacao : Operacao.values()){
                 if(operacao.verificarAplicabilidade(metodo, webEngine)){
                     eventoTratado = true;

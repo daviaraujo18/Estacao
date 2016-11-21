@@ -29,7 +29,7 @@ public class VerificaConexao {
 			String line = rd.readLine();
 			rd.close();
 
-			System.out.println(line);
+//			System.out.println(line);
 			long horarioEmMillis = Long.parseLong(line);
 
 			return horarioEmMillis;

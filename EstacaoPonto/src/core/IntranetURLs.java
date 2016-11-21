@@ -1,8 +1,6 @@
 
 package core;
 
-import utils.Log;
-
 /**
  * Classe que contem url's do sistema intranet predefinidas
  *
@@ -31,7 +29,7 @@ public class IntranetURLs {
     public static String getCodigos() {
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
         String codUnicoM = RegistroWindows.getCodigoUnicoMaquina();
-        Log.i(codUnicoM);
+//        Log.i(codUnicoM);
         return "?codigoAtivacao="+ codAtivacao+"&codigoUnicoMaquina="+codUnicoM;
     }
     public static void init()

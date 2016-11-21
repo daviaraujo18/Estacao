@@ -1,9 +1,10 @@
 package core;
 
-import java.util.UUID;
 import utils.CryptoUtils;
 import utils.Log;
 import utils.WinRegistry;
+
+import java.util.UUID;
 
 /**
  * Classe responsavel por fazer a conexao da EstacaoPonto com o Registro do Windows
@@ -67,8 +68,8 @@ public class RegistroWindows {
 			}
 
 			String serialCriptografado = CryptoUtils.md5UB64(hdSerial);
-			Log.i("\n*HDSERIAL: " + hdSerial);
-			Log.i("\n**SERIAL CRIPTOGRAFADO: " + serialCriptografado);
+//			Log.i("\n*HDSERIAL: " + hdSerial);
+//			Log.i("\n**SERIAL CRIPTOGRAFADO: " + serialCriptografado);
 			return serialCriptografado;
 		} else {
 			return "SistemaOperacionalNaoSuportado";

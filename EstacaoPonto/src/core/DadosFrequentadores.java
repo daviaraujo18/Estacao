@@ -122,7 +122,6 @@ public class DadosFrequentadores  {
         });
 
         new Thread(task).start();
-        System.out.println("----Fim.");
     }
 
 

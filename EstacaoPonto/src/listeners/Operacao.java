@@ -1,14 +1,12 @@
 package listeners;
 
 import controllers.MainController;
-import core.DadosFrequentadores;
-import core.IntranetURLs;
-import core.LocalPaths;
-import core.RegistroWindows;
+import core.*;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import utils.*;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
@@ -20,29 +18,29 @@ import java.util.logging.Logger;
  */
 public enum Operacao {
 
-    RECUPERAR_FREQUENTADORES("callRecuperarFrequentadores"){
+    RECUPERAR_FREQUENTADORES("downloadFrequentadores"){
 
-        public void execute(String metodo, WebEngine engine){
-            Log.i("Iniciando download dos dados dos Frequentadores");
-            double inicioDownload = System.currentTimeMillis();
-            Object data = engine.executeScript("window.bdFrequencia");
+        public void execute(final String metodo, final WebEngine engine){
 
-            String dataFixed = (String) data.toString().replace("\n", "");
-            //System.out.println("dados Baixados: " + dataFixed);
-            Log.i("Montando dados");
-            DadosFrequentadores.getInstance().init(dataFixed);
-            double fimDownload = System.currentTimeMillis();
-            Log.i("Montagem finalizada");
-            Log.i("Time elapsed: " + (fimDownload - inicioDownload) + " ms");
-            String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
-            try {
-                MainController.INSTANCE.atualizarHorario(horario);
-            } catch (IOException ex) {
-					Log.e(ex);
-                Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
+            if (temConexaoComIntranet) {
+                Log.i("Iniciando download dos dados dos frequentadores...");
+                final DownloadFrequentadoresService downloadFrequentadoresService = new DownloadFrequentadoresService();
+                downloadFrequentadoresService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent workerStateEvent) {
+                        System.out.println("Download finished");
+                        String dadosFrequentadoresBruto = downloadFrequentadoresService.getValue();
+                        DadosFrequentadores.getInstance().init(dadosFrequentadoresBruto);
+                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "removeLoading()");
+
+//
+                        RECUPERAR_PREDIOS_PERMITIDOS.execute(metodo, engine);
+                    }
+                });
+                downloadFrequentadoresService.start();
             }
 
-            MainController.INSTANCE.prediosPermitidos();
         };
 
         @Override
@@ -53,7 +51,20 @@ public enum Operacao {
         RECUPERAR_PREDIOS_PERMITIDOS("prediosPermitidos"){
 
         public void execute(String metodo, WebEngine engine){
-            MainController.INSTANCE.prediosIds =engine.executeScript("window.prediosPermitidos").toString();
+            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
+            if (temConexaoComIntranet) {
+                final PrediosPermitidosService prediosPermitidosService = new PrediosPermitidosService();
+                prediosPermitidosService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent workerStateEvent) {
+                        String prediosPermitidosIDs = prediosPermitidosService.getValue();
+                        Log.i("Predios permitidos: " + prediosPermitidosIDs);
+                        MainController.INSTANCE.prediosIds = prediosPermitidosIDs;
+
+                    }
+                });
+                prediosPermitidosService.start();
+            }
         };
 
     },
@@ -161,7 +172,10 @@ public enum Operacao {
         public void execute(String metodo, WebEngine engine){
             System.out.println("Sincronizando...");
             try {
-                MainController.INSTANCE.iniciarSincronizacao();
+                boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
+                if (temConexaoComIntranet) {
+                    MainController.INSTANCE.iniciarSincronizacao();
+                }
             } catch (FileNotFoundException ex) {
 				Log.e(ex);
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,21 +185,43 @@ public enum Operacao {
             }
         }
     },
-    VIVO_MORTO("vivooumorto"){
+    VIVO_MORTO("deadOrAlive"){
 
         @Override
         public void execute(String metodo, WebEngine engine){
-            MainController.INSTANCE.iAmStillAlive();
+            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
+            if (temConexaoComIntranet) {
+                final VivoOuMortoService vivoOuMortoService = new VivoOuMortoService();
+                vivoOuMortoService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent workerStateEvent) {
+                        if (!vivoOuMortoService.getValue()) {
+                            Log.e("VivoOuMortoService -> falhou");
+                        }
+                    }
+                });
+                vivoOuMortoService.start();
+            }
         }
-    }
-,
-    ATUALIZARESTACOES("atualizarEstacoes"){
+    },
+
+    ATUALIZARVERSAOESTACAO("atualizarVersaoEstacao"){
 
         public void execute(String metodo, WebEngine engine){
-            Object ultimaVersaoBD = engine.executeScript("window.ultimaVersaoBD");
-            if (ultimaVersaoBD!=null)
-            {
-                AtualizarEstacao.verificaVersoes(ultimaVersaoBD.toString());
+
+            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
+            if (temConexaoComIntranet) {
+                final ChecarUltimaVersaoService checarUltimaVersaoService = new ChecarUltimaVersaoService();
+                checarUltimaVersaoService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent workerStateEvent) {
+                        String ultimaVersaoNoServidor = checarUltimaVersaoService.getValue();
+
+                        AtualizarEstacao.verificaVersoes(ultimaVersaoNoServidor);
+
+                    }
+                });
+                checarUltimaVersaoService.start();
             }
         }
     };
