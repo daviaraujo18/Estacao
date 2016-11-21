@@ -3,14 +3,22 @@ package core;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import utils.Log;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class VivoOuMortoService extends Service<Boolean>  {
@@ -23,6 +31,8 @@ public class VivoOuMortoService extends Service<Boolean>  {
 			@Override
 			protected Boolean call() {
 
+				DefaultHttpClient httpClient = new DefaultHttpClient();
+
 				try {
 
 					String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
@@ -30,46 +40,34 @@ public class VivoOuMortoService extends Service<Boolean>  {
 					String estacaoEstacao = "FUNCIONANDO";
 					String versao = EstacaoPonto.versao;
 
-					URL url = new URL(urlString);
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					//add reuqest header
-					con.setRequestMethod("POST");
 
-					// codAtivacao
-					// arquivosDeLog
-					// estadoEstacao
-					String urlParameters = "codAtivacao=" + codAtivacao + "&arquivosDeLog=" + arquivosDeLog + "&estadoEstacao=" + estacaoEstacao + "&versao=" + versao;
 
-					// Send post request
-					con.setDoOutput(true);
-					DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-					wr.writeBytes(urlParameters);
-					wr.flush();
-					wr.close();
+					HttpPost httpPost = new HttpPost(urlString);
 
-					int responseCode = con.getResponseCode();
-//					System.out.println("\nSending 'POST' request to URL : " + url);
-//					System.out.println("Post parameters : " + urlParameters);
-//					System.out.println("Response Code : " + responseCode);
+					List<NameValuePair> nvpList = new ArrayList<>();
 
-					BufferedReader in = new BufferedReader(
-							new InputStreamReader(con.getInputStream()));
-					String inputLine;
-					StringBuffer response = new StringBuffer();
+					nvpList.add(new BasicNameValuePair("codAtivacao", codAtivacao));
+					nvpList.add(new BasicNameValuePair("arquivosDeLog", arquivosDeLog));
+					nvpList.add(new BasicNameValuePair("estadoEstacao", estacaoEstacao));
+					nvpList.add(new BasicNameValuePair("versao", versao));
 
-					while ((inputLine = in.readLine()) != null) {
-						response.append(inputLine);
-					}
-					in.close();
+					httpPost.setEntity(new UrlEncodedFormEntity(nvpList, Charset.forName("UTF-8")));
 
-					//print result
-//					System.out.println(response.toString());
+					HttpResponse response = httpClient.execute(httpPost);
+
+					HttpEntity entity = response.getEntity();
+
+					System.out.println("Request handled?: " + response.getStatusLine());
 
 					return true;
-				} catch (Exception e) {
-//        			e.printStackTrace();
+
+				} catch (IOException e) {
+					e.printStackTrace();
 					return false;
+				} finally {
+					httpClient.getConnectionManager().shutdown();
 				}
+
 			}
 		};
 	}
