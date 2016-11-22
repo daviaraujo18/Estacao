@@ -1,16 +1,25 @@
 package core;
 
 
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import utils.CalendarUtils;
+import utils.DateUtils;
 import utils.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class VivoOuMortoService extends Service<Boolean>  {
@@ -25,7 +34,7 @@ public class VivoOuMortoService extends Service<Boolean>  {
 
 				String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
 				String versao = EstacaoPonto.versao;
-				String arquivosDeLog = getNameLogs();
+				String arquivosDeLog = getNameLogs(10);
 				String estadoEstacao = "FUNCIONANDO";
 
 				try {
@@ -68,20 +77,45 @@ public class VivoOuMortoService extends Service<Boolean>  {
 		};
 	}
 
-	private String getNameLogs()
-	{
+	public static String getNameLogs(int deTantosDiasAtras) {
+
+		deTantosDiasAtras = (-1) * (deTantosDiasAtras + 1);
 		String logsNames="";
 		File folder = new File(LocalPaths.PATH_LOG);
 
+		final Calendar xDiasAtrasCalendar = Calendar.getInstance();
+		xDiasAtrasCalendar.add(Calendar.DAY_OF_MONTH, deTantosDiasAtras);
+		System.out.println(DateUtils.format(xDiasAtrasCalendar, "dd/MM/yyyy"));
+
 		if (folder.exists())
 		{
-			File[] listFiles = folder.listFiles();
-			for (File file:listFiles)
-			{
-				if (file.getName().startsWith(Log.LOG_NAME_BEGIN))
-				{
-					logsNames= file.getName()+" / "+logsNames;
+			FilenameFilter fnf = new FilenameFilter() {
+				@Override
+				public boolean accept(File dir, String name) {
+
+					String[] partesString = name.split("_");
+					String dataBruta = partesString[2];
+
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+					try {
+						Date data = sdf.parse(dataBruta);
+
+						Calendar fileDate = (Calendar) xDiasAtrasCalendar.clone();
+						fileDate.setTime(data);
+
+						return !(fileDate.before(xDiasAtrasCalendar));
+
+					} catch (ParseException e) {
+						e.printStackTrace();
+						return true;
+					}
 				}
+			};
+
+			String[] listFiles = folder.list(fnf);
+
+			for (String fileNameString : listFiles) {
+				logsNames= fileNameString +" / "+logsNames;
 			}
 		}
 		return logsNames;
