@@ -1,27 +1,14 @@
 package core;
 
 
-import com.sun.corba.se.spi.ior.IORTemplate;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import utils.Log;
+import listeners.Operacao;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class PrediosPermitidosService extends Service<String>  {
@@ -36,40 +23,35 @@ public class PrediosPermitidosService extends Service<String>  {
 			protected String call() {
 
 				String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-				System.out.println("Entrei no call do PrediosPermitidosService. CodAtivacao: " + codAtivacao);
-
-				DefaultHttpClient httpClient = new DefaultHttpClient();
-
-				HttpPost httpPost = new HttpPost(urlString);
-
-				List<NameValuePair> nvpList = new ArrayList<>();
-
-				nvpList.add(new BasicNameValuePair("codAtivacao", codAtivacao));
-
-				httpPost.setEntity(new UrlEncodedFormEntity(nvpList, Charset.forName("UTF-8")));
-
 				try {
-					HttpResponse response = httpClient.execute(httpPost);
 
-					HttpEntity entity = response.getEntity();
+					String urlParameters = "?codAtivacao=" + codAtivacao;
 
-					System.out.println("Request handled?: " + response.getStatusLine());
+					urlString = urlString + urlParameters;
 
-					InputStream inputStream = entity.getContent();
-					String result = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
+					URL url = new URL(urlString);
+					HttpURLConnection con = (HttpURLConnection) url.openConnection();
+					//add reuqest header
+					con.setRequestMethod("GET");
+					con.setRequestProperty("User-Agent", "JavaFX");
 
-					System.out.println("PrediosPermitidos: " + result);
+					BufferedReader in = new BufferedReader(
+							new InputStreamReader(con.getInputStream(), "UTF-8"));
+					String inputLine;
+					StringBuffer response = new StringBuffer();
 
-					IOUtils.closeQuietly(inputStream);
+					while ((inputLine = in.readLine()) != null) {
+						response.append(inputLine);
+					}
+					in.close();
 
+					String prediosPermitidos = response.toString();
+					System.out.println("PrediosPermitidos: " + prediosPermitidos);
 
-					return result;
-
-				} catch (IOException e) {
+					return prediosPermitidos;
+				} catch (Exception e) {
 					e.printStackTrace();
 					return "";
-				} finally {
-					httpClient.getConnectionManager().shutdown();
 				}
 			}
 		};
