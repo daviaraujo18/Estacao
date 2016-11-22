@@ -64,14 +64,22 @@ public class ScriptsBat {
         bw.close();
     }
 
+    public static void restartAplicacao(boolean log) throws IOException {
+        if (log) {
+            Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
+            System.out.println("["+CalendarUtils.format(dataServidorAtual)+"] Reiniciando aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
+        }
+        restartAplicacao();
+    }
+
     public static void restartAplicacao() throws IOException {
-        Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
-        System.out.println("["+CalendarUtils.format(dataServidorAtual)+"] Reiniciando aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
+
         Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
                 null,
                 new File(LocalPaths.realPath));
         Platform.exit();
         System.exit(0);
+
     }
 
     public static void updateAplicacao() throws IOException {

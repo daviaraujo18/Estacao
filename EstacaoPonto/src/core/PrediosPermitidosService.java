@@ -36,6 +36,7 @@ public class PrediosPermitidosService extends Service<String>  {
 			protected String call() {
 
 				String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
+				System.out.println("Entrei no call do PrediosPermitidosService. CodAtivacao: " + codAtivacao);
 
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 

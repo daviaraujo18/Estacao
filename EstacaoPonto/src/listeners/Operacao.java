@@ -53,6 +53,7 @@ public enum Operacao {
         public void execute(String metodo, WebEngine engine){
             boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
             if (temConexaoComIntranet) {
+                Log.i("Iniciando PrediosPermitidos");
                 final PrediosPermitidosService prediosPermitidosService = new PrediosPermitidosService();
                 prediosPermitidosService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                     @Override

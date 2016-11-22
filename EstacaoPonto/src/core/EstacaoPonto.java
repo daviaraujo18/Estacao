@@ -16,6 +16,7 @@ import utils.ScriptsBat;
 import view.BloqueioTela;
 
 import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -47,19 +48,33 @@ public class EstacaoPonto extends Application{
      * @throws Exception
      */
     @Override
-    public void init() throws Exception {
+    public void init() {
         Log.i("INITIALIZING "+versao);
         Log.i("CODIGO_UNICO: " + jWMI.montaCodUnico());
-        //saída em arquivo
-//        Log.saidaEmArquivo=false;
-        Log.saidaEmArquivo=true;
 
-        Log.saidaEmArquivo();
-        IntranetURLs.init();
-        LocalPaths.idePath = new File(".").getCanonicalPath();
-        LocalPaths.getPath();
+        try {
+//            Log.saidaEmArquivo=false;
+            Log.saidaEmArquivo=true;
 
-        ScriptsBat.init();
+            Log.saidaEmArquivo();
+            IntranetURLs.init();
+
+
+            LocalPaths.idePath = new File(".").getCanonicalPath();
+
+            LocalPaths.getPath();
+
+            ScriptsBat.init();
+
+            String base_intranet_url = Configuracoes.base_intranet_url.get();
+            if (!base_intranet_url.equals("http://www.tjpi.jus.br/intranet")) {
+                GerarConfig.init();
+                ScriptsBat.restartAplicacao(false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         BloqueioTela.getInstance().bloquearTeclas();
     }
