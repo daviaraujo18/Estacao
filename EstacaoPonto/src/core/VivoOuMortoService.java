@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import utils.CalendarUtils;
-import utils.DateUtils;
 import utils.Log;
 
 import java.io.BufferedReader;
@@ -45,7 +44,6 @@ public class VivoOuMortoService extends Service<Boolean>  {
 					String versaoEncoded = URLEncoder.encode(versao,  java.nio.charset.StandardCharsets.UTF_8.toString());
 
 					String urlParameters = "?codAtivacao=" + codAtivacaoEncoded + "&versao=" + versaoEncoded + "&estadoEstacao=" + estadoEstacaoEncoded + "&arquivosDeLog=" + arquivosDeLogEncoded;
-					System.out.println("URLParameters: " + urlParameters);
 
 					urlString = urlString + urlParameters;
 
@@ -85,7 +83,6 @@ public class VivoOuMortoService extends Service<Boolean>  {
 
 		final Calendar xDiasAtrasCalendar = Calendar.getInstance();
 		xDiasAtrasCalendar.add(Calendar.DAY_OF_MONTH, deTantosDiasAtras);
-		System.out.println(DateUtils.format(xDiasAtrasCalendar, "dd/MM/yyyy"));
 
 		if (folder.exists())
 		{
