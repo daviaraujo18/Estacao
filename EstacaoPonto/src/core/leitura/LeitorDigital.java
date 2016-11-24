@@ -95,8 +95,8 @@ public class LeitorDigital {
         firDigital.SetTextFIR(firDigitalTexto);
 
         // 0 = maxSearchTime
-        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo);
-//        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo,3000);
+//        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo);
+        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo,3000);
         if(bsp.IsErrorOccured()) {
             throwError();
             return -1;

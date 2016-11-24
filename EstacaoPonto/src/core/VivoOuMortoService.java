@@ -63,8 +63,6 @@ public class VivoOuMortoService extends Service<Boolean>  {
 					}
 					in.close();
 
-					System.out.println("VivoOuMorto -> " + response.toString());
-
 					return true;
 				} catch (Exception e) {
 					e.printStackTrace();

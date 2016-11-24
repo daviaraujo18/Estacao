@@ -46,7 +46,6 @@ public class PrediosPermitidosService extends Service<String>  {
 					in.close();
 
 					String prediosPermitidos = response.toString();
-					System.out.println("PrediosPermitidos: " + prediosPermitidos);
 
 					return prediosPermitidos;
 				} catch (Exception e) {
