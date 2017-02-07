@@ -16,7 +16,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -29,16 +31,33 @@ public class Log {
 
     
     public static void i(Object msg) {
-        System.out.println("[LOG-INFO] "+msg.toString());
+
+        String horario = getHorarioLocalOuServidor();
+        System.out.println(getHorarioLocalOuServidor() + " [LOG-INFO] " + msg.toString());
+    }
+
+    private static String getHorarioLocalOuServidor() {
+
+        Calendar horario =  Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String horarioString = sdf.format(new Date(horario.getTimeInMillis())) + " (local) ";
+
+        if (MainController.INSTANCE != null && MainController.INSTANCE.getThreadRelogio() != null && MainController.INSTANCE.getThreadRelogio().getDataServidorAtual()!= null) {
+            horario = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
+            horarioString = sdf.format(new Date(horario.getTimeInMillis())) + " (servidor) ";
+        }
+
+
+        return horarioString;
     }
 
     public static void e(Object msg) {
-        System.out.println("[LOG-ERROR] "+msg.toString());
+        System.out.println(getHorarioLocalOuServidor() + " [LOG-ERROR] " + msg.toString());
     }
     public static void e(Exception ex) {
 		StringWriter errors = new StringWriter();
 		ex.printStackTrace(new PrintWriter(errors));
-        System.out.println("[LOG-ERROR] "+errors.toString());
+        System.out.println(getHorarioLocalOuServidor() + " [LOG-ERROR] " + errors.toString());
     }
     
     public static void saidaEmArquivo()
