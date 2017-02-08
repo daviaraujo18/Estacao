@@ -143,6 +143,7 @@ public class MainController implements Initializable {
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
             if (temConexaoComIntranet) {
+                Log.i("iniciarSincronizacao()");
                 iniciarSincronizacao();
             }
         }
@@ -192,6 +193,6 @@ public class MainController implements Initializable {
             String js="adicionaParte('" + codAtivacao + "','"+nomeLog+"','"+parte+"',"+i+")";
             The.inserirJavascript(this.tela.getWebEngine(), js);
         }
-        System.out.println("fim do envio do arquivo "+nomeLog);
+        Log.i("fim do envio do arquivo "+nomeLog);
     }
 }

@@ -69,15 +69,15 @@ public class OnAlertListener implements EventHandler {
             Object comando = webEngine.executeScript("window.comando");
             if (!("NADA".equals(comando.toString())))
             {
-                System.out.println("Comando estação: " + comando.toString());
+                Log.i("Comando estação: " + comando.toString());
             }
             
 
             if (!comando.toString().equals("undefined") && !comando.toString().equals("")) {
                 if (comando.toString().equals("FECHAR")) {
                     try {
-                        System.out.println("Fechou");
-                        System.out.println("acessando: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
+                        Log.i("Fechou");
+                        Log.i("acessando: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
 
                         ScriptsBat.restartAplicacao();
                     } catch (Exception ex) {
@@ -90,7 +90,7 @@ public class OnAlertListener implements EventHandler {
                     MainController.INSTANCE.nomeLog=comando.toString();
                     String pathS = LocalPaths.PATH_LOG+comando.toString();
                     Path path = Paths.get(pathS);
-                    System.out.println("pathS: "+pathS);
+                    Log.i("pathS: "+pathS);
                     //List<String> lines=null;
                     List<String> result = new ArrayList<>();
                     try {

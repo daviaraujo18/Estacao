@@ -46,7 +46,7 @@ public class ArquivoRegistros {
 			printWriter.flush();
 			printWriter.close();
 			fileWriter.close();
-			System.out.println("REGISTRO: " + registro);
+			Log.i("REGISTRO: " + registro);
 			return true;
 		} catch (IOException e) {
 			Log.e(e);
@@ -71,7 +71,7 @@ public class ArquivoRegistros {
 		if ((conteudo != null && !conteudo.isEmpty()) && !criptografado) {
 //            System.out.println("CONTEUDO DO ARQUIVO: " + conteudo);
 			conteudo = CryptoUtils.decryptDES("cryp:gpf", conteudo);
-			System.out.println("CONTEUDO DESCRIPTOGRAFADO DO ARQUIVO: " + conteudo);
+			Log.i("CONTEUDO DESCRIPTOGRAFADO DO ARQUIVO: " + conteudo);
 		} else {
 			conteudo = "";
 		}
@@ -93,7 +93,7 @@ public class ArquivoRegistros {
 		}
 		if (!conteudo.isEmpty()) {
 			conteudo = conteudo.substring(0, conteudo.length() - 1);
-			System.out.println("\n -- Dados arquivo: " + conteudo);
+			Log.i("\n -- Dados arquivo: " + conteudo);
 		}
 		return conteudo;
 	}

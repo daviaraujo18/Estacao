@@ -43,7 +43,7 @@ public class ThreadRelogio extends Service<String> {
         int random = The.getRandomNumberBetween(1, 420);
         dataRestartDiario = CalendarUtils.getHojeAs(22,0); // 22:00
         dataRestartDiario.add(Calendar.MINUTE, random);
-        System.out.println("Restart programado para: " + CalendarUtils.format(dataRestartDiario));
+        Log.i("Restart programado para: " + CalendarUtils.format(dataRestartDiario));
     }
 
     /*
@@ -162,10 +162,10 @@ public class ThreadRelogio extends Service<String> {
     public boolean fazerSincronizacao() {
         long difTempo = dataServidorAtual.getTimeInMillis() - ultimaSincronizacao.getTimeInMillis();
         //double h = difTempo / 3600000; //1hora
-        double h = difTempo/300000; // 5 minutos
+//        double h = difTempo/300000; // 5 minutos
 //        double h = difTempo/600000; // 10 minutos
         //double h = difTempo/120000; // 2 minutos
-//        double h = difTempo/10000; // 1 minutos
+        double h = difTempo/10000; // 1 minutos
         if (h >= 1) {
             return true;
         }
