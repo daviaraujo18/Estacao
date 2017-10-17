@@ -11,7 +11,7 @@ public class DebugUtil{
         public static void printStackTrace(int deep, String title){
             StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
             for (int i = 1; i<=deep; i++){
-                Log.i("----"+stackTrace[i]);
+                System.out.println("----"+stackTrace[i]);
             }
         }
 }

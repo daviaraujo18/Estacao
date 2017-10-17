@@ -76,7 +76,7 @@ public class DadosFrequentadores  {
                         total = i;
                     }
                 }
-                Log.i("Total de frequentadores: "+total);
+                System.out.println("Total de frequentadores: "+total);
                 // Adiciona os dados ao NBio_SearchIndex
                 try {
                     MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(hashFrequentadores);

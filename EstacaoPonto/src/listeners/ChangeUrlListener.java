@@ -90,7 +90,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                             
                             try {
                                 
-                                Log.i("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
+                                System.out.println("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
                                 ScriptsBat.restartAplicacao();
                             }
                             catch (Exception ex) {

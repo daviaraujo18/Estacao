@@ -40,7 +40,7 @@ public enum EventoLeitura {
     DIGITAL_NAO_RECONHECIDA{
         @Override
         public void after(TelaPonto tela) {
-			Log.i("[ALERT] Digital Nao Reconhecida!");
+			Log.i("ALERT: Digital Não Reconhecida!");
             tela.sound.playError();
         }
     },
@@ -48,7 +48,7 @@ public enum EventoLeitura {
     ERRO_LEITURA{
         @Override
         public void after(TelaPonto tela) {
-			Log.i("[ALERT] Erro de Leitura da digital!");
+			Log.i("ALERT: Erro de Leitura!");
             tela.sound.playError();
         }
     }, 
@@ -156,7 +156,7 @@ public enum EventoLeitura {
 
 //            String dad = "'"+leitura.getIdFrequentador() + "','" + leitura.getMomento() + "','" + nome + "','" + matricula + "','" + urlFoto + "'";
             String dad = "'"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome + "," + dataURI+"'";
-			Log.i("[SUCESSO] Digital Reconhecida -> [FreqId]: " + leitura.getIdFrequentador() + " [Horario]: " + leitura.getMomento() + " [Matricula]: " + matricula + " [Nome]: " + nome );
+			Log.i("SUCESS: Digital Reconhecida->"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome );
         //    System.out.println("Dad "+dad);
             return dad;
     }

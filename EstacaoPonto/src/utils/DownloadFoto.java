@@ -21,7 +21,7 @@ public class DownloadFoto {
     {
 
         boolean baixou = false;
-        Log.i("Tentado baixar: "+enderecoWeb);
+        System.out.println("Tentado baixar: "+enderecoWeb);
         BufferedInputStream in = null;
         ByteArrayOutputStream bais = null;
         //FileOutputStream fout = null;
@@ -71,7 +71,7 @@ public class DownloadFoto {
         catch(Exception ex)
         {
 			Log.e(ex);
-            Log.i("Arquivo inexistente ou servidor de imagens desligado.");
+            System.out.println("Arquivo inexistente ou servidor de imagens desligado.");
             return false;
         }
         finally 

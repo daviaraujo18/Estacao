@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.Map;
 import javafx.concurrent.Task;
 import utils.CacheManipulation;
-import utils.Log;
 
 /**
  *
@@ -26,7 +25,7 @@ public class CacheDownloadService extends Task<Void> {
 		if (Configuracoes.baixa_foto.getBooleanValue()) {
 			int numTotal = mapaIdFotosFrequentadores.size();
 			Iterator it = mapaIdFotosFrequentadores.entrySet().iterator();
-			Log.i("Iniciando download das fotos...");
+			System.out.println("Iniciando download das fotos...");
 			int numAtual = 1;
 			int progress = 0;
 

@@ -62,7 +62,7 @@ public class AtualizarEstacao {
             fos.write(response);
             fos.close();
 
-            Log.i("Executando runReplace.bat");
+            System.out.println("Executando runReplace.bat");
             ScriptsBat.updateAplicacao();
             Platform.exit();
             System.exit(0);
@@ -70,7 +70,7 @@ public class AtualizarEstacao {
         catch (Exception ex)
         {
 			Log.e(ex);
-            Log.i("Não foi possível baixar a nova versão. Endereço: "+url);
+            System.out.println("Não foi possível baixar a nova versão. Endereço: "+url);
         }
    }
    
@@ -83,7 +83,7 @@ public class AtualizarEstacao {
         } else {
             is64bit = (System.getProperty("os.arch").indexOf("64") != -1);
         }
-        Log.i("é 64? "+is64bit);
+        System.out.println("é 64? "+is64bit);
         if (versao!= null && !versao.isEmpty())
         {
             if(is64bit)
@@ -105,8 +105,8 @@ public class AtualizarEstacao {
    {
        if (ultimaVersaoBD!=null && !ultimaVersaoBD.isEmpty() && !ultimaVersaoBD.equals(EstacaoPonto.getInstance().versao))
        {
-            Log.i("versaoBD: "+ultimaVersaoBD+" versaoEP: "+EstacaoPonto.getInstance().versao);
-            Log.i("Estação deve ser atualizada.");
+            System.out.println("versaoBD: "+ultimaVersaoBD+" versaoEP: "+EstacaoPonto.getInstance().versao);
+            System.out.println("Estação deve ser atualizada.");
             downloadNovaVersao(ultimaVersaoBD);
        }
    }

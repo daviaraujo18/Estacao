@@ -79,7 +79,7 @@ public class CacheManipulation {
                             }           
                             else
                             {
-                                Log.i("Problemas no download.");
+                                System.out.println("Problemas no download.");
 //                                conteudo+=linhaCache+"\r\n";
                             }
                             
@@ -152,7 +152,7 @@ public class CacheManipulation {
            
 //            Calendar dataAtual =(Calendar) Calendar.getInstance();
             Calendar dataAtual =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
-            Log.i("Baixando foto "+nomeArquivo+"...");
+            System.out.println("Baixando foto "+nomeArquivo+"...");
             if (dw.baixaFoto(enderecoWeb))
             {
 //                System.out.println("Download terminado.");
@@ -162,7 +162,7 @@ public class CacheManipulation {
             }           
             else
             {
-                Log.i("Problemas no download.");
+                System.out.println("Problemas no download.");
             }
             bw.flush();
             bw.close();

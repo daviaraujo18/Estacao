@@ -67,7 +67,7 @@ public class ScriptsBat {
     public static void restartAplicacao(boolean log) throws IOException {
         if (log) {
             Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
-            Log.i("["+CalendarUtils.format(dataServidorAtual)+"] Reiniciando aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
+            System.out.println("["+CalendarUtils.format(dataServidorAtual)+"] Reiniciando aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
         }
         restartAplicacao();
     }
@@ -89,7 +89,7 @@ public class ScriptsBat {
                 null,
                 new File(LocalPaths.realPath));
 
-        Log.i("Download finalizado. Abrindo nova versão.");
+        System.out.println("Download finalizado. Abrindo nova versão.");
         Platform.exit();
         System.exit(0);
     }

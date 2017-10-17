@@ -29,7 +29,7 @@ public enum Operacao {
                 downloadFrequentadoresService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                     @Override
                     public void handle(WorkerStateEvent workerStateEvent) {
-                        Log.i("Download finished");
+                        System.out.println("Download finished");
                         String dadosFrequentadoresBruto = downloadFrequentadoresService.getValue();
                         DadosFrequentadores.getInstance().init(dadosFrequentadoresBruto);
                         The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "removeLoading()");
@@ -117,7 +117,7 @@ public enum Operacao {
             if (MainController.INSTANCE.getThreadRelogio() != null) {
                 String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
                 try {
-                    System.out.println("Atualizando...");
+//                    System.out.println("Atualizando...");
                     MainController.INSTANCE.atualizarHorario(horario);
 
                     Calendar dataRestartDiario = MainController.INSTANCE.getThreadRelogio().getDataRestartDiario();
@@ -165,13 +165,13 @@ public enum Operacao {
     SINCRONIZANDO("Sincronizando"){
         @Override
         public void execute(String metodo, WebEngine engine) {
-            Log.i("ALERT Sincronizando...");
+            System.out.println("ALERT Sincronizando...");
         }
     },
     SINCRONZIAR_AGORA("Sincronizar Agora"){
 
         public void execute(String metodo, WebEngine engine){
-            Log.i("Sincronizando...");
+            System.out.println("Sincronizando...");
             try {
                 boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
                 if (temConexaoComIntranet) {

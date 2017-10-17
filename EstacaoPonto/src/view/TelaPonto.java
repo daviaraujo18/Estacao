@@ -88,7 +88,7 @@ public class TelaPonto {
                         Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    labelSemConexao.setText("Tentando conectar com INTRANET #" + finalNumeroTentativa);
+                                    labelSemConexao.setText("Tentanto conectar com INTRANET #" + finalNumeroTentativa);
                                 }
                             });
 
