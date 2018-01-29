@@ -1,0 +1,2 @@
+Colocar as bibliotecas na pasta do sistema do windows
+C:\Windows\System32
