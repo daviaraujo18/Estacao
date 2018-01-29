@@ -74,11 +74,14 @@ public class ScriptsBat {
 
     public static void restartAplicacao() throws IOException {
 
-        Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
-                null,
-                new File(LocalPaths.realPath));
-        Platform.exit();
-        System.exit(0);
+        boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
+        if (temConexaoComIntranet) {
+            Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
+                    null,
+                    new File(LocalPaths.realPath));
+            Platform.exit();
+            System.exit(0);
+        }
 
     }
 
