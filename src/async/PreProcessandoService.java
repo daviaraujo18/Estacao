@@ -10,10 +10,9 @@ import utils.Log;
  * Classe que cria um service assincrono(uma nova thread em execucao) no javafx
  * para evitar que a Captura de Digital deixe o sistema travado
  *
- * Quando chamada, retorna o hash da digital do usuário. Caso não tenha
+ * Quando chamada, retorna o hash da digital do usuï¿½rio. Caso nï¿½o tenha
  * conseguido realizar a leitura, retorna null
  *
- * @author Anderson Soares < aersandersonsoares@gmail.com >
  */
 public class PreProcessandoService extends Service<PreProcessandoService.Result> implements Runnable{
 

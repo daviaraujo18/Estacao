@@ -61,17 +61,17 @@ public class TelaPonto {
         webEngine = webView.getEngine();
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
         webEngine.setOnAlert(new OnAlertListener());
-            // mostrar uma mensagem informando que está sem permissão de escrita
+            // mostrar uma mensagem informando que estï¿½ sem permissï¿½o de escrita
         if (LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty())
         {
-            this.labelSemConexao.setText("Sem permissão de escrita.");
+            this.labelSemConexao.setText("Sem permissÃ£o de escrita.");
             this.labelSemConexao.setPrefWidth(600);
             this.labelSemConexao.setLayoutX(380);
             this.labelSemConexao.setVisible(true);
             return true;
         } 
         
-        // mostrar uma mensagem informando que está sem conexão
+        // mostrar uma mensagem informando que estï¿½ sem conexï¿½o
         Task task = new Task() {
 
             @Override
@@ -88,7 +88,7 @@ public class TelaPonto {
                         Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    labelSemConexao.setText("Tentanto conectar com INTRANET #" + finalNumeroTentativa);
+                                    labelSemConexao.setText("Tentando conectar com INTRANET #" + finalNumeroTentativa);
                                 }
                             });
 

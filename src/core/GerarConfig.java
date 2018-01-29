@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Created by aers-desktop on 11/21/2016.
- */
+
 public class GerarConfig {
 
 

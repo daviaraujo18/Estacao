@@ -18,10 +18,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Calendar;
 
-/**
- *
- * @author Anderson Soares
- */
+
 public class Log {
     public static final String LOG_NAME_BEGIN = "LOG_";
     private static String sData;
@@ -43,10 +40,10 @@ public class Log {
     
     public static void saidaEmArquivo()
     {
-        //saída em arquivo
+        //saï¿½da em arquivo
         if (saidaEmArquivo)
         {
-            //utilizando data local para nome de log enquanto não carrega a página PontoDePresenca.jsp
+            //utilizando data local para nome de log enquanto nao carrega a pagina PontoDePresenca.jsp
             Calendar data = Calendar.getInstance();
             sData = buildFileSimpleName(data, true);
             criaArquivoSetaSaida();

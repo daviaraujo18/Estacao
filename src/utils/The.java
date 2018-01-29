@@ -8,10 +8,7 @@ import javafx.scene.web.WebEngine;
 
 import java.util.Random;
 
-/**
- *
- * @author aers
- */
+
 public class The {
 	
 	public static Object inserirJavascript(WebEngine webEngine, String script){

@@ -40,7 +40,7 @@ public enum EventoLeitura {
     DIGITAL_NAO_RECONHECIDA{
         @Override
         public void after(TelaPonto tela) {
-			Log.i("ALERT: Digital Não Reconhecida!");
+			Log.i("ALERT: Digital NÃ£o Reconhecida!");
             tela.sound.playError();
         }
     },

@@ -36,8 +36,6 @@ import utils.ScriptsBat;
  * Caso o conteudo do alert contenha 'recuperarFrequentadores', o sistema ira
  * guardar em memoria todos os frequentadores que estaram guardados em uma
  * variavel javascript dentro da pagina ( window.bdFrequencia )
- *
- * @author aers
  */
 public class OnAlertListener implements EventHandler {
 
@@ -69,7 +67,7 @@ public class OnAlertListener implements EventHandler {
             Object comando = webEngine.executeScript("window.comando");
             if (!("NADA".equals(comando.toString())))
             {
-                System.out.println("Comando estação: " + comando.toString());
+                System.out.println("Comando estacao: " + comando.toString());
             }
             
 

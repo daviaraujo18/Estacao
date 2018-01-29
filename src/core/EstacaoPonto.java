@@ -23,7 +23,6 @@ import java.io.IOException;
  * Classe principal da core.EstacaoPonto
  * Nela sao definidos metodos que carregam a aplicacao em si
  *
- * @author Anderson Soares
  */
 public class EstacaoPonto extends Application{
 
@@ -104,7 +103,7 @@ public class EstacaoPonto extends Application{
 
 
         stage.setScene(scene);
-        stage.setTitle("TJPI - Estação Ponto de Presença");
+        stage.setTitle("TJPI - EstaÃ§Ã£o Ponto de PresenÃ§a");
 
         // Setando stage para maximized
         Screen screen = Screen.getPrimary();

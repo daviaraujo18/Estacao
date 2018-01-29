@@ -17,10 +17,8 @@ import utils.ScriptsBat;
 import view.TelaPonto;
 
 /**
- * Classe que verifica toda vez que ocorre uma mudança de página e faz as
- * devidas modificaçoes dependendo da url atual
- *
- * @author Anderson Soares
+ * Classe que verifica toda vez que ocorre uma mudanca de pagina e faz as
+ * devidas modificacoes dependendo da url atual
  */
 public class ChangeUrlListener implements ChangeListener<Object> {
 
@@ -59,7 +57,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 
 //                Log.i("Pagina carregada: " + tela.getWebEngine().getLocation());
                 if (urlAtualContem("EstacaoPonto?type=create")) {
-                    Log.i("Injetando codigos no formulário via JavaScript");
+                    Log.i("Injetando codigos no formulario via JavaScript");
                     setarInputCodigos();
                     boolean ret = false;
                     try {

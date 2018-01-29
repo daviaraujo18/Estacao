@@ -9,7 +9,7 @@ import utils.Log;
 import utils.The;
 
 /**
- * Classe responsável por fazer o controle do horário. Calcula o horário atual e controla o tempo da sincronizacao.
+ * Classe responsavel por fazer o controle do horario. Calcula o horario atual e controla o tempo da sincronizacao.
  * @author Jainilene
  */
 public class ThreadRelogio extends Service<String> {
@@ -50,7 +50,7 @@ public class ThreadRelogio extends Service<String> {
      * Retorna DiaDaSemana, DiaDoMes, Mes, Ano, Horario(HH:MM)
      */
     private String calculaHorario() {
-//        Log.i("Calculando horário...");
+//        Log.i("Calculando horï¿½rio...");
         String dataCompleta = "";
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
@@ -155,9 +155,9 @@ public class ThreadRelogio extends Service<String> {
     }
       
     /*
-     * Método verifica se já chegou o horário de fazer a sincronização (se já passou uma hora da última sincronização)
-     * return false - Ainda não chegou o momento da sincronização
-     *        true  - Chegou o momento da sincronização
+     * Metodo verifica se ja chegou o horario de fazer a sincronizacao (se ja passou uma hora da ultima sincronizacao)
+     * return false - Ainda nao chegou o momento da sincronizacao
+     *        true  - Chegou o momento da sincronizacao
      */
     public boolean fazerSincronizacao() {
         long difTempo = dataServidorAtual.getTimeInMillis() - ultimaSincronizacao.getTimeInMillis();
@@ -181,17 +181,17 @@ public class ThreadRelogio extends Service<String> {
     {
         diasDaSemana.add("Domingo");
         diasDaSemana.add("Segunda");
-        diasDaSemana.add("Terça");
+        diasDaSemana.add("TerÃ§a");
         diasDaSemana.add("Quarta");
         diasDaSemana.add("Quinta");
         diasDaSemana.add("Sexta");
-        diasDaSemana.add("Sábado");
+        diasDaSemana.add("SÃ¡bado");
     }
 
     private void inicializaMesExtenso() {
         mesExtenso.add("Janeiro");
         mesExtenso.add("Fevereiro");
-        mesExtenso.add("Março");
+        mesExtenso.add("MarÃ§o");
         mesExtenso.add("Abril");
         mesExtenso.add("Maio");
         mesExtenso.add("Junho");

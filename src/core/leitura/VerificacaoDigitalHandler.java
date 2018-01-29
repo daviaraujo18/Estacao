@@ -4,9 +4,6 @@ import controllers.MainController;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 
-/**
- * @author aers
- */
 public class VerificacaoDigitalHandler implements EventHandler<WorkerStateEvent> {
 
     public VerificacaoDigitalHandler(){

@@ -22,18 +22,18 @@ public class SoundService {
 
     public void playOK(){
         if (audioOk.isPlaying()){
-            Log.i("//Estação: o som de OK já está tocando.");
+            Log.i("//Estacao: o som de OK ja esta tocando.");
         }else{
-            Log.i("//Estação: o som de OK vai tocar agora.");
+            Log.i("//Estacao: o som de OK vai tocar agora.");
         }
         audioOk.play();
         
     }
     public void playError(){
         if (audioOk.isPlaying()) {
-            Log.i("//Estação: o som de ERRO já está tocando.");
+            Log.i("//Estacao: o som de ERRO ja esta tocando.");
         }else{
-            Log.i("//Estação: o som de ERRO vai tocar agora.");
+            Log.i("//Estacao: o som de ERRO vai tocar agora.");
         }
         audioError.play();
     };

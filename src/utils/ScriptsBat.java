@@ -89,7 +89,7 @@ public class ScriptsBat {
                 null,
                 new File(LocalPaths.realPath));
 
-        System.out.println("Download finalizado. Abrindo nova versão.");
+        System.out.println("Download finalizado. Abrindo nova versao.");
         Platform.exit();
         System.exit(0);
     }

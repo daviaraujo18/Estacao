@@ -8,8 +8,6 @@ import java.util.UUID;
 
 /**
  * Classe responsavel por fazer a conexao da EstacaoPonto com o Registro do Windows
- *
- * @author Anderson Soares <aersandersonsoares@gmail.com>
  */
 public class RegistroWindows {
 	public static final String KEY_REGISTRO = "SOFTWARE\\TJPIEstacaoPonto";
@@ -28,7 +26,7 @@ public class RegistroWindows {
 				return valor;
 
 			} catch (Exception e) {
-				Log.e("\\Estação >> ERRO na busca do código de ativação.");
+				Log.e("\\Estacao >> ERRO na busca do codigo de ativacao.");
 				Log.e(e);
 //				e.printStackTrace();
 				return null;
@@ -64,7 +62,7 @@ public class RegistroWindows {
 
 			String hdSerial = jWMI.montaCodUnico();
 			if (hdSerial.isEmpty()) {
-				return "Erro na construção do código de ativação.";
+				return "Erro na construcao do codigo de ativacao.";
 			}
 
 			String serialCriptografado = CryptoUtils.md5UB64(hdSerial);

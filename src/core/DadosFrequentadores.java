@@ -126,8 +126,8 @@ public class DadosFrequentadores  {
 
 
     /*
- * Recupera o array com as informa誽畫s dos frequentadores
- * @return String[] - array com as informa誽畫s dos frequentadores ("id;matricula;nome;digital;foto")
+ * Recupera o array com as informacoes dos frequentadores
+ * @return String[] - array com as informacoes dos frequentadores ("id;matricula;nome;digital;foto")
  */
     public String[] getArrayFrequentadores() {
         return arrayFrequentadores;
@@ -142,16 +142,16 @@ public class DadosFrequentadores  {
     }
 
     /*
-     * Recupera o map com as informa誽畫s dos frequentadores (id,"matricula;nome;foto")
-     * @return Map<Integer, String> - map com as informa誽畫s dos frequentadores
+     * Recupera o map com as informacoes dos frequentadores (id,"matricula;nome;foto")
+     * @return Map<Integer, String> - map com as informacoes dos frequentadores
      */
     public Map<Integer, String> getFrequentadores() {
         return frequentadores;
     }
 
     /*
-     * Altera o map com as informa誽畫s dos frequentadores - (nome, matricula, digital...)
-     * @param Map<Integer, String> - map com as informa誽畫s dos frequentadores
+     * Altera o map com as informacoes dos frequentadores - (nome, matricula, digital...)
+     * @param Map<Integer, String> - map com as informacoes dos frequentadores
      */
     public void setFrequentadores(Map<Integer, String> mapaIdInfoFrequentadores) {
         this.frequentadores = mapaIdInfoFrequentadores;

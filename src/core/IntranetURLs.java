@@ -3,8 +3,6 @@ package core;
 
 /**
  * Classe que contem url's do sistema intranet predefinidas
- *
- * @author aers
  */
 public class IntranetURLs {
     

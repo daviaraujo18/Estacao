@@ -18,13 +18,13 @@ import org.bouncycastle.util.encoders.UrlBase64;
  */
 public class CryptoUtils {
 
-	private static final String DES_INTERNAL_KEY = "cryp:gpf"; //não alterar!!
+	private static final String DES_INTERNAL_KEY = "cryp:gpf"; //nao alterar!!
 
     public static String md5FromUB64(String password){
 		 BigInteger hash = new BigInteger(1, ub64decode(password));
 		 password = hash.toString(16);
 
-        //correção da falta de zeros
+        //correcao da falta de zeros
         if(password.length()<32){
             int numZeros = 32 - password.length();
             StringBuffer zeros = new StringBuffer("");

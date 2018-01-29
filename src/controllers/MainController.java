@@ -116,7 +116,7 @@ public class MainController implements Initializable {
     }
 
     /*
-     * Recupera a thread do relógio 
+     * Recupera a thread do relogio
      * @return ThreadRelogio
      */
     public ThreadRelogio getThreadRelogio() {
@@ -124,8 +124,8 @@ public class MainController implements Initializable {
     }
 
     /*
-     * Cria a thread que controla o relógio da estação
-     * @param Calendar - data do servidor ao iniciar a estação
+     * Cria a thread que controla o relogio da estacao
+     * @param Calendar - data do servidor ao iniciar a estacao
      * 
      */
     public void criarThreadRelogio(Calendar dtServidor) {
@@ -134,11 +134,11 @@ public class MainController implements Initializable {
     }
 
     /*
-     * Atualiza o horário atual e sincroniza os registros de ponto, caso tenha chegado o momento.
-     * @param String - Horário no formato HH:MM
+     * Atualiza o horario atual e sincroniza os registros de ponto, caso tenha chegado o momento.
+     * @param String - Horario no formato HH:MM
      */
     public void atualizarHorario(String horario) throws IOException{
-//        Log.i("Inicia atualização de horário: "+horario);//#flag
+//        Log.i("Inicia atualizacao de horario: "+horario);//#flag
         //String minutos = horario.split(":")[1];
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
@@ -170,7 +170,7 @@ public class MainController implements Initializable {
     {
         String dados = ArquivoRegistros.lerArquivoSincronizado();
         if(!dados.isEmpty()){
-            Log.i("Iniciando sincronização. Data: "+threadRelogio.getDataServidorAtual().getTime());
+            Log.i("Iniciando sincronizacao. Data: "+threadRelogio.getDataServidorAtual().getTime());
 			The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
 		}
         threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());

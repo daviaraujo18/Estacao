@@ -16,7 +16,6 @@ import java.util.Map;
 
 /**
  * Classe responsavel por fazer a conexao da core.EstacaoPonto com o dispositivo biometrico
- * @author Anderson Soares
  */
 public class LeitorDigital {
 
@@ -54,7 +53,7 @@ public class LeitorDigital {
 
     public void addDigitalToIndexSearch(Map<String,String> mapaIdHashFrequentadores) {
 
-        Log.i("Guardando frequentadores na memória...");
+        Log.i("Guardando frequentadores na memÃ³ria...");
 
         double inicioMontagem = System.currentTimeMillis();
 
@@ -110,7 +109,7 @@ public class LeitorDigital {
 
     /**
      * Metodo para fazer a leitura das digitais do usuario
-     * Uma janela aparecerá para o cadastrador selecionar os dedos
+     * Uma janela aparecera para o cadastrador selecionar os dedos
      * que serao cadastrados
      *
      * @return hashDasDigitais
@@ -241,9 +240,8 @@ public class LeitorDigital {
     }
 
     /**
-     * Método para pegar o nome do error, pois nao consegui recuperar o nome
+     * Metodo para pegar o nome do error, pois nao consegui recuperar o nome
      * atraves da NBioBSPJNI
-     * @aers
      */
     private void throwError() throws IllegalArgumentException, IllegalAccessException, Exception {
         int errorNumber = bsp.GetErrorCode();
