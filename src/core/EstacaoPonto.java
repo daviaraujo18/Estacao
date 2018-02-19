@@ -48,8 +48,6 @@ public class EstacaoPonto extends Application{
      */
     @Override
     public void init() {
-        Log.i("INITIALIZING "+versao);
-        Log.i("CODIGO_UNICO: " + jWMI.montaCodUnico());
 
         try {
 //            Log.saidaEmArquivo=false;
@@ -57,9 +55,6 @@ public class EstacaoPonto extends Application{
 
             Log.saidaEmArquivo();
             IntranetURLs.init();
-
-            Log.i("CODIGO_UNICO: " + jWMI.montaCodUnico());
-
 
             LocalPaths.idePath = new File(".").getCanonicalPath();
 

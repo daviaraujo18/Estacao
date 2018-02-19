@@ -42,7 +42,8 @@ public class jWMI
 {
 	private static final String CRLF = "\r\n";
 	  private static String numSerieComputador;  
-    private static String numeroSerieHD;  
+    private static String numeroSerieHD;
+    private static String macaddress;
 	/**
 	 * Generate a VBScript string capable of querying the desired WMI information.
 	 * @param wmiQueryString the query string to be passed to the WMI sub-system.
@@ -160,9 +161,13 @@ public class jWMI
             {
                 sb.delete(valoresDetectados.indexOf("\r\n"),  valoresDetectados.length());  
             }
-            numeroSerieHD = sb.toString();  
-            
-            return (numSerieComputador+"_"+numeroSerieHD);
+
+            numeroSerieHD = sb.toString();
+
+			macaddress = jWMI.getWMIValue("select * from "+jWMI.CLASS_Win32_NetworkAdapterConfiguration,"macaddress");
+
+
+			return (numSerieComputador+"_"+numeroSerieHD+"_"+macaddress);
         } catch (Exception ex) {  
 			Log.e(ex);
             Logger.getLogger(jWMI.class.getName()).log(Level.SEVERE, null, ex);  
