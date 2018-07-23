@@ -18,6 +18,10 @@ public class Leitura {
         this.evento = result;
         this.momento = momento;
     }
+    public Leitura(String id, String momento) {
+        this.idFrequentador = id;
+        this.momento = momento;
+    }
 
     public EventoLeitura getEvento() {
         return evento;

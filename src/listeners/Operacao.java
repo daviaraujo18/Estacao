@@ -2,6 +2,9 @@ package listeners;
 
 import controllers.MainController;
 import core.*;
+import core.leitura.EventoLeitura;
+import core.leitura.Leitura;
+import core.leitura.VerificacaoDigitalHandler;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
@@ -41,7 +44,7 @@ public enum Operacao {
                 downloadFrequentadoresService.start();
             }
 
-        };
+        }
 
         @Override
         public boolean verificacaoSegundoNivel(WebEngine engine) {
@@ -66,7 +69,7 @@ public enum Operacao {
                 });
                 prediosPermitidosService.start();
             }
-        };
+        }
 
     },
     RECUPERAR_CODIGO_ATIVACAO("recuperarCodigoAtivacao"){
@@ -84,7 +87,7 @@ public enum Operacao {
             {
                 webEngine.load(IntranetURLs.PROBLEMA_REGISTRO);
             }
-        };
+        }
 
         @Override
         public boolean verificacaoSegundoNivel(WebEngine engine) {
@@ -144,7 +147,6 @@ public enum Operacao {
         }
 
     },
-
     LIMPAR_REGISTROS_BATIMENTOS("limparRegistosBatimentos"){
         @Override
         public void execute(String metodo, WebEngine engine){
@@ -225,7 +227,14 @@ public enum Operacao {
                 checarUltimaVersaoService.start();
             }
         }
-    };
+    },
+    LOGINMANUAL("loginManual"){
+        public void execute(String metodo,WebEngine engine){
+            MainController.INSTANCE.getCds().loginManual = true;
+
+        }
+    }
+    ;
 
     private String nome;
 

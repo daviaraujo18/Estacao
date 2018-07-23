@@ -67,7 +67,26 @@ public enum EventoLeitura {
             tela.sound.playOK();
         }
 
-    };
+    },
+    USUARIO_SENHA_INVALIDOS{
+        @Override
+        public void after(TelaPonto tela) {
+            Log.i("ALERT: Usuário ou Senha Inválidos!");
+//            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus(' Usuário ou Senha Inválidos!')");
+            tela.sound.playError();
+        }
+    },
+    USUARIO_SEM_PERMISSAO_MANUAL{
+        @Override
+        public void after(TelaPonto tela) {
+
+            Log.i("ALERT:Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD");
+//            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus('Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD')");
+            tela.sound.playError();
+        }
+    }
+
+    ;
 
     public void process(TelaPonto tela, Leitura leitura) {
         boolean bf = before(leitura);

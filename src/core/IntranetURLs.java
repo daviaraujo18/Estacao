@@ -36,9 +36,9 @@ public class IntranetURLs {
 		 String uploadPath = BASE_URL;
         if (EstacaoPonto.ambiente.equals("desenvolvimento"))
         {
-			uploadPath = uploadPath.replace(":8089/intranet", "/");
-            URL_UPDATE= uploadPath+"/intranet_uploads/presenca/upload_presenca/EstacaoPonto.jar";//desenvolvimento
-            URL_UPDATE_ALL =uploadPath+"/intranet_uploads/presenca/upload_presenca/versao/";//desenvolvimento
+			uploadPath = uploadPath.replace(":8096/intranet", "/");
+            URL_UPDATE= uploadPath+"intranet_uploads/presenca/upload_presenca/EstacaoPonto.jar";//desenvolvimento
+            URL_UPDATE_ALL =uploadPath+"intranet_uploads/presenca/upload_presenca/versao/";//desenvolvimento
         }
         else
         {

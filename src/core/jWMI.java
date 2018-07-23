@@ -43,11 +43,9 @@ public class jWMI
 	private static final String CRLF = "\r\n";
 	  private static String numSerieComputador;  
     private static String numeroSerieHD;
-    private static String macaddress;
 	/**
 	 * Generate a VBScript string capable of querying the desired WMI information.
-	 * @param wmiQueryString the query string to be passed to the WMI sub-system.
-	 * <br>i.e. "Select * from Win32_ComputerSystem"
+	 *  <br>i.e. "Select * from Win32_ComputerSystem"
 	 * @param wmiCommaSeparatedFieldName a comma separated list of the WMI fields to be collected from the query results.
 	 * <br>i.e. "Model"
 	 * @return the vbscript string.
@@ -103,7 +101,6 @@ public class jWMI
 	/**
 	 * Get the given WMI value from the WMI subsystem on the local computer
 	 * @param wmiQueryStr the query string as syntactically defined by the WMI reference
-	 * @param wmiFieldName the field object that you want to get out of the query results
 	 * @return the value
 	 * @throws Exception if there is a problem obtaining the value
 	 * */
@@ -123,7 +120,7 @@ public class jWMI
 	 * Execute the application with the given command line parameters.
 	 * @param cmdArray an array of the command line params
 	 * @return the output as gathered from stdout of the process
-	 * @throws an Exception upon encountering a problem  
+	 *
 	 * */
 	private static String execute(String[] cmdArray) throws Exception
 	{
@@ -161,13 +158,9 @@ public class jWMI
             {
                 sb.delete(valoresDetectados.indexOf("\r\n"),  valoresDetectados.length());  
             }
-
             numeroSerieHD = sb.toString();
 
-			macaddress = jWMI.getWMIValue("select * from "+jWMI.CLASS_Win32_NetworkAdapterConfiguration,"macaddress");
-
-
-			return (numSerieComputador+"_"+numeroSerieHD+"_"+macaddress);
+            return (numSerieComputador+"_"+numeroSerieHD);
         } catch (Exception ex) {  
 			Log.e(ex);
             Logger.getLogger(jWMI.class.getName()).log(Level.SEVERE, null, ex);  

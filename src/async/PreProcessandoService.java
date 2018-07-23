@@ -18,6 +18,7 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
 
     private boolean parar = false;
     public boolean clickDesbloqueioTela;
+    public boolean loginManual = false;
 
     @Override
     protected Task<Result> createTask() {
@@ -37,6 +38,10 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
                 if (b && !clickDesbloqueioTela) {
                     String digital =  getLeitor().capturarDigital();
                     return new Result(Operacao.REGISTRO_FREQUENCIA, digital);
+                }
+                if(loginManual){
+                    getLeitor().fecharLeitor();
+                    return new Result(Operacao.LOGINMANUAL, "");
                 }
                 if(clickDesbloqueioTela){
                     String digital = getLeitor().capturarDigital_popup();
