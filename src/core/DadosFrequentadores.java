@@ -4,11 +4,12 @@ package core;
 import controllers.MainController;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.beans.property.StringProperty;
+
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import utils.Log;
+import utils.LogAplicacao;
+import utils.LogEstacao;
 import utils.The;
 import view.TelaPonto;
 
@@ -76,13 +77,13 @@ public class DadosFrequentadores  {
                         total = i;
                     }
                 }
-                System.out.println("Total de frequentadores: "+total);
+                LogEstacao.i("Total de frequentadores: "+total);
                 // Adiciona os dados ao NBio_SearchIndex
                 try {
                     MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(hashFrequentadores);
                 } catch (Exception e) {
-                    Log.e("Leitor nao iniciado: ");
-					Log.e(e);
+                    LogAplicacao.e("Leitor nao iniciado: ");
+					LogAplicacao.e(e);
                 }
                 return null;
             }

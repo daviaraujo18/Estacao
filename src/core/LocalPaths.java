@@ -6,10 +6,9 @@ package core;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utils.Log;
+import utils.LogAplicacao;
 
 /**
  *
@@ -48,7 +47,7 @@ public class LocalPaths {
      }
      public static void getPath()
      {
-        //Apenas para pegar o path do EstacaoPonto.jar seja qual for o ambiente em execução
+        //Apenas para pegar o path do EstacaoPonto.jar seja qual for o ambiente em execuï¿½ï¿½o
          
         File fileOrPathProjeto = new File("."); 
         try {
@@ -62,7 +61,7 @@ public class LocalPaths {
                 File jar = new File(realPath+"\\EstacaoPonto.jar");
                 if (jar.exists())
                 {
-                    System.out.println("Arquivo existente no NetBeans.");
+                    LogAplicacao.i("Arquivo existente no NetBeans.");
                 }
                 
             }
@@ -74,14 +73,14 @@ public class LocalPaths {
                     File jar = new File(realPath+"\\EstacaoPonto.jar");
                     if (jar.exists())
                     {
-                        System.out.println("Arquivo existente no Intellij.");
+                        LogAplicacao.i("Arquivo existente no Intellij.");
                     }
                     
                 }
                 else
                 {
                     if (realPath.endsWith("EstacaoPonto"))
-                    //executando direto do netbeans ou no formato do ambiente de testes/produção.
+                    //executando direto do netbeans ou no formato do ambiente de testes/produï¿½ï¿½o.
                     {
                         File arquivosOuDiretorios[]= fileOrPathProjeto.listFiles();
                         File pathInNetBeans = new File(realPath + "\\dist");
@@ -106,7 +105,7 @@ public class LocalPaths {
                         {
                             //executando direto do Netbeans 
                             realPath = arquivosOuDiretorios[indexNet].getCanonicalPath();
-                            System.out.println("Executando do netbeans.");
+                            LogAplicacao.i("Executando do netbeans.");
                         }
                         else
                         {
@@ -115,15 +114,15 @@ public class LocalPaths {
                                 //executando direto do Intellij
                                 realPath = arquivosOuDiretorios[indexIntellij].getCanonicalPath();
                                 realPath+= "\\dist";
-                                System.out.println("Executando do intellij.");
+                                LogAplicacao.i("Executando do intellij.");
                             }
                         }
-                        
-                        System.out.println("realPath: "+realPath);
+
+                        LogAplicacao.i("RealPath: "+realPath);
                         File jar = new File(realPath+"\\EstacaoPonto.jar");
                         if (jar.exists())
                         {
-                            System.out.println("Arquivo existente.");
+                            LogAplicacao.i("Arquivo existente.");
                         }
                        
                         
@@ -155,7 +154,7 @@ public class LocalPaths {
 //            }
 //        }
 } catch (IOException ex) {
-		Log.e(ex);
+		LogAplicacao.e(ex);
             Logger.getLogger(LocalPaths.class.getName()).log(Level.SEVERE, null, ex);
         }
       

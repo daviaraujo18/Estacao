@@ -1,10 +1,9 @@
 package core;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
-import utils.Log;
+import utils.LogAplicacao;
 
 public enum Configuracoes {
 
@@ -45,12 +44,12 @@ public enum Configuracoes {
 //            }
 //            else
 //            {
-                is = new FileInputStream("./config.properties");//teste //produção
+                is = new FileInputStream("./config.properties");//teste //produï¿½ï¿½o
 //            }
             
             props.load(is);
         } catch (Exception e) {
-			Log.e(e);
+			LogAplicacao.e(e);
 //            e.printStackTrace();
         }
     }

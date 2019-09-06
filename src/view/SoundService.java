@@ -1,7 +1,7 @@
 package view;
 
 import javafx.scene.media.AudioClip;
-import utils.Log;
+import utils.LogAplicacao;
 
 /**
  * Created by Danilo on 07/02/14.
@@ -22,18 +22,18 @@ public class SoundService {
 
     public void playOK(){
         if (audioOk.isPlaying()){
-            Log.i("//Estacao: o som de OK ja esta tocando.");
+            LogAplicacao.i("//Estacao: o som de OK ja esta tocando.");
         }else{
-            Log.i("//Estacao: o som de OK vai tocar agora.");
+            LogAplicacao.i("//Estacao: o som de OK vai tocar agora.");
         }
         audioOk.play();
         
     }
     public void playError(){
         if (audioOk.isPlaying()) {
-            Log.i("//Estacao: o som de ERRO ja esta tocando.");
+            LogAplicacao.i("//Estacao: o som de ERRO ja esta tocando.");
         }else{
-            Log.i("//Estacao: o som de ERRO vai tocar agora.");
+            LogAplicacao.i("//Estacao: o som de ERRO vai tocar agora.");
         }
         audioError.play();
     };

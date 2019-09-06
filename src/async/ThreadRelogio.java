@@ -5,7 +5,7 @@ import java.util.Calendar;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import utils.CalendarUtils;
-import utils.Log;
+import utils.LogAplicacao;
 import utils.The;
 
 /**
@@ -43,14 +43,14 @@ public class ThreadRelogio extends Service<String> {
         int random = The.getRandomNumberBetween(1, 420);
         dataRestartDiario = CalendarUtils.getHojeAs(22,0); // 22:00
         dataRestartDiario.add(Calendar.MINUTE, random);
-        System.out.println("Restart programado para: " + CalendarUtils.format(dataRestartDiario));
+        LogAplicacao.i("Restart programado para: " + CalendarUtils.format(dataRestartDiario));
     }
 
     /*
      * Retorna DiaDaSemana, DiaDoMes, Mes, Ano, Horario(HH:MM)
      */
     private String calculaHorario() {
-//        Log.i("Calculando hor�rio...");
+//        LogAplicacao.i("Calculando hor�rio...");
         String dataCompleta = "";
         long nanoH = (long) 3600000000000.00;
         long nanoM = (long) 60000000000.00;
@@ -79,7 +79,7 @@ public class ThreadRelogio extends Service<String> {
         + dataServidorAtual.get(Calendar.DAY_OF_MONTH) +","
         + mesExtenso.get(dataServidorAtual.get(Calendar.MONTH))+","
         +dataServidorAtual.get(Calendar.YEAR)+","+horarioAtual;
-//        Log.i("DataCompleta::: " + dataCompleta);
+//        LogAplicacao.i("DataCompleta::: " + dataCompleta);
         return dataCompleta;
     }
 

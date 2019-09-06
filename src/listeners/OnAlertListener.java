@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import utils.AtualizarEstacao;
-import utils.Log;
+import utils.LogAplicacao;
 import utils.ScriptsBat;
 
 /**
@@ -48,7 +48,7 @@ public class OnAlertListener implements EventHandler {
             WebEvent event = (WebEvent) t;
             String metodo = event.getData().toString();
             boolean eventoTratado = false;
-//            Log.i("alerta: "+metodo);
+//            LogAplicacao.i("alerta: "+metodo);
             for(Operacao operacao : Operacao.values()){
                 if(operacao.verificarAplicabilidade(metodo, webEngine)){
                     eventoTratado = true;
@@ -67,20 +67,19 @@ public class OnAlertListener implements EventHandler {
             Object comando = webEngine.executeScript("window.comando");
             if (!("NADA".equals(comando.toString())))
             {
-                System.out.println("Comando estacao: " + comando.toString());
+                LogAplicacao.i("Executando COMANDO '': " + comando.toString());
             }
             
 
             if (!comando.toString().equals("undefined") && !comando.toString().equals("")) {
                 if (comando.toString().equals("FECHAR")) {
                     try {
-                        System.out.println("Fechou");
-                        System.out.println("acessando: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
+                        LogAplicacao.i("Executando COMANDO 'FECHAR'");
+                        LogAplicacao.i("Executando: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
 
                         ScriptsBat.restartAplicacao();
                     } catch (Exception ex) {
-						Log.e(ex.getMessage());
-                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+						LogAplicacao.e(ex.getMessage());
                     }
                 }else{
                 if (comando.toString().startsWith("LOG")) {
@@ -88,7 +87,7 @@ public class OnAlertListener implements EventHandler {
                     MainController.INSTANCE.nomeLog=comando.toString();
                     String pathS = LocalPaths.PATH_LOG+comando.toString();
                     Path path = Paths.get(pathS);
-                    System.out.println("pathS: "+pathS);
+                    LogAplicacao.i("Executando COMANDO 'LOGS': "+pathS);
                     //List<String> lines=null;
                     List<String> result = new ArrayList<>();
                     try {
@@ -119,7 +118,7 @@ public class OnAlertListener implements EventHandler {
                                 }
                                 catch(Exception ex)
                                 {
-                                    Log.e(ex);
+                                    LogAplicacao.e(ex);
 //									ex.printStackTrace();
                                 }
                                 if (line == null )  {
@@ -139,8 +138,7 @@ public class OnAlertListener implements EventHandler {
                         
                 
                     }catch (IOException ex) {
-							Log.e(ex.getMessage());
-                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+							LogAplicacao.e(ex.getMessage());
                     }
                     
                     MainController.INSTANCE.arr = result.toArray(new String[result.size()]);
@@ -151,6 +149,7 @@ public class OnAlertListener implements EventHandler {
                 }else{
                     if (comando.toString().equals("doUpload")) {
 //                        System.out.println("adicionando partes");
+                        LogAplicacao.i("Executando COMANDO 'doUpload'");
                         MainController.INSTANCE.doUploadParte();
 
                     }
@@ -179,7 +178,8 @@ public class OnAlertListener implements EventHandler {
                 {
                     if (comando.toString().equals("ATUALIZARESTACAO"))
                     {
-              
+
+                        LogAplicacao.i("Executando COMANDO 'ATUALIZARESTACAO'");
                         AtualizarEstacao.downloadNovaVersao(null);
                     }
                 }

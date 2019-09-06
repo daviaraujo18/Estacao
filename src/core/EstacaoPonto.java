@@ -11,12 +11,11 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import utils.Log;
+import utils.LogAplicacao;
 import utils.ScriptsBat;
 import view.BloqueioTela;
 
 import java.io.File;
-import java.io.IOException;
 
 
 /**
@@ -48,12 +47,8 @@ public class EstacaoPonto extends Application{
      */
     @Override
     public void init() {
-
+        LogAplicacao.i("Estação iniciada");
         try {
-//            Log.saidaEmArquivo=false;
-            Log.saidaEmArquivo=true;
-
-            Log.saidaEmArquivo();
             IntranetURLs.init();
 
             LocalPaths.idePath = new File(".").getCanonicalPath();
@@ -83,7 +78,7 @@ public class EstacaoPonto extends Application{
     @Override
     public void stop() throws Exception {
 
-        Log.i("STOPPING");
+        LogAplicacao.i("STOPPING");
         BloqueioTela.getInstance().desbloquearTeclas();
         super.stop();
     }
@@ -117,7 +112,7 @@ public class EstacaoPonto extends Application{
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                System.out.println("Stage is closing");
+                LogAplicacao.i("Estação fechada");
                 Platform.exit();
                 System.exit(0);
             }

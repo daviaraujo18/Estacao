@@ -46,10 +46,10 @@ public class ArquivoRegistros {
 			printWriter.flush();
 			printWriter.close();
 			fileWriter.close();
-			System.out.println("REGISTRO: " + registro);
+			LogEstacao.i("REGISTRO: " + registro);
 			return true;
 		} catch (IOException e) {
-			Log.e(e);
+			LogAplicacao.e(e);
 //            e.printStackTrace();
 			return false;
 		}
@@ -71,7 +71,7 @@ public class ArquivoRegistros {
 		if ((conteudo != null && !conteudo.isEmpty()) && !criptografado) {
 //            System.out.println("CONTEUDO DO ARQUIVO: " + conteudo);
 			conteudo = CryptoUtils.decryptDES("cryp:gpf", conteudo);
-			System.out.println("CONTEUDO DESCRIPTOGRAFADO DO ARQUIVO: " + conteudo);
+			LogEstacao.i("CONTEUDO DESCRIPTOGRAFADO DO ARQUIVO: " + conteudo);
 		} else {
 			conteudo = "";
 		}
@@ -93,7 +93,7 @@ public class ArquivoRegistros {
 		}
 		if (!conteudo.isEmpty()) {
 			conteudo = conteudo.substring(0, conteudo.length() - 1);
-			System.out.println("\n -- Dados arquivo: " + conteudo);
+			LogEstacao.i("\n -- Dados arquivo: " + conteudo);
 		}
 		return conteudo;
 	}
@@ -109,7 +109,7 @@ public class ArquivoRegistros {
 			}
 			deuCerto = true;
 		} catch (Exception ex) {
-			Log.e(ex);
+			LogAplicacao.e(ex);
 			deuCerto = false;
 		} 
 		if(deuCerto){
@@ -119,7 +119,7 @@ public class ArquivoRegistros {
 				}	
 				return lerArquivo(arquivoTemp);
 			} catch (IOException ex) {
-				Log.e(ex);
+				LogAplicacao.e(ex);
 			}
 		}
 		return "";
@@ -139,7 +139,7 @@ public class ArquivoRegistros {
 			printWriter.close();
 			return true;
 		} catch (IOException ex) {
-			Log.e(ex);
+			LogAplicacao.e(ex);
 //            ex.printStackTrace();
 			return false;
 		}

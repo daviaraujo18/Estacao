@@ -3,12 +3,10 @@ package core;
 import controllers.MainController;
 import core.leitura.EventoLeitura;
 import core.leitura.Leitura;
-import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import utils.CryptoUtils;
-import utils.Log;
-import utils.ScriptsBat;
+import utils.LogEstacao;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -50,7 +48,7 @@ public class ValidarBatidaManualService extends Service<Leitura> {
                     in.close();
 
                     String dataFixed = response.toString().replace("\n", "");
-                    System.out.println(dataFixed);
+                    LogEstacao.i(dataFixed);
                     if(dataFixed.contains("error")){
                         throw new Exception(dataFixed);
                     }

@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import utils.ArquivoRegistros;
-import utils.Log;
+import utils.LogAplicacao;
 import utils.The;
 import utils.VerificaConexao;
 import view.TelaPonto;
@@ -97,7 +97,7 @@ public class MainController implements Initializable {
             The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
             The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('success','Digitais identificadas!');");
         } catch (Exception ex) {
-			Log.e(ex.getMessage());
+			LogAplicacao.e(ex.getMessage());
 //            The.inserirJavascript(webEngine, "changeInfoDigital('error','" + ex.getMessage() + "');");
         }
     }
@@ -138,7 +138,7 @@ public class MainController implements Initializable {
      * @param String - Horario no formato HH:MM
      */
     public void atualizarHorario(String horario) throws IOException{
-//        Log.i("Inicia atualizacao de horario: "+horario);//#flag
+//        LogAplicacao.i("Inicia atualizacao de horario: "+horario);//#flag
         //String minutos = horario.split(":")[1];
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
@@ -150,7 +150,7 @@ public class MainController implements Initializable {
     }
 
     public void reiniciarCapturaDigital(){
-        Log.i("Reinicia captura de digital.");//#flag
+        LogAplicacao.i("Reinicia captura de digital.");//#flag
         if(this.getCds().getState().equals(Worker.State.SUCCEEDED)){
             this.inicializarLeitor();
         }
@@ -161,7 +161,7 @@ public class MainController implements Initializable {
      * Apaga todos os registros do arquivo
      */
     public void apagarRegistrosBatimentos() throws IOException {
-         Log.i("Apagando registro de arquivos.");//#flag
+         LogAplicacao.i("Apagando registro de arquivos.");//#flag
         ArquivoRegistros.limparArquivo();
 //        threadRelogio.desativarSincronizacao();
     }
@@ -170,7 +170,7 @@ public class MainController implements Initializable {
     {
         String dados = ArquivoRegistros.lerArquivoSincronizado();
         if(!dados.isEmpty()){
-            Log.i("Iniciando sincronizacao. Data: "+threadRelogio.getDataServidorAtual().getTime());
+            LogAplicacao.i("Iniciando sincronizacao. Data: "+threadRelogio.getDataServidorAtual().getTime());
 			The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
 		}
         threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());
@@ -192,6 +192,6 @@ public class MainController implements Initializable {
             String js="adicionaParte('" + codAtivacao + "','"+nomeLog+"','"+parte+"',"+i+")";
             The.inserirJavascript(this.tela.getWebEngine(), js);
         }
-        System.out.println("fim do envio do arquivo "+nomeLog);
+        LogAplicacao.i("fim do envio do arquivo "+nomeLog);
     }
 }

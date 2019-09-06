@@ -27,7 +27,7 @@ public class IntranetURLs {
     public static String getCodigos() {
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
         String codUnicoM = RegistroWindows.getCodigoUnicoMaquina();
-//        Log.i(codUnicoM);
+//        LogAplicacao.i(codUnicoM);
         return "?codigoAtivacao="+ codAtivacao+"&codigoUnicoMaquina="+codUnicoM;
     }
     public static void init()

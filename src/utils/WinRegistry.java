@@ -78,7 +78,7 @@ public class WinRegistry {
       regDeleteKey.setAccessible(true); 
     }
     catch (Exception e) {
-		Log.e(e);
+		LogAplicacao.e(e);
 //      e.printStackTrace();
     }
   }

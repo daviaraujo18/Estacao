@@ -18,6 +18,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import listeners.ChangeUrlListener;
 import listeners.OnAlertListener;
+import utils.LogAplicacao;
 import utils.The;
 import utils.VerificaConexao;
 
@@ -88,6 +89,7 @@ public class TelaPonto {
                         Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
+                                    LogAplicacao.w("Não consigo conexão com intranet");
                                     labelSemConexao.setText("Tentando conectar com INTRANET #" + finalNumeroTentativa);
                                 }
                             });

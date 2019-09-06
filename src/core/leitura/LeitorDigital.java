@@ -1,7 +1,7 @@
 package core.leitura;
 
 
-import utils.Log;
+import utils.LogAplicacao;
 
 import com.nitgen.SDK.BSP.NBioBSPJNI;
 import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch;
@@ -53,7 +53,7 @@ public class LeitorDigital {
 
     public void addDigitalToIndexSearch(Map<String,String> mapaIdHashFrequentadores) {
 
-        Log.i("Guardando frequentadores na memória...");
+        LogAplicacao.i("Guardando frequentadores na memória...");
 
         double inicioMontagem = System.currentTimeMillis();
 
@@ -77,8 +77,8 @@ public class LeitorDigital {
         fecharLeitor();
 
         double fimMontagem = System.currentTimeMillis();
-        Log.i("Montagem finalizada");
-        Log.i("Time elapsed: "+(fimMontagem - inicioMontagem)+" ms");
+        LogAplicacao.i("Montagem finalizada");
+        LogAplicacao.i("Time elapsed: "+(fimMontagem - inicioMontagem)+" ms");
 
     }
 
@@ -226,15 +226,15 @@ public class LeitorDigital {
         fecharLeitor();
         if(ocorreuErro == false) {
             if(bResult) {
-                Log.i("Digitais conferem");
+                LogAplicacao.i("Digitais conferem");
                 return true;
             }
             else {
-                Log.i("Digitais nao conferem");
+                LogAplicacao.i("Digitais nao conferem");
                 return false;
             }
         } else {
-            Log.e("Erro na Verificacao. Verifique o Hardware");
+            LogAplicacao.e("Erro na Verificacao. Verifique o Hardware");
             return false;
         }
     }
@@ -245,7 +245,7 @@ public class LeitorDigital {
      */
     private void throwError() throws IllegalArgumentException, IllegalAccessException, Exception {
         int errorNumber = bsp.GetErrorCode();
-        Log.e("Error code: "+bsp.GetErrorCode());
+        LogAplicacao.e("Error code: "+bsp.GetErrorCode());
         String errorName = null;
         Class aClass = NBioBSPJNI.ERROR.class;
         Field[] fields = aClass.getFields();
@@ -256,7 +256,7 @@ public class LeitorDigital {
             }
         }
         fecharLeitor();
-        			Log.e("Erro: "+errorName);
+        			LogAplicacao.e("Erro: "+errorName);
     }
 
     public boolean temDedo()

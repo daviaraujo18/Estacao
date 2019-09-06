@@ -93,12 +93,12 @@ public class ScriptsBat {
 
     public static void updateAplicacao() throws IOException {
         Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
-        System.out.println("["+CalendarUtils.format(dataServidorAtual)+"] Update aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
+        LogAplicacao.i("Update aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
         Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runReplace.bat",
                 null,
                 new File(LocalPaths.realPath));
 
-        System.out.println("Download finalizado. Abrindo nova versao.");
+        LogAplicacao.i("Download finalizado. Abrindo nova versao.");
         Platform.exit();
         System.exit(0);
     }

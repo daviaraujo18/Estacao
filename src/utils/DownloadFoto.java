@@ -21,7 +21,7 @@ public class DownloadFoto {
     {
 
         boolean baixou = false;
-        System.out.println("Tentado baixar: "+enderecoWeb);
+        LogAplicacao.i("Tentado baixar: "+enderecoWeb);
         BufferedInputStream in = null;
         ByteArrayOutputStream bais = null;
         //FileOutputStream fout = null;
@@ -70,8 +70,8 @@ public class DownloadFoto {
         }
         catch(Exception ex)
         {
-			Log.e(ex);
-            System.out.println("Arquivo inexistente ou servidor de imagens desligado.");
+			LogAplicacao.e(ex);
+            LogAplicacao.e("Arquivo inexistente ou servidor de imagens desligado.");
             return false;
         }
         finally 
@@ -86,7 +86,7 @@ public class DownloadFoto {
                     try {
                         in.close();
                     } catch (IOException ex) {
-						Log.e(ex);
+						LogAplicacao.e(ex);
                         Logger.getLogger(DownloadFoto.class.getName()).log(Level.SEVERE, null, ex);
                     }
             }

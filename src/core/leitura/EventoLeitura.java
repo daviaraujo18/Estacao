@@ -8,7 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import utils.ArquivoRegistros;
 import utils.CacheManipulation;
-import utils.Log;
+import utils.LogAplicacao;
 import utils.The;
 import view.TelaPonto;
 
@@ -40,7 +40,7 @@ public enum EventoLeitura {
     DIGITAL_NAO_RECONHECIDA{
         @Override
         public void after(TelaPonto tela) {
-			Log.i("ALERT: Digital Não Reconhecida!");
+			LogAplicacao.i("ALERT: Digital Não Reconhecida!");
             tela.sound.playError();
         }
     },
@@ -48,7 +48,7 @@ public enum EventoLeitura {
     ERRO_LEITURA{
         @Override
         public void after(TelaPonto tela) {
-			Log.i("ALERT: Erro de Leitura!");
+			LogAplicacao.i("ALERT: Erro de Leitura!");
             tela.sound.playError();
         }
     }, 
@@ -71,7 +71,7 @@ public enum EventoLeitura {
     USUARIO_SENHA_INVALIDOS{
         @Override
         public void after(TelaPonto tela) {
-            Log.i("ALERT: Usuário ou Senha Inválidos!");
+            LogAplicacao.i("ALERT: Usuário ou Senha Inválidos!");
 //            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus(' Usuário ou Senha Inválidos!')");
             tela.sound.playError();
         }
@@ -80,7 +80,7 @@ public enum EventoLeitura {
         @Override
         public void after(TelaPonto tela) {
 
-            Log.i("ALERT:Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD");
+            LogAplicacao.i("ALERT:Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD");
 //            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus('Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD')");
             tela.sound.playError();
         }
@@ -94,7 +94,7 @@ public enum EventoLeitura {
             try {
                 The.inserirJavascript(tela.getWebEngine(), "process('" + this.name()+"', "+getData(tela, leitura)+")");
             }catch (RuntimeException e){
-				Log.e(e);
+				LogAplicacao.e(e);
 //                e.printStackTrace();
             }
 
@@ -166,7 +166,7 @@ public enum EventoLeitura {
 //                    fileInputStream.close();
 
                 }catch(Exception e){
-					Log.e(e);
+					LogAplicacao.e(e);
 //                        e.printStackTrace();
                 }
                 
@@ -175,7 +175,7 @@ public enum EventoLeitura {
 
 //            String dad = "'"+leitura.getIdFrequentador() + "','" + leitura.getMomento() + "','" + nome + "','" + matricula + "','" + urlFoto + "'";
             String dad = "'"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome + "," + dataURI+"'";
-			Log.i("SUCESS: Digital Reconhecida->"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome );
+			LogAplicacao.i("SUCESS: Digital Reconhecida->"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome );
         //    System.out.println("Dad "+dad);
             return dad;
     }
