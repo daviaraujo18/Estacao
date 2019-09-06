@@ -25,8 +25,6 @@ public class LogEstacao {
         logger.error(msg);
     }
     public static void e(Exception ex) {
-		StringWriter errors = new StringWriter();
-		ex.printStackTrace(new PrintWriter(errors));
-        logger.error(errors.toString());
+        e(ex.getMessage());
     }
 }

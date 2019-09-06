@@ -70,8 +70,7 @@ public class DownloadFoto {
         }
         catch(Exception ex)
         {
-			LogAplicacao.e(ex);
-            LogAplicacao.e("Arquivo inexistente ou servidor de imagens desligado.");
+            LogAplicacao.e("Não foi possível baixar a foto do frequentador");
             return false;
         }
         finally 

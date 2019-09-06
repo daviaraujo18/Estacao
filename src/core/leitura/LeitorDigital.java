@@ -52,8 +52,7 @@ public class LeitorDigital {
     }
 
     public void addDigitalToIndexSearch(Map<String,String> mapaIdHashFrequentadores) {
-
-        LogAplicacao.i("Guardando frequentadores na memória...");
+        LogAplicacao.i("Adicionando dados ao IndexSearch");
 
         double inicioMontagem = System.currentTimeMillis();
 
@@ -76,9 +75,7 @@ public class LeitorDigital {
 
         fecharLeitor();
 
-        double fimMontagem = System.currentTimeMillis();
-        LogAplicacao.i("Montagem finalizada");
-        LogAplicacao.i("Time elapsed: "+(fimMontagem - inicioMontagem)+" ms");
+        LogAplicacao.i("Finalizado adição ao IndexSearch");
 
     }
 

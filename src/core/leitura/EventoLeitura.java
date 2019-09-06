@@ -6,10 +6,7 @@ import java.io.File;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import utils.ArquivoRegistros;
-import utils.CacheManipulation;
-import utils.LogAplicacao;
-import utils.The;
+import utils.*;
 import view.TelaPonto;
 
 public enum EventoLeitura {
@@ -40,7 +37,7 @@ public enum EventoLeitura {
     DIGITAL_NAO_RECONHECIDA{
         @Override
         public void after(TelaPonto tela) {
-			LogAplicacao.i("ALERT: Digital Não Reconhecida!");
+			LogEstacao.w("Digital NÃO Reconhecida");
             tela.sound.playError();
         }
     },
@@ -48,7 +45,7 @@ public enum EventoLeitura {
     ERRO_LEITURA{
         @Override
         public void after(TelaPonto tela) {
-			LogAplicacao.i("ALERT: Erro de Leitura!");
+            LogEstacao.e("Erro de Leitura");
             tela.sound.playError();
         }
     }, 
@@ -71,7 +68,7 @@ public enum EventoLeitura {
     USUARIO_SENHA_INVALIDOS{
         @Override
         public void after(TelaPonto tela) {
-            LogAplicacao.i("ALERT: Usuário ou Senha Inválidos!");
+            LogEstacao.w("Usuário ou Senha Inválidos!");
 //            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus(' Usuário ou Senha Inválidos!')");
             tela.sound.playError();
         }
@@ -80,8 +77,7 @@ public enum EventoLeitura {
         @Override
         public void after(TelaPonto tela) {
 
-            LogAplicacao.i("ALERT:Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD");
-//            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus('Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD')");
+            LogEstacao.w("Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD");
             tela.sound.playError();
         }
     }
@@ -153,30 +149,21 @@ public enum EventoLeitura {
                     }
                 }
             }
-            //File file = new File("C:\\Estacao\\imgs\\a.jpg");
             if (dataURI.isEmpty())
             {
                 
 
                 try {
-                    //convert file into array of bytes
                     dataURI = FileUtils.readFileToString(file);
-//                    fileInputStream = new FileInputStream(file);
-//                    fileInputStream.read(dataURI);
-//                    fileInputStream.close();
-
                 }catch(Exception e){
-					LogAplicacao.e(e);
-//                        e.printStackTrace();
+					LogAplicacao.e(e.getMessage());
                 }
                 
 
             }
 
-//            String dad = "'"+leitura.getIdFrequentador() + "','" + leitura.getMomento() + "','" + nome + "','" + matricula + "','" + urlFoto + "'";
             String dad = "'"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome + "," + dataURI+"'";
-			LogAplicacao.i("SUCESS: Digital Reconhecida->"+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome );
-        //    System.out.println("Dad "+dad);
+			LogEstacao.i("Digital Reconhecida -> "+leitura.getIdFrequentador() + "," + leitura.getMomento() + "," + matricula + "," + nome );
             return dad;
     }
 

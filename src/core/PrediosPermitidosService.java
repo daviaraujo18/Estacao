@@ -4,6 +4,7 @@ package core;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import listeners.Operacao;
+import utils.LogAplicacao;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -49,7 +50,8 @@ public class PrediosPermitidosService extends Service<String>  {
 
 					return prediosPermitidos;
 				} catch (Exception e) {
-					e.printStackTrace();
+					LogAplicacao.e(e.getMessage());
+					LogAplicacao.e("Não foi possível recuperar PrediosPermitidos");
 					return "";
 				}
 			}

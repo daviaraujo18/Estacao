@@ -62,8 +62,8 @@ public class VivoOuMortoService extends Service<Boolean>  {
 
 					return true;
 				} catch (Exception e) {
-					e.printStackTrace();
-					LogEstacao.e(e);
+					LogEstacao.e(e.getMessage());
+					LogEstacao.e("VivoOuMorto não conseguiu conexão");
 					return false;
 				}
 

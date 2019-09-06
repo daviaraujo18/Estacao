@@ -12,6 +12,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.LogAplicacao;
+import utils.LogEstacao;
 import utils.ScriptsBat;
 import view.BloqueioTela;
 
@@ -47,7 +48,7 @@ public class EstacaoPonto extends Application{
      */
     @Override
     public void init() {
-        LogAplicacao.i("Estação iniciada");
+        LogEstacao.i("Estação iniciada");
         try {
             IntranetURLs.init();
 
@@ -78,7 +79,7 @@ public class EstacaoPonto extends Application{
     @Override
     public void stop() throws Exception {
 
-        LogAplicacao.i("STOPPING");
+        LogEstacao.i("STOPPING");
         BloqueioTela.getInstance().desbloquearTeclas();
         super.stop();
     }
@@ -112,7 +113,7 @@ public class EstacaoPonto extends Application{
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                LogAplicacao.i("Estação fechada");
+                LogEstacao.i("Estação fechada");
                 Platform.exit();
                 System.exit(0);
             }

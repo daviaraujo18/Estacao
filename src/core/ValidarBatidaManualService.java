@@ -48,7 +48,6 @@ public class ValidarBatidaManualService extends Service<Leitura> {
                     in.close();
 
                     String dataFixed = response.toString().replace("\n", "");
-                    LogEstacao.i(dataFixed);
                     if(dataFixed.contains("error")){
                         throw new Exception(dataFixed);
                     }

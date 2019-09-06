@@ -18,7 +18,6 @@ public class VerificaConexao {
 		try {
 			String urlString = Configuracoes.base_intranet_url.get() + "/presenca/CarregaRelogioAtual";
 
-			LogAplicacao.i("Tentando conectar com : "+urlString);
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
@@ -32,7 +31,8 @@ public class VerificaConexao {
 			return horarioEmMillis;
 		} catch (Exception e) {
 //			e.printStackTrace();
-			LogAplicacao.e(e);
+			LogAplicacao.e(e.getMessage());
+			LogAplicacao.e("Não foi possível comunicação com Intranet");
 			return -1;
 		}
 	}
