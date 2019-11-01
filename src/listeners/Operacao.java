@@ -76,7 +76,12 @@ public enum Operacao {
 
             if (RegistroWindows.registrarCodigoAtivacao(data.toString()))
             {
-                webEngine.load(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
+                try {
+                    webEngine.load(IntranetURLs.INICIALIZAR_PONTO + IntranetURLs.getCodigos());
+                } catch (IOException e) {
+                    LogAplicacao.e("Não foi possível recuperar códigos de aplicação");
+                    e.printStackTrace();
+                }
 
             }
             else

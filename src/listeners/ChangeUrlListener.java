@@ -34,7 +34,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
         if (ov.getValue().equals(Worker.State.SCHEDULED)) {
 //            LogAplicacao.i("Carregando pagina: " + tela.getWebEngine().getLocation());
             if (urlAtualContem("Frequentador?type=create")) {
-            //if (urlAtualContem("presenca/Frequentador")) {
+                //if (urlAtualContem("presenca/Frequentador")) {
                 tela.getSplitPanel().getDividers().get(1).setPosition(0.5);
                 tela.getBotaoCadastrarDigital().setVisible(true);
                 tela.getBotaoAtualizarDigital().setVisible(false);
@@ -44,48 +44,52 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 tela.getBotaoCadastrarDigital().setVisible(false);
                 tela.getBotaoAtualizarDigital().setVisible(true);
             }else {
-                tela.getSplitPanel().getDividers().get(1).setPosition(0.999);                
+                tela.getSplitPanel().getDividers().get(1).setPosition(0.999);
             }
         } else {
 
             if (ov.getValue().equals(Worker.State.SUCCEEDED)) {
-                
+
 
                 //Document doc = tela.getWebEngine().getDocument();
                 //Element el = doc.getElementById("relogio");
 
-                
+
 //                LogAplicacao.i("Pagina carregada: " + tela.getWebEngine().getLocation());
                 if (urlAtualContem("EstacaoPonto?type=create")) {
                     LogAplicacao.i("Injetando codigos no formulario via JavaScript");
-                    setarInputCodigos();
                     boolean ret = false;
                     try {
-                        ret = criarArquivoBatimentos();
+                        setarInputCodigos();
+//                        ret = criarArquivoBatimentos();
                     } catch (IOException ex) {
-						LogAplicacao.e(ex);
+                        LogAplicacao.e(ex);
                         Logger.getLogger(ChangeUrlListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else if (urlAtualContem("presenca/IniciarPonto")) {
 //                    LogAplicacao.i("Entrei no metodo");
-                    String codigos = IntranetURLs.getCodigos();
-//                    LogAplicacao.i("codigos: " + codigos) ;
-                    String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
-//                    LogAplicacao.i(url);
-                    mudarUrlAtualPara(url);
+                    String codigos = null;
+                    try {
+                        codigos = IntranetURLs.getCodigos();
+                        String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
+                        mudarUrlAtualPara(url);
+                    } catch (IOException e) {
+                        LogAplicacao.e("Nao foi possivel recuperar codigos");
+                        e.printStackTrace();
+                    }
 
                 }
                 else
                 {
                     if(urlAtualContem("exception.jsp")||urlAtualContem("500.jsp")||urlAtualContem("404.jsp"))
                     {
-                    //EstacaoPonto.getInstance().setTitle("econtrado");
-                    //((EventTarget) el).addEventListener("click", tela.listener, false);
+                        //EstacaoPonto.getInstance().setTitle("econtrado");
+                        //((EventTarget) el).addEventListener("click", tela.listener, false);
                         LogAplicacao.i("Shutdown.  D: ");
                         //mudarUrlAtualPara(IntranetURLs.BATIMENTO_PONTO);
-                        try 
+                        try
                         {
-                            
+
                             try {
 
                                 LogAplicacao.i("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
@@ -94,17 +98,17 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                             catch (Exception ex) {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                                 LogAplicacao.i("Problema ao executar o OUA.");
-								LogAplicacao.e(ex);
+                                LogAplicacao.e(ex);
                             }
 //                            System.out.println("Iniciou");
-                            
+
                             Platform.exit();
                             System.exit(0);
                         }
                         catch (Exception ex)
                         {
                             Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-							LogAplicacao.e(ex);
+                            LogAplicacao.e(ex);
                         }
                     }
                 }
@@ -112,7 +116,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
         }
     }
 
-    private void setarInputCodigos() {
+    private void setarInputCodigos() throws IOException {
         WebEngine webEngine = tela.getWebEngine();
 
         String codigoAtivacao = RegistroWindows.gerarCodigoAtivacao();
@@ -141,7 +145,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
             LogAplicacao.i(statusArq);
             return true;
         } catch (IOException e) {
-			LogAplicacao.e(e);
+            LogAplicacao.e(e);
 //            e.printStackTrace();
             return false;
         }
