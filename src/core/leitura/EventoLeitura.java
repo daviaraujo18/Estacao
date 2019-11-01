@@ -57,6 +57,7 @@ public enum EventoLeitura {
 
         @Override
         public String getData(TelaPonto tela, Leitura leitura) {
+            LogEstacao.w("Registro com ressalva");
             return reconheceDigital(leitura);
         }
         
@@ -78,6 +79,14 @@ public enum EventoLeitura {
         public void after(TelaPonto tela) {
 
             LogEstacao.w("Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD");
+            tela.sound.playError();
+        }
+    },
+    ESTACAO_SEM_PERMISSAO_PARA_BATIDA_MANUAL{
+        @Override
+        public void after(TelaPonto tela) {
+
+            LogEstacao.w("Estação não esta liberada para aceitar batidas com login/senha.");
             tela.sound.playError();
         }
     }

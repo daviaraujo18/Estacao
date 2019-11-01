@@ -31,7 +31,7 @@ public class ValidarBatidaManualService extends Service<Leitura> {
             protected Leitura call() throws Exception {
                 try {
 
-                    URL url = new URL(urlString+"?loginAccessKey="+CryptoUtils.encryptDES("cryp:gpf", login)+"&plainPassword="+CryptoUtils.encryptDES("cryp:gpf", senha));
+                    URL url = new URL(urlString+"?loginAccessKey="+CryptoUtils.encryptDES("cryp:gpf", login)+"&plainPassword="+CryptoUtils.encryptDES("cryp:gpf", senha)+"&codAtivacao="+RegistroWindows.getCodigoAtivacaoRegistro());
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     //add reuqest header
                     con.setRequestMethod("GET");
@@ -55,10 +55,13 @@ public class ValidarBatidaManualService extends Service<Leitura> {
                     return new Leitura(EventoLeitura.DIGITAL_RECONHECIDA, null, String.valueOf(dataFixed), MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
                 } catch (Exception e) {
                     EventoLeitura evento = null;
-                    if(e.getMessage().contains("USUARIO_SEM_PERMISSAO_MANUAL"))
+                    if(e.getMessage().contains("USUARIO_SEM_PERMISSAO_MANUAL")) {
                         evento = EventoLeitura.USUARIO_SEM_PERMISSAO_MANUAL;
-                    else
+                    } else if (e.getMessage().contains("ESTACAO_SEM_PERMISSAO_PARA_BATIDA_MANUAL")) {
+                        evento = EventoLeitura.ESTACAO_SEM_PERMISSAO_PARA_BATIDA_MANUAL;
+                    } else {
                         evento = EventoLeitura.USUARIO_SENHA_INVALIDOS;
+                    }
 
                     return new Leitura(evento, null, null, MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
                 }
