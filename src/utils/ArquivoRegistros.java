@@ -104,7 +104,7 @@ public class ArquivoRegistros {
 		try {
 			dadosArquivoPrincipal = FileUtils.readLines(arquivo) ;
 			if(dadosArquivoPrincipal.size()>0){
-				FileUtils.writeLines(arquivoTemp, dadosArquivoPrincipal);
+				FileUtils.writeLines(arquivoTemp, dadosArquivoPrincipal, true);
 //				escrever(dadosArquivoPrincipal,arquivoTemp);
 			}
 			deuCerto = true;
