@@ -18,8 +18,8 @@ import org.apache.commons.io.FileUtils;
  */
 public class ArquivoRegistros {
 
-	private static File arquivo = new File(LocalPaths.PATH_REGISTROS + RegistroWindows.getCodigoUnicoMaquina().substring(2, 10) + ".txt");
-	private static File arquivoTemp = new File(LocalPaths.PATH_REGISTROS + RegistroWindows.getCodigoUnicoMaquina().substring(2, 10) +"temp" + ".txt");
+	private static File arquivo = new File(LocalPaths.PATH_REGISTROS + "regs.txt");
+	private static File arquivoTemp = new File(LocalPaths.PATH_REGISTROS + "regstemp" + ".txt");
 
 	public static boolean escrever(String registro) throws IOException {
 		return escrever(registro,arquivo);
