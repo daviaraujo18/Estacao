@@ -1,7 +1,7 @@
 package core;
 
 import utils.CryptoUtils;
-import utils.Log;
+import utils.LogAplicacao;
 import utils.WinRegistry;
 
 import java.util.UUID;
@@ -26,8 +26,8 @@ public class RegistroWindows {
 				return valor;
 
 			} catch (Exception e) {
-				Log.e("\\Estacao >> ERRO na busca do codigo de ativacao.");
-				Log.e(e);
+				LogAplicacao.e("\\Estacao >> ERRO na busca do codigo de ativacao.");
+				LogAplicacao.e(e);
 //				e.printStackTrace();
 				return null;
 			}
@@ -48,7 +48,7 @@ public class RegistroWindows {
 				return true;
 
 			} catch (Exception e) {
-				Log.i("Erro ao criar registro do windows: " + e.getMessage());
+				LogAplicacao.i("Erro ao criar registro do windows: " + e.getMessage());
 				return false;
 			}
 		} else {
@@ -66,8 +66,8 @@ public class RegistroWindows {
 			}
 
 			String serialCriptografado = CryptoUtils.md5UB64(hdSerial);
-//			Log.i("\n*HDSERIAL: " + hdSerial);
-//			Log.i("\n**SERIAL CRIPTOGRAFADO: " + serialCriptografado);
+//			LogAplicacao.i("\n*HDSERIAL: " + hdSerial);
+//			LogAplicacao.i("\n**SERIAL CRIPTOGRAFADO: " + serialCriptografado);
 			return serialCriptografado;
 		} else {
 			return "SistemaOperacionalNaoSuportado";

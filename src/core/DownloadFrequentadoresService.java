@@ -3,7 +3,8 @@ package core;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import utils.Log;
+import utils.LogAplicacao;
+import utils.LogEstacao;
 import utils.ScriptsBat;
 
 import java.io.BufferedReader;
@@ -39,10 +40,11 @@ public class DownloadFrequentadoresService extends Service<String> {
                     in.close();
 
                     String dataFixed = response.toString().replace("\n", "");
+                    LogAplicacao.i("Download finalizado");
                     return dataFixed;
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.i("Erro ao baixar digitais, reiniciando aplicacao...");
+                    LogAplicacao.e(e.getMessage());
+                    LogAplicacao.e("Erro ao baixar digitais, reiniciando aplicacao...");
                     ScriptsBat.restartAplicacao(true);
                     Platform.exit();
                     System.exit(0);

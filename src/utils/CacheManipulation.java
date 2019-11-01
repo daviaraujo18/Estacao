@@ -21,7 +21,7 @@ import org.apache.commons.io.FilenameUtils;
 /**
  *
  * @author Daniel Leite TJPI
- * Trata da edição do arquivo ./imgs/cache.txt, arquivo responsável por permitir o download das fotos 3x4 para a Estação.
+ * Trata da ediï¿½ï¿½o do arquivo ./imgs/cache.txt, arquivo responsï¿½vel por permitir o download das fotos 3x4 para a Estaï¿½ï¿½o.
  */
 public class CacheManipulation {
    private static final int VALIDADE = 20; //qtd dias para o cache expirar
@@ -51,12 +51,12 @@ public class CacheManipulation {
 //            FileReader fr = new FileReader(arquivo);  
 //            BufferedReader br = new BufferedReader(fr); 
 //            
-//            String linhaCache = br.readLine(); //lê a primeira linha
+//            String linhaCache = br.readLine(); //lï¿½ a primeira linha
             
 //            while (linhaCache!=null)
 //            {
 //                if (linhaCache.contains(nomeArquivo) && encontrado == false)
-//                {//há um registro no cache que a foto foi baixada.
+//                {//hï¿½ um registro no cache que a foto foi baixada.
 //                       encontrado=true;
 //                       System.out.println("Arquivo encontrado: "+linhaCache);
 //                       String dadosCache[] = linhaCache.split(" ");
@@ -79,7 +79,7 @@ public class CacheManipulation {
                             }           
                             else
                             {
-                                System.out.println("Problemas no download.");
+                                LogAplicacao.w("Problemas no download.");
 //                                conteudo+=linhaCache+"\r\n";
                             }
                             
@@ -106,7 +106,7 @@ public class CacheManipulation {
 //                           }
 //                 else
 //                 {
-////                                System.out.println("Foto dentro da validade. Não há necessidade de download...");
+////                                System.out.println("Foto dentro da validade. Nï¿½o hï¿½ necessidade de download...");
 //                     conteudo+=linhaCache+"\r\n";
 //                 }
 //                       }
@@ -115,7 +115,7 @@ public class CacheManipulation {
 //                 {
 //                     conteudo+=linhaCache+"\r\n";
 //                 }
-//                 linhaCache = br.readLine(); //se tiver mais linhas, lê todas elas 
+//                 linhaCache = br.readLine(); //se tiver mais linhas, lï¿½ todas elas 
 //            }
 //            br.close();
 //            fr.close();
@@ -127,7 +127,7 @@ public class CacheManipulation {
 //        }
 //        catch (IOException ex) 
 //        {
-//			Log.e(ex);
+//			LogAplicacao.e(ex);
 //           ex.printStackTrace();
 //        }
         return encontrado;
@@ -152,7 +152,7 @@ public class CacheManipulation {
            
 //            Calendar dataAtual =(Calendar) Calendar.getInstance();
             Calendar dataAtual =(Calendar) MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().clone();
-            System.out.println("Baixando foto "+nomeArquivo+"...");
+            LogAplicacao.i("Baixando foto "+nomeArquivo+"...");
             if (dw.baixaFoto(enderecoWeb))
             {
 //                System.out.println("Download terminado.");
@@ -162,7 +162,7 @@ public class CacheManipulation {
             }           
             else
             {
-                System.out.println("Problemas no download.");
+                LogAplicacao.w("Problemas no download.");
             }
             bw.flush();
             bw.close();
@@ -171,7 +171,7 @@ public class CacheManipulation {
         }
         catch (IOException ex) 
         {
-			Log.e(ex);
+			LogAplicacao.e(ex);
 //           ex.printStackTrace();
         }
         return insercaoValida;
@@ -190,8 +190,8 @@ public class CacheManipulation {
                 }
                 catch(Exception ex)
                 {
-					Log.e(ex);
-//                    System.out.println("Data inválida.");
+					LogAplicacao.e(ex);
+//                    System.out.println("Data invï¿½lida.");
                     return null;
                 }
                 

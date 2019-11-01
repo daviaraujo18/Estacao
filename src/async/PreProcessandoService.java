@@ -4,7 +4,7 @@ import core.leitura.LeitorDigital;
 import core.leitura.Operacao;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import utils.Log;
+import utils.LogAplicacao;
 
 /**
  * Classe que cria um service assincrono(uma nova thread em execucao) no javafx
@@ -50,7 +50,7 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
                 }
             }
         } catch (Exception e) {
-			Log.e(e);
+			LogAplicacao.e(e);
             PreProcessandoService.this.restart();
 //            e.printStackTrace();
         }

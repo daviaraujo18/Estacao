@@ -1,14 +1,12 @@
 package core;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utils.Log;
+import utils.LogAplicacao;
 
 /**
  * File: jWMI.java
@@ -162,7 +160,7 @@ public class jWMI
 
             return (numSerieComputador+"_"+numeroSerieHD);
         } catch (Exception ex) {  
-			Log.e(ex);
+			LogAplicacao.e(ex);
             Logger.getLogger(jWMI.class.getName()).log(Level.SEVERE, null, ex);  
         }  
         return "";

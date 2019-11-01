@@ -1,15 +1,12 @@
 package core;
 
 
-import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import utils.CalendarUtils;
-import utils.Log;
+import utils.LogEstacao;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -65,7 +62,8 @@ public class VivoOuMortoService extends Service<Boolean>  {
 
 					return true;
 				} catch (Exception e) {
-					e.printStackTrace();
+					LogEstacao.e(e.getMessage());
+					LogEstacao.e("VivoOuMorto não conseguiu conexão");
 					return false;
 				}
 

@@ -3,10 +3,8 @@ package utils;
 import core.Configuracoes;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -20,7 +18,6 @@ public class VerificaConexao {
 		try {
 			String urlString = Configuracoes.base_intranet_url.get() + "/presenca/CarregaRelogioAtual";
 
-			StringBuilder result = new StringBuilder();
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
@@ -29,12 +26,13 @@ public class VerificaConexao {
 			String line = rd.readLine();
 			rd.close();
 
-//			System.out.println(line);
 			long horarioEmMillis = Long.parseLong(line);
 
 			return horarioEmMillis;
 		} catch (Exception e) {
 //			e.printStackTrace();
+			LogAplicacao.e(e.getMessage());
+			LogAplicacao.e("Não foi possível comunicação com Intranet");
 			return -1;
 		}
 	}

@@ -3,7 +3,7 @@ package listeners;
 import core.IntranetURLs;
 import core.LocalPaths;
 import core.RegistroWindows;
-import java.io.File;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,7 +12,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
-import utils.Log;
+import utils.LogAplicacao;
 import utils.ScriptsBat;
 import view.TelaPonto;
 
@@ -32,7 +32,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
     public void changed(ObservableValue<? extends Object> ov, Object t, Object t1) {
 
         if (ov.getValue().equals(Worker.State.SCHEDULED)) {
-//            Log.i("Carregando pagina: " + tela.getWebEngine().getLocation());
+//            LogAplicacao.i("Carregando pagina: " + tela.getWebEngine().getLocation());
             if (urlAtualContem("Frequentador?type=create")) {
             //if (urlAtualContem("presenca/Frequentador")) {
                 tela.getSplitPanel().getDividers().get(1).setPosition(0.5);
@@ -55,23 +55,23 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                 //Element el = doc.getElementById("relogio");
 
                 
-//                Log.i("Pagina carregada: " + tela.getWebEngine().getLocation());
+//                LogAplicacao.i("Pagina carregada: " + tela.getWebEngine().getLocation());
                 if (urlAtualContem("EstacaoPonto?type=create")) {
-                    Log.i("Injetando codigos no formulario via JavaScript");
+                    LogAplicacao.i("Injetando codigos no formulario via JavaScript");
                     setarInputCodigos();
                     boolean ret = false;
                     try {
                         ret = criarArquivoBatimentos();
                     } catch (IOException ex) {
-						Log.e(ex);
+						LogAplicacao.e(ex);
                         Logger.getLogger(ChangeUrlListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else if (urlAtualContem("presenca/IniciarPonto")) {
-//                    Log.i("Entrei no metodo");
+//                    LogAplicacao.i("Entrei no metodo");
                     String codigos = IntranetURLs.getCodigos();
-//                    Log.i("codigos: " + codigos) ;
+//                    LogAplicacao.i("codigos: " + codigos) ;
                     String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
-//                    Log.i(url);
+//                    LogAplicacao.i(url);
                     mudarUrlAtualPara(url);
 
                 }
@@ -81,20 +81,20 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                     {
                     //EstacaoPonto.getInstance().setTitle("econtrado");
                     //((EventTarget) el).addEventListener("click", tela.listener, false);
-                        Log.i("Shutdown.  D: ");
+                        LogAplicacao.i("Shutdown.  D: ");
                         //mudarUrlAtualPara(IntranetURLs.BATIMENTO_PONTO);
                         try 
                         {
                             
                             try {
-                                
-                                System.out.println("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
+
+                                LogAplicacao.i("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
                                 ScriptsBat.restartAplicacao();
                             }
                             catch (Exception ex) {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-                                Log.i("Problema ao executar o OUA.");
-								Log.e(ex);
+                                LogAplicacao.i("Problema ao executar o OUA.");
+								LogAplicacao.e(ex);
                             }
 //                            System.out.println("Iniciou");
                             
@@ -104,7 +104,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                         catch (Exception ex)
                         {
                             Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-							Log.e(ex);
+							LogAplicacao.e(ex);
                         }
                     }
                 }
@@ -137,11 +137,11 @@ public class ChangeUrlListener implements ChangeListener<Object> {
         try {
             boolean statusDir = diretorio.mkdir();
             boolean statusArq = arquivo.createNewFile();
-            Log.i("criou o diretorio : " + statusDir);
-            Log.i(statusArq);
+            LogAplicacao.i("criou o diretorio : " + statusDir);
+            LogAplicacao.i(statusArq);
             return true;
         } catch (IOException e) {
-			Log.e(e);
+			LogAplicacao.e(e);
 //            e.printStackTrace();
             return false;
         }

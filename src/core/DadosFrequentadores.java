@@ -4,11 +4,12 @@ package core;
 import controllers.MainController;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.beans.property.StringProperty;
+
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import utils.Log;
+import utils.LogAplicacao;
+import utils.LogEstacao;
 import utils.The;
 import view.TelaPonto;
 
@@ -37,6 +38,7 @@ public class DadosFrequentadores  {
     }
 
     public void init(String data){
+        LogAplicacao.i("Estruturando dados dos frequentadores");
         this.data = data;
         Task task;
         task = new Task<Void>() {
@@ -76,13 +78,13 @@ public class DadosFrequentadores  {
                         total = i;
                     }
                 }
-                System.out.println("Total de frequentadores: "+total);
+                LogAplicacao.i("Finalizado. Total de frequentadores: "+total);
                 // Adiciona os dados ao NBio_SearchIndex
                 try {
                     MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(hashFrequentadores);
                 } catch (Exception e) {
-                    Log.e("Leitor nao iniciado: ");
-					Log.e(e);
+                    LogAplicacao.e(e.getMessage());
+                    LogAplicacao.e("Não foi possível adicionar dados ao IndexSearch");
                 }
                 return null;
             }

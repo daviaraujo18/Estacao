@@ -2,9 +2,6 @@ package listeners;
 
 import controllers.MainController;
 import core.*;
-import core.leitura.EventoLeitura;
-import core.leitura.Leitura;
-import core.leitura.VerificacaoDigitalHandler;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
@@ -27,12 +24,11 @@ public enum Operacao {
 
             boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
             if (temConexaoComIntranet) {
-                Log.i("Iniciando download dos dados dos frequentadores...");
+                LogAplicacao.i("Iniciando download dos frequentadores");
                 final DownloadFrequentadoresService downloadFrequentadoresService = new DownloadFrequentadoresService();
                 downloadFrequentadoresService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                     @Override
                     public void handle(WorkerStateEvent workerStateEvent) {
-                        System.out.println("Download finished");
                         String dadosFrequentadoresBruto = downloadFrequentadoresService.getValue();
                         DadosFrequentadores.getInstance().init(dadosFrequentadoresBruto);
                         The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "removeLoading()");
@@ -56,13 +52,13 @@ public enum Operacao {
         public void execute(String metodo, WebEngine engine){
             boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
             if (temConexaoComIntranet) {
-                Log.i("Iniciando PrediosPermitidos");
+                LogAplicacao.i("Recuperando PrediosPermitidos");
                 final PrediosPermitidosService prediosPermitidosService = new PrediosPermitidosService();
                 prediosPermitidosService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                     @Override
                     public void handle(WorkerStateEvent workerStateEvent) {
                         String prediosPermitidosIDs = prediosPermitidosService.getValue();
-                        Log.i("Predios permitidos: " + prediosPermitidosIDs);
+                        LogAplicacao.i("Predios permitidos: " + prediosPermitidosIDs);
                         MainController.INSTANCE.prediosIds = prediosPermitidosIDs;
 
                     }
@@ -74,7 +70,7 @@ public enum Operacao {
     },
     RECUPERAR_CODIGO_ATIVACAO("recuperarCodigoAtivacao"){
         public void execute(String metodo, WebEngine webEngine){
-            Log.i("Recuperando CodigoDeAtivacao e setando no Registro do Windows");
+            LogAplicacao.i("Recuperando CodigoDeAtivacao e setando no Registro do Windows");
 
             Object data = webEngine.executeScript("jQuery('#codigoAtivacao').val();");
 
@@ -107,16 +103,15 @@ public enum Operacao {
             int minutos = Integer.parseInt(horario[5]);
             Calendar dataServidor = Calendar.getInstance();
             dataServidor.set(ano, mes, dia, hora, minutos);
-            Log.i("horario do servidor: "+((Calendar)(dataServidor.clone())).getTime()); //#flag
+            LogEstacao.i("Horário do servidor: "+((Calendar)(dataServidor.clone())).getTime()); //#flag
             MainController.INSTANCE.criarThreadRelogio(dataServidor);
 
-            Log.atualizarDataLog();
         }
     },
     ATUALIZAR_RELOGIO_LOCAL("atualizarRelogioLocal"){
         @Override
         public void execute(String metodo, WebEngine engine){
-//            System.out.println("Recebendo requisi��o para atualizar hor�rio na p�gina");
+            LogAplicacao.i("Solicitando para atualizar relógio interno");
             if (MainController.INSTANCE.getThreadRelogio() != null) {
                 String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
                 try {
@@ -128,6 +123,7 @@ public enum Operacao {
 
                     if (CalendarUtils.temMesmoHorario(dataServidorAtual, dataRestartDiario)) {
                         try {
+                            LogAplicacao.i("Restart automático");
                             ScriptsBat.restartAplicacao();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -135,13 +131,10 @@ public enum Operacao {
 
                     }
 
-                    Log.atualizarDataLog();
                 } catch (FileNotFoundException ex) {
-						Log.e(ex);
-                    Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+						LogEstacao.e(ex.getMessage());
                 } catch (IOException ex) {
-						Log.e(ex);
-                    Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+						LogEstacao.e(ex.getMessage());
                 }
             }
         }
@@ -153,37 +146,36 @@ public enum Operacao {
             try {
                 MainController.INSTANCE.apagarRegistrosBatimentos();
             } catch (IOException ex) {
-					Log.e(ex);
-                Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+					LogEstacao.e(ex.getMessage());
             }
         }
     },
     NAOSINCRONIZADO("naosincronizado"){
         @Override
         public void execute(String metodo, WebEngine engine){
-            Log.i("Nao foi possivel sincronizar."+MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().getTime());//#flag
+            LogEstacao.i("Nao foi possivel sincronizar."+MainController.INSTANCE.getThreadRelogio().getDataServidorAtual().getTime());//#flag
         }
     },
     SINCRONIZANDO("Sincronizando"){
         @Override
         public void execute(String metodo, WebEngine engine) {
-            System.out.println("ALERT Sincronizando...");
+            LogEstacao.i("Sincronizando");
         }
     },
     SINCRONZIAR_AGORA("Sincronizar Agora"){
 
         public void execute(String metodo, WebEngine engine){
-            System.out.println("Sincronizando...");
+            LogEstacao.i("Sincronizando Agora");
             try {
                 boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
                 if (temConexaoComIntranet) {
                     MainController.INSTANCE.iniciarSincronizacao();
                 }
             } catch (FileNotFoundException ex) {
-				Log.e(ex);
+				LogEstacao.e(ex);
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-				Log.e(ex);
+				LogEstacao.e(ex);
                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -199,7 +191,7 @@ public enum Operacao {
                     @Override
                     public void handle(WorkerStateEvent workerStateEvent) {
                         if (!vivoOuMortoService.getValue()) {
-                            Log.e("VivoOuMortoService -> falhou");
+                            LogAplicacao.e("VivoOuMortoService -> falhou");
                         }
                     }
                 });

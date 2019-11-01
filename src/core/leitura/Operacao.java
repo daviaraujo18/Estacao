@@ -3,15 +3,13 @@ package core.leitura;
 import controllers.MainController;
 import core.DadosFrequentadores;
 import core.ValidarBatidaManualService;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
-import javafx.scene.web.WebEngine;
+import utils.LogEstacao;
 import utils.The;
 import utils.VerificaConexao;
 import view.BloqueioTela;
 
 import java.util.Map;
-import utils.Log;
+import utils.LogAplicacao;
 
 /**
  * Created by Danilo on 18/03/14.
@@ -29,7 +27,7 @@ public enum Operacao {
                 }
 
             }catch (Exception e){
-				Log.e(e);
+				LogAplicacao.e(e);
 //                e.printStackTrace();
 
             }
@@ -59,7 +57,7 @@ public enum Operacao {
             if (temConexaoComIntranet) {
                 String login = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val()");
                 String senha = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val()");
-                Log.i("Validação Login manual..." + login+" hora:"+MainController.INSTANCE.getThreadRelogio().getMomentoAtual() );
+                LogEstacao.i("Solicitação de Login manual: " +login+" hora: "+MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
                 ValidarBatidaManualService validarBatidaManualService = new ValidarBatidaManualService(login, senha);
 
                 validarBatidaManualService.setOnSucceeded(new VerificacaoDigitalHandler());
