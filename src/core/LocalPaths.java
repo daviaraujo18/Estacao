@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import utils.ArquivoUtils;
 import utils.LogAplicacao;
 
 /**
@@ -160,6 +162,37 @@ public class LocalPaths {
         }
       
 
-     } 
+     }
+
+    public static void createDirs() {
+        java.io.File data = new java.io.File(LocalPaths.PATH_DATA);
+        java.io.File log = new java.io.File(LocalPaths.PATH_LOG);
+
+        data.mkdir();
+        log.mkdirs();
+    }
+
+    public static void checarArquivos() throws IOException {
+        File dataDb = new File(LocalPaths.PATH_DATA,"data.db");
+
+        if (!dataDb.exists()) {
+            ArquivoUtils.saveFile("hash","");
+        }
+
+        File configFile = new File("config.properties");
+        if (!configFile.exists()) {
+            LogAplicacao.i("Criando config.properties");
+            StringBuilder sb = new StringBuilder("");
+            sb.append("app_name=ESTACAOPONTO\n" +
+                    "base_intranet_url=http://www.tjpi.jus.br/intranet\n" +
+                    "tela_cheia=true\n" +
+                    "bloqueio_tela=false\n" +
+                    "# 1-9\n" +
+                    "nivel_seguranca_leitor=8\n" +
+                    "baixa_foto=false");
+            ArquivoUtils.saveFile(configFile, sb.toString());
+        }
+
+    }
     
 }

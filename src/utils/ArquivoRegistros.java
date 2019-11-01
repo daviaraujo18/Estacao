@@ -93,7 +93,7 @@ public class ArquivoRegistros {
 		}
 		if (!conteudo.isEmpty()) {
 			conteudo = conteudo.substring(0, conteudo.length() - 1);
-			LogEstacao.i("\n -- Dados arquivo: " + conteudo);
+			LogEstacao.i("Dados arquivo: " + conteudo);
 		}
 		return conteudo;
 	}

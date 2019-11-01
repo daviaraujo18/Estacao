@@ -16,6 +16,12 @@ public class ArquivoUtils {
         writer.close();
     }
 
+    public static void saveFile(File arquivo, String conteudo) throws IOException {
+        FileOutputStream writer = new FileOutputStream(arquivo);
+        writer.write(conteudo.getBytes());
+        writer.close();
+    }
+
     public static String readFile(String arquivo) throws IOException {
         File file = new File(LocalPaths.PATH_DATA,arquivo);
         FileInputStream inputStream = new FileInputStream(file);
