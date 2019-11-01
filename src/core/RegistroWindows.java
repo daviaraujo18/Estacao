@@ -1,9 +1,12 @@
 package core;
 
+import utils.ArquivoUtils;
 import utils.CryptoUtils;
 import utils.LogAplicacao;
 import utils.WinRegistry;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -45,6 +48,8 @@ public class RegistroWindows {
 				WinRegistry.createKey(hkey, key);
 				WinRegistry.writeStringValue(hkey, key, "codigoAtivacao", codigoAtivacao);
 
+				LogAplicacao.i("Registro Salvo");
+
 				return true;
 
 			} catch (Exception e) {
@@ -56,24 +61,24 @@ public class RegistroWindows {
 		}
 	}
 
-	public static String getCodigoUnicoMaquina() {
+	public static String getCodigoUnicoMaquina() throws IOException {
 
-		if (OSVerifier.isWindows()) {
+		final String nomeArquivoCodigoUincoMaquina = "unico";
+		String codigoUnicoMaquina = "";
 
-			String hdSerial = jWMI.montaCodUnico();
-			if (hdSerial.isEmpty()) {
-				return "Erro na construcao do codigo de ativacao.";
-			}
-
-			String serialCriptografado = CryptoUtils.md5UB64(hdSerial);
-//			LogAplicacao.i("\n*HDSERIAL: " + hdSerial);
-//			LogAplicacao.i("\n**SERIAL CRIPTOGRAFADO: " + serialCriptografado);
-			return serialCriptografado;
+		File arquivoCodUnicoMaquina = new File(LocalPaths.PATH_DATA, nomeArquivoCodigoUincoMaquina);
+		if (!arquivoCodUnicoMaquina.exists() && !arquivoCodUnicoMaquina.isDirectory()) {
+			UUID uuid = UUID.randomUUID();
+			String random = uuid.toString();
+			codigoUnicoMaquina = random;
+			ArquivoUtils.saveFile(nomeArquivoCodigoUincoMaquina, codigoUnicoMaquina);
+			LogAplicacao.i("Gerando e salvando codigo unico maquina: " + codigoUnicoMaquina);
 		} else {
-			return "SistemaOperacionalNaoSuportado";
+			codigoUnicoMaquina = ArquivoUtils.readFile(nomeArquivoCodigoUincoMaquina);
 		}
-	}
 
+		return codigoUnicoMaquina;
+	}
 	/**
 	 * Metodo que gera uma string randomica de tamanho 6 que servirar como codigo de ativacao
 	 *
