@@ -126,6 +126,20 @@ public class EstacaoPonto extends Application{
         launch(args);
     }
 
+    static {
+        try {
+            System.loadLibrary("NBioBSP");
+            System.loadLibrary("NBioBSPCOM");
+            System.loadLibrary("NBioBSPJNI");
+            System.loadLibrary("ICE_JNIRegistry");
+        } catch (UnsatisfiedLinkError  e) {
+            System.out.println(e.getMessage());
+            System.out.println("Não foi possível encontrar as DLLs compatíveis com o sistema operacional");
+            System.exit(0);
+        }
+    }
+
+
 
 }
 
