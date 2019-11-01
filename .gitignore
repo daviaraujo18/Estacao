@@ -4,3 +4,4 @@ logs
 log
 *.iml
 *.bat
+config.properties
