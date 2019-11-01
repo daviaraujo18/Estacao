@@ -22,49 +22,64 @@ public enum Operacao {
 
         public void execute(final String metodo, final WebEngine engine){
 
-            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-            if (temConexaoComIntranet) {
-                LogAplicacao.i("Iniciando download dos frequentadores");
-                final DownloadFrequentadoresService downloadFrequentadoresService = new DownloadFrequentadoresService();
-                downloadFrequentadoresService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent workerStateEvent) {
-                        String dadosFrequentadoresBruto = downloadFrequentadoresService.getValue();
-                        DadosFrequentadores.getInstance().init(dadosFrequentadoresBruto);
-                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "removeLoading()");
+            final ConexaoIntranetService ci = new ConexaoIntranetService();
+            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    Long resposta = ci.getValue();
+                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+
+                        final DownloadFrequentadoresService downloadFrequentadoresService = new DownloadFrequentadoresService();
+                        downloadFrequentadoresService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                            @Override
+                            public void handle(WorkerStateEvent workerStateEvent) {
+                                String dadosFrequentadoresBruto = downloadFrequentadoresService.getValue();
+                                DadosFrequentadores.getInstance().init(dadosFrequentadoresBruto);
+                                The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "removeLoading()");
 
 //
-                        RECUPERAR_PREDIOS_PERMITIDOS.execute(metodo, engine);
+                                RECUPERAR_PREDIOS_PERMITIDOS.execute(metodo, engine);
+                            }
+                        });
+                        downloadFrequentadoresService.start();
                     }
-                });
-                downloadFrequentadoresService.start();
-            }
-
+                }
+            });
+            ci.start();
         }
+
+
 
         @Override
         public boolean verificacaoSegundoNivel(WebEngine engine) {
             return engine.getLocation().contains("presenca/PontoDePresenca");
         }
     },
-        RECUPERAR_PREDIOS_PERMITIDOS("prediosPermitidos"){
+    RECUPERAR_PREDIOS_PERMITIDOS("prediosPermitidos"){
 
         public void execute(String metodo, WebEngine engine){
-            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-            if (temConexaoComIntranet) {
-                LogAplicacao.i("Recuperando PrediosPermitidos");
-                final PrediosPermitidosService prediosPermitidosService = new PrediosPermitidosService();
-                prediosPermitidosService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent workerStateEvent) {
-                        String prediosPermitidosIDs = prediosPermitidosService.getValue();
-                        LogAplicacao.i("Predios permitidos: " + prediosPermitidosIDs);
-                        MainController.INSTANCE.prediosIds = prediosPermitidosIDs;
+            final ConexaoIntranetService ci = new ConexaoIntranetService();
+            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    Long resposta = ci.getValue();
+                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                        LogAplicacao.i("Recuperando PrediosPermitidos");
+                        final PrediosPermitidosService prediosPermitidosService = new PrediosPermitidosService();
+                        prediosPermitidosService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                            @Override
+                            public void handle(WorkerStateEvent workerStateEvent) {
+                                String prediosPermitidosIDs = prediosPermitidosService.getValue();
+                                LogAplicacao.i("Predios permitidos: " + prediosPermitidosIDs);
+                                MainController.INSTANCE.prediosIds = prediosPermitidosIDs;
 
+                            }
+                        });
+                        prediosPermitidosService.start();
                     }
-                });
-                prediosPermitidosService.start();
-            }
+                }
+            });
+            ci.start();
         }
 
     },
@@ -119,27 +134,20 @@ public enum Operacao {
             LogAplicacao.i("Solicitando para atualizar relógio interno");
             if (MainController.INSTANCE.getThreadRelogio() != null) {
                 String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
-                try {
+
 //                    System.out.println("Atualizando...");
-                    MainController.INSTANCE.atualizarHorario(horario);
+                MainController.INSTANCE.atualizarHorario(horario);
 
-                    Calendar dataRestartDiario = MainController.INSTANCE.getThreadRelogio().getDataRestartDiario();
-                    Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
+                Calendar dataRestartDiario = MainController.INSTANCE.getThreadRelogio().getDataRestartDiario();
+                Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
 
-                    if (CalendarUtils.temMesmoHorario(dataServidorAtual, dataRestartDiario)) {
-                        try {
-                            LogAplicacao.i("Restart automático");
-                            ScriptsBat.restartAplicacao();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
+                if (CalendarUtils.temMesmoHorario(dataServidorAtual, dataRestartDiario)) {
+                    try {
+                        LogAplicacao.i("Restart automático");
+                        ScriptsBat.restartAplicacao();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (FileNotFoundException ex) {
-						LogEstacao.e(ex.getMessage());
-                } catch (IOException ex) {
-						LogEstacao.e(ex.getMessage());
                 }
             }
         }
@@ -151,7 +159,7 @@ public enum Operacao {
             try {
                 MainController.INSTANCE.apagarRegistrosBatimentos();
             } catch (IOException ex) {
-					LogEstacao.e(ex.getMessage());
+                LogEstacao.e(ex.getMessage());
             }
         }
     },
@@ -171,58 +179,79 @@ public enum Operacao {
 
         public void execute(String metodo, WebEngine engine){
             LogEstacao.i("Sincronizando Agora");
-            try {
-                boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-                if (temConexaoComIntranet) {
-                    MainController.INSTANCE.iniciarSincronizacao();
+            final ConexaoIntranetService ci = new ConexaoIntranetService();
+            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    Long resposta = ci.getValue();
+                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+
+                        try {
+                            MainController.INSTANCE.iniciarSincronizacao();
+                        } catch (FileNotFoundException ex) {
+                            LogEstacao.e(ex);
+                            Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            LogEstacao.e(ex);
+                            Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
-            } catch (FileNotFoundException ex) {
-				LogEstacao.e(ex);
-                Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-				LogEstacao.e(ex);
-                Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            });
+            ci.start();
         }
     },
     VIVO_MORTO("deadOrAlive"){
 
         @Override
         public void execute(String metodo, WebEngine engine){
-            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-            if (temConexaoComIntranet) {
-                final VivoOuMortoService vivoOuMortoService = new VivoOuMortoService();
-                vivoOuMortoService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent workerStateEvent) {
-                        if (!vivoOuMortoService.getValue()) {
-                            LogAplicacao.e("VivoOuMortoService -> falhou");
-                        }
+            final ConexaoIntranetService ci = new ConexaoIntranetService();
+            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    Long resposta = ci.getValue();
+                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                        final VivoOuMortoService vivoOuMortoService = new VivoOuMortoService();
+                        vivoOuMortoService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                            @Override
+                            public void handle(WorkerStateEvent workerStateEvent) {
+                                if (!vivoOuMortoService.getValue()) {
+                                    LogAplicacao.e("VivoOuMortoService -> falhou");
+                                }
+                            }
+                        });
+                        vivoOuMortoService.start();
                     }
-                });
-                vivoOuMortoService.start();
-            }
+                }
+            });
+            ci.start();
         }
     },
 
     ATUALIZARVERSAOESTACAO("atualizarVersaoEstacao"){
 
         public void execute(String metodo, WebEngine engine){
+            final ConexaoIntranetService ci = new ConexaoIntranetService();
+            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    Long resposta = ci.getValue();
+                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                        final ChecarUltimaVersaoService checarUltimaVersaoService = new ChecarUltimaVersaoService();
+                        checarUltimaVersaoService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                            @Override
+                            public void handle(WorkerStateEvent workerStateEvent) {
+                                String ultimaVersaoNoServidor = checarUltimaVersaoService.getValue();
 
-            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-            if (temConexaoComIntranet) {
-                final ChecarUltimaVersaoService checarUltimaVersaoService = new ChecarUltimaVersaoService();
-                checarUltimaVersaoService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent workerStateEvent) {
-                        String ultimaVersaoNoServidor = checarUltimaVersaoService.getValue();
+                                AtualizarEstacao.verificaVersoes(ultimaVersaoNoServidor);
 
-                        AtualizarEstacao.verificaVersoes(ultimaVersaoNoServidor);
-
+                            }
+                        });
+                        checarUltimaVersaoService.start();
                     }
-                });
-                checarUltimaVersaoService.start();
-            }
+                }
+            });
+            ci.start();
         }
     },
     LOGINMANUAL("loginManual"){

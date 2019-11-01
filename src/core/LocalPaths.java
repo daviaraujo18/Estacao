@@ -17,20 +17,20 @@ import utils.LogAplicacao;
  * @author Daniel Leite TJPI
  */
 public class LocalPaths {
-    
-     public static String idePath, realPath; 
-    
-     public static final String MIOLO_PATH_REGISTROS = "Estacao\\";
-     public static final String MIOLO_PATH_IMGS = "Estacao\\imgs\\";
-     public static final String MIOLO_PATH_LOG = "Estacao\\log\\";
+
+    public static String idePath, realPath;
+
+    public static final String MIOLO_PATH_REGISTROS = "Estacao\\";
+    public static final String MIOLO_PATH_IMGS = "Estacao\\imgs\\";
+    public static final String MIOLO_PATH_LOG = "Estacao\\log\\";
 
     public static final String PATH_REGISTROS = getParticao()+"Estacao\\";
     public static final String PATH_CACHE = getParticao()+"Estacao\\imgs\\";
     public static final String PATH_LOG = getParticao()+"Estacao\\log\\";
     public static final String PATH_DATA = getParticao()+"Estacao\\data\\";
-     
-     public static String getParticao()
-     {
+
+    public static String getParticao()
+    {
         if (new File("C:\\"+MIOLO_PATH_REGISTROS).canWrite())
         {
             return "C:\\";
@@ -43,103 +43,103 @@ public class LocalPaths {
             boolean podeEscrever = path.canWrite();
             if (podeEscrever)
             {
-               return file.toString();
+                return file.toString();
             }
         }
         return null;
-     }
-     public static void getPath()
-     {
+    }
+    public static void getPath()
+    {
         //Apenas para pegar o path do EstacaoPonto.jar seja qual for o ambiente em execu��o
-         
-        File fileOrPathProjeto = new File("."); 
+
+        File fileOrPathProjeto = new File(".");
         try {
             realPath = fileOrPathProjeto.getCanonicalPath();
-            
-        if (realPath!= null)
-        {
-            if (realPath.contains("EstacaoPonto\\dist"))
-            //executando do .bat no netbeans    
+
+            if (realPath!= null)
             {
-                File jar = new File(realPath+"\\EstacaoPonto.jar");
-                if (jar.exists())
-                {
-                    LogAplicacao.i("Arquivo existente no NetBeans.");
-                }
-                
-            }
-            else
-            {
-                if (realPath.contains("EstacaoPonto\\build\\dist"))
-                //executando do .bat no intellij
+                if (realPath.contains("EstacaoPonto\\dist"))
+                //executando do .bat no netbeans
                 {
                     File jar = new File(realPath+"\\EstacaoPonto.jar");
                     if (jar.exists())
                     {
-                        LogAplicacao.i("Arquivo existente no Intellij.");
+                        LogAplicacao.i("Arquivo existente no NetBeans.");
                     }
-                    
+
                 }
                 else
                 {
-                    if (realPath.endsWith("EstacaoPonto"))
-                    //executando direto do netbeans ou no formato do ambiente de testes/produ��o.
+                    if (realPath.contains("EstacaoPonto\\build\\dist"))
+                    //executando do .bat no intellij
                     {
-                        File arquivosOuDiretorios[]= fileOrPathProjeto.listFiles();
-                        File pathInNetBeans = new File(realPath + "\\dist");
-                        File pathInIntellij = new File(realPath + "\\build");
-                        int indexNet = -1;
-                        int indexIntellij = -1;
-                        int cont = 0;
-                        for (File arquivo: arquivosOuDiretorios)
-                        {
-                            if (arquivo.getCanonicalPath().equals(pathInNetBeans.getCanonicalPath()))
-                            {
-                                indexNet = cont;
-                            }
-                            if (arquivo.getCanonicalPath().equals(pathInIntellij.getCanonicalPath()))
-                            {
-                                indexIntellij = cont;
-                            }
-                            cont++;
-                        }
-                        
-                        if (indexNet != -1)
-                        {
-                            //executando direto do Netbeans 
-                            realPath = arquivosOuDiretorios[indexNet].getCanonicalPath();
-                            LogAplicacao.i("Executando do netbeans.");
-                        }
-                        else
-                        {
-                            if(indexIntellij != -1)
-                            {
-                                //executando direto do Intellij
-                                realPath = arquivosOuDiretorios[indexIntellij].getCanonicalPath();
-                                realPath+= "\\dist";
-                                LogAplicacao.i("Executando do intellij.");
-                            }
-                        }
-
-                        LogAplicacao.i("RealPath: "+realPath);
                         File jar = new File(realPath+"\\EstacaoPonto.jar");
                         if (jar.exists())
                         {
-                            LogAplicacao.i("Arquivo existente.");
+                            LogAplicacao.i("Arquivo existente no Intellij.");
                         }
-                       
-                        
+
+                    }
+                    else
+                    {
+                        if (realPath.endsWith("EstacaoPonto"))
+                        //executando direto do netbeans ou no formato do ambiente de testes/produ��o.
+                        {
+                            File arquivosOuDiretorios[]= fileOrPathProjeto.listFiles();
+                            File pathInNetBeans = new File(realPath + "\\dist");
+                            File pathInIntellij = new File(realPath + "\\build");
+                            int indexNet = -1;
+                            int indexIntellij = -1;
+                            int cont = 0;
+                            for (File arquivo: arquivosOuDiretorios)
+                            {
+                                if (arquivo.getCanonicalPath().equals(pathInNetBeans.getCanonicalPath()))
+                                {
+                                    indexNet = cont;
+                                }
+                                if (arquivo.getCanonicalPath().equals(pathInIntellij.getCanonicalPath()))
+                                {
+                                    indexIntellij = cont;
+                                }
+                                cont++;
+                            }
+
+                            if (indexNet != -1)
+                            {
+                                //executando direto do Netbeans
+                                realPath = arquivosOuDiretorios[indexNet].getCanonicalPath();
+                                LogAplicacao.i("Executando do netbeans.");
+                            }
+                            else
+                            {
+                                if(indexIntellij != -1)
+                                {
+                                    //executando direto do Intellij
+                                    realPath = arquivosOuDiretorios[indexIntellij].getCanonicalPath();
+                                    realPath+= "\\dist";
+                                    LogAplicacao.i("Executando do intellij.");
+                                }
+                            }
+
+                            LogAplicacao.i("RealPath: "+realPath);
+                            File jar = new File(realPath+"\\EstacaoPonto.jar");
+                            if (jar.exists())
+                            {
+                                LogAplicacao.i("Arquivo existente.");
+                            }
+
+
+                        }
                     }
                 }
-            }
-            
-            
-        }
 
-//        File afile[] = file.listFiles(); 
-//        int i = 0; 
+
+            }
+
+//        File afile[] = file.listFiles();
+//        int i = 0;
 //        for (int j = afile.length; i < j; i++) {
-//            File arquivo = afile[i]; 
+//            File arquivo = afile[i];
 //             String realPath =null;
 //             try {
 //                 realPath = arquivo.getCanonicalPath();
@@ -149,20 +149,20 @@ public class LocalPaths {
 //             }
 //             if ((realPath!= null) && realPath.contains())
 //             {
-//                 
+//
 //             }
 
-            
+
 //            if (arquivo.get){
 //            }
 //        }
-} catch (IOException ex) {
-		LogAplicacao.e(ex);
+        } catch (IOException ex) {
+            LogAplicacao.e(ex);
             Logger.getLogger(LocalPaths.class.getName()).log(Level.SEVERE, null, ex);
         }
-      
 
-     }
+
+    }
 
     public static void createDirs() {
         java.io.File data = new java.io.File(LocalPaths.PATH_DATA);
@@ -179,20 +179,5 @@ public class LocalPaths {
             ArquivoUtils.saveFile("hash","");
         }
 
-        File configFile = new File("config.properties");
-        if (!configFile.exists()) {
-            LogAplicacao.i("Criando config.properties");
-            StringBuilder sb = new StringBuilder("");
-            sb.append("app_name=ESTACAOPONTO\n" +
-                    "base_intranet_url=http://www.tjpi.jus.br/intranet\n" +
-                    "tela_cheia=true\n" +
-                    "bloqueio_tela=false\n" +
-                    "# 1-9\n" +
-                    "nivel_seguranca_leitor=8\n" +
-                    "baixa_foto=false");
-            ArquivoUtils.saveFile(configFile, sb.toString());
-        }
-
     }
-    
 }

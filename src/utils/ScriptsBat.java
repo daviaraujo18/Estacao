@@ -4,6 +4,8 @@ package utils;
 import controllers.MainController;
 import core.LocalPaths;
 import javafx.application.Platform;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -66,29 +68,34 @@ public class ScriptsBat {
 
     public static void restartAplicacao(boolean forcar) throws IOException {
 
-        boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-        if (forcar) temConexaoComIntranet = true;
-        if (temConexaoComIntranet) {
-            Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
-                    null,
-                    new File(LocalPaths.realPath));
-            Platform.exit();
-            System.exit(0);
+        if (forcar) {
+            restartAplicacao();
         }
 
     }
 
     public static void restartAplicacao() throws IOException {
 
-        boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-        if (temConexaoComIntranet) {
-            Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
-                    null,
-                    new File(LocalPaths.realPath));
-            Platform.exit();
-            System.exit(0);
-        }
-
+        final ConexaoIntranetService ci = new ConexaoIntranetService();
+        ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                Long resposta = ci.getValue();
+                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                    try {
+                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
+                                null,
+                                new File(LocalPaths.realPath));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        Platform.exit();
+                        System.exit(0);
+                    }
+                }
+            }
+        });
+        ci.start();
     }
 
     public static void updateAplicacao() throws IOException {

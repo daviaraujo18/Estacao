@@ -29,10 +29,10 @@ public class EstacaoPonto extends Application{
     private Stage stage;
     private static EstacaoPonto INSTANCE;
     public final static String versao = "0.1.15";
-//   public final static String ambiente = "desenvolvimento"; //local
+    //   public final static String ambiente = "desenvolvimento"; //local
 //    public final static String ambiente = "teste"; //3.6 Descomentar para apontar para a base de teste e modificar o config.properties
     public final static String ambiente = "producao"; //0.6
-    
+
     public EstacaoPonto(){
         super();
         this.INSTANCE = this;
@@ -111,7 +111,7 @@ public class EstacaoPonto extends Application{
         // -40 por causa da barra do Menu iniciar do windows
         stage.setHeight(bounds.getHeight()-40);
         // Setando tela cheia ON
-        
+
         stage.setFullScreen(Configuracoes.tela_cheia.getBooleanValue());
 
         BloqueioTela.getInstance().addClickTarget(root, MainController.INSTANCE.tela.webView);
@@ -143,7 +143,6 @@ public class EstacaoPonto extends Application{
             System.exit(0);
         }
     }
-
 
 
 }

@@ -1,13 +1,12 @@
 package core.leitura;
 
 
-import utils.LogAplicacao;
-
 import com.nitgen.SDK.BSP.NBioBSPJNI;
 import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch;
 import com.nitgen.SDK.BSP.NBioBSPJNI.WINDOW_OPTION;
-
 import core.Configuracoes;
+import core.LocalPaths;
+import utils.LogAplicacao;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -54,8 +53,6 @@ public class LeitorDigital {
     public void addDigitalToIndexSearch(Map<String,String> mapaIdHashFrequentadores) {
         LogAplicacao.i("Adicionando dados ao IndexSearch");
 
-        double inicioMontagem = System.currentTimeMillis();
-
         abrirLeitor();
 
         NBioBSPJNI.IndexSearch.SAMPLE_INFO sampleInfo = indexSearchEngine.new SAMPLE_INFO();
@@ -75,13 +72,36 @@ public class LeitorDigital {
 
         fecharLeitor();
 
+        saveDB();
         LogAplicacao.i("Finalizado adição ao IndexSearch");
 
     }
 
+    public void saveDB() {
+        // Salvando dados no arquivo
+        LogAplicacao.i("Salvando dados no arquivo data.db");
+        int nRet = indexSearchEngine.SaveDB("C:\\Estacao\\data\\data.db");
+        if (nRet == NBioBSPJNI.ERROR.NBioAPIERROR_NONE) {
+            LogAplicacao.i("Salvo");
+        } else {
+            LogAplicacao.e("NBioAPIERROR: "+nRet);
+        }
+    }
+
+    public void loadDB() {
+        // Salvando dados no arquivo
+        LogAplicacao.i("Carregando dados do data.db");
+        int nRet = indexSearchEngine.LoadDB(LocalPaths.PATH_DATA+"data.db");
+        if (nRet == NBioBSPJNI.ERROR.NBioAPIERROR_NONE) {
+            LogAplicacao.i("Carregado");
+        } else {
+            LogAplicacao.e("NBioAPIERROR: "+nRet);
+        }
+    }
+
     public int searchDigitalOnIndexSearchEngine(String hashDigital) throws Exception {
 
-		 abrirLeitor();
+        abrirLeitor();
 
         NBioBSPJNI.IndexSearch.FP_INFO fpInfo = indexSearchEngine.new FP_INFO();
 
@@ -166,39 +186,39 @@ public class LeitorDigital {
      * abre conexao com o leitor de digital
      */
     public void abrirLeitor() {
-		if(!ativo){
-		
-			bsp = new NBioBSPJNI();
-			// Setar timeout do leitorDigital
-	//		initInfo = bsp.new INIT_INFO_0();
-	//		initInfo.DefaultTimeout = 2000;
-	//		bsp.SetInitInfo(initInfo);
+        if(!ativo){
 
-			deviceEnumInfo = bsp.new DEVICE_ENUM_INFO();
-			winOption = bsp.new WINDOW_OPTION();
+            bsp = new NBioBSPJNI();
+            // Setar timeout do leitorDigital
+            //		initInfo = bsp.new INIT_INFO_0();
+            //		initInfo.DefaultTimeout = 2000;
+            //		bsp.SetInitInfo(initInfo);
 
-			winOption.WindowStyle = NBioBSPJNI.WINDOW_STYLE.INVISIBLE;
-			//winOption.WindowStyle |= NBioBSPJNI.WINDOW_STYLE.NO_WELCOME;
+            deviceEnumInfo = bsp.new DEVICE_ENUM_INFO();
+            winOption = bsp.new WINDOW_OPTION();
 
-			// Enumerate device
-			bsp.EnumerateDevice(deviceEnumInfo);
+            winOption.WindowStyle = NBioBSPJNI.WINDOW_STYLE.INVISIBLE;
+            //winOption.WindowStyle |= NBioBSPJNI.WINDOW_STYLE.NO_WELCOME;
 
-			//bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
-			ativo = true;
-			bsp.OpenDevice();
-		}
+            // Enumerate device
+            bsp.EnumerateDevice(deviceEnumInfo);
+
+            //bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
+            ativo = true;
+            bsp.OpenDevice();
+        }
     }
 
     public void fecharLeitor() {
-		if(ativo){
-			bsp.CloseDevice();
-			deviceEnumInfo = null;
-			ativo = false;
-		}
+        if(ativo){
+            bsp.CloseDevice();
+            deviceEnumInfo = null;
+            ativo = false;
+        }
     }
 
     public boolean verificaCompatibilidadeDigitais(String digital, String digitalCapturada) {
-	
+
         abrirLeitor();
 
         NBioBSPJNI.INPUT_FIR firDigital = bsp.new INPUT_FIR();
@@ -253,7 +273,7 @@ public class LeitorDigital {
             }
         }
         fecharLeitor();
-        			LogAplicacao.e("Erro: "+errorName);
+        LogAplicacao.e("NBioJNI Error: "+errorName);
     }
 
     public boolean temDedo()

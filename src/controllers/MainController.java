@@ -5,6 +5,8 @@ import async.ThreadRelogio;
 import core.RegistroWindows;
 import core.leitura.LeitorDigital;
 import javafx.concurrent.Worker;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,9 +18,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import utils.ArquivoRegistros;
+import utils.ConexaoIntranetService;
 import utils.LogAplicacao;
 import utils.The;
-import utils.VerificaConexao;
 import view.TelaPonto;
 
 import java.io.FileNotFoundException;
@@ -97,7 +99,7 @@ public class MainController implements Initializable {
             The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
             The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('success','Digitais identificadas!');");
         } catch (Exception ex) {
-			LogAplicacao.e(ex.getMessage());
+            LogAplicacao.e(ex.getMessage());
 //            The.inserirJavascript(webEngine, "changeInfoDigital('error','" + ex.getMessage() + "');");
         }
     }
@@ -126,7 +128,7 @@ public class MainController implements Initializable {
     /*
      * Cria a thread que controla o relogio da estacao
      * @param Calendar - data do servidor ao iniciar a estacao
-     * 
+     *
      */
     public void criarThreadRelogio(Calendar dtServidor) {
         threadRelogio = new ThreadRelogio(dtServidor);
@@ -137,14 +139,25 @@ public class MainController implements Initializable {
      * Atualiza o horario atual e sincroniza os registros de ponto, caso tenha chegado o momento.
      * @param String - Horario no formato HH:MM
      */
-    public void atualizarHorario(String horario) throws IOException{
+    public void atualizarHorario(String horario) {
 //        LogAplicacao.i("Inicia atualizacao de horario: "+horario);//#flag
         //String minutos = horario.split(":")[1];
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
-            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-            if (temConexaoComIntranet) {
-                iniciarSincronizacao();
-            }
+            final ConexaoIntranetService ci = new ConexaoIntranetService();
+            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    Long resposta = ci.getValue();
+                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                        try {
+                            iniciarSincronizacao();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+            ci.start();
         }
         The.inserirJavascript(this.tela.getWebEngine(), "atualizaRelogioLocal('" + horario + "')");
     }
@@ -161,7 +174,7 @@ public class MainController implements Initializable {
      * Apaga todos os registros do arquivo
      */
     public void apagarRegistrosBatimentos() throws IOException {
-         LogAplicacao.i("Apagando registro de arquivos.");//#flag
+        LogAplicacao.i("Apagando registro de arquivos.");//#flag
         ArquivoRegistros.limparArquivo();
 //        threadRelogio.desativarSincronizacao();
     }
@@ -171,20 +184,20 @@ public class MainController implements Initializable {
         String dados = ArquivoRegistros.lerArquivoSincronizado();
         if(!dados.isEmpty()){
             LogAplicacao.i("Iniciando sincronizacao. Data: "+threadRelogio.getDataServidorAtual().getTime());
-			The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
-		}
+            The.inserirJavascript(this.tela.getWebEngine(), "sincronizaPonto('" + dados + "','"+RegistroWindows.getCodigoAtivacaoRegistro()+"')");
+        }
         threadRelogio.setUltimaSincronizacao((Calendar) threadRelogio.getDataServidorAtual().clone());
         //threadRelogio.desativarSincronizacao();
     }
     public void addUploadFile(int size){
         String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        
+
         The.inserirJavascript(this.tela.getWebEngine(), "adicionaUpload('"+codAtivacao+"','"+nomeLog+"',"+size+")");
     }
-    
+
     public void doUploadParte()
     {   String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-        
+
         for (int i = 0; i<arr.length;i++)
         {
             String parte =  arr[i].replace("\\", "\\\\"); //  replace \ por \\

@@ -1,9 +1,6 @@
 package core;
 
-import utils.ArquivoUtils;
-import utils.CryptoUtils;
-import utils.LogAplicacao;
-import utils.WinRegistry;
+import utils.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,12 +11,12 @@ import java.util.UUID;
  */
 public class RegistroWindows {
 	public static final String KEY_REGISTRO = "SOFTWARE\\TJPIEstacaoPonto";
-	
+
 	public static String getCodigoAtivacaoRegistro() {
 
 		if (OSVerifier.isWindows()) {
 			try {
-  
+
 				String value = WinRegistry.readString(
 						WinRegistry.HKEY_CURRENT_USER, //HKEY
 						KEY_REGISTRO, //Key
@@ -42,7 +39,7 @@ public class RegistroWindows {
 	public static boolean registrarCodigoAtivacao(String codigoAtivacao) {
 		if (OSVerifier.isWindows()) {
 			try {
-					
+
 				int hkey = WinRegistry.HKEY_CURRENT_USER;
 				String key = KEY_REGISTRO;
 				WinRegistry.createKey(hkey, key);
@@ -72,13 +69,28 @@ public class RegistroWindows {
 			String random = uuid.toString();
 			codigoUnicoMaquina = random;
 			ArquivoUtils.saveFile(nomeArquivoCodigoUincoMaquina, codigoUnicoMaquina);
-			LogAplicacao.i("Gerando e salvando codigo unico maquina: " + codigoUnicoMaquina);
+			LogAplicacao.i("Gerando e salvando codigo unico maquina: "+codigoUnicoMaquina);
 		} else {
 			codigoUnicoMaquina = ArquivoUtils.readFile(nomeArquivoCodigoUincoMaquina);
 		}
 
 		return codigoUnicoMaquina;
+//		if (OSVerifier.isWindows()) {
+//
+//			String hdSerial = jWMI.montaCodUnico();
+//			if (hdSerial.isEmpty()) {
+//				return "Erro na construcao do codigo de ativacao.";
+//			}
+//
+//			String serialCriptografado = CryptoUtils.md5UB64(hdSerial);
+////			LogAplicacao.i("\n*HDSERIAL: " + hdSerial);
+////			LogAplicacao.i("\n**SERIAL CRIPTOGRAFADO: " + serialCriptografado);
+//			return serialCriptografado;
+//		} else {
+//			return "SistemaOperacionalNaoSuportado";
+//		}
 	}
+
 	/**
 	 * Metodo que gera uma string randomica de tamanho 6 que servirar como codigo de ativacao
 	 *

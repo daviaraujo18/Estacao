@@ -2,16 +2,21 @@ package core;
 
 
 import controllers.MainController;
+
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import utils.ArquivoUtils;
 import utils.LogAplicacao;
-import utils.LogEstacao;
 import utils.The;
 import view.TelaPonto;
+
+import static utils.ArquivoUtils.readMapOnFile;
+import static utils.ArquivoUtils.saveMapOnFile;
 
 /**
  * Created by Danilo on 10/02/14.
@@ -21,6 +26,7 @@ public class DadosFrequentadores  {
     private static DadosFrequentadores INSTANCE;
 
     private String[] arrayFrequentadores;
+    private HashMap<String, String> hashFrequentadores;
     private Map<Integer,String> frequentadores;
     private Map<Integer,String> administradores;
     private Map<Integer,String> mapaIdFotosFrequentadores;
@@ -37,51 +43,94 @@ public class DadosFrequentadores  {
 
     }
 
-    public void init(String data){
+    public void init(final String data){
         LogAplicacao.i("Estruturando dados dos frequentadores");
         this.data = data;
+
+        /**
+         * criar mapFrequentadores
+         * criar mapAdminsitradores
+         * criar mapFotos
+         */
+        if (data == null || data.isEmpty()) {
+            try {
+                frequentadores = readMapOnFile("f");
+                administradores = readMapOnFile("a");
+                mapaIdFotosFrequentadores = readMapOnFile("fotos");
+            } catch (Exception e) {
+                LogAplicacao.e("Nao foi possivel carregar dados offline");
+                // remover hash
+                File file = new File(LocalPaths.PATH_DATA,"hash");
+
+                if(file.delete()){
+                    LogAplicacao.i("Removido hash file");
+                }else{
+                    LogAplicacao.e("Não consegui remover hash");
+                }
+            }
+
+        } else {
+
+            setArrayFrequentadores(((String) DadosFrequentadores.getInstance().getData()).split("'"));
+
+            String[] frequentadores = getArrayFrequentadores();
+
+            hashFrequentadores = new HashMap();
+            setFrequentadores(new HashMap<Integer, String>());
+            setAdministradores(new HashMap<Integer, String>());
+            setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
+            int total = 0;
+            if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
+                for (int i = 0; i < frequentadores.length; i++) {
+                    // id;matricula;nome;digital;seEhAdminDaEstacao;sexo;foto
+                    String[] dados = frequentadores[i].trim().split(";");
+                    String id = dados[0];
+                    String hashDigital = dados[3];
+                    String isAdmin = dados[5];
+
+
+                    String foto = dados[4];
+                    String sexo = dados[6];
+
+                    //matricula, nome, digital
+//                        String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6];// matricula;nome;foto;sexo
+                    String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6] + ";" + dados[7] + ";";// matricula;nome;foto;sexo;localTrabalho;
+                    getFrequentadores().put(Integer.parseInt(id), dadosF);
+                    if (isAdmin.equals("true")) {
+                        getAdministradores().put(Integer.parseInt(id), dadosF);
+                    }
+                    hashFrequentadores.put(id, hashDigital);
+                    getmapaIdFotosFrequentadores().put(Integer.parseInt(id), foto);
+                    total = i;
+                }
+            }
+
+
+            try {
+                ArquivoUtils.saveMapOnFile(getFrequentadores(), "f");
+//                saveMapOnFile(getAdministradores(), LocalPaths.PATH_DATA + "a");
+                ArquivoUtils.saveMapOnFile(new HashMap<Integer, String>(), "a");
+                ArquivoUtils.saveMapOnFile(getmapaIdFotosFrequentadores(), "fotos");
+            } catch (Exception e) {
+                LogAplicacao.e("Não foi possível salvar os dados");
+            }
+            LogAplicacao.i("Finalizado. Total de frequentadores: " + total);
+        }
+
+
         Task task;
         task = new Task<Void>() {
 
             @Override
             protected Void call() throws Exception {
-                setArrayFrequentadores(((String) DadosFrequentadores.getInstance().getData()).split("'"));
-
-                String[] frequentadores = getArrayFrequentadores();
-
-                HashMap<String, String> hashFrequentadores = new HashMap();
-                setFrequentadores(new HashMap<Integer, String>());
-                setAdministradores(new HashMap<Integer, String>());
-                setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
-                int total=0;
-                if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
-                    for (int i = 0; i < frequentadores.length; i++) {
-                        // id;matricula;nome;digital;seEhAdminDaEstacao;sexo;foto
-                        String[] dados = frequentadores[i].trim().split(";");
-                        String id = dados[0];
-                        String hashDigital = dados[3];
-                        String isAdmin = dados[5];
-
-
-                        String foto = dados[4];
-                        String sexo = dados[6];
-                        
-                        //matricula, nome, digital
-//                        String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6];// matricula;nome;foto;sexo
-                        String dadosF = dados[1] + ";" + dados[2] + ";" + dados[4] + ";" + dados[6]+";"+dados[7]+";";// matricula;nome;foto;sexo;localTrabalho;
-                        getFrequentadores().put(Integer.parseInt(id), dadosF);
-                        if(isAdmin.equals("true")){
-                            getAdministradores().put(Integer.parseInt(id),dadosF);
-                        }
-                        hashFrequentadores.put(id, hashDigital);
-                        getmapaIdFotosFrequentadores().put(Integer.parseInt(id),foto);
-                        total = i;
-                    }
-                }
-                LogAplicacao.i("Finalizado. Total de frequentadores: "+total);
                 // Adiciona os dados ao NBio_SearchIndex
                 try {
-                    MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(hashFrequentadores);
+                    if (data == null || data.isEmpty()) {
+                        LogAplicacao.i("data: " +data);
+                        MainController.INSTANCE.getLeitorDigital().loadDB();
+                    } else {
+                        MainController.INSTANCE.getLeitorDigital().addDigitalToIndexSearch(hashFrequentadores);
+                    }
                 } catch (Exception e) {
                     LogAplicacao.e(e.getMessage());
                     LogAplicacao.e("Não foi possível adicionar dados ao IndexSearch");
@@ -90,13 +139,13 @@ public class DadosFrequentadores  {
             }
         };
 
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
             @Override
             public void handle(WorkerStateEvent t) {
                 CacheDownloadService downloads = new CacheDownloadService(getmapaIdFotosFrequentadores());
-                Thread novo=new Thread(downloads);
-                downloads.setOnSucceeded(new EventHandler<WorkerStateEvent>(){
+                Thread novo = new Thread(downloads);
+                downloads.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
                     @Override
                     public void handle(WorkerStateEvent t) {
@@ -128,17 +177,17 @@ public class DadosFrequentadores  {
 
 
     /*
- * Recupera o array com as informacoes dos frequentadores
- * @return String[] - array com as informacoes dos frequentadores ("id;matricula;nome;digital;foto")
- */
+     * Recupera o array com as informacoes dos frequentadores
+     * @return String[] - array com as informacoes dos frequentadores ("id;matricula;nome;digital;foto")
+     */
     public String[] getArrayFrequentadores() {
         return arrayFrequentadores;
     }
 
     /*
- * Altera o array com os dados dos frequemtadores ("id;matricula;nome;digital;foto")
- * @param String[] - array com os dados dos frequentadores
- */
+     * Altera o array com os dados dos frequemtadores ("id;matricula;nome;digital;foto")
+     * @param String[] - array com os dados dos frequentadores
+     */
     public void setArrayFrequentadores(String[] arrayFrequentadores) {
         this.arrayFrequentadores = arrayFrequentadores;
     }
@@ -176,4 +225,5 @@ public class DadosFrequentadores  {
     public String getData(){
         return data;
     }
+
 }

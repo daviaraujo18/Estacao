@@ -18,9 +18,8 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import listeners.ChangeUrlListener;
 import listeners.OnAlertListener;
-import utils.LogAplicacao;
 import utils.The;
-import utils.VerificaConexao;
+import utils.ConexaoIntranetService;
 
 /**
  * Created by Danilo on 07/02/14.
@@ -62,7 +61,7 @@ public class TelaPonto {
         webEngine = webView.getEngine();
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
         webEngine.setOnAlert(new OnAlertListener());
-            // mostrar uma mensagem informando que est� sem permiss�o de escrita
+        // mostrar uma mensagem informando que est� sem permiss�o de escrita
         if (LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty())
         {
             this.labelSemConexao.setText("Sem permissão de escrita.");
@@ -70,9 +69,8 @@ public class TelaPonto {
             this.labelSemConexao.setLayoutX(380);
             this.labelSemConexao.setVisible(true);
             return true;
-        } 
-        
-        // mostrar uma mensagem informando que est� sem conex�o
+        }
+
         Task task = new Task() {
 
             @Override
@@ -80,19 +78,16 @@ public class TelaPonto {
                 int numeroTentativa = 1;
                 while (semConexao){
 
-                    boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-
-                    semConexao = !temConexaoComIntranet;
+                    semConexao = !ConexaoIntranetService.isConectado();
                     if (semConexao) {
 
                         final int finalNumeroTentativa = numeroTentativa;
                         Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    LogAplicacao.w("Não consigo conexão com intranet");
-                                    labelSemConexao.setText("Tentando conectar com INTRANET #" + finalNumeroTentativa);
-                                }
-                            });
+                            @Override
+                            public void run() {
+                                labelSemConexao.setText("Tentando conectar com INTRANET #" + finalNumeroTentativa);
+                            }
+                        });
 
                         labelSemConexao.setVisible(true);
 //                        Thread.sleep(1000);
@@ -108,9 +103,9 @@ public class TelaPonto {
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>()
         {
             @Override
-            public void handle(WorkerStateEvent t) 
+            public void handle(WorkerStateEvent t)
             {
-                
+
                 webEngine.load(IntranetURLs.INICIAR_PONTO);
                 imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
@@ -126,7 +121,7 @@ public class TelaPonto {
         });
         Thread nova = new Thread(task);
         nova.start();
-        
+
         return false;
     }
 
@@ -148,7 +143,7 @@ public class TelaPonto {
     public Button getBotaoCadastrarDigital() {
         return botaoCadastrarDigital;
     }
-    
+
     public ProgressBar getProgressBar() {
         return progressBar;
     }
@@ -171,5 +166,5 @@ public class TelaPonto {
     public void unlock(){
         The.inserirJavascript(this.webEngine, "unlock()");
     }
-    
+
 }
