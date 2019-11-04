@@ -82,6 +82,14 @@ public enum EventoLeitura {
             tela.sound.playError();
         }
     },
+    SEM_CONEXAO{
+        @Override
+        public void after(TelaPonto tela) {
+
+            LogEstacao.w("Não foi possível conexão com Intranet - timeout");
+            tela.sound.playError();
+        }
+    },
     ESTACAO_SEM_PERMISSAO_PARA_BATIDA_MANUAL{
         @Override
         public void after(TelaPonto tela) {

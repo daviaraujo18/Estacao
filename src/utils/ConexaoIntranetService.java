@@ -3,8 +3,6 @@ package utils;
 import core.Configuracoes;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,10 +11,11 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
+import static utils.Constantes.HTTP_MAX_TIMEOUT;
+
 public class ConexaoIntranetService extends Service<Long> {
 
     public static final Long NAO_CONECTADO = -1L;
-    public static final int MAX_TIMEOUT = 10000; // 10seg
 
     @Override
     protected Task<Long> createTask() {
@@ -25,27 +24,13 @@ public class ConexaoIntranetService extends Service<Long> {
             @Override
             protected Long call() {
                 try {
-                    LogAplicacao.i("Checando conexao com Intranet...");
-                    String urlString = Configuracoes.base_intranet_url.get() + "/presenca/CarregaRelogioAtual";
 
-                    URL url = new URL(urlString);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setConnectTimeout(MAX_TIMEOUT);
-                    conn.setReadTimeout(MAX_TIMEOUT);
-                    conn.setRequestMethod("GET");
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    return horarioIntranetInMillis();
 
-
-                    String line = rd.readLine();
-                    rd.close();
-
-                    long horarioEmMillis = Long.parseLong(line);
-                    LogAplicacao.i(horarioEmMillis);
-                    return horarioEmMillis;
                 } catch (SocketTimeoutException e) {
-                    LogAplicacao.e("Não foi possível comunicação com Intranet");
+                    LogAplicacao.e("Não foi possível comunicação com Intranet - TIMEOUT");
                     return NAO_CONECTADO;
-                } catch (IOException e) {
+                } catch (Exception e) {
                     LogAplicacao.e("Não foi possível comunicação com Intranet");
                     return NAO_CONECTADO;
                 }
@@ -53,29 +38,37 @@ public class ConexaoIntranetService extends Service<Long> {
         };
     }
 
+    private static Long horarioIntranetInMillis() throws Exception {
+        LogAplicacao.i("Checando conexao com Intranet...");
+        String urlString = Configuracoes.base_intranet_url.get() + "/presenca/CarregaRelogioAtual";
+
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(HTTP_MAX_TIMEOUT);
+        conn.setReadTimeout(HTTP_MAX_TIMEOUT);
+        conn.setRequestMethod("GET");
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+
+        String line = rd.readLine();
+        rd.close();
+
+        long horarioEmMillis = Long.parseLong(line);
+        LogAplicacao.i(horarioEmMillis);
+        return horarioEmMillis;
+    }
+
     public static boolean isConectado() {
+        LogAplicacao.i("isConectado()");
         try {
-            LogAplicacao.i("Checando conexao com Intranet...");
-            String urlString = Configuracoes.base_intranet_url.get() + "/presenca/CarregaRelogioAtual";
 
-            URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(MAX_TIMEOUT);
-            conn.setReadTimeout(MAX_TIMEOUT);
-            conn.setRequestMethod("GET");
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            horarioIntranetInMillis();
 
-
-            String line = rd.readLine();
-            rd.close();
-
-            long horarioEmMillis = Long.parseLong(line);
-            LogAplicacao.i(horarioEmMillis);
             return true;
-        } catch (SocketTimeoutException e) {
-            LogAplicacao.e("Não foi possível comunicação com Intranet");
+        } catch(SocketTimeoutException e) {
+            LogAplicacao.e("Não foi possível comunicação com Intranet - TIMEOUT");
             return false;
-        } catch (IOException e) {
+        } catch (Exception e) {
             LogAplicacao.e("Não foi possível comunicação com Intranet");
             return false;
         }

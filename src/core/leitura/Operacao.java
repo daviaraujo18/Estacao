@@ -3,13 +3,10 @@ package core.leitura;
 import controllers.MainController;
 import core.DadosFrequentadores;
 import core.ValidarBatidaManualService;
-import utils.LogEstacao;
-import utils.The;
-import utils.VerificaConexao;
+import utils.*;
 import view.BloqueioTela;
 
 import java.util.Map;
-import utils.LogAplicacao;
 
 /**
  * Created by Danilo on 18/03/14.
@@ -53,8 +50,7 @@ public enum Operacao {
         public void execute(String result) {
             EventoLeitura.LEITURA_EM_ANALISE.process(MainController.INSTANCE.tela, null);
 
-            boolean temConexaoComIntranet = VerificaConexao.verificaConexao() != -1;
-            if (temConexaoComIntranet) {
+            if (ConexaoIntranetService.isConectado()) {
                 String login = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val()");
                 String senha = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val()");
                 LogEstacao.i("Solicitação de Login manual: " +login+" hora: "+MainController.INSTANCE.getThreadRelogio().getMomentoAtual());

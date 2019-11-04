@@ -11,7 +11,10 @@ import utils.LogEstacao;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+
+import static utils.Constantes.HTTP_MAX_TIMEOUT;
 
 public class ValidarBatidaManualService extends Service<Leitura> {
 
@@ -36,6 +39,8 @@ public class ValidarBatidaManualService extends Service<Leitura> {
                     //add reuqest header
                     con.setRequestMethod("GET");
                     con.setRequestProperty("User-Agent", "JavaFX");
+                    con.setConnectTimeout(HTTP_MAX_TIMEOUT);
+                    con.setReadTimeout(HTTP_MAX_TIMEOUT);
 
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(con.getInputStream(), "UTF-8"));
@@ -53,6 +58,9 @@ public class ValidarBatidaManualService extends Service<Leitura> {
                     }
 
                     return new Leitura(EventoLeitura.DIGITAL_RECONHECIDA, null, String.valueOf(dataFixed), MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
+                } catch(SocketTimeoutException e) {
+                    EventoLeitura evento = EventoLeitura.SEM_CONEXAO;
+                    return new Leitura(evento, null, null, MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
                 } catch (Exception e) {
                     EventoLeitura evento = null;
                     if(e.getMessage().contains("USUARIO_SEM_PERMISSAO_MANUAL")) {

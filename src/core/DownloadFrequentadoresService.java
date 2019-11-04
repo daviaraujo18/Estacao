@@ -9,7 +9,10 @@ import utils.ScriptsBat;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+
+import static utils.Constantes.HTTP_MAX_TIMEOUT;
 
 public class DownloadFrequentadoresService extends Service<String> {
 
@@ -32,10 +35,16 @@ public class DownloadFrequentadoresService extends Service<String> {
                           */
                         return null;
                     }
-                } catch (Exception e) {
+                } catch(SocketTimeoutException e) {
+                    LogAplicacao.e(e.getMessage());
+                    LogAplicacao.e("Erro ao baixar digitais, reiniciando aplicacao... - TIMEOUT");
+                    ScriptsBat.restartAplicacao(true);
+                    Platform.exit();
+                    System.exit(0);
+                    return "";
+                } catch(Exception e) {
                     LogAplicacao.e(e.getMessage());
                     LogAplicacao.e("Erro ao baixar digitais, reiniciando aplicacao...");
-
                     ScriptsBat.restartAplicacao(true);
                     Platform.exit();
                     System.exit(0);
@@ -51,6 +60,9 @@ public class DownloadFrequentadoresService extends Service<String> {
                 //add reuqest header
                 con.setRequestMethod("GET");
                 con.setRequestProperty("User-Agent", "JavaFX");
+
+                con.setConnectTimeout(HTTP_MAX_TIMEOUT);
+                con.setReadTimeout(HTTP_MAX_TIMEOUT);
 
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(con.getInputStream(), "UTF-8"));
