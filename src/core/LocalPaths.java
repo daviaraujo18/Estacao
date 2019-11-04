@@ -179,5 +179,20 @@ public class LocalPaths {
             ArquivoUtils.saveFile("hash","");
         }
 
+        File configFile = new File("config.properties");
+        if (!configFile.exists()) {
+            LogAplicacao.i("Criando config.properties");
+            StringBuilder sb = new StringBuilder("");
+            sb.append("app_name=ESTACAOPONTO\n" +
+                    "base_intranet_url=http://www.tjpi.jus.br/intranet\n" +
+                    "tela_cheia=true\n" +
+                    "bloqueio_tela=false\n" +
+                    "# 1-9\n" +
+                    "nivel_seguranca_leitor=8\n" +
+                    "baixa_foto=false");
+            ArquivoUtils.saveFile(configFile, sb.toString());
+        }
+
     }
+
 }
