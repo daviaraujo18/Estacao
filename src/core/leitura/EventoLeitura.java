@@ -82,7 +82,7 @@ public enum EventoLeitura {
             tela.sound.playError();
         }
     },
-    SEM_CONEXAO{
+    SEM_CONEXAO_TIMEOUT{
         @Override
         public void after(TelaPonto tela) {
 

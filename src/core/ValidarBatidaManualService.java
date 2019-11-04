@@ -59,7 +59,7 @@ public class ValidarBatidaManualService extends Service<Leitura> {
 
                     return new Leitura(EventoLeitura.DIGITAL_RECONHECIDA, null, String.valueOf(dataFixed), MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
                 } catch(SocketTimeoutException e) {
-                    EventoLeitura evento = EventoLeitura.SEM_CONEXAO;
+                    EventoLeitura evento = EventoLeitura.SEM_CONEXAO_TIMEOUT;
                     return new Leitura(evento, null, null, MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
                 } catch (Exception e) {
                     EventoLeitura evento = null;

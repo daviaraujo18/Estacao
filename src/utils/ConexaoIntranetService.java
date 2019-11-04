@@ -59,7 +59,6 @@ public class ConexaoIntranetService extends Service<Long> {
     }
 
     public static boolean isConectado() {
-        LogAplicacao.i("isConectado()");
         try {
 
             horarioIntranetInMillis();

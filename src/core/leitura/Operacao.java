@@ -3,6 +3,8 @@ package core.leitura;
 import controllers.MainController;
 import core.DadosFrequentadores;
 import core.ValidarBatidaManualService;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import utils.*;
 import view.BloqueioTela;
 
@@ -48,21 +50,33 @@ public enum Operacao {
     LOGINMANUAL{
         @Override
         public void execute(String result) {
-            EventoLeitura.LEITURA_EM_ANALISE.process(MainController.INSTANCE.tela, null);
+            final ConexaoIntranetService ci = new ConexaoIntranetService();
+            ci.setOnSucceeded(
+                new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent workerStateEvent) {
+                        Long resposta = ci.getValue();
+                        if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                            EventoLeitura.LEITURA_EM_ANALISE.process(MainController.INSTANCE.tela, null);
+                            String login = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val()");
+                            String senha = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val()");
+                            LogEstacao.i("Solicitação de Login manual: " +login+" hora: "+MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
+                            ValidarBatidaManualService validarBatidaManualService = new ValidarBatidaManualService(login, senha);
 
-            if (ConexaoIntranetService.isConectado()) {
-                String login = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val()");
-                String senha = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val()");
-                LogEstacao.i("Solicitação de Login manual: " +login+" hora: "+MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
-                ValidarBatidaManualService validarBatidaManualService = new ValidarBatidaManualService(login, senha);
+                            validarBatidaManualService.setOnSucceeded(new VerificacaoDigitalHandler());
 
-                validarBatidaManualService.setOnSucceeded(new VerificacaoDigitalHandler());
+                            validarBatidaManualService.start();
+                        } else {
+                            System.out.println("Nao Conectado ao tentar Login Manual");
+                        }
 
-                validarBatidaManualService.start();
-            }
-            MainController.INSTANCE.getCds().loginManual = false;
-            The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val('')");
-            The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val('')");
+                        MainController.INSTANCE.getCds().loginManual = false;
+                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val('')");
+                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val('')");
+                    }
+                }
+            );
+            ci.start();
 
         }
     };
