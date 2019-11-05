@@ -33,9 +33,13 @@ public class LeitorDigital {
     }
 
     private void iniciar(){
-        abrirLeitor();
-        indexSearchEngine = bsp.new IndexSearch();
-        fecharLeitor();
+        try {
+            abrirLeitor();
+            indexSearchEngine = bsp.new IndexSearch();
+            fecharLeitor();
+        } catch (BiometricException e) {
+            LogAplicacao.e(e.getMessage());
+        }
     }
 
 
@@ -52,29 +56,34 @@ public class LeitorDigital {
     }
 
     public void addDigitalToIndexSearch(Map<String,String> mapaIdHashFrequentadores) {
-        LogAplicacao.i("Adicionando dados ao IndexSearch");
 
-        abrirLeitor();
+        try {
+            LogAplicacao.i("Adicionando dados ao IndexSearch");
+            abrirLeitor();
 
-        NBioBSPJNI.IndexSearch.SAMPLE_INFO sampleInfo = indexSearchEngine.new SAMPLE_INFO();
-        NBioBSPJNI.INPUT_FIR firDigital;
-        NBioBSPJNI.FIR_TEXTENCODE firDigitalTexto;
-        Iterator<String> mapaIterator = mapaIdHashFrequentadores.keySet().iterator();
+            NBioBSPJNI.IndexSearch.SAMPLE_INFO sampleInfo = indexSearchEngine.new SAMPLE_INFO();
+            NBioBSPJNI.INPUT_FIR firDigital;
+            NBioBSPJNI.FIR_TEXTENCODE firDigitalTexto;
+            Iterator<String> mapaIterator = mapaIdHashFrequentadores.keySet().iterator();
 
-        while(mapaIterator.hasNext()) {
-            String idFrequentador = mapaIterator.next();
-            String digitalFrequentador = mapaIdHashFrequentadores.get(idFrequentador);
-            firDigital = bsp.new INPUT_FIR();
-            firDigitalTexto = bsp.new FIR_TEXTENCODE();
-            firDigitalTexto.TextFIR = digitalFrequentador;
-            firDigital.SetTextFIR(firDigitalTexto);
-            indexSearchEngine.AddFIR(firDigital, Integer.parseInt(idFrequentador), sampleInfo);
+            while (mapaIterator.hasNext()) {
+                String idFrequentador = mapaIterator.next();
+                String digitalFrequentador = mapaIdHashFrequentadores.get(idFrequentador);
+                firDigital = bsp.new INPUT_FIR();
+                firDigitalTexto = bsp.new FIR_TEXTENCODE();
+                firDigitalTexto.TextFIR = digitalFrequentador;
+                firDigital.SetTextFIR(firDigitalTexto);
+                indexSearchEngine.AddFIR(firDigital, Integer.parseInt(idFrequentador), sampleInfo);
+            }
+
+            fecharLeitor();
+
+            saveDB();
+            LogAplicacao.i("Finalizado adição ao IndexSearch");
+        } catch (BiometricException e) {
+            LogAplicacao.e(e.getMessage());
+            System.exit(0);
         }
-
-        fecharLeitor();
-
-        saveDB();
-        LogAplicacao.i("Finalizado adição ao IndexSearch");
 
     }
 
@@ -100,24 +109,26 @@ public class LeitorDigital {
         }
     }
 
-    public int searchDigitalOnIndexSearchEngine(String hashDigital) throws BiometricException {
+    public int searchDigitalOnIndexSearchEngine(String hashDigital) {
 
-        abrirLeitor();
+        try {
+            abrirLeitor();
 
-        NBioBSPJNI.IndexSearch.FP_INFO fpInfo = indexSearchEngine.new FP_INFO();
+            NBioBSPJNI.IndexSearch.FP_INFO fpInfo = indexSearchEngine.new FP_INFO();
 
-        NBioBSPJNI.INPUT_FIR firDigital = bsp.new INPUT_FIR();
-        NBioBSPJNI.FIR_TEXTENCODE firDigitalTexto = bsp.new FIR_TEXTENCODE();
-        firDigitalTexto.TextFIR = hashDigital;
-        firDigital.SetTextFIR(firDigitalTexto);
+            NBioBSPJNI.INPUT_FIR firDigital = bsp.new INPUT_FIR();
+            NBioBSPJNI.FIR_TEXTENCODE firDigitalTexto = bsp.new FIR_TEXTENCODE();
+            firDigitalTexto.TextFIR = hashDigital;
+            firDigital.SetTextFIR(firDigitalTexto);
 
-        // 0 = maxSearchTime
+            // 0 = maxSearchTime
 //        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo);
-        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo,3000);
-        if (!checkErrors()) {
+            indexSearchEngine.Identify(firDigital, Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo, 3000);
+            checkErrors();
             fecharLeitor();
             return fpInfo.ID;
-        } else {
+        } catch (BiometricException e) {
+            LogAplicacao.e(e.getMessage());
             return -1;
         }
     }
@@ -137,17 +148,15 @@ public class LeitorDigital {
         bsp.Enroll(hSavedFIR, null);
 //		bsp.RollCapture(NBioBSPJNI.FIR_PURPOSE.ENROLL, hSavedFIR, -1, null, winOption);
 
-        if (!checkErrors()) {
+        checkErrors();
             //Recupera a digital em formato de texto
-            NBioBSPJNI.FIR_TEXTENCODE textSavedFIR = bsp.new FIR_TEXTENCODE();
-            bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);
+        NBioBSPJNI.FIR_TEXTENCODE textSavedFIR = bsp.new FIR_TEXTENCODE();
+        bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);
+        checkErrors();
 
-            fecharLeitor();
+        fecharLeitor();
 
-            return textSavedFIR.TextFIR;
-        } else {
-            return null;
-        }
+        return textSavedFIR.TextFIR;
     }
 
     public String capturarDigital_popup() throws Exception {
@@ -181,7 +190,7 @@ public class LeitorDigital {
     /**
      * abre conexao com o leitor de digital
      */
-    public void abrirLeitor() {
+    public void abrirLeitor() throws BiometricException {
         if(!ativo){
 
             bsp = new NBioBSPJNI();
@@ -202,17 +211,8 @@ public class LeitorDigital {
             //bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
             ativo = true;
             bsp.OpenDevice();
-            try {
-                if (!checkErrors()) {
-                    LogAplicacao.i("Iniciando aplicacao: "+deviceEnumInfo);
-                } else {
-                    LogAplicacao.e("Erro?");
-                }
-            } catch (BiometricException e) {
-                LogAplicacao.e(e.getMessage());
 
-                System.exit(0);
-            }
+            checkErrors();
         }
     }
 
@@ -224,7 +224,7 @@ public class LeitorDigital {
         }
     }
 
-    public boolean verificaCompatibilidadeDigitais(String digital, String digitalCapturada) {
+    public boolean verificaCompatibilidadeDigitais(String digital, String digitalCapturada) throws BiometricException {
 
         abrirLeitor();
 
@@ -283,7 +283,7 @@ public class LeitorDigital {
 //        }
 //    }
 
-    private boolean checkErrors() throws BiometricException {
+    private void checkErrors() throws BiometricException {
         if(bsp.IsErrorOccured()){
             int errorCode = bsp.GetErrorCode();
 
@@ -298,8 +298,6 @@ public class LeitorDigital {
             }
 
             throw new BiometricException("Erro: "+errorCode+ " - "+getErrorName(errorCode));
-        }else{
-            return false;
         }
     }
 
@@ -344,7 +342,12 @@ public class LeitorDigital {
     }
 
     public void check() {
-        abrirLeitor();
-        fecharLeitor();
+        try {
+            abrirLeitor();
+        } catch (BiometricException e) {
+            LogAplicacao.e(e);
+            fecharLeitor();
+            System.exit(0);
+        }
     }
 }

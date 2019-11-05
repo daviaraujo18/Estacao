@@ -26,14 +26,9 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                 EventoLeitura resultado = EventoLeitura.NULO;
                 int id = 0;
 
-                try {
-                    LeitorDigital ld = MainController.INSTANCE.getLeitorDigital();
-                    id = ld.searchDigitalOnIndexSearchEngine(digitalHash);
-                    ld.fecharLeitor();
-                } catch (Exception e) {
-					LogAplicacao.e(e);
-//                    e.printStackTrace();
-                }
+                LeitorDigital ld = MainController.INSTANCE.getLeitorDigital();
+                id = ld.searchDigitalOnIndexSearchEngine(digitalHash);
+                ld.fecharLeitor();
 
                 if (digitalHash == null || digitalHash.isEmpty()) {
                     resultado = EventoLeitura.ERRO_LEITURA;

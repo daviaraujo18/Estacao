@@ -3,6 +3,7 @@ package core.leitura;
 import controllers.MainController;
 import core.DadosFrequentadores;
 import core.ValidarBatidaManualService;
+import exception.BiometricException;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import utils.*;
@@ -17,18 +18,11 @@ public enum Operacao {
     DESBLOQUEIO {
         @Override
         public void execute(String digital) {
-            try {
-                int idFre = LeitorDigital.getInstance().searchDigitalOnIndexSearchEngine(digital);
-                Map<Integer,String> administradores = DadosFrequentadores.getInstance().getAdministradores();
-                Boolean isAdministrador =  administradores.containsKey(idFre);
-                if(isAdministrador){
-                    BloqueioTela.getInstance().desbloquear();
-                }
-
-            }catch (Exception e){
-				LogAplicacao.e(e);
-//                e.printStackTrace();
-
+            int idFre = LeitorDigital.getInstance().searchDigitalOnIndexSearchEngine(digital);
+            Map<Integer,String> administradores = DadosFrequentadores.getInstance().getAdministradores();
+            Boolean isAdministrador =  administradores.containsKey(idFre);
+            if(isAdministrador){
+                BloqueioTela.getInstance().desbloquear();
             }
             MainController.INSTANCE.getCds().restart();
         }
