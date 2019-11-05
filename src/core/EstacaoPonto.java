@@ -1,13 +1,20 @@
 package core;
 
 import controllers.MainController;
+import core.leitura.LeitorDigital;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -58,6 +65,8 @@ public class EstacaoPonto extends Application{
             LocalPaths.createDirs();
 
             LocalPaths.checarArquivos();
+
+            LeitorDigital.getInstance().check();
 
             IntranetURLs.init();
 
@@ -143,7 +152,6 @@ public class EstacaoPonto extends Application{
             System.exit(0);
         }
     }
-
 
 }
 

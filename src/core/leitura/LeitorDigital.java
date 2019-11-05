@@ -6,6 +6,7 @@ import com.nitgen.SDK.BSP.NBioBSPJNI.IndexSearch;
 import com.nitgen.SDK.BSP.NBioBSPJNI.WINDOW_OPTION;
 import core.Configuracoes;
 import core.LocalPaths;
+import exception.BiometricException;
 import utils.LogAplicacao;
 
 import java.lang.reflect.Field;
@@ -99,7 +100,7 @@ public class LeitorDigital {
         }
     }
 
-    public int searchDigitalOnIndexSearchEngine(String hashDigital) throws Exception {
+    public int searchDigitalOnIndexSearchEngine(String hashDigital) throws BiometricException {
 
         abrirLeitor();
 
@@ -113,14 +114,12 @@ public class LeitorDigital {
         // 0 = maxSearchTime
 //        indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo);
         indexSearchEngine.Identify(firDigital,Configuracoes.nivel_seguranca_leitor.getIntValue(), fpInfo,3000);
-        if(bsp.IsErrorOccured()) {
-            throwError();
+        if (!checkErrors()) {
+            fecharLeitor();
+            return fpInfo.ID;
+        } else {
             return -1;
         }
-
-        fecharLeitor();
-
-        return fpInfo.ID;
     }
 
 
@@ -131,19 +130,14 @@ public class LeitorDigital {
      *
      * @return hashDasDigitais
      */
-    public String enroll() throws Exception {
+    public String enroll() throws BiometricException {
         abrirLeitor();
 
         NBioBSPJNI.FIR_HANDLE hSavedFIR = bsp.new FIR_HANDLE();
         bsp.Enroll(hSavedFIR, null);
 //		bsp.RollCapture(NBioBSPJNI.FIR_PURPOSE.ENROLL, hSavedFIR, -1, null, winOption);
 
-        if(bsp.IsErrorOccured()) {
-            throwError();
-            fecharLeitor();
-            return null;
-
-        } else {
+        if (!checkErrors()) {
             //Recupera a digital em formato de texto
             NBioBSPJNI.FIR_TEXTENCODE textSavedFIR = bsp.new FIR_TEXTENCODE();
             bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);
@@ -151,6 +145,8 @@ public class LeitorDigital {
             fecharLeitor();
 
             return textSavedFIR.TextFIR;
+        } else {
+            return null;
         }
     }
 
@@ -206,6 +202,17 @@ public class LeitorDigital {
             //bsp.OpenDevice(deviceEnumInfo.DeviceInfo[0].NameID, deviceEnumInfo.DeviceInfo[0].Instance);
             ativo = true;
             bsp.OpenDevice();
+            try {
+                if (!checkErrors()) {
+                    LogAplicacao.i("Iniciando aplicacao: "+deviceEnumInfo);
+                } else {
+                    LogAplicacao.e("Erro?");
+                }
+            } catch (BiometricException e) {
+                LogAplicacao.e(e.getMessage());
+
+                System.exit(0);
+            }
         }
     }
 
@@ -260,21 +267,74 @@ public class LeitorDigital {
      * Metodo para pegar o nome do error, pois nao consegui recuperar o nome
      * atraves da NBioBSPJNI
      */
-    private void throwError() throws IllegalArgumentException, IllegalAccessException, Exception {
-        int errorNumber = bsp.GetErrorCode();
-        LogAplicacao.e("Error code: "+bsp.GetErrorCode());
+//    private void checkErrors() throws Exception {
+//        int errorNumber = bsp.GetErrorCode();
+//        LogAplicacao.e("Error code: "+bsp.GetErrorCode());
+//        String errorName = null;
+//        Class aClass = NBioBSPJNI.ERROR.class;
+//        Field[] fields = aClass.getFields();
+//        for (Field field : fields) {
+//            if(new Integer(field.get(null).toString()) == errorNumber) {
+//                errorName = field.getName();
+//                fecharLeitor();
+//                LogAplicacao.e("NBioJNI Error: "+errorName);
+//                throw new Exception(errorName);
+//            }
+//        }
+//    }
+
+    private boolean checkErrors() throws BiometricException {
+        if(bsp.IsErrorOccured()){
+            int errorCode = bsp.GetErrorCode();
+
+            fecharLeitor();
+
+            if(erroDispositivoNaoConectado(errorCode)){
+                throw new BiometricException.DevideNotConnectedException();
+            }else if(erroTempoExcedidoParacapturaDigital(errorCode)){
+                throw new BiometricException.CaptureTimeOutException();
+            }else if(cancelamentoPorUsario(errorCode)){
+                throw new BiometricException.CanceledOperationException();
+            }
+
+            throw new BiometricException("Erro: "+errorCode+ " - "+getErrorName(errorCode));
+        }else{
+            return false;
+        }
+    }
+
+    public static String getErrorName(int errorCode) {
         String errorName = null;
         Class aClass = NBioBSPJNI.ERROR.class;
         Field[] fields = aClass.getFields();
         for (Field field : fields) {
-            if(new Integer(field.get(null).toString()) == errorNumber) {
-                errorName = field.getName();
-                break;
+            try {
+                if(new Integer(field.get(null).toString()) == errorCode) {
+                    errorName = field.getName();
+                    break;
+                }
+            } catch (Exception e) {
             }
         }
-        fecharLeitor();
-        LogAplicacao.e("NBioJNI Error: "+errorName);
+        return errorName;
     }
+
+
+    private boolean cancelamentoPorUsario(int errorCode) {
+        return errorCode == NBioBSPJNI.ERROR.NBioAPIERROR_USER_CANCEL;
+    }
+
+    private boolean erroTempoExcedidoParacapturaDigital(int errorCode) {
+        return errorCode == NBioBSPJNI.ERROR.NBioAPIERROR_CAPTURE_TIMEOUT;
+    }
+
+    private boolean erroDispositivoNaoConectado(int errorCode) {
+        return errorCode == NBioBSPJNI.ERROR.NBioAPIERROR_DEVICE_NOT_OPENED ||
+                errorCode == NBioBSPJNI.ERROR.NBioAPIERROR_DEVICE_INIT_FAIL ||
+                errorCode == NBioBSPJNI.ERROR.NBioAPIERROR_DEVICE_NOT_OPENED ||
+                errorCode == NBioBSPJNI.ERROR.NBioAPIERROR_DEVICE_OPEN_FAIL;
+    }
+
 
     public boolean temDedo()
     {
@@ -283,4 +343,8 @@ public class LeitorDigital {
         return temDedo;
     }
 
+    public void check() {
+        abrirLeitor();
+        fecharLeitor();
+    }
 }
