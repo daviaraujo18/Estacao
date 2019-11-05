@@ -4,6 +4,7 @@ import async.PreProcessandoService;
 import async.ThreadRelogio;
 import core.RegistroWindows;
 import core.leitura.LeitorDigital;
+import exception.BiometricException;
 import javafx.concurrent.Worker;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -92,15 +93,18 @@ public class MainController implements Initializable {
 
     @FXML
     void cadastrarDigital(MouseEvent event) {
+        The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('warning','Cadastrando novas digitais');");
         try {
             String digitaisHash = getLeitorDigital().enroll();
-            int id = getLeitorDigital().searchDigitalOnIndexSearchEngine(digitaisHash);
-            The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
-            The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
-            The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('success','Digitais identificadas!');");
-        } catch (Exception ex) {
+
+            if (digitaisHash != null || !digitaisHash.equals("null")) {
+                The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
+                The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
+                The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('success','Digitais identificadas!');");
+            }
+        } catch (BiometricException ex) {
             LogAplicacao.e(ex.getMessage());
-//            The.inserirJavascript(webEngine, "changeInfoDigital('error','" + ex.getMessage() + "');");
+            The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('error','" + ex.getMessage() + "');");
         }
     }
 
