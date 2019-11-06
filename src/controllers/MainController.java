@@ -115,6 +115,7 @@ public class MainController implements Initializable {
     public void inicializarLeitor() {
         cds = new PreProcessandoService();
         cds.setOnSucceeded( new PreProcessandoHandler());
+        LogAplicacao.i("PreProcessandoService iniciado");
     }
 
     public LeitorDigital getLeitorDigital() {

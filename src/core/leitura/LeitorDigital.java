@@ -47,6 +47,7 @@ public class LeitorDigital {
         if(INSTANCE == null){
             INSTANCE = new LeitorDigital();
             INSTANCE.iniciar();
+            LogAplicacao.i("Leitor iniciado");
         }
         return INSTANCE;
     }
@@ -106,6 +107,17 @@ public class LeitorDigital {
             LogAplicacao.i("Carregado");
         } else {
             LogAplicacao.e("NBioAPIERROR: "+nRet);
+        }
+    }
+
+    public void clearDB() {
+        // Salvando dados no arquivo
+        LogAplicacao.i("Carregando dados do data.db");
+        int nRet = indexSearchEngine.ClearDB();
+        try {
+            checkErrors();
+        } catch (BiometricException e) {
+            LogAplicacao.e(e);
         }
     }
 

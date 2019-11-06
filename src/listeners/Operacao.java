@@ -2,6 +2,7 @@ package listeners;
 
 import controllers.MainController;
 import core.*;
+import core.leitura.LeitorDigital;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
@@ -29,6 +30,7 @@ public enum Operacao {
                     Long resposta = ci.getValue();
                     if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
 
+                        LeitorDigital.getInstance().clearDB();
                         final DownloadFrequentadoresService downloadFrequentadoresService = new DownloadFrequentadoresService();
                         downloadFrequentadoresService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                             @Override

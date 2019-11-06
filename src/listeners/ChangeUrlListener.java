@@ -1,5 +1,6 @@
 package listeners;
 
+import controllers.MainController;
 import core.IntranetURLs;
 import core.LocalPaths;
 import core.RegistroWindows;
@@ -73,6 +74,7 @@ public class ChangeUrlListener implements ChangeListener<Object> {
                         codigos = IntranetURLs.getCodigos();
                         String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
                         mudarUrlAtualPara(url);
+                        MainController.INSTANCE.getCds().parar(false);
                     } catch (IOException e) {
                         LogAplicacao.e("Nao foi possivel recuperar codigos");
                         e.printStackTrace();
