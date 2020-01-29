@@ -8,8 +8,8 @@ import utils.LogAplicacao;
  */
 public class SoundService {
 
-    private String AUDIO_OK = getClass().getResource("/resources/beep/ok.mp3").toString();
-    private String AUDIO_ERROR = getClass().getResource("/resources/beep/erro.mp3").toString();
+    private String AUDIO_OK = getClass().getResource("/beep/ok.mp3").toString();
+    private String AUDIO_ERROR = getClass().getResource("/beep/erro.mp3").toString();
 
     private AudioClip audioOk;
     private AudioClip audioError;

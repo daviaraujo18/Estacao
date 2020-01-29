@@ -19,12 +19,12 @@
                     <children>
                         <ImageView fx:id="imageView" fitHeight="59.619998931884766" fitWidth="1600.1817626953125" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="-4.81" AnchorPane.leftAnchor="-74.56" AnchorPane.rightAnchor="-273.62" AnchorPane.topAnchor="-4.81">
                             <image>
-                                <Image url="/resources/images/topo.png" preserveRatio="true" smooth="false" />
+                                <Image url="/images/topo.png" preserveRatio="true" smooth="false" />
                             </image>
                         </ImageView>
                     </children>
                     <stylesheets>
-                        <URL value="@/resources/css/style.css" />
+                        <URL value="@/css/style.css" />
                     </stylesheets>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -49,6 +49,6 @@
         </SplitPane>
     </children>
     <stylesheets>
-        <URL value="@/resources/css/style.css" />
+        <URL value="@/css/style.css" />
     </stylesheets>
 </AnchorPane>

@@ -100,7 +100,7 @@ public class EstacaoPonto extends Application{
 
     @Override
     public void start(Stage palco) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Main.fxml"));
 
         this.stage = palco;
         Scene scene = new Scene(root);
