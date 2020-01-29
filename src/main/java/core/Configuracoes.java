@@ -44,7 +44,7 @@ public enum Configuracoes {
 //            }
 //            else
 //            {
-                is = new FileInputStream("./config.properties");//teste //produ��o
+                is = new FileInputStream("config.properties");//teste //produ��o
 //            }
             
             props.load(is);
