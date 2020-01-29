@@ -5,8 +5,8 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS}{GMT-3} %c{1} &#9; %-5level - %msg%n"/>
         </Console>
 
-        <RollingFile name="LogFullToRollingFile" fileName="C:/estacao/log/full.txt"
-                     filePattern="C:/estacao/log/$${date:yyyy-MM}/full-%d{MM-dd-yyyy}-%i.txt">
+        <RollingFile name="LogFullToRollingFile" fileName="${sys:app.root}/log/full.txt"
+                     filePattern="${sys:app.root}/log/$${date:yyyy-MM}/full-%d{MM-dd-yyyy}-%i.txt">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS}{GMT-3} %c{1} &#9; %-5level - %msg%n</Pattern>
             </PatternLayout>
@@ -16,8 +16,8 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="LogAplicacaoToRollingFile" fileName="C:/estacao/log/app.txt"
-                     filePattern="C:/estacao/log/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.txt">
+        <RollingFile name="LogAplicacaoToRollingFile" fileName="${sys:app.root}/log/app.txt"
+                     filePattern="${sys:app.root}/log/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.txt">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS}{GMT-3} %-5level - %msg%n</Pattern>
             </PatternLayout>
@@ -27,8 +27,8 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="LogEstacaoToRollingFile" fileName="C:/estacao/log/estacao.txt"
-                     filePattern="C:/estacao/log/$${date:yyyy-MM}/estacao-%d{MM-dd-yyyy}-%i.txt">
+        <RollingFile name="LogEstacaoToRollingFile" fileName="${sys:app.root}/log/estacao.txt"
+                     filePattern="${sys:app.root}/log/$${date:yyyy-MM}/estacao-%d{MM-dd-yyyy}-%i.txt">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS}{GMT-3} %-5level - %msg%n</Pattern>
             </PatternLayout>

@@ -18,16 +18,16 @@ import utils.LogAplicacao;
  */
 public class LocalPaths {
 
+    public static String APP_DIR = System.getenv("LOCALAPPDATA")+"\\TJPI\\EstacaoPonto\\";
+
     public static String idePath, realPath;
 
     public static final String MIOLO_PATH_REGISTROS = "Estacao\\";
-    public static final String MIOLO_PATH_IMGS = "Estacao\\imgs\\";
-    public static final String MIOLO_PATH_LOG = "Estacao\\log\\";
 
-    public static final String PATH_REGISTROS = getParticao()+"Estacao\\";
-    public static final String PATH_CACHE = getParticao()+"Estacao\\imgs\\";
-    public static final String PATH_LOG = getParticao()+"Estacao\\log\\";
-    public static final String PATH_DATA = getParticao()+"Estacao\\data\\";
+    public static final String PATH_REGISTROS = APP_DIR;
+    public static final String PATH_LOG = APP_DIR+"\\log\\";
+    public static final String PATH_DATA = APP_DIR+"\\data\\";
+    public static final String PATH_CACHE = PATH_DATA+"\\imgs\\";
 
     public static String getParticao()
     {
@@ -165,11 +165,15 @@ public class LocalPaths {
     }
 
     public static void createDirs() {
+        java.io.File appDir = new java.io.File(LocalPaths.APP_DIR);
         java.io.File data = new java.io.File(LocalPaths.PATH_DATA);
+        java.io.File cache = new java.io.File(LocalPaths.PATH_CACHE);
         java.io.File log = new java.io.File(LocalPaths.PATH_LOG);
 
+        appDir.mkdir();
         data.mkdir();
-        log.mkdirs();
+        cache.mkdir();
+        log.mkdir();
     }
 
     public static void checarArquivos() throws IOException {

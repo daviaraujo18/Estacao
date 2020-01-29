@@ -142,6 +142,8 @@ public class EstacaoPonto extends Application{
 
     static {
         try {
+            // Setando variavel de sistema para log4j salvar os arquivos de log em LOCALAPPDATA
+            System.setProperty("app.root", LocalPaths.APP_DIR);
             System.loadLibrary("NBioBSP");
             System.loadLibrary("NBioBSPCOM");
             System.loadLibrary("NBioBSPJNI");
