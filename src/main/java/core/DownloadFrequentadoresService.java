@@ -83,14 +83,14 @@ public class DownloadFrequentadoresService extends Service<String> {
 
                 File arquivoHash = new File(LocalPaths.PATH_DATA,"hash");
                 if (!arquivoHash.exists() && !arquivoHash.isDirectory()) {
-                    ArquivoUtils.saveFile("hash", hashDigitaisIntranet);
+                    ArquivoUtils.saveStringOnFile(hashDigitaisIntranet, arquivoHash);
                     return true;
                 } else {
 
-                    String myHash = ArquivoUtils.readFile("hash");
+                    String myHash = ArquivoUtils.readStringOnFile(arquivoHash);
                     LogAplicacao.i("HASH LOCAL: \t\t" + myHash);
                     if (!myHash.equals(hashDigitaisIntranet)) {
-                        ArquivoUtils.saveFile("hash", hashDigitaisIntranet);
+                        ArquivoUtils.saveStringOnFile(hashDigitaisIntranet, arquivoHash);
                         LogAplicacao.i("Atualizando banco de digitais");
                         return true;
                     }

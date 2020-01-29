@@ -68,10 +68,10 @@ public class RegistroWindows {
 			UUID uuid = UUID.randomUUID();
 			String random = uuid.toString();
 			codigoUnicoMaquina = random;
-			ArquivoUtils.saveFile(nomeArquivoCodigoUincoMaquina, codigoUnicoMaquina);
+			ArquivoUtils.saveStringOnFile(codigoUnicoMaquina, arquivoCodUnicoMaquina);
 			LogAplicacao.i("Gerando e salvando codigo unico maquina: "+codigoUnicoMaquina);
 		} else {
-			codigoUnicoMaquina = ArquivoUtils.readFile(nomeArquivoCodigoUincoMaquina);
+			codigoUnicoMaquina = ArquivoUtils.readStringOnFile(arquivoCodUnicoMaquina);
 		}
 
 		return codigoUnicoMaquina;

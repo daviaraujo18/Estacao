@@ -91,7 +91,7 @@ public class LeitorDigital {
     public void saveDB() {
         // Salvando dados no arquivo
         LogAplicacao.i("Salvando dados no arquivo data.db");
-        int nRet = indexSearchEngine.SaveDB("C:\\Estacao\\data\\data.db");
+        int nRet = indexSearchEngine.SaveDB(LocalPaths.PATH_DATA+"data.db");
         if (nRet == NBioBSPJNI.ERROR.NBioAPIERROR_NONE) {
             LogAplicacao.i("Salvo");
         } else {

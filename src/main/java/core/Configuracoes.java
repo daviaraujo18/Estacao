@@ -1,5 +1,6 @@
 package core;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
@@ -44,7 +45,9 @@ public enum Configuracoes {
 //            }
 //            else
 //            {
-                is = new FileInputStream("config.properties");//teste //produ��o
+
+            File configFile = new File(LocalPaths.APP_DIR,"config.properties");
+                is = new FileInputStream(configFile);//teste //produ��o
 //            }
             
             props.load(is);

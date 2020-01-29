@@ -54,9 +54,9 @@ public class DadosFrequentadores  {
          */
         if (data == null || data.isEmpty()) {
             try {
-                frequentadores = readMapOnFile("f");
-                administradores = readMapOnFile("a");
-                mapaIdFotosFrequentadores = readMapOnFile("fotos");
+                frequentadores = readMapOnFile(new File(LocalPaths.PATH_DATA, "f"));
+                administradores = readMapOnFile(new File(LocalPaths.PATH_DATA,"a"));
+                mapaIdFotosFrequentadores = readMapOnFile(new File(LocalPaths.PATH_DATA,"fotos"));
             } catch (Exception e) {
                 LogAplicacao.e("Nao foi possivel carregar dados offline");
                 // remover hash
@@ -107,10 +107,10 @@ public class DadosFrequentadores  {
 
 
             try {
-                ArquivoUtils.saveMapOnFile(getFrequentadores(), "f");
+                ArquivoUtils.saveMapOnFile(getFrequentadores(), new File(LocalPaths.PATH_DATA,"f"));
 //                saveMapOnFile(getAdministradores(), LocalPaths.PATH_DATA + "a");
-                ArquivoUtils.saveMapOnFile(new HashMap<Integer, String>(), "a");
-                ArquivoUtils.saveMapOnFile(getmapaIdFotosFrequentadores(), "fotos");
+                ArquivoUtils.saveMapOnFile(new HashMap<Integer, String>(), new File(LocalPaths.PATH_DATA,"a"));
+                ArquivoUtils.saveMapOnFile(getmapaIdFotosFrequentadores(), new File(LocalPaths.PATH_DATA,"fotos"));
             } catch (Exception e) {
                 LogAplicacao.e("Não foi possível salvar os dados");
             }

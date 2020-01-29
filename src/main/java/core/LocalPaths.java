@@ -6,6 +6,7 @@ package core;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +19,8 @@ import utils.LogAplicacao;
  */
 public class LocalPaths {
 
-    public static String APP_DIR = System.getenv("LOCALAPPDATA")+"\\TJPI\\EstacaoPonto\\";
+    public static String APP_DIR = Paths.get(System.getProperty("user.home")).resolve("AppData").resolve("Local").resolve("TJPI").resolve("EstacaoPonto").toString();
+//    public static String APP_DIR = System.getenv("LOCALAPPDATA")+"\\TJPI\\EstacaoPonto\\";
 
     public static String idePath, realPath;
 
@@ -180,10 +182,10 @@ public class LocalPaths {
         File dataDb = new File(LocalPaths.PATH_DATA,"data.db");
 
         if (!dataDb.exists()) {
-            ArquivoUtils.saveFile("hash","");
+            ArquivoUtils.saveStringOnFile("",new File(PATH_DATA, "hash"));
         }
 
-        File configFile = new File("config.properties");
+        File configFile = new File(APP_DIR, "config.properties");
         if (!configFile.exists()) {
             LogAplicacao.i("Criando config.properties");
             StringBuilder sb = new StringBuilder("");
@@ -194,7 +196,7 @@ public class LocalPaths {
                     "# 1-9\n" +
                     "nivel_seguranca_leitor=8\n" +
                     "baixa_foto=false");
-            ArquivoUtils.saveFile(configFile, sb.toString());
+            ArquivoUtils.saveStringOnFile(sb.toString(), configFile);
         }
 
     }
