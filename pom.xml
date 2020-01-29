@@ -111,7 +111,7 @@
 
         <!-- Optional override to specify where the cached files are stored. Default is current working directory -->
         <app.cacheDir></app.cacheDir>
-        <app.cacheDir>USERLIB/TJPIEstacaoPonto</app.cacheDir>
+        <app.cacheDir>USERLIB/TJPI/EstacaoPonto/cachelibs</app.cacheDir>
 
         <!-- Optional parameters to the application, will be embedded in the launcher and can be overriden on the command line -->
         <app.parameters></app.parameters>
