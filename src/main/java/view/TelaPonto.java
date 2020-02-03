@@ -61,15 +61,6 @@ public class TelaPonto {
         webEngine = webView.getEngine();
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeUrlListener(this));
         webEngine.setOnAlert(new OnAlertListener());
-        // mostrar uma mensagem informando que est� sem permiss�o de escrita
-        if (LocalPaths.getParticao()==null || LocalPaths.getParticao().isEmpty())
-        {
-            this.labelSemConexao.setText("Sem permissão de escrita.");
-            this.labelSemConexao.setPrefWidth(600);
-            this.labelSemConexao.setLayoutX(380);
-            this.labelSemConexao.setVisible(true);
-            return true;
-        }
 
         Task task = new Task() {
 

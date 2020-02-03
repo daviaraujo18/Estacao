@@ -230,32 +230,6 @@ public enum Operacao {
         }
     },
 
-    ATUALIZARVERSAOESTACAO("atualizarVersaoEstacao"){
-
-        public void execute(String metodo, WebEngine engine){
-            final ConexaoIntranetService ci = new ConexaoIntranetService();
-            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent workerStateEvent) {
-                    Long resposta = ci.getValue();
-                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
-                        final ChecarUltimaVersaoService checarUltimaVersaoService = new ChecarUltimaVersaoService();
-                        checarUltimaVersaoService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                            @Override
-                            public void handle(WorkerStateEvent workerStateEvent) {
-                                String ultimaVersaoNoServidor = checarUltimaVersaoService.getValue();
-
-                                AtualizarEstacao.verificaVersoes(ultimaVersaoNoServidor);
-
-                            }
-                        });
-                        checarUltimaVersaoService.start();
-                    }
-                }
-            });
-            ci.start();
-        }
-    },
     LOGINMANUAL("loginManual"){
         public void execute(String metodo,WebEngine engine){
             MainController.INSTANCE.getCds().loginManual = true;

@@ -17,14 +17,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
-import utils.AtualizarEstacao;
 import utils.LogAplicacao;
 import utils.ScriptsBat;
 
@@ -75,7 +72,7 @@ public class OnAlertListener implements EventHandler {
                 if (comando.toString().equals("FECHAR")) {
                     try {
                         LogAplicacao.i("Executando COMANDO 'FECHAR'");
-                        LogAplicacao.i("Executando: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
+                        LogAplicacao.i("Executando: "+LocalPaths.APP_DIR+ScriptsBat.restartFileName);
 
                         ScriptsBat.restartAplicacao();
                     } catch (Exception ex) {
@@ -176,12 +173,7 @@ public class OnAlertListener implements EventHandler {
                 }
                 else
                 {
-                    if (comando.toString().equals("ATUALIZARESTACAO"))
-                    {
 
-                        LogAplicacao.i("Executando COMANDO 'ATUALIZARESTACAO'");
-                        AtualizarEstacao.downloadNovaVersao(null);
-                    }
                 }
                     }}}
             }

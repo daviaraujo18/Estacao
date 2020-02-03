@@ -94,12 +94,12 @@ public class ChangeUrlListener implements ChangeListener<Object> {
 
                             try {
 
-                                LogAplicacao.i("Tentando executar: "+LocalPaths.realPath+"\\runOpenUpdate.bat");
+                                LogAplicacao.i("Tentando executar: "+LocalPaths.APP_DIR+ScriptsBat.restartFileName);
                                 ScriptsBat.restartAplicacao();
                             }
                             catch (Exception ex) {
                                 Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-                                LogAplicacao.i("Problema ao executar o OUA.");
+                                LogAplicacao.i("Problema ao tentar restartar a aplicação");
                                 LogAplicacao.e(ex);
                             }
 //                            System.out.println("Iniciou");
@@ -136,21 +136,4 @@ public class ChangeUrlListener implements ChangeListener<Object> {
         tela.getWebEngine().load(novaURL);
     }
 
-    private boolean criarArquivoBatimentos() throws IOException {
-        String codUnic = RegistroWindows.getCodigoUnicoMaquina().substring(2, 10);
-        java.io.File diretorio = new java.io.File(LocalPaths.PATH_REGISTROS);
-        java.io.File arquivo = new java.io.File(diretorio, codUnic + ".txt");
-        try {
-            boolean statusDir = diretorio.mkdir();
-            boolean statusArq = arquivo.createNewFile();
-            LogAplicacao.i("criou o diretorio : " + statusDir);
-            LogAplicacao.i(statusArq);
-            return true;
-        } catch (IOException e) {
-            LogAplicacao.e(e);
-//            e.printStackTrace();
-            return false;
-        }
-
-    }
 }

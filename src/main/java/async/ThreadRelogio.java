@@ -40,7 +40,7 @@ public class ThreadRelogio extends Service<String> {
     }
 
     private void setarHorarioRestart() {
-        int random = The.getRandomNumberBetween(1, 420);
+        int random = The.getRandomNumberBetween(1, 10);
         dataRestartDiario = CalendarUtils.getHojeAs(22,0); // 22:00
         dataRestartDiario.add(Calendar.MINUTE, random);
         LogAplicacao.i("Restart programado para: " + CalendarUtils.format(dataRestartDiario));

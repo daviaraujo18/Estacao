@@ -15,50 +15,24 @@ import java.util.Calendar;
 
 public class ScriptsBat {
 
+    public static final String restartFileName = "restart.bat";
     public static void init() throws IOException {
 
         createOrUpdateRunOpenUpdate();
-        createOrUpdateRunReplace();
 
     }
 
     private static void createOrUpdateRunOpenUpdate() throws IOException {
-        File c_estacao_estacaoponto = new File(LocalPaths.realPath);
-        File runOpenUpdate_bat = new File(c_estacao_estacaoponto, "runOpenUpdate.bat");
 
-        FileWriter fw = new FileWriter(runOpenUpdate_bat.getAbsoluteFile());
+        File restartBatScript = new File(LocalPaths.APP_DIR, restartFileName);
+
+        FileWriter fw = new FileWriter(restartBatScript.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("taskkill /f /im java.exe");
+        bw.write("taskkill /f /im EstacaoPonto.exe");
         bw.newLine();
-        bw.write("taskkill /f /im javaw.exe");
+        bw.write("cd \""+LocalPaths.INSTALL_DIR+"\"");
         bw.newLine();
-        bw.write("START C:\\Estacao\\EstacaoPonto\\EstacaoPonto.jar");
-        bw.newLine();
-        bw.write("exit 0");
-        bw.newLine();
-
-        bw.close();
-    }
-
-    private static void createOrUpdateRunReplace() throws IOException {
-        File c_estacao_estacaoponto = new File(LocalPaths.realPath);
-        File runReplace_bat = new File(c_estacao_estacaoponto, "runReplace.bat");
-
-        FileWriter fw = new FileWriter(runReplace_bat.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("chcp 1252");
-        bw.newLine();
-        bw.write("del \"EstacaoPonto.jar.bak\"");
-        bw.newLine();
-        bw.write("timeout 3");
-        bw.newLine();
-        bw.write("rename \"EstacaoPonto.jar\" \"EstacaoPonto.jar.bak\"");
-        bw.newLine();
-        bw.write("copy \"C:\\Estacao\\imgs\\EstacaoPonto.jar\" \"C:\\Estacao\\EstacaoPonto\" /y");
-        bw.newLine();
-        bw.write("cd \"C:\\Estacao\\EstacaoPonto\\\"");
-        bw.newLine();
-        bw.write("START java -jar \"C:\\Estacao\\EstacaoPonto\\EstacaoPonto.jar\"");
+        bw.write("start /b EstacaoPonto.exe");
         bw.newLine();
         bw.write("exit 0");
         bw.newLine();
@@ -83,9 +57,9 @@ public class ScriptsBat {
                 Long resposta = ci.getValue();
                 if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
                     try {
-                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runOpenUpdate.bat",
+                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start "+restartFileName,
                                 null,
-                                new File(LocalPaths.realPath));
+                                new File(LocalPaths.APP_DIR));
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
@@ -96,18 +70,6 @@ public class ScriptsBat {
             }
         });
         ci.start();
-    }
-
-    public static void updateAplicacao() throws IOException {
-        Calendar dataServidorAtual = MainController.INSTANCE.getThreadRelogio().getDataServidorAtual();
-        LogAplicacao.i("Update aplicacao: "+ LocalPaths.realPath+"\\runOpenUpdate.bat");
-        Process p =  Runtime.getRuntime().exec("cmd.exe /c start C:\\Estacao\\EstacaoPonto\\runReplace.bat",
-                null,
-                new File(LocalPaths.realPath));
-
-        LogAplicacao.i("Download finalizado. Abrindo nova versao.");
-        Platform.exit();
-        System.exit(0);
     }
 
 }

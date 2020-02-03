@@ -4,6 +4,7 @@ import utils.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 /**
@@ -11,6 +12,22 @@ import java.util.UUID;
  */
 public class RegistroWindows {
 	public static final String KEY_REGISTRO = "SOFTWARE\\TJPIEstacaoPonto";
+
+	public static final String  getInstallDir() {
+		String installDir = "";
+		try {
+			installDir = WinRegistry.readString(
+					WinRegistry.HKEY_CURRENT_USER,
+					KEY_REGISTRO,
+					"Path"
+			);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return installDir;
+	}
 
 	public static String getCodigoAtivacaoRegistro() {
 

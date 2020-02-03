@@ -58,10 +58,6 @@ public class EstacaoPonto extends Application{
         LogEstacao.i("Estação iniciada");
         try {
 
-            LocalPaths.idePath = new File(".").getCanonicalPath();
-
-            LocalPaths.getPath();
-
             LocalPaths.createDirs();
 
             LocalPaths.checarArquivos();
