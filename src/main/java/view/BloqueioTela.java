@@ -21,12 +21,9 @@ public class BloqueioTela {
 //    EventHandler<MouseEvent> clickHandler;
 
     private BloqueioTela(){
-        final EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(bloqueada){
-                    MainController.INSTANCE.getCds().clickDesbloqueioTela = true;
-                }
+        final EventHandler<MouseEvent> handler = mouseEvent -> {
+            if(bloqueada){
+                MainController.INSTANCE.getCds().clickDesbloqueioTela = true;
             }
         };
     }
@@ -60,12 +57,9 @@ public class BloqueioTela {
     }
 
     private void onMouseClicked(Scene root) {
-        final EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if(bloqueada){
-                    MainController.INSTANCE.getCds().clickDesbloqueioTela = true;
-                }
+        final EventHandler<MouseEvent> handler = mouseEvent -> {
+            if(bloqueada){
+                MainController.INSTANCE.getCds().clickDesbloqueioTela = true;
             }
         };
 
@@ -73,14 +67,12 @@ public class BloqueioTela {
     }
 
     private void onKeyPressed(Node root) {
-        final EventHandler<KeyEvent> keyEventHandler = new EventHandler<KeyEvent>() {
-            public void handle(final KeyEvent keyEvent) {
-                if(keyEvent.getCode() == KeyCode.A){
-                    if(bloqueada){
-                        MainController.INSTANCE.getCds().clickDesbloqueioTela = true;
-                    }else{
-                        bloquear();
-                    }
+        final EventHandler<KeyEvent> keyEventHandler = keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.A){
+                if(bloqueada){
+                    MainController.INSTANCE.getCds().clickDesbloqueioTela = true;
+                }else{
+                    bloquear();
                 }
             }
         };

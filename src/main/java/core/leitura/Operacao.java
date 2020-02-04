@@ -34,7 +34,7 @@ public enum Operacao {
             EventoLeitura.LEITURA_EM_ANALISE.process(MainController.INSTANCE.tela, null);
             String digitalHash = "";
             if (result != null){
-                digitalHash = result.toString();
+                digitalHash = result;
             }
             VerificacaoDigitalService capturaDigitalService = new VerificacaoDigitalService(digitalHash);
             capturaDigitalService.setOnSucceeded(new VerificacaoDigitalHandler());
@@ -46,9 +46,7 @@ public enum Operacao {
         public void execute(String result) {
             final ConexaoIntranetService ci = new ConexaoIntranetService();
             ci.setOnSucceeded(
-                new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent workerStateEvent) {
+                    workerStateEvent -> {
                         Long resposta = ci.getValue();
                         if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
                             EventoLeitura.LEITURA_EM_ANALISE.process(MainController.INSTANCE.tela, null);
@@ -68,7 +66,6 @@ public enum Operacao {
                         The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val('')");
                         The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val('')");
                     }
-                }
             );
             ci.start();
 

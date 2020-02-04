@@ -51,21 +51,18 @@ public class ScriptsBat {
     public static void restartAplicacao() throws IOException {
 
         final ConexaoIntranetService ci = new ConexaoIntranetService();
-        ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-                Long resposta = ci.getValue();
-                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
-                    try {
-                        Process p =  Runtime.getRuntime().exec("cmd.exe /c start "+restartFileName,
-                                null,
-                                new File(LocalPaths.APP_DIR));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        Platform.exit();
-                        System.exit(0);
-                    }
+        ci.setOnSucceeded(workerStateEvent -> {
+            Long resposta = ci.getValue();
+            if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                try {
+                    Process p =  Runtime.getRuntime().exec("cmd.exe /c start "+restartFileName,
+                            null,
+                            new File(LocalPaths.APP_DIR));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    Platform.exit();
+                    System.exit(0);
                 }
             }
         });

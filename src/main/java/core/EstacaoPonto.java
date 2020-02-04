@@ -122,12 +122,10 @@ public class EstacaoPonto extends Application{
 
         BloqueioTela.getInstance().addClickTarget(root, MainController.INSTANCE.tela.webView);
 
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent we) {
-                LogEstacao.i("Estação fechada");
-                Platform.exit();
-                System.exit(0);
-            }
+        stage.setOnCloseRequest(we -> {
+            LogEstacao.i("Estação fechada");
+            Platform.exit();
+            System.exit(0);
         });
 
         stage.show();

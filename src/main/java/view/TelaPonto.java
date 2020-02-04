@@ -73,12 +73,7 @@ public class TelaPonto {
                     if (semConexao) {
 
                         final int finalNumeroTentativa = numeroTentativa;
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                labelSemConexao.setText("Tentando conectar com INTRANET #" + finalNumeroTentativa);
-                            }
-                        });
+                        Platform.runLater(() -> labelSemConexao.setText("Tentando conectar com INTRANET #" + finalNumeroTentativa));
 
                         labelSemConexao.setVisible(true);
 //                        Thread.sleep(1000);
@@ -91,24 +86,16 @@ public class TelaPonto {
                 return null;
             }
         };
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>()
-        {
-            @Override
-            public void handle(WorkerStateEvent t)
-            {
+        task.setOnSucceeded(t -> {
 
-                webEngine.load(IntranetURLs.INICIAR_PONTO);
-                imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent t) {
-                        if(!BloqueioTela.getInstance().isBloqueada()){
-                            webEngine.load(IntranetURLs.BASE_URL+"/presenca/Frequentador?type=explore");
-                            MainController.INSTANCE.getCds().parar(true);
-                        }
-                    }
-                });
+            webEngine.load(IntranetURLs.INICIAR_PONTO);
+            imageView.setOnMouseClicked(t1 -> {
+                if(!BloqueioTela.getInstance().isBloqueada()){
+                    webEngine.load(IntranetURLs.BASE_URL+"/presenca/Frequentador?type=explore");
+                    MainController.INSTANCE.getCds().parar(true);
+                }
+            });
 
-            }
         });
         Thread nova = new Thread(task);
         nova.start();

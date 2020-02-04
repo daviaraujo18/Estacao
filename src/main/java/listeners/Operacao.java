@@ -24,27 +24,21 @@ public enum Operacao {
         public void execute(final String metodo, final WebEngine engine){
 
             final ConexaoIntranetService ci = new ConexaoIntranetService();
-            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent workerStateEvent) {
-                    Long resposta = ci.getValue();
-                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+            ci.setOnSucceeded(workerStateEvent -> {
+                Long resposta = ci.getValue();
+                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
 
-                        LeitorDigital.getInstance().clearDB();
-                        final DownloadFrequentadoresService downloadFrequentadoresService = new DownloadFrequentadoresService();
-                        downloadFrequentadoresService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                            @Override
-                            public void handle(WorkerStateEvent workerStateEvent) {
-                                String dadosFrequentadoresBruto = downloadFrequentadoresService.getValue();
-                                DadosFrequentadores.getInstance().init(dadosFrequentadoresBruto);
-                                The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "removeLoading()");
+                    LeitorDigital.getInstance().clearDB();
+                    final DownloadFrequentadoresService downloadFrequentadoresService = new DownloadFrequentadoresService();
+                    downloadFrequentadoresService.setOnSucceeded(workerStateEvent1 -> {
+                        String dadosFrequentadoresBruto = downloadFrequentadoresService.getValue();
+                        DadosFrequentadores.getInstance().init(dadosFrequentadoresBruto);
+                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "removeLoading()");
 
 //
-                                RECUPERAR_PREDIOS_PERMITIDOS.execute(metodo, engine);
-                            }
-                        });
-                        downloadFrequentadoresService.start();
-                    }
+                        RECUPERAR_PREDIOS_PERMITIDOS.execute(metodo, engine);
+                    });
+                    downloadFrequentadoresService.start();
                 }
             });
             ci.start();
@@ -61,24 +55,18 @@ public enum Operacao {
 
         public void execute(String metodo, WebEngine engine){
             final ConexaoIntranetService ci = new ConexaoIntranetService();
-            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent workerStateEvent) {
-                    Long resposta = ci.getValue();
-                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
-                        LogAplicacao.i("Recuperando PrediosPermitidos");
-                        final PrediosPermitidosService prediosPermitidosService = new PrediosPermitidosService();
-                        prediosPermitidosService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                            @Override
-                            public void handle(WorkerStateEvent workerStateEvent) {
-                                String prediosPermitidosIDs = prediosPermitidosService.getValue();
-                                LogAplicacao.i("Predios permitidos: " + prediosPermitidosIDs);
-                                MainController.INSTANCE.prediosIds = prediosPermitidosIDs;
+            ci.setOnSucceeded(workerStateEvent -> {
+                Long resposta = ci.getValue();
+                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                    LogAplicacao.i("Recuperando PrediosPermitidos");
+                    final PrediosPermitidosService prediosPermitidosService = new PrediosPermitidosService();
+                    prediosPermitidosService.setOnSucceeded(workerStateEvent1 -> {
+                        String prediosPermitidosIDs = prediosPermitidosService.getValue();
+                        LogAplicacao.i("Predios permitidos: " + prediosPermitidosIDs);
+                        MainController.INSTANCE.prediosIds = prediosPermitidosIDs;
 
-                            }
-                        });
-                        prediosPermitidosService.start();
-                    }
+                    });
+                    prediosPermitidosService.start();
                 }
             });
             ci.start();
@@ -182,21 +170,18 @@ public enum Operacao {
         public void execute(String metodo, WebEngine engine){
             LogEstacao.i("Sincronizando Agora");
             final ConexaoIntranetService ci = new ConexaoIntranetService();
-            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent workerStateEvent) {
-                    Long resposta = ci.getValue();
-                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+            ci.setOnSucceeded(workerStateEvent -> {
+                Long resposta = ci.getValue();
+                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
 
-                        try {
-                            MainController.INSTANCE.iniciarSincronizacao();
-                        } catch (FileNotFoundException ex) {
-                            LogEstacao.e(ex);
-                            Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            LogEstacao.e(ex);
-                            Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                    try {
+                        MainController.INSTANCE.iniciarSincronizacao();
+                    } catch (FileNotFoundException ex) {
+                        LogEstacao.e(ex);
+                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        LogEstacao.e(ex);
+                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
@@ -208,22 +193,16 @@ public enum Operacao {
         @Override
         public void execute(String metodo, WebEngine engine){
             final ConexaoIntranetService ci = new ConexaoIntranetService();
-            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent workerStateEvent) {
-                    Long resposta = ci.getValue();
-                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
-                        final VivoOuMortoService vivoOuMortoService = new VivoOuMortoService();
-                        vivoOuMortoService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                            @Override
-                            public void handle(WorkerStateEvent workerStateEvent) {
-                                if (!vivoOuMortoService.getValue()) {
-                                    LogAplicacao.e("VivoOuMortoService -> falhou");
-                                }
-                            }
-                        });
-                        vivoOuMortoService.start();
-                    }
+            ci.setOnSucceeded(workerStateEvent -> {
+                Long resposta = ci.getValue();
+                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                    final VivoOuMortoService vivoOuMortoService = new VivoOuMortoService();
+                    vivoOuMortoService.setOnSucceeded(workerStateEvent1 -> {
+                        if (!vivoOuMortoService.getValue()) {
+                            LogAplicacao.e("VivoOuMortoService -> falhou");
+                        }
+                    });
+                    vivoOuMortoService.start();
                 }
             });
             ci.start();

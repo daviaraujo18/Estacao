@@ -149,16 +149,13 @@ public class MainController implements Initializable {
         //String minutos = horario.split(":")[1];
         if (threadRelogio.fazerSincronizacao() ) { // fazerSincronizacao() - retorna true caso tenha chegado o horario de fazer sincronizacao
             final ConexaoIntranetService ci = new ConexaoIntranetService();
-            ci.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent workerStateEvent) {
-                    Long resposta = ci.getValue();
-                    if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
-                        try {
-                            iniciarSincronizacao();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+            ci.setOnSucceeded(workerStateEvent -> {
+                Long resposta = ci.getValue();
+                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                    try {
+                        iniciarSincronizacao();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             });

@@ -71,14 +71,14 @@ public class DadosFrequentadores  {
 
         } else {
 
-            setArrayFrequentadores(((String) DadosFrequentadores.getInstance().getData()).split("'"));
+            setArrayFrequentadores(DadosFrequentadores.getInstance().getData().split("'"));
 
             String[] frequentadores = getArrayFrequentadores();
 
             hashFrequentadores = new HashMap();
-            setFrequentadores(new HashMap<Integer, String>());
-            setAdministradores(new HashMap<Integer, String>());
-            setMapaIdFotosFrequentadores(new HashMap<Integer, String>());
+            setFrequentadores(new HashMap<>());
+            setAdministradores(new HashMap<>());
+            setMapaIdFotosFrequentadores(new HashMap<>());
             int total = 0;
             if (frequentadores.length > 0 && !frequentadores[0].isEmpty()) {
                 for (int i = 0; i < frequentadores.length; i++) {
@@ -109,7 +109,7 @@ public class DadosFrequentadores  {
             try {
                 ArquivoUtils.saveMapOnFile(getFrequentadores(), new File(LocalPaths.PATH_DATA,"f"));
 //                saveMapOnFile(getAdministradores(), LocalPaths.PATH_DATA + "a");
-                ArquivoUtils.saveMapOnFile(new HashMap<Integer, String>(), new File(LocalPaths.PATH_DATA,"a"));
+                ArquivoUtils.saveMapOnFile(new HashMap<>(), new File(LocalPaths.PATH_DATA,"a"));
                 ArquivoUtils.saveMapOnFile(getmapaIdFotosFrequentadores(), new File(LocalPaths.PATH_DATA,"fotos"));
             } catch (Exception e) {
                 LogAplicacao.e("Não foi possível salvar os dados");
@@ -139,37 +139,27 @@ public class DadosFrequentadores  {
             }
         };
 
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-
-            @Override
-            public void handle(WorkerStateEvent t) {
-                CacheDownloadService downloads = new CacheDownloadService(getmapaIdFotosFrequentadores());
-                Thread novo = new Thread(downloads);
-                downloads.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-
-                    @Override
-                    public void handle(WorkerStateEvent t) {
-                        The.inserirJavascript(TelaPonto.INSTANCE.getWebEngine(), "aguardarDigital();");
-                        MainController.INSTANCE.reiniciarCapturaDigital();
-                        TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.999);
-                        TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
-                        TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
-                        TelaPonto.INSTANCE.getProgressBar().setVisible(false);
-                        TelaPonto.INSTANCE.getLabelProgressBar().setVisible(false);
-                    }
-
-                });
-                TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.5);
+        task.setOnSucceeded(t -> {
+            CacheDownloadService downloads = new CacheDownloadService(getmapaIdFotosFrequentadores());
+            Thread novo = new Thread(downloads);
+            downloads.setOnSucceeded(t1 -> {
+                The.inserirJavascript(TelaPonto.INSTANCE.getWebEngine(), "aguardarDigital();");
+                MainController.INSTANCE.reiniciarCapturaDigital();
+                TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.999);
                 TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
                 TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
-                TelaPonto.INSTANCE.getProgressBar().setVisible(true);
-                TelaPonto.INSTANCE.getLabelProgressBar().setVisible(true);
+                TelaPonto.INSTANCE.getProgressBar().setVisible(false);
+                TelaPonto.INSTANCE.getLabelProgressBar().setVisible(false);
+            });
+            TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.5);
+            TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
+            TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
+            TelaPonto.INSTANCE.getProgressBar().setVisible(true);
+            TelaPonto.INSTANCE.getLabelProgressBar().setVisible(true);
 
-                novo.start();
-                TelaPonto.INSTANCE.getProgressBar().progressProperty().bind(downloads.progressProperty());
-                TelaPonto.INSTANCE.getLabelProgressBar().textProperty().bind(downloads.messageProperty());
-            }
-
+            novo.start();
+            TelaPonto.INSTANCE.getProgressBar().progressProperty().bind(downloads.progressProperty());
+            TelaPonto.INSTANCE.getLabelProgressBar().textProperty().bind(downloads.messageProperty());
         });
 
         new Thread(task).start();
