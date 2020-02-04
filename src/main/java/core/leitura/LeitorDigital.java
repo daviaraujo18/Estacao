@@ -7,6 +7,7 @@ import com.nitgen.SDK.BSP.NBioBSPJNI.WINDOW_OPTION;
 import core.Configuracoes;
 import core.LocalPaths;
 import exception.BiometricException;
+import javafx.scene.control.Alert;
 import utils.LogAplicacao;
 
 import java.lang.reflect.Field;
@@ -359,6 +360,12 @@ public class LeitorDigital {
         } catch (BiometricException e) {
             LogAplicacao.e(e);
             fecharLeitor();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Não foi possível encontrar o dispositivo de leitura de digital. Verifique se o mesmo está conectado e reinicie a aplicação.");
+            alert.setTitle("TJPI - Estação Ponto");
+            alert.setHeaderText("Erro ao iniciar a estação de ponto");
+            alert.showAndWait();
+
             System.exit(0);
         }
     }
