@@ -6,6 +6,8 @@ import core.LocalPaths;
 import core.RegistroWindows;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -71,6 +73,13 @@ public class ChangeUrlListener implements ChangeListener<Object> {
 //                    LogAplicacao.i("Entrei no metodo");
                     String codigos = null;
                     try {
+
+                        // Limpando cookies do antigo acesso ao intranet
+                        CookieManager manager = new CookieManager();
+                        CookieHandler.setDefault(manager);
+                        manager.getCookieStore().removeAll();
+
+
                         codigos = IntranetURLs.getCodigos();
                         String url = IntranetURLs.INICIALIZAR_PONTO + codigos;
                         mudarUrlAtualPara(url);

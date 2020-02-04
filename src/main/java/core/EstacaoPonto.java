@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -55,14 +56,11 @@ public class EstacaoPonto extends Application{
      */
     @Override
     public void init() {
-        LogEstacao.i("Estação iniciada");
         try {
 
             LocalPaths.createDirs();
 
             LocalPaths.checarArquivos();
-
-            LeitorDigital.getInstance().check();
 
             IntranetURLs.init();
 
@@ -96,6 +94,9 @@ public class EstacaoPonto extends Application{
 
     @Override
     public void start(Stage palco) throws Exception {
+
+        LeitorDigital.getInstance().check();
+
         Parent root = FXMLLoader.load(getClass().getResource("/Main.fxml"));
 
         this.stage = palco;
@@ -130,6 +131,8 @@ public class EstacaoPonto extends Application{
         });
 
         stage.show();
+
+        LogEstacao.i("Estação iniciada");
     }
 
     public static void main(String... args){
