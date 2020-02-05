@@ -3,6 +3,7 @@ package core;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import utils.LogAplicacao;
 import utils.LogEstacao;
 
 import java.io.BufferedReader;
@@ -33,17 +34,15 @@ public class VivoOuMortoService extends Service<Boolean>  {
 
 				String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
 				String versao = EstacaoPonto.versao;
-				String arquivosDeLog = getNameLogs(10);
 				String estadoEstacao = "FUNCIONANDO";
 
 				try {
 
 					String codAtivacaoEncoded = URLEncoder.encode(codAtivacao,  java.nio.charset.StandardCharsets.UTF_8.toString());
-					String arquivosDeLogEncoded = URLEncoder.encode(arquivosDeLog,  java.nio.charset.StandardCharsets.UTF_8.toString());
 					String estadoEstacaoEncoded = URLEncoder.encode(estadoEstacao,  java.nio.charset.StandardCharsets.UTF_8.toString());
 					String versaoEncoded = URLEncoder.encode(versao,  java.nio.charset.StandardCharsets.UTF_8.toString());
 
-					String urlParameters = "?codAtivacao=" + codAtivacaoEncoded + "&versao=" + versaoEncoded + "&estadoEstacao=" + estadoEstacaoEncoded + "&arquivosDeLog=" + arquivosDeLogEncoded;
+					String urlParameters = "?codAtivacao=" + codAtivacaoEncoded + "&versao=" + versaoEncoded + "&estadoEstacao=" + estadoEstacaoEncoded;
 
 					urlString = urlString + urlParameters;
 
@@ -64,6 +63,7 @@ public class VivoOuMortoService extends Service<Boolean>  {
 					while ((inputLine = in.readLine()) != null) {
 						response.append(inputLine);
 					}
+					LogAplicacao.i(response);
 					in.close();
 
 					return true;
@@ -81,46 +81,4 @@ public class VivoOuMortoService extends Service<Boolean>  {
 		};
 	}
 
-	public static String getNameLogs(int deTantosDiasAtras) {
-
-		deTantosDiasAtras = (-1) * (deTantosDiasAtras + 1);
-		String logsNames="";
-		File folder = new File(LocalPaths.PATH_LOG);
-
-		final Calendar xDiasAtrasCalendar = Calendar.getInstance();
-		xDiasAtrasCalendar.add(Calendar.DAY_OF_MONTH, deTantosDiasAtras);
-
-		if (folder.exists())
-		{
-			FilenameFilter fnf = new FilenameFilter() {
-				@Override
-				public boolean accept(File dir, String name) {
-
-					String[] partesString = name.split("_");
-					String dataBruta = partesString[2];
-
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-					try {
-						Date data = sdf.parse(dataBruta);
-
-						Calendar fileDate = (Calendar) xDiasAtrasCalendar.clone();
-						fileDate.setTime(data);
-
-						return !(fileDate.before(xDiasAtrasCalendar));
-
-					} catch (ParseException e) {
-						e.printStackTrace();
-						return true;
-					}
-				}
-			};
-
-			String[] listFiles = folder.list(fnf);
-
-			for (String fileNameString : listFiles) {
-				logsNames= fileNameString +" / "+logsNames;
-			}
-		}
-		return logsNames;
-	}
 }

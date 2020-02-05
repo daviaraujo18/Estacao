@@ -121,7 +121,7 @@ public enum Operacao {
     ATUALIZAR_RELOGIO_LOCAL("atualizarRelogioLocal"){
         @Override
         public void execute(String metodo, WebEngine engine){
-            LogAplicacao.i("Solicitando para atualizar relógio interno");
+//            LogAplicacao.i("Solicitando para atualizar relógio interno");
             if (MainController.INSTANCE.getThreadRelogio() != null) {
                 String horario = MainController.INSTANCE.getThreadRelogio().atualizarRelogio();
 
@@ -165,29 +165,6 @@ public enum Operacao {
             LogEstacao.i("Sincronizando");
         }
     },
-    SINCRONZIAR_AGORA("Sincronizar Agora"){
-
-        public void execute(String metodo, WebEngine engine){
-            LogEstacao.i("Sincronizando Agora");
-            final ConexaoIntranetService ci = new ConexaoIntranetService();
-            ci.setOnSucceeded(workerStateEvent -> {
-                Long resposta = ci.getValue();
-                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
-
-                    try {
-                        MainController.INSTANCE.iniciarSincronizacao();
-                    } catch (FileNotFoundException ex) {
-                        LogEstacao.e(ex);
-                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        LogEstacao.e(ex);
-                        Logger.getLogger(OnAlertListener.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            });
-            ci.start();
-        }
-    },
     VIVO_MORTO("deadOrAlive"){
 
         @Override
@@ -195,7 +172,8 @@ public enum Operacao {
             final ConexaoIntranetService ci = new ConexaoIntranetService();
             ci.setOnSucceeded(workerStateEvent -> {
                 Long resposta = ci.getValue();
-                if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
+                LogAplicacao.i(resposta);
+                if (!resposta.equals(ConexaoIntranetService.NAO_CONECTADO)) {
                     final VivoOuMortoService vivoOuMortoService = new VivoOuMortoService();
                     vivoOuMortoService.setOnSucceeded(workerStateEvent1 -> {
                         if (!vivoOuMortoService.getValue()) {
