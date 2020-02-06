@@ -123,10 +123,10 @@
         <app.version>1.0</app.version>
 
         <!-- Base URL where you will host the application artifacts -->
-        <app.url>http://www.tjpi.jus.br/intranet/init/stic/estacao/</app.url>
+        <app.url>http://www.tjpi.jus.br/intranet/uploads/presenca/ponto/</app.url>
 
         <!-- Optional scp target for application artifacts hosted at the above url -->
-        <app.deploy.target>intranet@10.254.0.6:www/init/stic/estacao/</app.deploy.target>
+        <app.deploy.target>intranet@10.254.0.6:/srv/www/lighttpd/intranet/uploads/presenca/ponto/</app.deploy.target>
 
         <!-- The app and launcher will be assembled in this folder -->
         <app.dir>${project.build.directory}/app</app.dir>
@@ -215,28 +215,6 @@
                             </arguments>
                         </configuration>
                     </execution>
-                    <!-- Optional step to include custom UI, see https://github.com/edvin/fxlauncher-custom-ui -->
-                    <!--<execution>-->
-                    <!--<id>embed-custom-ui-in-launcher</id>-->
-                    <!--<phase>package</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>exec</goal>-->
-                    <!--</goals>-->
-                    <!--<configuration>-->
-                    <!--<executable>jar</executable>-->
-                    <!--<workingDirectory>${app.dir}</workingDirectory>-->
-                    <!--<arguments>-->
-                    <!--<argument>uf</argument>-->
-                    <!--<argument>fxlauncher.jar</argument>-->
-                    <!--<argument>-C</argument>-->
-                    <!--<argument>${project.basedir}/../fxlauncher-custom-ui/target/classes</argument>-->
-                    <!--<argument>.</argument>-->
-                    <!--</arguments>-->
-                    <!--</configuration>-->
-                    <!--</execution>-->
-                    <!-- Create native installer. Feel free to add more arguments as needed.
-                     https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javapackager.html
-                     -->
                     <execution>
                         <id>installer</id>
                         <phase>install</phase>
@@ -281,9 +259,9 @@
                             <arguments>
                                 <!--<argument>-scp</argument>-->
                                 <argument>-P</argument>
-                                <argument>41442</argument>
+                                <argument>${env.INTRANET_SERVER_PORT}</argument>
                                 <argument>-pw</argument>
-                                <argument>intranet!@#info</argument>
+                                <argument>${env.INTRANET_SERVER_PASSWORD}</argument>
                                 <argument>-r</argument>
                                 <argument>target\app\*</argument>
                                 <argument>${app.deploy.target}</argument>
