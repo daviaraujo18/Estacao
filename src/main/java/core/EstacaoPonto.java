@@ -62,6 +62,8 @@ public class EstacaoPonto extends Application{
 
             LocalPaths.checarArquivos();
 
+            LocalPaths.moverDiretorioAntigo();
+
             IntranetURLs.init();
 
             ScriptsBat.init();

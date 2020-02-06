@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import utils.ArquivoUtils;
 import utils.LogAplicacao;
 
@@ -62,4 +63,24 @@ public class LocalPaths {
 
     }
 
+    public static void moverDiretorioAntigo() {
+        String antigo = "C:/Estacao";
+        File dirAntigo = new File(antigo);
+
+        LogAplicacao.i("Iniciando");
+        if (dirAntigo.isDirectory() && dirAntigo.exists()) {
+
+            String novo = APP_DIR + "\\old";
+            File dirNovo = new File(novo);
+
+            try {
+                LogAplicacao.i("============ movendo diretorio antigo =============");
+                FileUtils.moveDirectory(dirAntigo, dirNovo);
+            } catch (IOException e) {
+                LogAplicacao.e("Nao foi possivel mover diretorio antigo");
+                LogAplicacao.e(e.getMessage());
+            }
+
+        }
+    }
 }
