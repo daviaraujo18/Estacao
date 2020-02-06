@@ -1,2 +1,0 @@
-Para compilar corretamente as classes de exemplo do pacote leitordigital 'e necess'ario
-adicionar ao projeto a biblioteca(extensao) Layout Swing que vem junto com o NetBeans
