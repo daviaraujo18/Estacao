@@ -30,7 +30,7 @@ public class ThreadRelogio extends Service<String> {
         Calendar dt = Calendar.getInstance();
         dt.setTime(dtServidorInicial.getTime());
         this.dataServidorInicial = dt;
-        this.dataServidorAtual = dtServidorInicial;
+        this.dataServidorAtual = dtServidorInicial ;
         this.tempoNanoServidorLigado = System.nanoTime();
         this.ultimaSincronizacao = dt;
         inicializaDiasDaSemana();
