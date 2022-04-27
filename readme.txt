@@ -82,3 +82,8 @@ Plugue o leitor apenas quando solicitado
     utilize System.getProperty("java.library.path") para saber os diretórios reconhecidos como path
     e coloque os arquivos copiados para system32 (indicado nos passos) em algum deles.
 
+
+15.
+mvn install:install-file -DgroupId=br.jus.tjpi -DartifactId=jna -Dversion=0.1-nitgen     -Dpackaging=jar  -Dfile=jna.jar  -DgeneratePom=true
+
+download pscp.exe e colocar no PATH para fazer deploy no intranet via maven

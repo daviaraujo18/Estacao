@@ -52,7 +52,7 @@ public class LocalPaths {
             LogAplicacao.i("Criando config.properties");
             StringBuilder sb = new StringBuilder("");
             sb.append("app_name=ESTACAOPONTO\n" +
-                    "base_intranet_url=http://www.tjpi.jus.br/intranet\n" +
+                    "base_intranet_url=https://www.tjpi.jus.br/intranet\n" +
                     "tela_cheia=true\n" +
                     "bloqueio_tela=false\n" +
                     "# 1-9\n" +

@@ -123,7 +123,7 @@
         <app.version>1.0</app.version>
 
         <!-- Base URL where you will host the application artifacts -->
-        <app.url>http://www.tjpi.jus.br/intranet/uploads/presenca/ponto/</app.url>
+        <app.url>https://www.tjpi.jus.br/intranet/uploads/presenca/ponto/</app.url>
 
         <!-- Optional scp target for application artifacts hosted at the above url -->
         <app.deploy.target>intranet@10.254.0.6:/srv/www/lighttpd/intranet/uploads/presenca/ponto/</app.deploy.target>
