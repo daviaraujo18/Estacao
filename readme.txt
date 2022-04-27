@@ -87,3 +87,7 @@ Plugue o leitor apenas quando solicitado
 mvn install:install-file -DgroupId=br.jus.tjpi -DartifactId=jna -Dversion=0.1-nitgen     -Dpackaging=jar  -Dfile=jna.jar  -DgeneratePom=true
 
 download pscp.exe e colocar no PATH para fazer deploy no intranet via maven
+
+16. Maven run configs
+    clean package - build o projeto
+    exec:exec@deploy-app - deploy jars para o intranet
