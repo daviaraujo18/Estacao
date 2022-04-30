@@ -36,9 +36,7 @@ public class EstacaoPonto extends Application{
 
     private Stage stage;
     private static EstacaoPonto INSTANCE;
-    public final static String versao = "1.0";
-    //   public final static String ambiente = "desenvolvimento"; //local
-//    public final static String ambiente = "teste"; //3.6 Descomentar para apontar para a base de teste e modificar o config.properties
+    public final static String versao = "1.1";
     public final static String ambiente = "producao"; //0.6
 
     public EstacaoPonto(){
@@ -67,12 +65,6 @@ public class EstacaoPonto extends Application{
             IntranetURLs.init();
 
             ScriptsBat.init();
-
-//            String base_intranet_url = Configuracoes.base_intranet_url.get();
-//            if (!base_intranet_url.equals("http://www.tjpi.jus.br/intranet")) {
-//                GerarConfig.init();
-//                ScriptsBat.restartAplicacao(false);
-//            }
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -31,6 +31,7 @@ public class ConexaoIntranetService extends Service<Long> {
                     LogAplicacao.e("Não foi possível comunicação com Intranet - TIMEOUT");
                     return NAO_CONECTADO;
                 } catch (Exception e) {
+                    LogAplicacao.e(e.getMessage());
                     LogAplicacao.e("Não foi possível comunicação com Intranet");
                     return NAO_CONECTADO;
                 }
