@@ -43,6 +43,7 @@ public class DownloadFrequentadoresService extends Service<String> {
                     System.exit(0);
                     return "";
                 } catch(Exception e) {
+                    e.printStackTrace();
                     LogAplicacao.e(e.getMessage());
                     LogAplicacao.e("Erro ao baixar digitais, reiniciando aplicacao...");
                     ScriptsBat.restartAplicacao(true);

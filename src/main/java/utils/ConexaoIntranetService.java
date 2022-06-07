@@ -1,8 +1,10 @@
 package utils;
 
 import core.Configuracoes;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import sun.security.validator.ValidatorException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,7 +61,7 @@ public class ConexaoIntranetService extends Service<Long> {
         return horarioEmMillis;
     }
 
-    public static boolean isConectado() {
+    public static boolean isConectado() throws IOException {
         try {
 
             horarioIntranetInMillis();
@@ -67,6 +69,13 @@ public class ConexaoIntranetService extends Service<Long> {
             return true;
         } catch(SocketTimeoutException e) {
             LogAplicacao.e("Não foi possível comunicação com Intranet - TIMEOUT");
+            return false;
+        } catch (ValidatorException e) {
+            e.printStackTrace();
+            LogAplicacao.e("ERRO: REINICIANDO APLICAÇÃO!");
+            ScriptsBat.restartAplicacao(true);
+            Platform.exit();
+            System.exit(0);
             return false;
         } catch (Exception e) {
             LogAplicacao.e("Não foi possível comunicação com Intranet");
