@@ -1,0 +1,9 @@
+# .dockerignore — arquivos/diretorios ignorados no contexto de build do Docker
+target/
+.git/
+*.iml
+.idea/
+logs/
+log/
+config.properties
+outros/res/downloads/

@@ -308,5 +308,90 @@
         </plugins>
     </build>
 
+    <!--
+        Perfis de build.
+
+        dev (ativo por padrao):
+            Apenas compila e empacota o JAR. Pula os executions do
+            exec-maven-plugin que dependem de ferramentas Windows-only
+            (javapackager, pscp) e do fxlauncher, permitindo o build no
+            Linux/Docker. Os executions sao "desligados" sobrescrevendo a
+            phase para 'none'.
+
+        release:
+            Ativa os executions do fxlauncher e do instalador nativo
+            (javapackager). Use em Windows com: mvn package -P !dev,release
+            ou mvn install -P !dev,release
+    -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <executions>
+                            <execution>
+                                <id>create-manifest</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>embed-manifest-in-launcher</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>installer</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>deploy-app</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <executions>
+                            <execution>
+                                <id>create-manifest</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>embed-manifest-in-launcher</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>installer</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

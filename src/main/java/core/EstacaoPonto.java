@@ -132,17 +132,27 @@ public class EstacaoPonto extends Application{
     }
 
     static {
-        try {
-            // Setando variavel de sistema para log4j salvar os arquivos de log em LOCALAPPDATA
-            System.setProperty("app.root", LocalPaths.APP_DIR);
-            System.loadLibrary("NBioBSP");
-            System.loadLibrary("NBioBSPCOM");
-            System.loadLibrary("NBioBSPJNI");
-            System.loadLibrary("ICE_JNIRegistry");
-        } catch (UnsatisfiedLinkError  e) {
-            System.out.println(e.getMessage());
-            System.out.println("Não foi possível encontrar as DLLs compatíveis com o sistema operacional");
-            System.exit(0);
+        // Setando variavel de sistema para log4j salvar os arquivos de log em LOCALAPPDATA
+        System.setProperty("app.root", LocalPaths.APP_DIR);
+        // As bibliotecas nativas (NBioBSP*, ICE_JNIRegistry) sao DLLs Windows-only.
+        // Em Linux/outras plataformas elas nao existem: carrega-las apenas em Windows
+        // e, em caso de falha, registrar o erro sem abortar a aplicacao (permite
+        // desenvolvimento/testes da UI e da logica nao-biometrica em Linux).
+        if (OSVerifier.isWindows()) {
+            try {
+                System.loadLibrary("NBioBSP");
+                System.loadLibrary("NBioBSPCOM");
+                System.loadLibrary("NBioBSPJNI");
+                System.loadLibrary("ICE_JNIRegistry");
+            } catch (UnsatisfiedLinkError e) {
+                System.out.println(e.getMessage());
+                System.out.println("Não foi possível encontrar as DLLs compatíveis com o sistema operacional");
+                System.exit(0);
+            }
+        } else {
+            System.out.println("[EstacaoPonto] Bibliotecas nativas (biometria/registro) nao carregadas: "
+                    + "sistema operacional nao suportado. Funcionalidades de biometria e registro do "
+                    + "Windows ficarao indisponiveis.");
         }
     }
 

@@ -14,6 +14,11 @@ public class RegistroWindows {
 	public static final String KEY_REGISTRO = "SOFTWARE\\TJPIEstacaoPonto";
 
 	public static final String  getInstallDir() {
+		// O Registro do Windows nao existe em Linux/Mac. Retorna string vazia
+		// para evitar erros na inicializacao estatica de LocalPaths.
+		if (!OSVerifier.isWindows()) {
+			return "";
+		}
 		String installDir = "";
 		try {
 			installDir = WinRegistry.readString(
@@ -25,6 +30,10 @@ public class RegistroWindows {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			// Em Linux, os metodos de reflexao do WinRegistry nao existem,
+			// entao capturamos qualquer Throwable aqui tambem.
+			LogAplicacao.e("Registro do Windows indisponivel neste sistema operacional");
 		}
 		return installDir;
 	}

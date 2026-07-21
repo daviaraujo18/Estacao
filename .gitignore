@@ -5,3 +5,6 @@ log
 *.iml
 *.bat
 config.properties
+*.rar
+*.zip
+target/

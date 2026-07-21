@@ -20,13 +20,32 @@ import utils.LogAplicacao;
  */
 public class LocalPaths {
 
-    public static  final String APP_DIR = Paths.get(System.getProperty("user.home")).resolve("AppData").resolve("Local").resolve("TJPI").resolve("EstacaoPonto").toString();
+    public static  final String APP_DIR = resolveAppDir();
     public static final String INSTALL_DIR = RegistroWindows.getInstallDir();
 
-    public static final String PATH_REGISTROS = APP_DIR+"\\";
-    public static final String PATH_LOG = APP_DIR+"\\log\\";
-    public static final String PATH_DATA = APP_DIR+"\\data\\";
-    public static final String PATH_CACHE = PATH_DATA+"\\imgs\\";
+    public static final String PATH_REGISTROS = APP_DIR + File.separator;
+    public static final String PATH_LOG = APP_DIR + File.separator + "log" + File.separator;
+    public static final String PATH_DATA = APP_DIR + File.separator + "data" + File.separator;
+    public static final String PATH_CACHE = PATH_DATA + "imgs" + File.separator;
+
+    /**
+     * Retorna o diretorio base da aplicacao de acordo com o sistema operacional:
+     *   Windows: %USERPROFILE%\AppData\Local\TJPI\EstacaoPonto
+     *   Linux:   ~/.local/share/TJPI/EstacaoPonto
+     */
+    private static String resolveAppDir() {
+        java.nio.file.Path base;
+        if (OSVerifier.isWindows()) {
+            base = Paths.get(System.getProperty("user.home"))
+                    .resolve("AppData").resolve("Local")
+                    .resolve("TJPI").resolve("EstacaoPonto");
+        } else {
+            base = Paths.get(System.getProperty("user.home"))
+                    .resolve(".local").resolve("share")
+                    .resolve("TJPI").resolve("EstacaoPonto");
+        }
+        return base.toString();
+    }
 
     public static void createDirs() {
         java.io.File appDir = new java.io.File(LocalPaths.APP_DIR);
@@ -64,13 +83,18 @@ public class LocalPaths {
     }
 
     public static void moverDiretorioAntigo() {
+        // A migracao do diretorio antigo (C:/Estacao) so faz sentido em Windows.
+        if (!OSVerifier.isWindows()) {
+            return;
+        }
+
         String antigo = "C:/Estacao";
         File dirAntigo = new File(antigo);
 
         LogAplicacao.i("Iniciando");
         if (dirAntigo.isDirectory() && dirAntigo.exists()) {
 
-            String novo = APP_DIR + "\\old";
+            String novo = APP_DIR + File.separator + "old";
             File dirNovo = new File(novo);
 
             try {

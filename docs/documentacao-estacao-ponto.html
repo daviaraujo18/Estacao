@@ -1,0 +1,4619 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Documentação Completa — Estação Ponto de Presença (Desktop)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+  /* Estilos gerais */
+  :root {
+    --color-primary: #1e3a5f;
+    --color-accent: #2c7be5;
+    --color-bg: #ffffff;
+    --color-bg-alt: #f5f7fa;
+    --color-text: #2d3748;
+    --color-border: #e2e8f0;
+    --color-code-bg: #f7fafc;
+    --color-code-text: #2d3748;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    scroll-behavior: smooth;
+  }
+
+  /* Layout principal com sidebar fixa */
+  body {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: 100vh;
+  }
+
+  /* Sidebar / Sumário */
+  nav#TOC {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 24px 20px;
+    background-color: var(--color-bg-alt);
+    border-right: 1px solid var(--color-border);
+    font-size: 13.5px;
+  }
+
+  nav#TOC::before {
+    content: "Sumário";
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  nav#TOC ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  nav#TOC ul ul {
+    list-style: none;
+    padding-left: 14px;
+    margin: 2px 0 6px 0;
+  }
+
+  nav#TOC li {
+    margin: 2px 0;
+  }
+
+  nav#TOC a {
+    color: var(--color-text);
+    text-decoration: none;
+    display: block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+    border-bottom: none;
+  }
+
+  nav#TOC a:hover {
+    background-color: var(--color-accent);
+    color: white;
+  }
+
+  /* Conteúdo principal */
+  main {
+    padding: 40px 56px 80px 56px;
+    max-width: 1100px;
+  }
+
+  /* Cabeçalho do documento */
+  header.title-block {
+    border-bottom: 3px solid var(--color-primary);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+
+  header.title-block h1.title {
+    color: var(--color-primary);
+    margin: 0 0 8px 0;
+    font-size: 32px;
+    font-weight: 700;
+    border: none;
+    padding: 0;
+  }
+
+  header.title-block p.subtitle {
+    color: #718096;
+    font-size: 15px;
+    margin: 4px 0;
+  }
+
+  header.title-block .meta {
+    background-color: var(--color-bg-alt);
+    border-left: 4px solid var(--color-accent);
+    padding: 12px 16px;
+    margin-top: 16px;
+    font-size: 13.5px;
+    border-radius: 4px;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-primary);
+    font-weight: 600;
+    line-height: 1.25;
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+    scroll-margin-top: 20px;
+  }
+
+  h1 {
+    font-size: 28px;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 24px;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 6px;
+    margin-top: 2.4em;
+  }
+
+  h3 { font-size: 19px; }
+  h4 { font-size: 16px; color: #2d3748; }
+  h5 { font-size: 14px; color: #4a5568; }
+  h6 { font-size: 13px; color: #718096; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Parágrafos e texto */
+  p { margin: 0.8em 0; }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+
+  a:hover { border-bottom-color: var(--color-accent); }
+
+  strong { color: var(--color-primary); font-weight: 600; }
+
+  /* Blockquote */
+  blockquote {
+    margin: 1.2em 0;
+    padding: 10px 18px;
+    border-left: 4px solid var(--color-accent);
+    background-color: var(--color-bg-alt);
+    color: #4a5568;
+    border-radius: 0 4px 4px 0;
+  }
+
+  blockquote p { margin: 0.4em 0; }
+
+  /* Listas */
+  ul, ol { padding-left: 24px; margin: 0.6em 0; }
+  li { margin: 0.25em 0; }
+  li > ul, li > ol { margin: 0.25em 0; }
+
+  /* Tabelas */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2em 0;
+    font-size: 13.5px;
+    box-shadow: var(--shadow-sm);
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+    overflow-x: auto;
+  }
+
+  thead {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  th, td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  th { font-weight: 600; }
+  tbody tr:nth-child(even) { background-color: var(--color-bg-alt); }
+  tbody tr:hover { background-color: #edf2f7; }
+
+  /* Código inline */
+  code {
+    font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 0.88em;
+    background-color: var(--color-code-bg);
+    color: var(--color-code-text);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* Bloco de código (não-mermaid) */
+  pre {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    padding: 16px 18px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1.2em 0;
+    box-shadow: var(--shadow-md);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+  }
+
+  /* Mermaid */
+  pre.mermaid, div.mermaid {
+    background-color: white;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 16px;
+    margin: 1.5em 0;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    overflow: auto;
+  }
+
+  pre.mermaid code {
+    background: none;
+    color: transparent;
+    border: none;
+    padding: 0;
+    display: none;
+  }
+
+  /* Linha horizontal */
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 2.5em 0;
+  }
+
+  /* Responsivo */
+  @media (max-width: 1024px) {
+    body {
+      display: block;
+      grid-template-columns: 1fr;
+    }
+    nav#TOC {
+      position: relative;
+      height: auto;
+      max-height: 400px;
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+    }
+    main { padding: 24px 20px 60px 20px; }
+  }
+
+  /* Print */
+  @media print {
+    nav#TOC { display: none; }
+    body { display: block; }
+    main { padding: 0; }
+    pre, table { page-break-inside: avoid; }
+    h1, h2 { page-break-after: avoid; }
+    pre { background-color: #f7fafc; color: #2d3748; border: 1px solid #e2e8f0; }
+  }
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Documentação Completa — Estação Ponto de Presença
+(Desktop)</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#documentação-completa-estação-ponto-de-presença-desktop"
+id="toc-documentação-completa-estação-ponto-de-presença-desktop">Documentação
+Completa — Estação Ponto de Presença (Desktop)</a>
+<ul>
+<li><a href="#sumário" id="toc-sumário">Sumário</a></li>
+<li><a href="#etapa-1-entendimento-da-arquitetura"
+id="toc-etapa-1-entendimento-da-arquitetura">ETAPA 1 — Entendimento da
+Arquitetura</a>
+<ul>
+<li><a href="#padrão-arquitetural" id="toc-padrão-arquitetural">1.1
+Padrão Arquitetural</a></li>
+<li><a href="#organização-de-pastas" id="toc-organização-de-pastas">1.2
+Organização de Pastas</a></li>
+<li><a href="#responsabilidades-de-cada-camada"
+id="toc-responsabilidades-de-cada-camada">1.3 Responsabilidades de Cada
+Camada</a></li>
+<li><a href="#fluxo-completo-de-execução"
+id="toc-fluxo-completo-de-execução">1.4 Fluxo Completo de
+Execução</a></li>
+<li><a href="#dependências-entre-módulos"
+id="toc-dependências-entre-módulos">1.5 Dependências Entre
+Módulos</a></li>
+<li><a href="#gems-bibliotecas-utilizadas-java"
+id="toc-gems-bibliotecas-utilizadas-java">1.6 Gems / Bibliotecas
+Utilizadas (Java)</a></li>
+<li><a href="#javascript-frontend-inside-webview"
+id="toc-javascript-frontend-inside-webview">1.7 JavaScript / Frontend
+(Inside WebView)</a></li>
+<li><a href="#serviços-externos" id="toc-serviços-externos">1.8 Serviços
+Externos</a></li>
+<li><a href="#componentes-compartilhados"
+id="toc-componentes-compartilhados">1.9 Componentes
+Compartilhados</a></li>
+<li><a href="#concerns-callbacks-observers-workers-jobs"
+id="toc-concerns-callbacks-observers-workers-jobs">1.10 Concerns /
+Callbacks / Observers / Workers / Jobs</a></li>
+<li><a href="#cache" id="toc-cache">1.11 Cache</a></li>
+<li><a href="#autenticação-e-autorização"
+id="toc-autenticação-e-autorização">1.12 Autenticação e
+Autorização</a></li>
+<li><a href="#auditoria" id="toc-auditoria">1.13 Auditoria</a></li>
+<li><a href="#integração-com-a-intranet"
+id="toc-integração-com-a-intranet">1.14 Integração com a
+Intranet</a></li>
+</ul></li>
+<li><a href="#etapa-2-domínio-do-negócio"
+id="toc-etapa-2-domínio-do-negócio">ETAPA 2 — Domínio do Negócio</a>
+<ul>
+<li><a href="#objetivo-do-módulo" id="toc-objetivo-do-módulo">2.1
+Objetivo do Módulo</a></li>
+<li><a href="#problema-que-resolve" id="toc-problema-que-resolve">2.2
+Problema que Resolve</a></li>
+<li><a href="#regras-de-negócio" id="toc-regras-de-negócio">2.3 Regras
+de Negócio</a></li>
+<li><a href="#conceitos-importantes" id="toc-conceitos-importantes">2.4
+Conceitos Importantes</a></li>
+<li><a href="#entidades-do-domínio" id="toc-entidades-do-domínio">2.5
+Entidades do Domínio</a></li>
+<li><a href="#atores-envolvidos" id="toc-atores-envolvidos">2.6 Atores
+Envolvidos</a></li>
+<li><a href="#estados-existentes" id="toc-estados-existentes">2.7
+Estados Existentes</a></li>
+<li><a href="#eventos-de-domínio" id="toc-eventos-de-domínio">2.8
+Eventos de Domínio</a></li>
+</ul></li>
+<li><a href="#etapa-3-levantamento-das-funcionalidades"
+id="toc-etapa-3-levantamento-das-funcionalidades">ETAPA 3 — Levantamento
+das Funcionalidades</a>
+<ul>
+<li><a href="#mapa-geral-de-funcionalidades"
+id="toc-mapa-geral-de-funcionalidades">3.1 Mapa Geral de
+Funcionalidades</a></li>
+<li><a href="#funcionalidades-detalhadas"
+id="toc-funcionalidades-detalhadas">3.2 Funcionalidades
+Detalhadas</a></li>
+</ul></li>
+<li><a href="#etapa-4-casos-de-uso" id="toc-etapa-4-casos-de-uso">ETAPA
+4 — Casos de Uso</a>
+<ul>
+<li><a href="#diagrama-uml-de-casos-de-uso"
+id="toc-diagrama-uml-de-casos-de-uso">4.1 Diagrama UML de Casos de
+Uso</a></li>
+<li><a href="#casos-de-uso-detalhados"
+id="toc-casos-de-uso-detalhados">4.2 Casos de Uso Detalhados</a></li>
+</ul></li>
+<li><a href="#etapa-5-modelagem-uml"
+id="toc-etapa-5-modelagem-uml">ETAPA 5 — Modelagem UML</a>
+<ul>
+<li><a href="#diagrama-de-classes-simplificado"
+id="toc-diagrama-de-classes-simplificado">5.1 Diagrama de Classes
+(Simplificado)</a></li>
+<li><a href="#diagrama-de-sequência-registrar-batida-biometria"
+id="toc-diagrama-de-sequência-registrar-batida-biometria">5.2 Diagrama
+de Sequência — Registrar Batida (Biometria)</a></li>
+<li><a href="#diagrama-de-estados-leitura-biométrica"
+id="toc-diagrama-de-estados-leitura-biométrica">5.3 Diagrama de Estados
+— Leitura Biométrica</a></li>
+<li><a href="#diagrama-de-componentes"
+id="toc-diagrama-de-componentes">5.4 Diagrama de Componentes</a></li>
+<li><a href="#diagrama-de-pacotes" id="toc-diagrama-de-pacotes">5.5
+Diagrama de Pacotes</a></li>
+</ul></li>
+<li><a href="#etapa-6-banco-de-dados"
+id="toc-etapa-6-banco-de-dados">ETAPA 6 — Banco de Dados</a>
+<ul>
+<li><a href="#diagrama-entidade-relacionamento-conceitual"
+id="toc-diagrama-entidade-relacionamento-conceitual">6.1 Diagrama
+Entidade-Relacionamento (Conceitual)</a></li>
+<li><a href="#observações-sobre-persistência"
+id="toc-observações-sobre-persistência">6.2 Observações sobre
+Persistência</a></li>
+</ul></li>
+<li><a href="#etapa-7-fluxos-técnicos"
+id="toc-etapa-7-fluxos-técnicos">ETAPA 7 — Fluxos Técnicos</a>
+<ul>
+<li><a href="#fluxo-completo-batida-biométrica"
+id="toc-fluxo-completo-batida-biométrica">7.1 Fluxo Completo — Batida
+Biométrica</a></li>
+<li><a href="#fluxo-sincronização-de-registros"
+id="toc-fluxo-sincronização-de-registros">7.2 Fluxo — Sincronização de
+Registros</a></li>
+</ul></li>
+<li><a href="#etapa-8-segurança" id="toc-etapa-8-segurança">ETAPA 8 —
+Segurança</a>
+<ul>
+<li><a href="#autenticação" id="toc-autenticação">8.1
+Autenticação</a></li>
+<li><a href="#autorização" id="toc-autorização">8.2 Autorização</a></li>
+<li><a href="#proteções-identificadas"
+id="toc-proteções-identificadas">8.3 Proteções Identificadas</a></li>
+<li><a href="#vulnerabilidades-identificadas"
+id="toc-vulnerabilidades-identificadas">8.4 Vulnerabilidades
+Identificadas</a></li>
+</ul></li>
+<li><a href="#etapa-9-testes" id="toc-etapa-9-testes">ETAPA 9 —
+Testes</a>
+<ul>
+<li><a href="#testes-existentes" id="toc-testes-existentes">9.1 Testes
+Existentes</a></li>
+<li><a href="#funcionalidades-testadas-vs-não-testadas"
+id="toc-funcionalidades-testadas-vs-não-testadas">9.2 Funcionalidades
+Testadas vs Não Testadas</a></li>
+<li><a href="#cenários-faltantes-sugestões"
+id="toc-cenários-faltantes-sugestões">9.3 Cenários Faltantes
+(Sugestões)</a></li>
+</ul></li>
+<li><a href="#etapa-10-débitos-técnicos"
+id="toc-etapa-10-débitos-técnicos">ETAPA 10 — Débitos Técnicos</a>
+<ul>
+<li><a href="#violações-de-princípios"
+id="toc-violações-de-princípios">10.2 Violações de Princípios</a></li>
+</ul></li>
+<li><a href="#etapa-11-refatorações-sugeridas"
+id="toc-etapa-11-refatorações-sugeridas">ETAPA 11 — Refatorações
+Sugeridas</a>
+<ul>
+<li><a href="#prioridade-alta" id="toc-prioridade-alta">11.1 Prioridade
+Alta</a></li>
+<li><a href="#prioridade-média" id="toc-prioridade-média">11.2
+Prioridade Média</a></li>
+</ul></li>
+<li><a href="#etapa-12-documentação-da-api"
+id="toc-etapa-12-documentação-da-api">ETAPA 12 — Documentação da API</a>
+<ul>
+<li><a href="#get-presencavalidarfrequentador"
+id="toc-get-presencavalidarfrequentador"><code>GET /presenca/ValidarFrequentador</code></a></li>
+<li><a href="#get-presencaadicioneestacao"
+id="toc-get-presencaadicioneestacao"><code>GET /presenca/AdicioneEstacao</code></a></li>
+<li><a href="#get-presencadynfrequentadoresestacao"
+id="toc-get-presencadynfrequentadoresestacao"><code>GET /presenca/DynFrequentadoresEstacao/</code></a></li>
+<li><a href="#get-presencadynhashfrequentadoresestacao"
+id="toc-get-presencadynhashfrequentadoresestacao"><code>GET /presenca/DynHashFrequentadoresEstacao/</code></a></li>
+<li><a href="#get-presencacarregarelogioatual"
+id="toc-get-presencacarregarelogioatual"><code>GET /presenca/CarregaRelogioAtual</code></a></li>
+<li><a href="#get-presencaprediospermitidos"
+id="toc-get-presencaprediospermitidos"><code>GET /presenca/PrediosPermitidos/</code></a></li>
+</ul></li>
+<li><a href="#etapa-13-diagramas" id="toc-etapa-13-diagramas">ETAPA 13 —
+Diagramas</a>
+<ul>
+<li><a href="#fluxograma-fluxo-principal-da-estação"
+id="toc-fluxograma-fluxo-principal-da-estação">13.1 Fluxograma — Fluxo
+Principal da Estação</a></li>
+<li><a href="#fluxograma-registro-de-ponto"
+id="toc-fluxograma-registro-de-ponto">13.2 Fluxograma — Registro de
+Ponto</a></li>
+<li><a href="#diagrama-de-implantação"
+id="toc-diagrama-de-implantação">13.3 Diagrama de Implantação</a></li>
+</ul></li>
+<li><a href="#etapa-14-glossário" id="toc-etapa-14-glossário">ETAPA 14 —
+Glossário</a></li>
+<li><a href="#etapa-15-manual-do-desenvolvedor"
+id="toc-etapa-15-manual-do-desenvolvedor">ETAPA 15 — Manual do
+Desenvolvedor</a>
+<ul>
+<li><a href="#como-adicionar-uma-nova-funcionalidade"
+id="toc-como-adicionar-uma-nova-funcionalidade">15.1 Como Adicionar uma
+Nova Funcionalidade</a></li>
+<li><a href="#como-adicionar-um-novo-comando-javascript"
+id="toc-como-adicionar-um-novo-comando-javascript">15.2 Como Adicionar
+um Novo Comando JavaScript</a></li>
+<li><a href="#como-criar-um-novo-endpoint"
+id="toc-como-criar-um-novo-endpoint">15.3 Como Criar um Novo
+Endpoint</a></li>
+<li><a href="#como-fazer-o-build" id="toc-como-fazer-o-build">15.4 Como
+Fazer o Build</a></li>
+<li><a href="#padrões-a-seguir" id="toc-padrões-a-seguir">15.5 Padrões a
+Seguir</a></li>
+</ul></li>
+<li><a href="#etapa-16-manual-do-usuário"
+id="toc-etapa-16-manual-do-usuário">ETAPA 16 — Manual do Usuário</a>
+<ul>
+<li><a href="#iniciar-a-estação" id="toc-iniciar-a-estação">16.1 Iniciar
+a Estação</a></li>
+<li><a href="#bater-ponto-biometria" id="toc-bater-ponto-biometria">16.2
+Bater Ponto (Biometria)</a></li>
+<li><a href="#bater-ponto-login-manual"
+id="toc-bater-ponto-login-manual">16.3 Bater Ponto (Login
+Manual)</a></li>
+<li><a href="#cadastrar-digital" id="toc-cadastrar-digital">16.4
+Cadastrar Digital</a></li>
+</ul></li>
+<li><a href="#etapa-17-rastreabilidade"
+id="toc-etapa-17-rastreabilidade">ETAPA 17 — Rastreabilidade</a></li>
+<li><a href="#etapa-18-qualidade" id="toc-etapa-18-qualidade">ETAPA 18 —
+Qualidade</a></li>
+<li><a href="#etapa-19-relatório-executivo"
+id="toc-etapa-19-relatório-executivo">ETAPA 19 — Relatório Executivo</a>
+<ul>
+<li><a href="#resumo-do-módulo" id="toc-resumo-do-módulo">19.1 Resumo do
+Módulo</a></li>
+<li><a href="#métricas" id="toc-métricas">19.2 Métricas</a></li>
+<li><a href="#pontos-fortes" id="toc-pontos-fortes">19.3 Pontos
+Fortes</a></li>
+<li><a href="#pontos-fracos" id="toc-pontos-fracos">19.4 Pontos
+Fracos</a></li>
+<li><a href="#riscos" id="toc-riscos">19.5 Riscos</a></li>
+<li><a href="#sugestões-de-evolução" id="toc-sugestões-de-evolução">19.6
+Sugestões de Evolução</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<section id="documentação-completa-estação-ponto-de-presença-desktop"
+class="level1">
+<h1>Documentação Completa — Estação Ponto de Presença (Desktop)</h1>
+<blockquote>
+<p><strong>Versão do documento:</strong> 1.0<br />
+<strong>Data:</strong> Julho/2026<br />
+<strong>Escopo:</strong> Engenharia reversa completa da aplicação
+desktop <code>EstacaoPonto</code><br />
+<strong>Repositório:</strong> <code>estacaoPonto/</code><br />
+<strong>Versão do software:</strong> 1.2 (definida em
+<code>core/EstacaoPonto.java:25</code>)</p>
+</blockquote>
+<hr />
+<section id="sumário" class="level2">
+<h2>Sumário</h2>
+<ol type="1">
+<li><a href="#etapa-1--entendimento-da-arquitetura">Arquitetura</a></li>
+<li><a href="#etapa-2--domínio-do-negócio">Domínio do Negócio</a></li>
+<li><a
+href="#etapa-3--levantamento-das-funcionalidades">Funcionalidades</a></li>
+<li><a href="#etapa-4--casos-de-uso">Casos de Uso</a></li>
+<li><a href="#etapa-5--modelagem-uml">Modelagem UML</a></li>
+<li><a href="#etapa-6--banco-de-dados">Banco de Dados</a></li>
+<li><a href="#etapa-7--fluxos-técnicos">Fluxos Técnicos</a></li>
+<li><a href="#etapa-8--segurança">Segurança</a></li>
+<li><a href="#etapa-9--testes">Testes</a></li>
+<li><a href="#etapa-10--débitos-técnicos">Débitos Técnicos</a></li>
+<li><a href="#etapa-11--refatorações">Refatorações</a></li>
+<li><a href="#etapa-12--documentação-da-api">Documentação da
+API</a></li>
+<li><a href="#etapa-13--diagramas">Diagramas</a></li>
+<li><a href="#etapa-14--glossário">Glossário</a></li>
+<li><a href="#etapa-15--manual-do-desenvolvedor">Manual do
+Desenvolvedor</a></li>
+<li><a href="#etapa-16--manual-do-usuário">Manual do Usuário</a></li>
+<li><a href="#etapa-17--rastreabilidade">Rastreabilidade</a></li>
+<li><a href="#etapa-18--qualidade">Qualidade</a></li>
+<li><a href="#etapa-19--relatório-executivo">Relatório
+Executivo</a></li>
+</ol>
+<hr />
+</section>
+<section id="etapa-1-entendimento-da-arquitetura" class="level2">
+<h2>ETAPA 1 — Entendimento da Arquitetura</h2>
+<section id="padrão-arquitetural" class="level3">
+<h3>1.1 Padrão Arquitetural</h3>
+<p>A <strong>Estação Ponto de Presença</strong> é uma aplicação
+<strong>JavaFX Desktop standalone</strong> que segue uma arquitetura
+<strong>MVC simplificada</strong> com camadas de
+<strong>Controller</strong>, <strong>View (FXML + WebView)</strong>,
+<strong>Service (async)</strong>, <strong>Utils</strong> e
+<strong>Core</strong>.</p>
+<p><strong>Fonte:</strong> <code>core/EstacaoPonto.java</code> — classe
+<code>Application</code> JavaFX, <code>Main.fxml</code> — layout
+FXML</p>
+<p>A arquitetura geral da aplicação segue:</p>
+<pre><code>Inicialização (Application.launch)
+    ↓
+init() → Cria diretórios, carrega configurações, inicia KeyHook (bloqueio de teclas)
+    ↓
+start() → Carrega Main.fxml, configura tela cheia, exibe Stage
+    ↓
+MainController.initialize() → Inicializa TelaPonto (WebView + WebEngine), inicia PreProcessandoService (leitor biométrico)
+    ↓
+TelaPonto.initWebEngine() → Task de conexão: tenta conectar à Intranet, quando conectado carrega IniciarPonto.jsp
+    ↓
+WebEngine carrega páginas JSP da Intranet → interação usuário via HTML/JavaScript
+    ↓
+Eventos JavaScript → onAlert (OnAlertListener) → Operacao enum → executa ações (download digitais, batimento, sincronização)
+    ↓
+PreProcessandoService (thread separada) → captura digital → VerificacaoDigitalService → Leitura → JavaScript callback</code></pre>
+</section>
+<section id="organização-de-pastas" class="level3">
+<h3>1.2 Organização de Pastas</h3>
+<pre><code>estacaoPonto/
+├── pom.xml                              # Projeto Maven
+├── readme.txt                           # Manual de instalação/desenvolvimento
+├── outros/
+│   ├── icone.ico                        # Ícone da aplicação
+│   ├── Estação Ponto de Presença.aip    # Advanced Installer project (MSI)
+│   └── res/downloads/                   # Drivers biométricos
+├── src/
+│   └── main/
+│       ├── java/
+│       │   ├── core/
+│       │   │   ├── EstacaoPonto.java          # Main Application (launcher)
+│       │   │   ├── Configuracoes.java         # Configurações (config.properties)
+│       │   │   ├── IntranetURLs.java          # URLs da Intranet
+│       │   │   ├── LocalPaths.java            # Paths locais (AppData)
+│       │   │   ├── DadosFrequentadores.java   # Estrutura de dados dos frequentadores
+│       │   │   ├── DownloadFrequentadoresService.java  # Download de digitais
+│       │   │   ├── CacheDownloadService.java  # Cache de fotos
+│       │   │   ├── PrediosPermitidosService.java  # Prédios autorizados
+│       │   │   ├── ValidarBatidaManualService.java  # Validação login/senha
+│       │   │   ├── VivoOuMortoService.java    # Heartbeat da estação
+│       │   │   ├── OSVerifier.java            # Detecção de SO
+│       │   │   ├── jWMI.java                  # Bridge Java-WMI (serial BIOS/HD)
+│       │   │   └── RegistroWindows.java       # Leitura/escrita registro Windows
+│       │   ├── core/leitura/
+│       │   │   ├── Leitura.java               # Objeto de resultado de leitura
+│       │   │   ├── EventoLeitura.java         # Enum de eventos biométricos
+│       │   │   ├── Operacao.java              # Enum de operações (enum, não confundir)
+│       │   │   ├── LeitorDigital.java         # Interface Nitgen SDK (biometria)
+│       │   │   ├── VerificacaoDigitalService.java  # Service de verificação
+│       │   │   └── VerificacaoDigitalHandler.java   # Handler onSucceeded
+│       │   ├── controllers/
+│       │   │   ├── MainController.java        # Controller principal JavaFX
+│       │   │   ├── PreProcessandoHandler.java # Handler do service assíncrono
+│       │   │   └── ClickDesbloqueioTelaHandler.java  # Interface callback
+│       │   ├── view/
+│       │   │   ├── TelaPonto.java             # View principal (WebView + componentes)
+│       │   │   ├── BloqueioTela.java          # Controle de bloqueio de tela
+│       │   │   └── SoundService.java          # Efeitos sonoros
+│       │   ├── async/
+│       │   │   ├── PreProcessandoService.java # Service assíncrono de captura
+│       │   │   └── ThreadRelogio.java         # Relógio síncrono com servidor
+│       │   ├── listeners/
+│       │   │   ├── Operacao.java              # Operações disparadas por alerta JS
+│       │   │   ├── OnAlertListener.java       # Listener de alertas WebEngine
+│       │   │   └── ChangeUrlListener.java     # Listener de mudança de URL
+│       │   ├── exception/
+│       │   │   └── BiometricException.java    # Exceções biométricas
+│       │   └── utils/
+│       │       ├── CryptoUtils.java           # Criptografia DES/MD5
+│       │       ├── The.java                   # Utilitários diversos
+│       │       ├── Constantes.java            # Constantes (timeouts)
+│       │       ├── LogAplicacao.java          # Logger da aplicação
+│       │       ├── LogEstacao.java            # Logger da estação
+│       │       ├── ArquivoRegistros.java      # Arquivo de registros criptografado
+│       │       ├── ArquivoUtils.java          # IO utils
+│       │       ├── ConexaoIntranetService.java    # Verificação de conectividade
+│       │       ├── CacheManipulation.java     # Gerenciamento de cache de fotos
+│       │       ├── DownloadFoto.java          # Download de fotos
+│       │       ├── CalendarUtils.java         # Utilitários de calendário
+│       │       ├── ScriptsBat.java            # Scripts de restart
+│       │       ├── DebugUtil.java             # Debug (stack trace)
+│       │       ├── KeyHook.java               # Hook de teclado (JNA)
+│       │       └── WinRegistry.java           # Acesso ao registro Windows
+│       └── resources/
+│           ├── Main.fxml                      # Layout FXML
+│           ├── log4j2.xml                     # Configuração de logs
+│           ├── css/style.css                  # Estilos CSS
+│           ├── images/topo.png                # Imagem do topo (brasão TJPI)
+│           └── beep/
+│               ├── ok.mp3                     # Som de sucesso
+│               └── erro.mp3                   # Som de erro</code></pre>
+</section>
+<section id="responsabilidades-de-cada-camada" class="level3">
+<h3>1.3 Responsabilidades de Cada Camada</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 38%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>Camada</th>
+<th>Responsabilidade</th>
+<th>Arquivo de Exemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Application (Entry Point)</strong></td>
+<td>Inicializa aplicação JavaFX, carrega FXML, configura tela cheia</td>
+<td><code>core/EstacaoPonto.java</code></td>
+</tr>
+<tr>
+<td><strong>Controller</strong></td>
+<td>Gerencia elementos FXML, orquestra serviços e callbacks</td>
+<td><code>controllers/MainController.java</code></td>
+</tr>
+<tr>
+<td><strong>View</strong></td>
+<td>Componentes visuais JavaFX, WebView, progress bar, botões</td>
+<td><code>view/TelaPonto.java</code></td>
+</tr>
+<tr>
+<td><strong>FXML View</strong></td>
+<td>Layout declarativo (AnchorPane, SplitPane, WebView)</td>
+<td><code>resources/Main.fxml</code></td>
+</tr>
+<tr>
+<td><strong>Async Service</strong></td>
+<td>Execução em background (captura digital, download,
+sincronização)</td>
+<td><code>async/PreProcessandoService.java</code></td>
+</tr>
+<tr>
+<td><strong>Core</strong></td>
+<td>Lógica central (configurações, paths, URLs, dados)</td>
+<td><code>core/Configuracoes.java</code>,
+<code>core/IntranetURLs.java</code></td>
+</tr>
+<tr>
+<td><strong>Biometric Core</strong></td>
+<td>Interface com SDK Nitgen (leitor biométrico)</td>
+<td><code>core/leitura/LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td><strong>Listener</strong></td>
+<td>Eventos do WebEngine (alertas JS, mudança de URL)</td>
+<td><code>listeners/OnAlertListener.java</code></td>
+</tr>
+<tr>
+<td><strong>Utils</strong></td>
+<td>Utilitários (criptografia, IO, cache, log, registro Windows)</td>
+<td><code>utils/CryptoUtils.java</code>,
+<code>utils/LogAplicacao.java</code></td>
+</tr>
+<tr>
+<td><strong>Exception</strong></td>
+<td>Hierarquia de exceções biométricas</td>
+<td><code>exception/BiometricException.java</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="fluxo-completo-de-execução" class="level3">
+<h3>1.4 Fluxo Completo de Execução</h3>
+<ol type="1">
+<li><code>EstacaoPonto.main()</code> → <code>Application.launch()</code>
+(<code>core/EstacaoPonto.java:117-118</code>)</li>
+<li><strong>Bloco static</strong> carrega DLLs nativas:
+<code>NBioBSP</code>, <code>NBioBSPCOM</code>, <code>NBioBSPJNI</code>,
+<code>ICE_JNIRegistry</code>
+(<code>EstacaoPonto.java:122-129</code>)</li>
+<li><code>init()</code> (<code>EstacaoPonto.java:36-48</code>):
+<ul>
+<li><code>LocalPaths.createDirs()</code> — cria pastas
+<code>C:\Users\&lt;user&gt;\AppData\Local\TJPI\EstacaoPonto\{log,data,imgs}</code></li>
+<li><code>LocalPaths.checarArquivos()</code> — cria
+<code>config.properties</code> se não existir, cria <code>data.db</code>
+marker</li>
+<li><code>LocalPaths.moverDiretorioAntigo()</code> — migra de
+<code>C:\Estacao</code> para AppData</li>
+<li><code>IntranetURLs.init()</code> — configura URLs conforme ambiente
+(dev/test/prod)</li>
+<li><code>ScriptsBat.init()</code> — cria script
+<code>restart.bat</code></li>
+<li><code>BloqueioTela.bloquearTeclas()</code> — hook de teclado
+(bloqueia ALT+TAB, ESC, etc.)</li>
+</ul></li>
+<li><code>start()</code> (<code>EstacaoPonto.java:57-110</code>):
+<ul>
+<li><code>LeitorDigital.check()</code> — verifica se leitor está
+conectado (se não, exibe alerta e sai)</li>
+<li>Carrega <code>Main.fxml</code> → <code>MainController</code></li>
+<li>Configura stage: maximizado, título, tela cheia (conforme
+config)</li>
+<li><code>stage.show()</code></li>
+</ul></li>
+<li><code>MainController.initialize()</code>
+(<code>controllers/MainController.java:67-71</code>):
+<ul>
+<li><code>initTela()</code> — injeta componentes FXML em
+<code>TelaPonto</code></li>
+<li><code>inicializarLeitor()</code> — cria
+<code>PreProcessandoService</code></li>
+</ul></li>
+<li><code>TelaPonto.initWebEngine()</code>
+(<code>view/TelaPonto.java:53-87</code>):
+<ul>
+<li>Task em thread separada: verifica conectividade com Intranet (loop a
+cada 15s)</li>
+<li>Quando conectado: carrega <code>IntranetURLs.INICIAR_PONTO</code> no
+WebView</li>
+<li>Botão da imagem topo → redireciona para listagem de
+frequentadores</li>
+</ul></li>
+<li>Navegador WebView carrega JSPs da Intranet → interação do
+usuário</li>
+<li>JavaScript chama <code>alert()</code> com comandos estruturados →
+<code>OnAlertListener.handle()</code> → executa
+<code>Operacao</code></li>
+<li><code>PreProcessandoService</code> (loop contínuo em background):
+<ul>
+<li>Aguarda dedo no leitor (<code>temDedo()</code>)</li>
+<li>Captura digital (<code>capturarDigital()</code>)</li>
+<li>Retorna
+<code>Result(Operacao.REGISTRO_FREQUENCIA, hashDigital)</code></li>
+<li><code>PreProcessandoHandler</code> →
+<code>VerificacaoDigitalService</code></li>
+<li>Verificação: busca no IndexSearch →
+<code>EventoLeitura.DIGITAL_RECONHECIDA</code> ou
+<code>DIGITAL_NAO_RECONHECIDA</code></li>
+<li>Processa evento: escreve registro criptografado em arquivo, envia
+dados para JS</li>
+</ul></li>
+<li>Sincronização periódica:
+<code>ThreadRelogio.fazerSincronizacao()</code> a cada 5 minutos</li>
+<li><code>VivoOuMortoService</code> — heartbeat para
+<code>AdicioneEstacao</code></li>
+</ol>
+</section>
+<section id="dependências-entre-módulos" class="level3">
+<h3>1.5 Dependências Entre Módulos</h3>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 24%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr>
+<th>Módulo/Sistema</th>
+<th>Dependência</th>
+<th>Arquivos de Referência</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Intranet TJPI</strong> (servidor)</td>
+<td>Fornece JSPs, endpoints AJAX, dados de frequentadores</td>
+<td><code>IntranetURLs.java</code> (todas URLs)</td>
+</tr>
+<tr>
+<td><strong>Nitgen SDK (NBioBSP)</strong></td>
+<td>SDK biométrico para leitura de digitais</td>
+<td><code>LeitorDigital.java</code>, <code>pom.xml</code></td>
+</tr>
+<tr>
+<td><strong>JNA</strong></td>
+<td>Acesso nativo (hook teclado Windows)</td>
+<td><code>KeyHook.java</code>, <code>pom.xml</code> (jna,
+jna-platform)</td>
+</tr>
+<tr>
+<td><strong>Bouncy Castle</strong></td>
+<td>Criptografia DES/MD5</td>
+<td><code>CryptoUtils.java</code>, <code>pom.xml</code> (bcprov)</td>
+</tr>
+<tr>
+<td><strong>Apache Commons</strong></td>
+<td>IO, Codec, HTTP Client</td>
+<td><code>pom.xml</code> (commons-io, commons-codec, httpclient)</td>
+</tr>
+<tr>
+<td><strong>Log4j 2</strong></td>
+<td>Logging</td>
+<td><code>log4j2.xml</code>, <code>LogAplicacao.java</code>,
+<code>LogEstacao.java</code></td>
+</tr>
+<tr>
+<td><strong>TornadoFX / FxLauncher</strong></td>
+<td>Auto-update framework</td>
+<td><code>pom.xml</code> (tornadofx, fxlauncher)</td>
+</tr>
+<tr>
+<td><strong>Registro Windows</strong></td>
+<td>Chave <code>HKCU\SOFTWARE\TJPIEstacaoPonto</code></td>
+<td><code>RegistroWindows.java</code>,
+<code>WinRegistry.java</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="gems-bibliotecas-utilizadas-java" class="level3">
+<h3>1.6 Gems / Bibliotecas Utilizadas (Java)</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Biblioteca</th>
+<th>Finalidade</th>
+<th>Evidência</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>JavaFX 8</strong></td>
+<td>Framework Desktop (UI, WebView, FXML)</td>
+<td><code>core/EstacaoPonto.java</code> (extends Application)</td>
+</tr>
+<tr>
+<td><strong>JNA 4+</strong></td>
+<td>Acesso nativo Windows (hook teclado, DLLs)</td>
+<td><code>KeyHook.java</code>, <code>pom.xml</code> (jna
+0.1-nitgen)</td>
+</tr>
+<tr>
+<td><strong>Nitgen NBioBSPJNI</strong></td>
+<td>SDK biométrico (captura, verificação, enrollment)</td>
+<td><code>LeitorDigital.java</code>, <code>pom.xml</code></td>
+</tr>
+<tr>
+<td><strong>Bouncy Castle (bcprov)</strong></td>
+<td>Criptografia DES/CBC/PKCS5Padding</td>
+<td><code>CryptoUtils.java</code>, <code>pom.xml</code> (bcprov-jdk14
+140)</td>
+</tr>
+<tr>
+<td><strong>Apache HttpClient 4.3</strong></td>
+<td>Requisições HTTP</td>
+<td><code>pom.xml</code> (httpclient 4.3.3)</td>
+</tr>
+<tr>
+<td><strong>Commons-IO 2.4</strong></td>
+<td>Leitura/escrita de arquivos</td>
+<td><code>ArquivoUtils.java</code>, <code>pom.xml</code></td>
+</tr>
+<tr>
+<td><strong>Commons-Codec 1.6</strong></td>
+<td>Codificação Base64</td>
+<td><code>pom.xml</code></td>
+</tr>
+<tr>
+<td><strong>Log4j 2.12.1</strong></td>
+<td>Logging estruturado em arquivo</td>
+<td><code>log4j2.xml</code>, <code>pom.xml</code></td>
+</tr>
+<tr>
+<td><strong>TornadoFX 1.7.17</strong></td>
+<td>Framework Kotlin para JavaFX</td>
+<td><code>pom.xml</code> (tornadofx 1.7.17)</td>
+</tr>
+<tr>
+<td><strong>FxLauncher 1.0.21</strong></td>
+<td>Auto-update JavaFX via web</td>
+<td><code>pom.xml</code> (fxlauncher 1.0.21)</td>
+</tr>
+<tr>
+<td><strong>Java XML Bind (javax.xml.bind)</strong></td>
+<td>Base64 encoding de fotos</td>
+<td><code>DownloadFoto.java:86</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="javascript-frontend-inside-webview" class="level3">
+<h3>1.7 JavaScript / Frontend (Inside WebView)</h3>
+<p>O frontend é composto pelas páginas JSP da Intranet carregadas dentro
+do WebView. A estação injeta JavaScript via
+<code>WebEngine.executeScript()</code>.</p>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 29%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr>
+<th>Função JS</th>
+<th>Finalidade</th>
+<th>Origem do Call</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>process('DIGITAL_RECONHECIDA', dados)</code></td>
+<td>Exibe dados do frequentador reconhecido</td>
+<td><code>EventoLeitura.java</code></td>
+</tr>
+<tr>
+<td><code>sincronizaPonto(dados, codAtivacao)</code></td>
+<td>Envia registros offline</td>
+<td><code>MainController.iniciarSincronizacao()</code></td>
+</tr>
+<tr>
+<td><code>atualizaRelogioLocal(horario)</code></td>
+<td>Atualiza relógio na tela</td>
+<td><code>MainController.atualizarHorario()</code></td>
+</tr>
+<tr>
+<td><code>aguardarDigital()</code></td>
+<td>Mostra “Aguardando digital”</td>
+<td><code>DadosFrequentadores.java</code></td>
+</tr>
+<tr>
+<td><code>lock()</code> / <code>unlock()</code></td>
+<td>Bloqueia/desbloqueia tela</td>
+<td><code>TelaPonto.java</code></td>
+</tr>
+<tr>
+<td><code>changeInfoDigital(type, msg)</code></td>
+<td>Feedback de cadastro de digital</td>
+<td><code>MainController.cadastrarDigital()</code></td>
+</tr>
+<tr>
+<td><code>adicionaUpload(codAtivacao, nomeLog, size)</code></td>
+<td>Upload de arquivo de log</td>
+<td><code>MainController.addUploadFile()</code></td>
+</tr>
+<tr>
+<td><code>adicionaParte(codAtivacao, nomeLog, parte, i)</code></td>
+<td>Upload de parte do arquivo</td>
+<td><code>MainController.doUploadParte()</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="serviços-externos" class="level3">
+<h3>1.8 Serviços Externos</h3>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 36%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Serviço</th>
+<th>Finalidade</th>
+<th>Endpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Intranet TJPI</strong></td>
+<td>Servidor principal (JSP, AJAX)</td>
+<td><code>Configuracoes.base_intranet_url</code></td>
+</tr>
+<tr>
+<td><strong>IniciarPonto</strong></td>
+<td>Página inicial de autenticação</td>
+<td><code>/presenca/IniciarPonto</code></td>
+</tr>
+<tr>
+<td><strong>ValidarFrequentador</strong></td>
+<td>Validação de login/senha criptografado</td>
+<td><code>/presenca/ValidarFrequentador</code></td>
+</tr>
+<tr>
+<td><strong>DynFrequentadoresEstacao</strong></td>
+<td>Download de dados de frequentadores com digitais</td>
+<td><code>/presenca/DynFrequentadoresEstacao/</code></td>
+</tr>
+<tr>
+<td><strong>DynHashFrequentadoresEstacao</strong></td>
+<td>Hash para verificar se há novas digitais</td>
+<td><code>/presenca/DynHashFrequentadoresEstacao/</code></td>
+</tr>
+<tr>
+<td><strong>CarregaRelogioAtual</strong></td>
+<td>Timestamp do servidor (sincronização)</td>
+<td><code>/presenca/CarregaRelogioAtual</code></td>
+</tr>
+<tr>
+<td><strong>AdicioneEstacao</strong></td>
+<td>Heartbeat da estação</td>
+<td><code>/presenca/AdicioneEstacao</code></td>
+</tr>
+<tr>
+<td><strong>PrediosPermitidos</strong></td>
+<td>Prédios autorizados para a estação</td>
+<td><code>/presenca/PrediosPermitidos/</code></td>
+</tr>
+<tr>
+<td><strong>URL de Update</strong></td>
+<td>Download de nova versão do JAR</td>
+<td><code>IntranetURLs.URL_UPDATE</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="componentes-compartilhados" class="level3">
+<h3>1.9 Componentes Compartilhados</h3>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 38%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Localização</th>
+<th>Função</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EstacaoPonto</code> (Singleton)</td>
+<td><code>core/EstacaoPonto.java:27</code></td>
+<td>Instância única da aplicação</td>
+</tr>
+<tr>
+<td><code>MainController</code> (Singleton)</td>
+<td><code>controllers/MainController.java:44</code></td>
+<td>Instância única do controller</td>
+</tr>
+<tr>
+<td><code>TelaPonto</code> (Singleton)</td>
+<td><code>view/TelaPonto.java:34</code></td>
+<td>Instância única da tela</td>
+</tr>
+<tr>
+<td><code>LeitorDigital</code> (Singleton)</td>
+<td><code>core/leitura/LeitorDigital.java:34</code></td>
+<td>Instância única do leitor</td>
+</tr>
+<tr>
+<td><code>DadosFrequentadores</code> (Singleton)</td>
+<td><code>core/DadosFrequentadores.java:23</code></td>
+<td>Dados carregados dos frequentadores</td>
+</tr>
+<tr>
+<td><code>BloqueioTela</code> (Singleton)</td>
+<td><code>view/BloqueioTela.java:17</code></td>
+<td>Controle de bloqueio</td>
+</tr>
+<tr>
+<td><code>KeyHook</code> (Singleton)</td>
+<td><code>utils/KeyHook.java:20</code></td>
+<td>Hook de teclado</td>
+</tr>
+<tr>
+<td><code>Configuracoes</code> (Enum singleton)</td>
+<td><code>core/Configuracoes.java</code></td>
+<td>Configurações do arquivo config.properties</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="concerns-callbacks-observers-workers-jobs" class="level3">
+<h3>1.10 Concerns / Callbacks / Observers / Workers / Jobs</h3>
+<p><strong>Callbacks (EventHandlers):</strong> -
+<code>VerificacaoDigitalHandler</code> — processa resultado da
+verificação digital
+(<code>core/leitura/VerificacaoDigitalHandler.java</code>) -
+<code>PreProcessandoHandler</code> — processa captura digital assíncrona
+(<code>controllers/PreProcessandoHandler.java</code>) -
+<code>ChangeUrlListener</code> — monitora mudanças de URL no WebView
+(<code>listeners/ChangeUrlListener.java</code>) -
+<code>OnAlertListener</code> — escuta alertas JavaScript
+(<code>listeners/OnAlertListener.java</code>)</p>
+<p><strong>Async Services (JavaFX Service/Task):</strong> | Service |
+Arquivo | Função | |———|———|——–| | <code>PreProcessandoService</code> |
+<code>async/PreProcessandoService.java</code> | Loop de captura
+biométrica em background | | <code>ThreadRelogio</code> |
+<code>async/ThreadRelogio.java</code> | Relógio baseado no timestamp do
+servidor | | <code>DownloadFrequentadoresService</code> |
+<code>core/DownloadFrequentadoresService.java</code> | Download de
+digitais da Intranet | | <code>CacheDownloadService</code> |
+<code>core/CacheDownloadService.java</code> | Download de fotos em
+background | | <code>PrediosPermitidosService</code> |
+<code>core/PrediosPermitidosService.java</code> | Consulta de prédios
+autorizados | | <code>ValidarBatidaManualService</code> |
+<code>core/ValidarBatidaManualService.java</code> | Validação de
+login/senha | | <code>VivoOuMortoService</code> |
+<code>core/VivoOuMortoService.java</code> | Heartbeat da estação | |
+<code>ConexaoIntranetService</code> |
+<code>utils/ConexaoIntranetService.java</code> | Verificação de
+conectividade |</p>
+<p><strong>Threads:</strong> - <code>ThreadRelogio</code> — thread
+dedicada (via <code>Service&lt;String&gt;</code>) para cálculo contínuo
+do horário - Task de conexão em <code>TelaPonto.initWebEngine()</code> —
+loop de tentativa de conexão a cada 15s -
+<code>KeyHook.blockWindowsKey()</code> — thread dedicada para hook
+global de teclado</p>
+</section>
+<section id="cache" class="level3">
+<h3>1.11 Cache</h3>
+<ul>
+<li><strong>Cache de fotos:</strong>
+<code>AppData\Local\TJPI\EstacaoPonto\data\imgs\</code> — fotos baixadas
+em Base64 (arquivos sem extensão, conteúdo é data URI)</li>
+<li><strong>Cache de fingerprints:</strong>
+<code>AppData\Local\TJPI\EstacaoPonto\data\data.db</code> — banco
+IndexSearch do Nitgen SDK</li>
+<li><strong>Cache de dados offline:</strong>
+<code>AppData\Local\TJPI\EstacaoPonto\data\{f, a, fotos, hash}</code> —
+mapas serializados de frequentadores</li>
+<li><strong>Validade do cache de fotos:</strong> Constante
+<code>VALIDADE = 20</code> dias
+(<code>utils/CacheManipulation.java:16</code>)</li>
+</ul>
+<p><strong>Fonte:</strong> <code>CacheManipulation.java</code>,
+<code>CacheDownloadService.java</code>,
+<code>DadosFrequentadores.java</code></p>
+</section>
+<section id="autenticação-e-autorização" class="level3">
+<h3>1.12 Autenticação e Autorização</h3>
+<ul>
+<li><strong>Autenticação biométrica:</strong> via SDK Nitgen (captura de
+digital → IndexSearch → Identify)</li>
+<li><strong>Autenticação por login/senha:</strong> chamada HTTP GET para
+<code>/presenca/ValidarFrequentador</code> com credenciais
+criptografadas em DES</li>
+<li><strong>Código de ativação</strong> da estação armazenado no
+Registro Windows
+(<code>HKCU\SOFTWARE\TJPIEstacaoPonto\codigoAtivacao</code>)</li>
+<li><strong>Código único de máquina</strong> gerado via UUID e
+armazenado em arquivo</li>
+<li><strong>Autorização de desbloqueio de tela:</strong> apenas
+administradores (identificados por digital) podem desbloquear</li>
+</ul>
+</section>
+<section id="auditoria" class="level3">
+<h3>1.13 Auditoria</h3>
+<ul>
+<li>Logs em arquivo: <code>{app.root}/log/full.txt</code>,
+<code>{app.root}/log/app.txt</code>,
+<code>{app.root}/log/estacao.txt</code></li>
+<li>Três níveis de log:
+<ul>
+<li><code>utils.LogAplicacao</code> → <code>app.txt</code> (log da
+aplicação)</li>
+<li><code>utils.LogEstacao</code> → <code>estacao.txt</code> (log da
+estação, operações)</li>
+<li>Root → <code>full.txt</code> (tudo)</li>
+</ul></li>
+<li>Rolling file appender: 10MB por arquivo, rotação diária</li>
+</ul>
+<p><strong>Fonte:</strong> <code>log4j2.xml</code></p>
+</section>
+<section id="integração-com-a-intranet" class="level3">
+<h3>1.14 Integração com a Intranet</h3>
+<p>A Estação Ponto se integra com a Intranet TJPI através de:</p>
+<ol type="1">
+<li><strong>WebView</strong> — renderiza páginas JSP do módulo Presença
+(<code>/presenca/IniciarPonto</code>,
+<code>/presenca/PontoDePresenca</code>, etc.)</li>
+<li><strong>HTTP GET (AJAX-like)</strong> — consome endpoints da
+Intranet para:
+<ul>
+<li>Download de dados de frequentadores e digitais</li>
+<li>Heartbeat (AdicioneEstacao)</li>
+<li>Sincronização de registros offline (via JavaScript
+<code>sincronizaPonto()</code>)</li>
+<li>Consulta de prédios permitidos</li>
+<li>Validação de login/senha</li>
+<li>Sincronização de horário</li>
+</ul></li>
+<li><strong>Auto-update</strong> — via FxLauncher, que baixa nova versão
+do JAR do servidor</li>
+<li><strong>Upload de logs</strong> — via JavaScript
+<code>adicionaUpload()</code> / <code>adicionaParte()</code></li>
+</ol>
+<hr />
+</section>
+</section>
+<section id="etapa-2-domínio-do-negócio" class="level2">
+<h2>ETAPA 2 — Domínio do Negócio</h2>
+<section id="objetivo-do-módulo" class="level3">
+<h3>2.1 Objetivo do Módulo</h3>
+<p>Servir como <strong>interface física de registro de ponto
+biométrico</strong> para os servidores e colaboradores do TJPI. A
+aplicação roda em computadores dedicados (estações de ponto) espalhados
+pelos prédios do tribunal, permitindo que frequentadores registrem
+entrada/saída através de leitura de digital.</p>
+<p><strong>Fonte:</strong> <code>readme.txt</code>,
+<code>core/EstacaoPonto.java</code></p>
+</section>
+<section id="problema-que-resolve" class="level3">
+<h3>2.2 Problema que Resolve</h3>
+<p>Substituir o registro manual de ponto (papel ou sistemas web
+convencionais) por um sistema biométrico integrado à Intranet,
+garantindo: - Identificação precisa do servidor via biometria - Registro
+offline (mesmo sem internet, os dados são armazenados localmente e
+sincronizados depois) - Integração direta com o módulo Presença da
+Intranet para cálculo de frequência - Interface quiosque (tela cheia,
+bloqueada) para estações públicas</p>
+</section>
+<section id="regras-de-negócio" class="level3">
+<h3>2.3 Regras de Negócio</h3>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 21%" />
+<col style="width: 27%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr>
+<th>ID</th>
+<th>Regra</th>
+<th>Arquivo</th>
+<th>Linha/Método</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RN01</td>
+<td>Estação deve validar código de ativação no Registro Windows antes de
+qualquer operação</td>
+<td><code>RegistroWindows.getCodigoAtivacaoRegistro()</code></td>
+<td>linha 21-34</td>
+</tr>
+<tr>
+<td>RN02</td>
+<td>Registro só é criado se a digital for reconhecida no IndexSearch (ID
+&gt; 0)</td>
+<td><code>VerificacaoDigitalService.java</code></td>
+<td>linha 37-44</td>
+</tr>
+<tr>
+<td>RN03</td>
+<td>Se o frequentador bater ponto em prédio diferente do seu local de
+trabalho, o registro é marcado com ressalva</td>
+<td><code>VerificacaoDigitalService.java</code></td>
+<td>linha 47-64</td>
+</tr>
+<tr>
+<td>RN04</td>
+<td>O registro local é armazenado criptografado (DES) em arquivo
+texto</td>
+<td><code>ArquivoRegistros.java</code></td>
+<td><code>escreverRegistro()</code></td>
+</tr>
+<tr>
+<td>RN05</td>
+<td>A sincronização com a Intranet ocorre a cada 5 minutos</td>
+<td><code>ThreadRelogio.fazerSincronizacao()</code></td>
+<td>linha 166-172</td>
+</tr>
+<tr>
+<td>RN06</td>
+<td>A estação envia heartbeat a cada ciclo de sincronização
+(VivoOuMorto)</td>
+<td><code>MainController.atualizarHorario()</code> +
+<code>VivoOuMortoService</code></td>
+<td>linha 59-70</td>
+</tr>
+<tr>
+<td>RN07</td>
+<td>O horário do servidor é referência; o relógio local é apenas um
+delta calculado via nanotime</td>
+<td><code>ThreadRelogio.calculaHorario()</code></td>
+<td>linha 56-70</td>
+</tr>
+<tr>
+<td>RN08</td>
+<td>O nível de segurança do leitor biométrico é configurável (1-9),
+padrão 8</td>
+<td><code>Configuracoes.nivel_seguranca_leitor</code>,
+<code>LeitorDigital.searchDigitalOnIndexSearchEngine()</code></td>
+<td>config.properties</td>
+</tr>
+<tr>
+<td>RN09</td>
+<td>A tela pode ser bloqueada (quiosque) — apenas administradores podem
+desbloquear com digital</td>
+<td><code>BloqueioTela.java</code></td>
+<td>linhas 31-38</td>
+</tr>
+<tr>
+<td>RN10</td>
+<td>Teclas de sistema (ALT+TAB, ESC, WIN) são bloqueadas via hook global
+do Windows</td>
+<td><code>KeyHook.java</code></td>
+<td>blockWindowsKey()</td>
+</tr>
+<tr>
+<td>RN11</td>
+<td>O download de novas digitais é condicionado à comparação de hash com
+versão local</td>
+<td><code>DownloadFrequentadoresService.temNovasDigitais()</code></td>
+<td>linha 54-74</td>
+</tr>
+<tr>
+<td>RN12</td>
+<td>Se o hash da Intranet retornar vazio ou “EXCEPTION_MESSAGE”, o
+download é abortado</td>
+<td><code>DownloadFrequentadoresService.java</code></td>
+<td>linha 70-73</td>
+</tr>
+<tr>
+<td>RN13</td>
+<td>Em caso de erro de timeout no download, a aplicação é reiniciada
+automaticamente</td>
+<td><code>DownloadFrequentadoresService.java</code></td>
+<td>linha 39-43</td>
+</tr>
+<tr>
+<td>RN14</td>
+<td>A foto do frequentador é baixada e armazenada em cache local
+(Base64) com validade de 20 dias</td>
+<td><code>CacheManipulation.java</code></td>
+<td>linha 16 (VALIDADE=20)</td>
+</tr>
+<tr>
+<td>RN15</td>
+<td>O restart diário ocorre entre 22:00 e 22:10 (horário aleatório)</td>
+<td><code>ThreadRelogio.setarHorarioRestart()</code></td>
+<td>linha 39-43</td>
+</tr>
+<tr>
+<td>RN16</td>
+<td>A estação só permite batida manual (login/senha) se a Intranet
+autorizar explicitamente</td>
+<td><code>ValidarBatidaManualService.java</code></td>
+<td>linha 46-60</td>
+</tr>
+<tr>
+<td>RN17</td>
+<td>Registro offline é criptografado com DES antes de ser salvo em
+arquivo</td>
+<td><code>ArquivoRegistros.escreverRegistro()</code></td>
+<td>linha 127</td>
+</tr>
+<tr>
+<td>RN18</td>
+<td>Batimento manual requer conexão com a Intranet</td>
+<td><code>Operacao.LOGINMANUAL</code> (listeners)</td>
+<td>verifica <code>ConexaoIntranetService</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conceitos-importantes" class="level3">
+<h3>2.4 Conceitos Importantes</h3>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 39%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Conceito</th>
+<th>Descrição</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Estação de Ponto</strong></td>
+<td>Computador dedicado com leitor biométrico para registro de
+ponto</td>
+<td><code>core/EstacaoPonto.java</code></td>
+</tr>
+<tr>
+<td><strong>Código de Ativação</strong></td>
+<td>UUID único identificando a estação, armazenado no Registro
+Windows</td>
+<td><code>RegistroWindows.java</code></td>
+</tr>
+<tr>
+<td><strong>Código Único de Máquina</strong></td>
+<td>UUID aleatório gerado na primeira execução, armazenado em
+arquivo</td>
+<td><code>RegistroWindows.getCodigoUnicoMaquina()</code></td>
+</tr>
+<tr>
+<td><strong>IndexSearch</strong></td>
+<td>Mecanismo do Nitgen SDK que indexa digitais para busca rápida</td>
+<td><code>LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td><strong>FIR (Fingerprint Input Record)</strong></td>
+<td>Formato de dado biométrico do SDK Nitgen</td>
+<td><code>LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td><strong>Frequentador</strong></td>
+<td>Servidor ou colaborador que registra ponto</td>
+<td><code>DadosFrequentadores.java</code></td>
+</tr>
+<tr>
+<td><strong>Prédio Permitido</strong></td>
+<td>Prédios onde a estação pode operar</td>
+<td><code>PrediosPermitidosService.java</code></td>
+</tr>
+<tr>
+<td><strong>Ressalva de Prédio</strong></td>
+<td>Registro de ponto feito em prédio diferente do local de
+trabalho</td>
+<td><code>VerificacaoDigitalService.java</code></td>
+</tr>
+<tr>
+<td><strong>Sincronização</strong></td>
+<td>Envio de registros locais criptografados para a Intranet</td>
+<td><code>MainController.iniciarSincronizacao()</code></td>
+</tr>
+<tr>
+<td><strong>Heartbeat (VivoOuMorto)</strong></td>
+<td>Sinal periódico informando que a estação está operacional</td>
+<td><code>VivoOuMortoService.java</code></td>
+</tr>
+<tr>
+<td><strong>Relógio do Servidor</strong></td>
+<td>Timestamp da Intranet usado como referência de horário</td>
+<td><code>ThreadRelogio.java</code></td>
+</tr>
+<tr>
+<td><strong>Cache de Fotos</strong></td>
+<td>Fotos 3x4 dos frequentadores armazenadas em Base64</td>
+<td><code>CacheManipulation.java</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="entidades-do-domínio" class="level3">
+<h3>2.5 Entidades do Domínio</h3>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 40%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Entidade</th>
+<th>Representação</th>
+<th>Finalidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EstacaoPonto</code> (Aplicação)</td>
+<td>Classe JavaFX Application</td>
+<td>Instância da aplicação desktop</td>
+</tr>
+<tr>
+<td><code>Frequentador</code></td>
+<td>Dados na memória (Map&lt;Integer, String&gt;)</td>
+<td>Servidor com digital cadastrada</td>
+</tr>
+<tr>
+<td><code>Digital (Fingerprint)</code></td>
+<td>FIR format (Hash TextEncode)</td>
+<td>Template biométrico</td>
+</tr>
+<tr>
+<td><code>RegistroFrequencia</code></td>
+<td>String criptografada em arquivo</td>
+<td>Batida de ponto offline</td>
+</tr>
+<tr>
+<td><code>Prédio Permitido</code></td>
+<td>String de IDs separados por <code>;</code></td>
+<td>Prédios autorizados para a estação</td>
+</tr>
+<tr>
+<td><code>Código de Ativação</code></td>
+<td>UUID no Registro Windows</td>
+<td>Identificador único da estação</td>
+</tr>
+<tr>
+<td><code>Administrador</code></td>
+<td>Subconjunto de frequentadores</td>
+<td>Pode desbloquear tela bloqueada</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="atores-envolvidos" class="level3">
+<h3>2.6 Atores Envolvidos</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 39%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr>
+<th>Ator</th>
+<th>Descrição</th>
+<th>Evidência</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Frequentador</strong></td>
+<td>Servidor/colaborador que bate ponto usando biometria</td>
+<td><code>DadosFrequentadores.java</code></td>
+</tr>
+<tr>
+<td><strong>Administrador de Presença</strong></td>
+<td>Frequentador com permissão para desbloquear tela</td>
+<td><code>DadosFrequentadores.java</code> (isAdmin)</td>
+</tr>
+<tr>
+<td><strong>Operador de Estações</strong></td>
+<td>Instala e configura estações (código ativação)</td>
+<td><code>RegistroWindows.java</code></td>
+</tr>
+<tr>
+<td><strong>Programador do Módulo</strong></td>
+<td>Acesso total ao código-fonte</td>
+<td><code>readme.txt</code>, <code>pom.xml</code></td>
+</tr>
+<tr>
+<td><strong>Sistema (Intranet)</strong></td>
+<td>Servidor que fornece dados e recebe registros</td>
+<td><code>IntranetURLs.java</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="estados-existentes" class="level3">
+<h3>2.7 Estados Existentes</h3>
+<p><strong>Conexão com Intranet:</strong> - CONECTADO — WebView carregou
+página da Intranet, serviços podem operar - DESCONECTADO — Label “Sem
+Conexão” visível, loop de tentativa a cada 15s</p>
+<p><strong>Fonte:</strong> <code>TelaPonto.java:53-87</code></p>
+<p><strong>Leitor Biométrico:</strong> - ATIVO —
+<code>LeitorDigital.ativo = true</code>, dispositivo aberto - INATIVO —
+<code>LeitorDigital.ativo = false</code>, dispositivo fechado</p>
+<p><strong>Fonte:</strong> <code>LeitorDigital.java:36-37</code></p>
+<p><strong>Bloqueio de Tela:</strong> - BLOQUEADA — Tela escura, apenas
+administradores podem desbloquear - DESBLOQUEADA — Tela normal, quiosque
+liberado</p>
+<p><strong>Fonte:</strong> <code>BloqueioTela.java:19</code></p>
+<p><strong>Resultado de Leitura Biométrica (EventoLeitura):</strong> |
+Estado | Descrição | |——–|———–| | <code>NULO</code> | Estado inicial,
+sem leitura | | <code>DEDO_POSICINADO</code> | Dedo detectado no sensor
+| | <code>LEITURA_EM_ANALISE</code> | Capturando e analisando digital |
+| <code>DIGITAL_RECONHECIDA</code> | Digital reconhecida, registro
+criado | | <code>DIGITAL_NAO_RECONHECIDA</code> | Digital não encontrada
+no banco | | <code>ERRO_LEITURA</code> | Erro no sensor biométrico | |
+<code>DIGITAL_RECONHECIDA_RESSALVA_PREDIO</code> | Reconhecida mas
+prédio diferente | | <code>USUARIO_SENHA_INVALIDOS</code> | Login/senha
+incorretos | | <code>USUARIO_SEM_PERMISSAO_MANUAL</code> | Frequentador
+não autorizado a bater manualmente | | <code>SEM_CONEXAO_TIMEOUT</code>
+| Timeout ao validar batida | |
+<code>ESTACAO_SEM_PERMISSAO_PARA_BATIDA_MANUAL</code> | Estação não
+liberada para batida manual |</p>
+<p><strong>Fonte:</strong>
+<code>core/leitura/EventoLeitura.java</code></p>
+</section>
+<section id="eventos-de-domínio" class="level3">
+<h3>2.8 Eventos de Domínio</h3>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 39%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr>
+<th>Evento</th>
+<th>Trigger</th>
+<th>Ação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Digital Reconhecida</code></td>
+<td><code>LeitorDigital.search()</code> retorna ID &gt; 0</td>
+<td>Escreve registro no arquivo, envia dados para JS, toca som OK</td>
+</tr>
+<tr>
+<td><code>Digital Não Reconhecida</code></td>
+<td><code>LeitorDigital.search()</code> retorna -1</td>
+<td>Toca som de erro, exibe “Digital não reconhecida”</td>
+</tr>
+<tr>
+<td><code>Registro Offline</code></td>
+<td><code>ArquivoRegistros.escreverRegistro()</code></td>
+<td>Registro criptografado salvo em <code>regs.txt</code></td>
+</tr>
+<tr>
+<td><code>Sincronização</code></td>
+<td>Timer 5 minutos ou comando JS</td>
+<td>Envia arquivo de registros via JavaScript para Intranet</td>
+</tr>
+<tr>
+<td><code>Heartbeat</code></td>
+<td>Timer 5 minutos</td>
+<td>GET para <code>/presenca/AdicioneEstacao</code> informando
+estado</td>
+</tr>
+<tr>
+<td><code>Novas Digitais disponíveis</code></td>
+<td>Hash diferente do local</td>
+<td>Download de todos os frequentadores e recarga do IndexSearch</td>
+</tr>
+<tr>
+<td><code>Tela Bloqueada</code></td>
+<td>Tecla A pressionada ou inatividade</td>
+<td>WebView escurece, teclas de sistema bloqueadas</td>
+</tr>
+<tr>
+<td><code>Desbloqueio de Tela</code></td>
+<td>Administrador reconhecido por digital</td>
+<td>WebView恢复正常, teclas desbloqueadas</td>
+</tr>
+<tr>
+<td><code>Login Manual Solicitado</code></td>
+<td>Botão na interface Web</td>
+<td>Valida credenciais via Intranet</td>
+</tr>
+<tr>
+<td><code>Restart Diário</code></td>
+<td>22:00-22:10</td>
+<td>Fecha aplicação, restart.bat reinicia</td>
+</tr>
+<tr>
+<td><code>Timeout de Download</code></td>
+<td>SocketTimeoutException &gt; 10s</td>
+<td>Reinicia aplicação automaticamente</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+</section>
+<section id="etapa-3-levantamento-das-funcionalidades" class="level2">
+<h2>ETAPA 3 — Levantamento das Funcionalidades</h2>
+<section id="mapa-geral-de-funcionalidades" class="level3">
+<h3>3.1 Mapa Geral de Funcionalidades</h3>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 28%" />
+<col style="width: 33%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>Funcionalidade</th>
+<th>Classe Principal</th>
+<th>Service / Async</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F01</td>
+<td>Iniciar Estação</td>
+<td><code>core/EstacaoPonto.java</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>F02</td>
+<td>Carregar Interface Web (Quiosque)</td>
+<td><code>view/TelaPonto.java</code></td>
+<td><code>ConexaoIntranetService</code></td>
+</tr>
+<tr>
+<td>F03</td>
+<td>Capturar Digital (Biometria)</td>
+<td><code>core/leitura/PreProcessandoService.java</code></td>
+<td><code>VerificacaoDigitalService</code></td>
+</tr>
+<tr>
+<td>F04</td>
+<td>Registrar Batida de Ponto</td>
+<td><code>core/leitura/EventoLeitura.java</code></td>
+<td><code>ArquivoRegistros</code></td>
+</tr>
+<tr>
+<td>F05</td>
+<td>Login Manual (CPF/Senha)</td>
+<td><code>listeners/Operacao.LOGINMANUAL</code></td>
+<td><code>ValidarBatidaManualService</code></td>
+</tr>
+<tr>
+<td>F06</td>
+<td>Bloquear/Desbloquear Tela</td>
+<td><code>view/BloqueioTela.java</code></td>
+<td><code>KeyHook</code></td>
+</tr>
+<tr>
+<td>F07</td>
+<td>Sincronizar Registros Offline</td>
+<td><code>controllers/MainController.java</code></td>
+<td><code>iniciarSincronizacao()</code></td>
+</tr>
+<tr>
+<td>F08</td>
+<td>Heartbeat (Vivo ou Morto)</td>
+<td><code>core/VivoOuMortoService.java</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>F09</td>
+<td>Download de Frequentadores</td>
+<td><code>core/DownloadFrequentadoresService.java</code></td>
+<td><code>DadosFrequentadores</code></td>
+</tr>
+<tr>
+<td>F10</td>
+<td>Cache de Fotos</td>
+<td><code>core/CacheDownloadService.java</code></td>
+<td><code>CacheManipulation</code>, <code>DownloadFoto</code></td>
+</tr>
+<tr>
+<td>F11</td>
+<td>Cadastro de Digitais</td>
+<td><code>controllers/MainController.java</code></td>
+<td><code>LeitorDigital.enroll()</code></td>
+</tr>
+<tr>
+<td>F12</td>
+<td>Relógio Sincronizado</td>
+<td><code>async/ThreadRelogio.java</code></td>
+<td><code>ConexaoIntranetService</code></td>
+</tr>
+<tr>
+<td>F13</td>
+<td>Auto-Update (FxLauncher)</td>
+<td><code>pom.xml</code> (fxlauncher)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>F14</td>
+<td>Restart Programado</td>
+<td><code>utils/ScriptsBat.java</code></td>
+<td><code>CalendarUtils</code></td>
+</tr>
+<tr>
+<td>F15</td>
+<td>Upload de Logs</td>
+<td><code>controllers/MainController.java</code></td>
+<td><code>addUploadFile()</code>, <code>doUploadParte()</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="funcionalidades-detalhadas" class="level3">
+<h3>3.2 Funcionalidades Detalhadas</h3>
+<hr />
+<section id="f01-iniciar-estação" class="level4">
+<h4>F01 — Iniciar Estação</h4>
+<p><strong>Objetivo:</strong> Inicializar todos os componentes da
+aplicação desktop.</p>
+<p><strong>Descrição funcional:</strong> Ao ser executada, a aplicação:
+1. Carrega DLLs nativas (biometria, registro Windows) 2. Cria estrutura
+de diretórios em <code>AppData</code> 3. Verifica/cria arquivo
+<code>config.properties</code> 4. Move dados de instalação antiga
+(<code>C:\Estacao</code> → AppData) 5. Configura URLs conforme ambiente
+6. Cria script de restart (<code>restart.bat</code>) 7. Ativa hook de
+teclado (bloqueio de teclas de sistema) 8. Verifica se leitor biométrico
+está conectado 9. Carrega interface FXML maximizada</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application</td>
+<td><code>core/EstacaoPonto.java</code></td>
+</tr>
+<tr>
+<td>FXML</td>
+<td><code>resources/Main.fxml</code></td>
+</tr>
+<tr>
+<td>Config</td>
+<td><code>core/Configuracoes.java</code></td>
+</tr>
+<tr>
+<td>Paths</td>
+<td><code>core/LocalPaths.java</code></td>
+</tr>
+<tr>
+<td>URLs</td>
+<td><code>core/IntranetURLs.java</code></td>
+</tr>
+<tr>
+<td>Scripts</td>
+<td><code>utils/ScriptsBat.java</code></td>
+</tr>
+<tr>
+<td>Hook</td>
+<td><code>utils/KeyHook.java</code></td>
+</tr>
+<tr>
+<td>Leitor</td>
+<td><code>core/leitura/LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td>Fotos (imagem topo)</td>
+<td><code>resources/images/topo.png</code></td>
+</tr>
+<tr>
+<td>CSS</td>
+<td><code>resources/css/style.css</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fluxo de execução:</strong> 1.
+<code>EstacaoPonto.main()</code> → <code>Application.launch()</code> 2.
+Bloco <code>static</code> carrega DLLs: <code>NBioBSP</code>,
+<code>NBioBSPCOM</code>, <code>NBioBSPJNI</code>,
+<code>ICE_JNIRegistry</code> 3. <code>init()</code>: -
+<code>LocalPaths.createDirs()</code> — cria pastas -
+<code>LocalPaths.checarArquivos()</code> — cria config.properties
+default - <code>LocalPaths.moverDiretorioAntigo()</code> — migra dados -
+<code>IntranetURLs.init()</code> — configura URLs -
+<code>ScriptsBat.init()</code> — cria restart.bat -
+<code>BloqueioTela.bloquearTeclas()</code> — hook teclado 4.
+<code>start()</code>: - <code>LeitorDigital.check()</code> — testa
+leitor - Carrega <code>Main.fxml</code> → MainController - Configura
+Stage: maximizado, título, tela cheia - Exibe Stage</p>
+<p><strong>Regras de negócio:</strong> RN10 (bloqueio de teclas), RN09
+(bloqueio de tela)</p>
+<p><strong>Permissões:</strong> N/A (execução local)</p>
+<hr />
+</section>
+<section id="f02-carregar-interface-web" class="level4">
+<h4>F02 — Carregar Interface Web</h4>
+<p><strong>Objetivo:</strong> Carregar a interface da Intranet dentro do
+WebView JavaFX.</p>
+<p><strong>Descrição funcional:</strong> Uma Task em background verifica
+conectividade com a Intranet. Quando conectada, carrega a página
+<code>IniciarPonto</code> do módulo Presença no WebView.</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View</td>
+<td><code>view/TelaPonto.java</code></td>
+</tr>
+<tr>
+<td>Service</td>
+<td><code>utils/ConexaoIntranetService.java</code></td>
+</tr>
+<tr>
+<td>Listener</td>
+<td><code>listeners/ChangeUrlListener.java</code></td>
+</tr>
+<tr>
+<td>Listener</td>
+<td><code>listeners/OnAlertListener.java</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fluxo de execução:</strong> 1.
+<code>TelaPonto.initWebEngine()</code> dispara Task 2. Task loop:
+<code>ConexaoIntranetService.isConectado()</code> a cada 15s 3. Quando
+conectado, carrega <code>IntranetURLs.INICIAR_PONTO</code> no WebView 4.
+<code>ChangeUrlListener</code> monitora navegação 5.
+<code>OnAlertListener</code> escuta comandos via <code>alert()</code>
+JavaScript</p>
+<hr />
+</section>
+<section id="f03-capturar-digital-biometria" class="level4">
+<h4>F03 — Capturar Digital (Biometria)</h4>
+<p><strong>Objetivo:</strong> Capturar digital do frequentador via
+leitor biométrico.</p>
+<p><strong>Descrição funcional:</strong> Loop contínuo em background
+(<code>PreProcessandoService</code>) que verifica se há dedo no sensor.
+Quando detectado, captura a digital e dispara verificação.</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Async Service</td>
+<td><code>async/PreProcessandoService.java</code></td>
+</tr>
+<tr>
+<td>Leitor SDK</td>
+<td><code>core/leitura/LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td>Handler</td>
+<td><code>controllers/PreProcessandoHandler.java</code></td>
+</tr>
+<tr>
+<td>Exceções</td>
+<td><code>exception/BiometricException.java</code></td>
+</tr>
+<tr>
+<td>Enum</td>
+<td><code>core/leitura/Operacao.java</code> (Operacao
+REGISTRO_FREQUENCIA)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+<section id="f04-registrar-batida-de-ponto" class="level4">
+<h4>F04 — Registrar Batida de Ponto</h4>
+<p><strong>Objetivo:</strong> Registrar a batida (entrada/saída) do
+frequentador.</p>
+<p><strong>Descrição funcional:</strong> Após captura da digital, a
+verificação é feita via <code>VerificacaoDigitalService</code> que busca
+o ID no IndexSearch. Se encontrado, dispara o evento
+<code>DIGITAL_RECONHECIDA</code> que escreve o registro criptografado no
+arquivo local e envia dados para a interface Web.</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service</td>
+<td><code>core/leitura/VerificacaoDigitalService.java</code></td>
+</tr>
+<tr>
+<td>Evento</td>
+<td><code>core/leitura/EventoLeitura.java</code></td>
+</tr>
+<tr>
+<td>Handler</td>
+<td><code>core/leitura/VerificacaoDigitalHandler.java</code></td>
+</tr>
+<tr>
+<td>Arquivo</td>
+<td><code>utils/ArquivoRegistros.java</code></td>
+</tr>
+<tr>
+<td>Dados</td>
+<td><code>core/DadosFrequentadores.java</code></td>
+</tr>
+<tr>
+<td>Cache</td>
+<td><code>utils/CacheManipulation.java</code></td>
+</tr>
+<tr>
+<td>Foto</td>
+<td><code>utils/DownloadFoto.java</code></td>
+</tr>
+<tr>
+<td>Som</td>
+<td><code>view/SoundService.java</code></td>
+</tr>
+<tr>
+<td>JS</td>
+<td><code>utils/The.java</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fluxo de execução:</strong> 1.
+<code>PreProcessandoService</code> detecta dedo → captura digital 2.
+<code>PreProcessandoHandler</code> →
+<code>VerificacaoDigitalService</code> (busca no IndexSearch) 3. Se ID
+&gt; 0: - Verifica prédio do frequentador vs prédios permitidos da
+estação - <code>ArquivoRegistros.escreverRegistro(id-momento)</code> —
+registro criptografado -
+<code>EventoLeitura.DIGITAL_RECONHECIDA.process()</code>: -
+<code>before()</code>: escreve registro no arquivo -
+<code>getData()</code>: busca dados do frequentador (matrícula, nome,
+foto Base64) - Injeta JavaScript
+<code>process('DIGITAL_RECONHECIDA', dados)</code> -
+<code>after()</code>: toca som OK 4. Se ID &lt;= 0: toca som erro, exibe
+“Digital não reconhecida”</p>
+<p><strong>Permissões:</strong> Qualquer frequentador com digital
+cadastrada</p>
+<p><strong>Mensagens exibidas:</strong> Nome e matrícula do frequentador
+na interface Web</p>
+<hr />
+</section>
+<section id="f05-login-manual-cpfsenha" class="level4">
+<h4>F05 — Login Manual (CPF/Senha)</h4>
+<p><strong>Objetivo:</strong> Permitir registro de ponto via CPF/senha
+como alternativa à biometria.</p>
+<p><strong>Descrição funcional:</strong> Quando o usuário solicita login
+manual na interface Web, os campos de credenciais são lidos via
+JavaScript e enviados criptografados (DES) para o endpoint
+<code>ValidarFrequentador</code>.</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service</td>
+<td><code>core/ValidarBatidaManualService.java</code></td>
+</tr>
+<tr>
+<td>Enum Operação</td>
+<td><code>listeners/Operacao.LOGINMANUAL</code></td>
+</tr>
+<tr>
+<td>Criptografia</td>
+<td><code>utils/CryptoUtils.java</code></td>
+</tr>
+<tr>
+<td>Conexão</td>
+<td><code>utils/ConexaoIntranetService.java</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fluxo de execução:</strong> 1. Usuário clica em “Login
+Manual” na interface Web 2. JavaScript chama
+<code>alert('LOGINMANUAL')</code> 3. <code>OnAlertListener</code> →
+<code>Operacao.LOGINMANUAL.execute()</code> 4. Verifica conectividade 5.
+Lê campos <code>accessKey</code> e <code>plainPassword</code> via JS 6.
+Cria <code>ValidarBatidaManualService</code> com credenciais
+DES-criptografadas 7. GET para
+<code>/presenca/ValidarFrequentador</code> 8. Resposta:
+<code>idFrequentador</code> (sucesso) ou
+<code>USUARIO_SENHA_INVALIDOS</code></p>
+<p><strong>Permissões:</strong> Requer
+<code>permitirManual = true</code> no perfil do frequentador</p>
+<hr />
+</section>
+<section id="f06-bloqueardesbloquear-tela" class="level4">
+<h4>F06 — Bloquear/Desbloquear Tela</h4>
+<p><strong>Objetivo:</strong> Bloquear a estação para evitar uso não
+autorizado.</p>
+<p><strong>Descrição funcional:</strong> Ao pressionar a tecla A, a tela
+é bloqueada (modo quiosque protegido). Apenas administradores podem
+desbloquear com biometria.</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tela</td>
+<td><code>view/BloqueioTela.java</code></td>
+</tr>
+<tr>
+<td>Key Hook</td>
+<td><code>utils/KeyHook.java</code></td>
+</tr>
+<tr>
+<td>Operação</td>
+<td><code>core/leitura/Operacao.DESBLOQUEIO</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+<section id="f07-sincronizar-registros-offline" class="level4">
+<h4>F07 — Sincronizar Registros Offline</h4>
+<p><strong>Objetivo:</strong> Enviar registros locais para a
+Intranet.</p>
+<p><strong>Descrição funcional:</strong> A cada 5 minutos, ou quando a
+Intranet solicitar, o arquivo de registros criptografados é lido, limpo,
+e enviado via JavaScript <code>sincronizaPonto()</code>.</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Controller</td>
+<td><code>controllers/MainController.java</code>
+(<code>iniciarSincronizacao()</code>)</td>
+</tr>
+<tr>
+<td>Arquivo</td>
+<td><code>utils/ArquivoRegistros.java</code>
+(<code>lerArquivoSincronizado()</code>)</td>
+</tr>
+<tr>
+<td>Relógio</td>
+<td><code>async/ThreadRelogio.java</code>
+(<code>fazerSincronizacao()</code>)</td>
+</tr>
+<tr>
+<td>Heartbeat</td>
+<td><code>core/VivoOuMortoService.java</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+<section id="f11-cadastro-de-digitais" class="level4">
+<h4>F11 — Cadastro de Digitais</h4>
+<p><strong>Objetivo:</strong> Cadastrar digitais de um frequentador via
+leitor biométrico.</p>
+<p><strong>Descrição funcional:</strong> Quando um administrador acessa
+a tela de cadastro de frequentador na Intranet, o botão “Cadastrar
+Digitais” fica visível. Ao clicar, o SDK Nitgen abre uma janela de
+enrollment e retorna o hash das digitais, que é inserido no formulário
+web.</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Controller</td>
+<td><code>controllers/MainController.java</code>
+(<code>cadastrarDigital()</code>)</td>
+</tr>
+<tr>
+<td>Leitor</td>
+<td><code>core/leitura/LeitorDigital.java</code>
+(<code>enroll()</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+<section id="f12-relógio-sincronizado" class="level4">
+<h4>F12 — Relógio Sincronizado</h4>
+<p><strong>Objetivo:</strong> Manter o horário da estação sincronizado
+com o servidor.</p>
+<p><strong>Descrição funcional:</strong> Na inicialização, o timestamp
+da Intranet é obtido. A partir dele, o horário é calculado por delta de
+<code>System.nanoTime()</code>. A cada 5 minutos, o relógio é
+re-sincronizado.</p>
+<p><strong>Arquivos envolvidos:</strong></p>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Arquivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Async</td>
+<td><code>async/ThreadRelogio.java</code></td>
+</tr>
+<tr>
+<td>Service</td>
+<td><code>utils/ConexaoIntranetService.java</code>
+(<code>horarioIntranetInMillis()</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+</section>
+</section>
+<section id="etapa-4-casos-de-uso" class="level2">
+<h2>ETAPA 4 — Casos de Uso</h2>
+<section id="diagrama-uml-de-casos-de-uso" class="level3">
+<h3>4.1 Diagrama UML de Casos de Uso</h3>
+<pre class="mermaid"><code>graph TD
+    subgraph &quot;Estação Ponto de Presença&quot;
+        UC01[Iniciar Estação]
+        UC02[Registrar Batida - Biometria]
+        UC03[Registrar Batida - Login Manual]
+        UC04[Bloquear Tela]
+        UC05[Desbloquear Tela]
+        UC06[Sincronizar Registros]
+        UC07[Cadastrar Digitais]
+        UC08[Download de Frequentadores]
+        UC09[Heartbeat]
+        UC10[Auto-Update]
+        UC11[Upload de Logs]
+    end
+
+    subgraph &quot;Atores&quot;
+        FREQ(Frequentador)
+        ADM(Administrador)
+        SISTEMA(Sistema/Intranet)
+        OPER(Operador de Estação)
+    end
+
+    FREQ --&gt; UC02
+    FREQ --&gt; UC03
+    ADM --&gt; UC02
+    ADM --&gt; UC03
+    ADM --&gt; UC04
+    ADM --&gt; UC05
+    ADM --&gt; UC07
+    SISTEMA --&gt; UC06
+    SISTEMA --&gt; UC08
+    SISTEMA --&gt; UC09
+    SISTEMA --&gt; UC10
+    SISTEMA --&gt; UC11
+    OPER --&gt; UC01</code></pre>
+</section>
+<section id="casos-de-uso-detalhados" class="level3">
+<h3>4.2 Casos de Uso Detalhados</h3>
+<section id="uc01-iniciar-estação" class="level4">
+<h4>UC01 — Iniciar Estação</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Nome</strong></td>
+<td>Iniciar Estação</td>
+</tr>
+<tr>
+<td><strong>Objetivo</strong></td>
+<td>Inicializar todos os componentes da estação de ponto</td>
+</tr>
+<tr>
+<td><strong>Ator principal</strong></td>
+<td>Operador de Estação (sistema)</td>
+</tr>
+<tr>
+<td><strong>Pré-condições</strong></td>
+<td>Aplicação instalada; DLLs nativas no path; leitor conectado</td>
+</tr>
+<tr>
+<td><strong>Pós-condições</strong></td>
+<td>Estação operacional com WebView carregado</td>
+</tr>
+<tr>
+<td><strong>Fluxo principal</strong></td>
+<td>1. Carregar DLLs nativas → 2. Criar diretórios → 3. Carregar config
+→ 4. Iniciar hook teclado → 5. Verificar leitor → 6. Carregar FXML → 7.
+Exibir tela cheia → 8. Conectar à Intranet → 9. Carregar
+IniciarPonto.jsp</td>
+</tr>
+<tr>
+<td><strong>Exceções</strong></td>
+<td>E1: DLLs não encontradas → System.exit(0). E2: Leitor não conectado
+→ Alert + System.exit(0)</td>
+</tr>
+<tr>
+<td><strong>Regras</strong></td>
+<td>RN10 (bloqueio teclas)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="uc02-registrar-batida-biometria" class="level4">
+<h4>UC02 — Registrar Batida (Biometria)</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Nome</strong></td>
+<td>Registrar Batida por Biometria</td>
+</tr>
+<tr>
+<td><strong>Ator principal</strong></td>
+<td>Frequentador</td>
+</tr>
+<tr>
+<td><strong>Pré-condições</strong></td>
+<td>Estação operacional; frequentador cadastrado com digital; digitais
+já baixadas</td>
+</tr>
+<tr>
+<td><strong>Pós-condições</strong></td>
+<td>Registro local criado; interface exibe confirmação</td>
+</tr>
+<tr>
+<td><strong>Fluxo principal</strong></td>
+<td>1. Colocar dedo no leitor → 2. Capturar digital → 3. Buscar no
+IndexSearch → 4. Verificar prédio → 5. Escrever registro criptografado →
+6. Exibir dados na tela → 7. Tocar som OK</td>
+</tr>
+<tr>
+<td><strong>Fluxo alternativo</strong></td>
+<td>A1: Digital não reconhecida → som erro, “Digital não reconhecida”.
+A2: Prédio diferente → registro com ressalva</td>
+</tr>
+<tr>
+<td><strong>Exceções</strong></td>
+<td>E1: Erro leitura → “Erro de Leitura”</td>
+</tr>
+<tr>
+<td><strong>Regras</strong></td>
+<td>RN02, RN03, RN04</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="uc05-desbloquear-tela" class="level4">
+<h4>UC05 — Desbloquear Tela</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Nome</strong></td>
+<td>Desbloquear Tela</td>
+</tr>
+<tr>
+<td><strong>Ator principal</strong></td>
+<td>Administrador</td>
+</tr>
+<tr>
+<td><strong>Pré-condições</strong></td>
+<td>Tela bloqueada; leitor operacional</td>
+</tr>
+<tr>
+<td><strong>Fluxo principal</strong></td>
+<td>1. Tocar no leitor → 2. Capturar digital → 3. Buscar no IndexSearch
+→ 4. Verificar se é administrador → 5. Desbloquear teclas → 6.
+Desbloquear interface Web</td>
+</tr>
+<tr>
+<td><strong>Fluxo alternativo</strong></td>
+<td>A1: Digital não é de administrador → permanece bloqueado</td>
+</tr>
+<tr>
+<td><strong>Regras</strong></td>
+<td>RN09</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+</section>
+</section>
+<section id="etapa-5-modelagem-uml" class="level2">
+<h2>ETAPA 5 — Modelagem UML</h2>
+<section id="diagrama-de-classes-simplificado" class="level3">
+<h3>5.1 Diagrama de Classes (Simplificado)</h3>
+<pre class="mermaid"><code>classDiagram
+    class EstacaoPonto {
+        +String versao
+        +String ambiente
+        +init()
+        +start(Stage)
+        +stop()
+        +getInstance()
+    }
+
+    class MainController {
+        +TelaPonto tela
+        +PreProcessandoService cds
+        +ThreadRelogio threadRelogio
+        +initialize(URL, ResourceBundle)
+        +cadastrarDigital(MouseEvent)
+        +inicializarLeitor()
+        +atualizarHorario(String)
+        +iniciarSincronizacao()
+    }
+
+    class TelaPonto {
+        +WebView webView
+        +WebEngine webEngine
+        +Label labelSemConexao
+        +ImageView imageView
+        +Button botaoCadastrarDigital
+        +ProgressBar progressBar
+        +SoundService sound
+        +boolean semConexao
+        +init()
+        +initWebEngine()
+        +lock()
+        +unlock()
+    }
+
+    class LeitorDigital {
+        +NBioBSPJNI bsp
+        +IndexSearch indexSearchEngine
+        +boolean ativo
+        +getInstance()
+        +check()
+        +abrirLeitor()
+        +fecharLeitor()
+        +enroll()
+        +capturarDigital()
+        +searchDigitalOnIndexSearchEngine()
+        +addDigitalToIndexSearch()
+        +loadDB()
+        +saveDB()
+        +verifyMatch()
+    }
+
+    class PreProcessandoService {
+        +boolean parar
+        +boolean loginManual
+        +boolean clickDesbloqueioTela
+        +getLeitor()
+        +parar(boolean)
+    }
+
+    class PreProcessandoService.Result {
+        +Operacao operacao
+        +String digital
+        +process()
+    }
+
+    class VerificacaoDigitalService {
+        +String digitalHash
+    }
+
+    class ThreadRelogio {
+        +Calendar dataServidorAtual
+        +String horarioAtual
+        +fazerSincronizacao()
+        +getMomentoAtual()
+        +atualizarRelogio()
+    }
+
+    class EventoLeitura {
+        &lt;&lt;enum&gt;&gt;
+        NULO
+        DEDO_POSICINADO
+        LEITURA_EM_ANALISE
+        DIGITAL_RECONHECIDA
+        DIGITAL_NAO_RECONHECIDA
+        ERRO_LEITURA
+        DIGITAL_RECONHECIDA_RESSALVA_PREDIO
+    }
+
+    class Operacao_Leitura {
+        &lt;&lt;enum&gt;&gt;
+        DESBLOQUEIO
+        REGISTRO_FREQUENCIA
+        LOGINMANUAL
+    }
+
+    class Operacao_Listener {
+        &lt;&lt;enum&gt;&gt;
+        RECUPERAR_FREQUENTADORES
+        RECUPERAR_PREDIOS_PERMITIDOS
+        RECUPERAR_CODIGO_ATIVACAO
+        HORARIO_SERVIDOR_ATUAL
+        ATUALIZAR_RELOGIO_LOCAL
+        LIMPAR_REGISTROS_BATIMENTOS
+        VIVO_MORTO
+        LOGINMANUAL
+    }
+
+    class Configuracoes {
+        &lt;&lt;enum&gt;&gt;
+        app_name
+        base_intranet_url
+        tela_cheia
+        bloqueio_tela
+        nivel_seguranca_leitor
+        baixa_foto
+    }
+
+    class Leitura {
+        +String hash
+        +EventoLeitura evento
+        +String idFrequentador
+        +String momento
+    }
+
+    class BiometricException {
+        +DevideNotConnectedException
+        +CaptureTimeOutException
+        +InvalidDigitalDataException
+        +MatchTimeoutException
+        +CanceledOperationException
+    }
+
+    class DadosFrequentadores {
+        +Map~Integer,String~ frequentadores
+        +Map~Integer,String~ administradores
+        +init(String)
+    }
+
+    class DownloadFrequentadoresService {
+        +String dynFrequentadoresEstacaoUrl
+        +String dynHashFrequentadoresEstacao
+    }
+
+    class VivoOuMortoService {
+        +String urlString
+    }
+
+    class ValidarBatidaManualService {
+        +String login
+        +String senha
+    }
+
+    class BloqueioTela {
+        +boolean bloqueada
+        +bloquear()
+        +desbloquear()
+        +bloquearTeclas()
+        +desbloquearTeclas()
+    }
+
+    EstacaoPonto &quot;1&quot; --&gt; &quot;1&quot; MainController
+    MainController &quot;1&quot; --&gt; &quot;1&quot; TelaPonto
+    MainController &quot;1&quot; --&gt; &quot;1&quot; PreProcessandoService
+    MainController &quot;1&quot; --&gt; &quot;1&quot; ThreadRelogio
+    PreProcessandoService &quot;1&quot; --&gt; &quot;1&quot; LeitorDigital
+    PreProcessandoService &quot;1&quot; --&gt; &quot;*&quot; PreProcessandoService.Result
+    PreProcessandoService.Result --&gt; Operacao_Leitura
+    VerificacaoDigitalService &quot;1&quot; --&gt; &quot;1&quot; LeitorDigital
+    VerificacaoDigitalService &quot;1&quot; --&gt; &quot;1&quot; DadosFrequentadores
+    Leitura --&gt; EventoLeitura
+    LeitorDigital --&gt; BiometricException
+    BloqueioTela --&gt; Operacao_Leitura</code></pre>
+</section>
+<section id="diagrama-de-sequência-registrar-batida-biometria"
+class="level3">
+<h3>5.2 Diagrama de Sequência — Registrar Batida (Biometria)</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as Frequentador
+    participant Pre as PreProcessandoService
+    participant LD as LeitorDigital
+    participant Main as MainController
+    participant Tela as TelaPonto
+    participant VDS as VerificacaoDigitalService
+    participant Evento as EventoLeitura
+    participant Arq as ArquivoRegistros
+
+    U-&gt;&gt;Pre: Coloca dedo no leitor
+    Pre-&gt;&gt;LD: temDedo()
+    LD--&gt;&gt;Pre: true
+    Pre-&gt;&gt;LD: capturarDigital()
+    LD--&gt;&gt;Pre: hashDigital
+
+    Pre-&gt;&gt;Main: Result(REGISTRO_FREQUENCIA, hash)
+    Main-&gt;&gt;PreProcessandoHandler: handle()
+    PreProcessandoHandler-&gt;&gt;VDS: start()
+
+    VDS-&gt;&gt;LD: searchDigitalOnIndexSearchEngine(hash)
+    LD-&gt;&gt;LD: IndexSearch.Identify()
+    LD--&gt;&gt;VDS: idFrequentador
+    VDS-&gt;&gt;DadosFrequentadores: get dados
+    DadosFrequentadores--&gt;&gt;VDS: matricula, nome, predio
+    VDS--&gt;&gt;Main: Leitura(DIGITAL_RECONHECIDA, id)
+
+    Main-&gt;&gt;VerificacaoDigitalHandler: handle()
+    VerificacaoDigitalHandler-&gt;&gt;Evento: process(tela, leitura)
+    Evento-&gt;&gt;Arq: escreverRegistro(id-momento)
+    Arq--&gt;&gt;Evento: true
+    Evento-&gt;&gt;Tela: executeScript(process(&#39;DIGITAL_RECONHECIDA&#39;, dados))
+    Evento-&gt;&gt;SoundService: playOK()</code></pre>
+</section>
+<section id="diagrama-de-estados-leitura-biométrica" class="level3">
+<h3>5.3 Diagrama de Estados — Leitura Biométrica</h3>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; DEDO_POSICINADO : Dedo detectado
+    DEDO_POSICINADO --&gt; LEITURA_EM_ANALISE : Capturando digital
+    LEITURA_EM_ANALISE --&gt; DIGITAL_RECONHECIDA : ID encontrado &amp; prédio ok
+    LEITURA_EM_ANALISE --&gt; DIGITAL_RECONHECIDA_RESSALVA_PREDIO : ID encontrado &amp; prédio diferente
+    LEITURA_EM_ANALISE --&gt; DIGITAL_NAO_RECONHECIDA : ID não encontrado
+    LEITURA_EM_ANALISE --&gt; ERRO_LEITURA : Erro no sensor
+    DIGITAL_RECONHECIDA --&gt; [*] : Registro criado
+    DIGITAL_RECONHECIDA_RESSALVA_PREDIO --&gt; [*] : Registro com ressalva
+    DIGITAL_NAO_RECONHECIDA --&gt; DEDO_POSICINADO : Novo dedo
+    ERRO_LEITURA --&gt; DEDO_POSICINADO : Novo dedo</code></pre>
+</section>
+<section id="diagrama-de-componentes" class="level3">
+<h3>5.4 Diagrama de Componentes</h3>
+<pre class="mermaid"><code>graph TD
+    subgraph &quot;Estação Ponto Desktop&quot;
+        subgraph &quot;JavaFX UI&quot;
+            FXML[Main.fxml]
+            CSS[style.css]
+            WEB[WebView]
+            BTN[Botões/Progress]
+        end
+
+        subgraph &quot;Controllers&quot;
+            MC[MainController]
+        end
+
+        subgraph &quot;Async Services&quot;
+            PPS[PreProcessandoService]
+            TR[ThreadRelogio]
+            DFS[DownloadFrequentadoresService]
+            CDS[CacheDownloadService]
+            PPS2[PrediosPermitidosService]
+            VOMS[VivoOuMortoService]
+            VBMS[ValidarBatidaManualService]
+            CIS[ConexaoIntranetService]
+        end
+
+        subgraph &quot;Biometric Core&quot;
+            LD[LeitorDigital]
+            VDS[VerificacaoDigitalService]
+            IS[IndexSearch Engine]
+        end
+
+        subgraph &quot;Storage&quot;
+            ARQ[ArquivoRegistros]
+            CACHE[Cache de Fotos]
+            DATA[(data.db)]
+        end
+
+        subgraph &quot;Security&quot;
+            KH[KeyHook]
+            BT[BloqueioTela]
+            CRYPTO[CryptoUtils]
+        end
+
+        subgraph &quot;Utils&quot;
+            LOG[LogAplicacao/LogEstacao]
+            REG[RegistroWindows/WinRegistry]
+            THE[The.jsExecutor]
+        end
+    end
+
+    subgraph &quot;Servidor Intranet&quot;
+        JSP[Páginas JSP]
+        API[Endpoints AJAX]
+    end
+
+    FXML --&gt; MC
+    MC --&gt; WEB
+    MC --&gt; BTN
+    MC --&gt; PPS
+    MC --&gt; TR
+    MC --&gt; CIS
+
+    PPS --&gt; LD
+    LD --&gt; IS
+    LD --&gt; VDS
+
+    TR --&gt; CIS
+    DFS --&gt; API
+    VOMS --&gt; API
+    VBMS --&gt; API
+    PPS2 --&gt; API
+
+    WEB --&gt; JSP
+    WEB --&gt; API
+
+    ARQ --&gt; CRYPTO
+    IS --&gt; DATA
+    CACHE --&gt; DATA</code></pre>
+</section>
+<section id="diagrama-de-pacotes" class="level3">
+<h3>5.5 Diagrama de Pacotes</h3>
+<pre class="mermaid"><code>graph TD
+    subgraph &quot;br.jus.tjpi.estacaoponto&quot;
+        controllers --&gt; async
+        controllers --&gt; core
+        controllers --&gt; core.leitura
+        controllers --&gt; view
+        controllers --&gt; listeners
+        
+        core.leitura --&gt; exception
+        
+        async --&gt; core.leitura
+        async --&gt; listeners
+        
+        listeners --&gt; core
+        listeners --&gt; utils
+        
+        view --&gt; utils
+        view --&gt; listeners
+        
+        core --&gt; utils
+        core --&gt; core.leitura
+        
+        utils --&gt; exception
+    end</code></pre>
+<hr />
+</section>
+</section>
+<section id="etapa-6-banco-de-dados" class="level2">
+<h2>ETAPA 6 — Banco de Dados</h2>
+<section id="diagrama-entidade-relacionamento-conceitual"
+class="level3">
+<h3>6.1 Diagrama Entidade-Relacionamento (Conceitual)</h3>
+<pre class="mermaid"><code>erDiagram
+    FREQUENTADOR_MEMORIA {
+        int id PK
+        string nome
+        string matricula
+        string hashDigital
+        string sexo
+        string localTrabalho
+        boolean isAdmin
+    }
+
+    REGISTRO_LOCAL {
+        string idFrequentador
+        string momento
+        string arquivo &quot;regs.txt&quot;
+    }
+
+    ESTACAO_PONTO {
+        string codigoAtivacao PK
+        string codigoUnicoMaquina
+        string versao
+        string estado
+    }
+
+    PREDIO_PERMITIDO {
+        string id PK
+    }
+
+    FOTO_CACHE {
+        string nomeArquivo PK
+        string base64Data
+        date dataValidade
+    }
+
+    FREQUENTADOR_MEMORIA ||--o{ REGISTRO_LOCAL : &quot;registra&quot;
+    FREQUENTADOR_MEMORIA ||--o{ FOTO_CACHE : &quot;foto_associada&quot;
+    ESTACAO_PONTO ||--|{ PREDIO_PERMITIDO : &quot;opera_em&quot;</code></pre>
+</section>
+<section id="observações-sobre-persistência" class="level3">
+<h3>6.2 Observações sobre Persistência</h3>
+<p>A Estação Ponto <strong>não utiliza banco de dados
+relacional</strong>. A persistência é feita através de:</p>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Localização</th>
+<th>Formato</th>
+<th>Finalidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arquivo criptografado</td>
+<td><code>AppData\data\regs.txt</code></td>
+<td>DES criptografado</td>
+<td>Registros offline pendentes</td>
+</tr>
+<tr>
+<td>Arquivo temporário</td>
+<td><code>AppData\data\regstemp.txt</code></td>
+<td>DES criptografado</td>
+<td>Cópia para sincronização</td>
+</tr>
+<tr>
+<td>Arquivo de hash</td>
+<td><code>AppData\data\hash</code></td>
+<td>Texto</td>
+<td>Hash das digitais (controle de versão)</td>
+</tr>
+<tr>
+<td>Map serializado</td>
+<td><code>AppData\data\f</code></td>
+<td>ObjectOutputStream</td>
+<td>Dados dos frequentadores</td>
+</tr>
+<tr>
+<td>Map serializado</td>
+<td><code>AppData\data\a</code></td>
+<td>ObjectOutputStream</td>
+<td>Dados dos administradores</td>
+</tr>
+<tr>
+<td>Map serializado</td>
+<td><code>AppData\data\fotos</code></td>
+<td>ObjectOutputStream</td>
+<td>IDs das fotos</td>
+</tr>
+<tr>
+<td>IndexSearch DB</td>
+<td><code>AppData\data\data.db</code></td>
+<td>Binário (Nitgen SDK)</td>
+<td>Banco de digitais indexadas</td>
+</tr>
+<tr>
+<td>Código único</td>
+<td><code>AppData\data\unico</code></td>
+<td>Texto (UUID)</td>
+<td>Código único da máquina</td>
+</tr>
+<tr>
+<td>Cache de fotos</td>
+<td><code>AppData\data\imgs\*</code></td>
+<td>Base64 em arquivo</td>
+<td>Fotos dos frequentadores</td>
+</tr>
+<tr>
+<td>Logs</td>
+<td><code>AppData\log\*.txt</code></td>
+<td>Texto (Log4j)</td>
+<td>Logs da aplicação</td>
+</tr>
+<tr>
+<td>Registro Windows</td>
+<td><code>HKCU\SOFTWARE\TJPIEstacaoPonto</code></td>
+<td>String</td>
+<td>Código de ativação, Path, Version</td>
+</tr>
+<tr>
+<td>Config</td>
+<td><code>AppData\config.properties</code></td>
+<td>Properties</td>
+<td>Configurações da estação</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+</section>
+<section id="etapa-7-fluxos-técnicos" class="level2">
+<h2>ETAPA 7 — Fluxos Técnicos</h2>
+<section id="fluxo-completo-batida-biométrica" class="level3">
+<h3>7.1 Fluxo Completo — Batida Biométrica</h3>
+<pre><code>Frequentador coloca dedo no leitor
+    ↓
+PreProcessandoService (loop contínuo em background)
+    ├── LeitorDigital.temDedo() → true
+    ├── LeitorDigital.capturarDigital() → hash
+    └── Result(Operacao.REGISTRO_FREQUENCIA, hash)
+    ↓
+PreProcessandoHandler.handle() (WorkerStateEvent.SUCCEEDED)
+    ↓
+VerificacaoDigitalService.start()
+    ↓
+VerificacaoDigitalService.call() (Task em background)
+    ├── LeitorDigital.abrirLeitor()
+    ├── LeitorDigital.searchDigitalOnIndexSearchEngine(hash)
+    │   ├── Cria INPUT_FIR com hash
+    │   ├── IndexSearch.Identify(fir, nivelSeguranca, fpInfo, timeout)
+    │   └── Retorna fpInfo.ID
+    ├── LeitorDigital.fecharLeitor()
+    ├── Avalia resultado:
+    │   ├── id &gt; 0 &amp;&amp; prédio ok → DIGITAL_RECONHECIDA
+    │   ├── id &gt; 0 &amp;&amp; prédio diferente → DIGITAL_RECONHECIDA_RESSALVA_PREDIO
+    │   └── id &lt;= 0 → DIGITAL_NAO_RECONHECIDA
+    └── Leitura(evento, hash, id, momento)
+    ↓
+VerificacaoDigitalHandler.handle()
+    ↓
+EventoLeitura.process(tela, leitura)
+    ├── before(): ArquivoRegistros.escreverRegistro(id-momento)
+    │   ├── Lê regs.txt existente e descriptografa
+    │   ├── Concatena novo registro
+    │   └── Criptografa (DES) e salva
+    ├── getData(): reconheceDigital(leitura)
+    │   ├── Busca dados na memória (DadosFrequentadores)
+    │   ├── Busca foto (cache local ou download ou padrão)
+    │   ├── Monta string: id,momento,matricula,nome,dataURI
+    │   └── Retorna dados
+    ├── The.inserirJavascript(&quot;process(&#39;DIGITAL_RECONHECIDA&#39;, dados)&quot;)
+    │   └── WebEngine.executeScript()
+    └── after(): SoundService.playOK()
+    ↓
+MainController.getCds().restart()
+    └── Volta ao loop de captura</code></pre>
+</section>
+<section id="fluxo-sincronização-de-registros" class="level3">
+<h3>7.2 Fluxo — Sincronização de Registros</h3>
+<pre><code>Timer (ThreadRelogio.fazerSincronizacao() → true a cada 5 min)
+    ↓
+MainController.atualizarHorario()
+    ├── ConexaoIntranetService (verifica conectividade)
+    └── Se conectado:
+        ↓
+MainController.iniciarSincronizacao()
+    ├── ArquivoRegistros.lerArquivoSincronizado()
+    │   ├── Copia regs.txt → regstemp.txt
+    │   ├── Limpa regs.txt
+    │   └── Lê regstemp.txt e descriptografa
+    ├── Se dados não vazios:
+    │   └── The.inserirJavascript(&quot;sincronizaPonto(&#39;dados&#39;,&#39;codAtivacao&#39;)&quot;)
+    └── threadRelogio.setUltimaSincronizacao(now)
+    ↓
+VivoOuMortoService.start()
+    ├── GET /presenca/AdicioneEstacao?codAtivacao=X&amp;versao=1.2&amp;estadoEstacao=FUNCIONANDO
+    └── Resposta: true/false (logado)</code></pre>
+<hr />
+</section>
+</section>
+<section id="etapa-8-segurança" class="level2">
+<h2>ETAPA 8 — Segurança</h2>
+<section id="autenticação" class="level3">
+<h3>8.1 Autenticação</h3>
+<ul>
+<li><strong>Biométrica:</strong> via SDK Nitgen (busca no IndexSearch
+local)</li>
+<li><strong>Login/Senha:</strong> criptografia DES com chave fixa
+<code>"cryp:gpf"</code> (<code>CryptoUtils.java:85-113</code>)</li>
+<li><strong>Código de ativação:</strong> UUID armazenado no Registro
+Windows (<code>RegistroWindows.java</code>)</li>
+</ul>
+</section>
+<section id="autorização" class="level3">
+<h3>8.2 Autorização</h3>
+<ul>
+<li><strong>Desbloqueio de tela:</strong> restrito a administradores
+(verificação no
+<code>DadosFrequentadores.getAdministradores()</code>)</li>
+<li><strong>Cadastro de digitais:</strong> aberto para qualquer usuário
+logado no WebView</li>
+</ul>
+</section>
+<section id="proteções-identificadas" class="level3">
+<h3>8.3 Proteções Identificadas</h3>
+<table>
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 26%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr>
+<th>Mecanismo</th>
+<th>Status</th>
+<th>Evidência</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Criptografia DES</strong></td>
+<td>Implementado (obsoleto)</td>
+<td><code>CryptoUtils.encryptDES("cryp:gpf", texto)</code></td>
+</tr>
+<tr>
+<td><strong>Bloqueio de teclas de sistema</strong></td>
+<td>Implementado</td>
+<td><code>KeyHook.blockWindowsKey()</code></td>
+</tr>
+<tr>
+<td><strong>Bloqueio de tela</strong></td>
+<td>Implementado</td>
+<td><code>BloqueioTela.bloquear()</code></td>
+</tr>
+<tr>
+<td><strong>CSRF</strong></td>
+<td>Não implementado (aplicação local)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>SQL Injection</strong></td>
+<td>Não aplicável (sem BD local)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>XSS</strong></td>
+<td>Não verificado (WebView carrega JSP da Intranet)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Mass Assignment</strong></td>
+<td>Não aplicável</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vulnerabilidades-identificadas" class="level3">
+<h3>8.4 Vulnerabilidades Identificadas</h3>
+<ol type="1">
+<li><p><strong>DES como algoritmo de criptografia</strong> — DES é
+considerado inseguro desde 2005. A chave fixa <code>"cryp:gpf"</code>
+está hardcoded em <code>CryptoUtils.java:86</code>. Um atacante com
+acesso ao arquivo <code>regs.txt</code> pode descriptografar todos os
+registros offline. <strong>Arquivo:</strong>
+<code>utils/CryptoUtils.java</code></p></li>
+<li><p><strong>Chave criptográfica hardcoded</strong> — A string
+<code>"cryp:gpf"</code> aparece em:</p>
+<ul>
+<li><code>CryptoUtils.java:76,85,101</code> (criptografia DES)</li>
+<li><code>ArquivoRegistros.java:31,51,68,92</code> (leitura/escrita de
+registros)</li>
+<li><code>ValidarBatidaManualService.java:38,39</code> (envio de
+credenciais)</li>
+</ul></li>
+<li><p><strong>Dados sensíveis em logs</strong> —
+<code>System.out.println</code> e <code>LogAplicacao</code> podem expor
+dados como IP, códigos de ativação, hashes de digital.</p></li>
+<li><p><strong>Restart forçado em caso de erro</strong> —
+<code>DownloadFrequentadoresService.java:39-43</code> fecha a aplicação
+abruptamente sem mensagem para o usuário.</p></li>
+<li><p><strong>Código de ativação como único fator de
+autenticação</strong> — A estação não usa certificado ou token JWT para
+se autenticar na Intranet.</p></li>
+</ol>
+<hr />
+</section>
+</section>
+<section id="etapa-9-testes" class="level2">
+<h2>ETAPA 9 — Testes</h2>
+<section id="testes-existentes" class="level3">
+<h3>9.1 Testes Existentes</h3>
+<p><strong>Não há testes automatizados</strong> no projeto. Nenhum
+arquivo de teste foi encontrado no diretório <code>src/test/</code> ou
+equivalente.</p>
+</section>
+<section id="funcionalidades-testadas-vs-não-testadas" class="level3">
+<h3>9.2 Funcionalidades Testadas vs Não Testadas</h3>
+<table>
+<thead>
+<tr>
+<th>Funcionalidade</th>
+<th>Testada?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Iniciar Estação</td>
+<td>❌ Não</td>
+</tr>
+<tr>
+<td>Captura Biométrica</td>
+<td>❌ Não</td>
+</tr>
+<tr>
+<td>Verificação de Digital</td>
+<td>❌ Não</td>
+</tr>
+<tr>
+<td>Registro Offline</td>
+<td>❌ Não</td>
+</tr>
+<tr>
+<td>Sincronização</td>
+<td>❌ Não</td>
+</tr>
+<tr>
+<td>Bloqueio de Tela</td>
+<td>❌ Não</td>
+</tr>
+<tr>
+<td>Download de Frequentadores</td>
+<td>❌ Não</td>
+</tr>
+<tr>
+<td>Criptografia</td>
+<td>❌ Não</td>
+</tr>
+<tr>
+<td>Heartbeat</td>
+<td>❌ Não</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cenários-faltantes-sugestões" class="level3">
+<h3>9.3 Cenários Faltantes (Sugestões)</h3>
+<ol type="1">
+<li>Testes unitários para <code>CryptoUtils</code> (DES, MD5, UB64)</li>
+<li>Testes para <code>ArquivoRegistros</code> (escrita/leitura
+criptografada)</li>
+<li>Testes para <code>ThreadRelogio</code> (cálculo de horário)</li>
+<li>Testes para <code>LeitorDigital</code> (simulação de SDK)</li>
+<li>Testes de integração simulando Intranet (mock HTTP)</li>
+<li>Testes de segurança (DES, exposição de dados)</li>
+<li>Testes de falha (leitor desconectado, timeout, etc.)</li>
+</ol>
+<hr />
+</section>
+</section>
+<section id="etapa-10-débitos-técnicos" class="level2">
+<h2>ETAPA 10 — Débitos Técnicos</h2>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 17%" />
+<col style="width: 23%" />
+<col style="width: 27%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th>ID</th>
+<th>Débito</th>
+<th>Severidade</th>
+<th>Localização</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DT01</td>
+<td><strong>String mágica “cryp:gpf” hardcoded</strong></td>
+<td>Crítica</td>
+<td><code>CryptoUtils.java</code>, <code>ArquivoRegistros.java</code>,
+<code>ValidarBatidaManualService.java</code></td>
+<td>Chave criptográfica fixa em 5+ locais</td>
+</tr>
+<tr>
+<td>DT02</td>
+<td><strong>DES obsoleto</strong></td>
+<td>Crítica</td>
+<td><code>CryptoUtils.java</code></td>
+<td>Algoritmo vulnerável desde 2005</td>
+</tr>
+<tr>
+<td>DT03</td>
+<td><strong>System.out.println em produção</strong></td>
+<td>Alta</td>
+<td>Vários arquivos</td>
+<td>Logging via stdout misturado com Log4j</td>
+</tr>
+<tr>
+<td>DT04</td>
+<td><strong>Código comentado e não utilizado</strong></td>
+<td>Alta</td>
+<td><code>EventoLeitura.java</code> (linhas 143-300)</td>
+<td>Dois grandes blocos de dataURI em Base64 truncados</td>
+</tr>
+<tr>
+<td>DT05</td>
+<td><strong>Sem testes automatizados</strong></td>
+<td>Alta</td>
+<td>Projeto todo</td>
+<td>Zero cobertura de testes</td>
+</tr>
+<tr>
+<td>DT06</td>
+<td><strong>Exceções genéricas capturadas</strong></td>
+<td>Média</td>
+<td>Vários services</td>
+<td><code>catch (Exception e)</code> sem tratamento específico</td>
+</tr>
+<tr>
+<td>DT07</td>
+<td><strong>Nomenclatura inconsistente</strong></td>
+<td>Média</td>
+<td><code>core/leitura/Operacao.java</code> vs
+<code>listeners/Operacao.java</code></td>
+<td>Duas classes <code>Operacao</code> diferentes no mesmo módulo</td>
+</tr>
+<tr>
+<td>DT08</td>
+<td><strong>Configurações via properties sem validação</strong></td>
+<td>Média</td>
+<td><code>Configuracoes.java</code></td>
+<td>Se <code>config.properties</code> estiver mal formatado, retorna
+string vazia</td>
+</tr>
+<tr>
+<td>DT09</td>
+<td><strong>System.exit() em vários locais</strong></td>
+<td>Alta</td>
+<td><code>EstacaoPonto.java</code>,
+<code>DownloadFrequentadoresService.java</code></td>
+<td>Fechamento abrupto sem cleanup adequado</td>
+</tr>
+<tr>
+<td>DT10</td>
+<td><strong>Dead code em EventoLeitura</strong></td>
+<td>Média</td>
+<td><code>EventoLeitura.java</code> (reconheceDigital)</td>
+<td>Bloco de dados Base64 com dataURI real truncado</td>
+</tr>
+<tr>
+<td>DT11</td>
+<td><strong>Dados de foto de placeholder hardcoded</strong></td>
+<td>Alta</td>
+<td><code>EventoLeitura.java:143-300</code></td>
+<td>Duas strings Base64 enormes (~80 linhas cada) para fotos padrão
+masculino/feminino</td>
+</tr>
+<tr>
+<td>DT12</td>
+<td><strong>imports não utilizados</strong></td>
+<td>Baixa</td>
+<td>Vários arquivos</td>
+<td><code>The.java</code> (Random), <code>ArquivoUtils.java</code>,
+etc.</td>
+</tr>
+<tr>
+<td>DT13</td>
+<td><strong>Método ímpar em DebugUtil</strong></td>
+<td>Baixa</td>
+<td><code>utils/DebugUtil.java</code></td>
+<td>Classe inteira (printStackTrace) parece ser para debug apenas</td>
+</tr>
+</tbody>
+</table>
+<section id="violações-de-princípios" class="level3">
+<h3>10.2 Violações de Princípios</h3>
+<table>
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 35%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Princípio</th>
+<th>Violação</th>
+<th>Local</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DRY</strong></td>
+<td>Chave “cryp:gpf” repetida em 3 classes</td>
+<td><code>CryptoUtils</code>, <code>ArquivoRegistros</code>,
+<code>ValidarBatidaManualService</code></td>
+</tr>
+<tr>
+<td><strong>SRP</strong></td>
+<td><code>EventoLeitura.java</code> faz tudo: enum, IO, JS injection,
+cache de fotos</td>
+<td>300+ linhas</td>
+</tr>
+<tr>
+<td><strong>KISS</strong></td>
+<td><code>DadosFrequentadores.java</code> mistura estruturação de dados
+com Task de cache</td>
+<td>219 linhas</td>
+</tr>
+<tr>
+<td><strong>Fail-Fast</strong></td>
+<td><code>DownloadFrequentadoresService.java</code> captura Exception e
+reinicia sem diagnóstico</td>
+<td>Linhas 39-43</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+</section>
+<section id="etapa-11-refatorações-sugeridas" class="level2">
+<h2>ETAPA 11 — Refatorações Sugeridas</h2>
+<section id="prioridade-alta" class="level3">
+<h3>11.1 Prioridade Alta</h3>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 42%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr>
+<th>Sugestão</th>
+<th>Justificativa</th>
+<th>Impacto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Substituir DES por AES</strong></td>
+<td>DES é inseguro; usar AES-256 com chave derivada do código de
+ativação</td>
+<td>Elimina DT01, DT02</td>
+</tr>
+<tr>
+<td><strong>Extrair chave criptográfica para
+config.properties</strong></td>
+<td>Chave hardcoded é risco de segurança</td>
+<td>Complementa acima</td>
+</tr>
+<tr>
+<td><strong>Remover System.out.println</strong></td>
+<td>Substituir por Log4j em todos os locais</td>
+<td>Elimina DT03</td>
+</tr>
+<tr>
+<td><strong>Criar suíte de testes</strong></td>
+<td>Cobertura zero é inaceitável para produção</td>
+<td>Elimina DT05</td>
+</tr>
+<tr>
+<td><strong>Remover código morto (dataURI Base64)</strong></td>
+<td>~150 linhas não utilizadas</td>
+<td>Elimina DT04, DT11</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="prioridade-média" class="level3">
+<h3>11.2 Prioridade Média</h3>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr>
+<th>Sugestão</th>
+<th>Justificativa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Extrair EventoLeitura em classes menores</strong></td>
+<td>Violação SRP severa</td>
+</tr>
+<tr>
+<td><strong>Renomear listeners.Operacao para ComandoJS</strong></td>
+<td>Evita confusão com core.leitura.Operacao</td>
+</tr>
+<tr>
+<td><strong>Adicionar validação em Configuracoes</strong></td>
+<td>Retornar valores default explícitos</td>
+</tr>
+<tr>
+<td><strong>Melhorar tratamento de exceções</strong></td>
+<td>Substituir <code>catch (Exception)</code> por tipos específicos</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+</section>
+<section id="etapa-12-documentação-da-api" class="level2">
+<h2>ETAPA 12 — Documentação da API</h2>
+<p>A Estação Ponto <strong>não expõe endpoints de API</strong>. Ela é
+cliente HTTP que consome os seguintes endpoints da Intranet TJPI:</p>
+<section id="get-presencavalidarfrequentador" class="level3">
+<h3><code>GET /presenca/ValidarFrequentador</code></h3>
+<p>Valida credenciais de login manual.</p>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 16%" />
+<col style="width: 35%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>loginAccessKey</code></td>
+<td>String</td>
+<td>Sim</td>
+<td>Login criptografado com DES (chave “cryp:gpf”)</td>
+</tr>
+<tr>
+<td><code>plainPassword</code></td>
+<td>String</td>
+<td>Sim</td>
+<td>Senha criptografada com DES</td>
+</tr>
+<tr>
+<td><code>codAtivacao</code></td>
+<td>String</td>
+<td>Sim</td>
+<td>Código de ativação da estação</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Resposta sucesso:</strong>
+<code>&lt;idFrequentador&gt;</code> (string numérica) <strong>Resposta
+erro:</strong> <code>USUARIO_SENHA_INVALIDOS</code>,
+<code>USUARIO_SEM_PERMISSAO_MANUAL</code>,
+<code>ESTACAO_SEM_PERMISSAO_PARA_BATIDA_MANUAL</code></p>
+<p><strong>Fonte:</strong>
+<code>core/ValidarBatidaManualService.java</code></p>
+</section>
+<section id="get-presencaadicioneestacao" class="level3">
+<h3><code>GET /presenca/AdicioneEstacao</code></h3>
+<p>Heartbeat da estação.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>codAtivacao</code></td>
+<td>String</td>
+<td>Sim</td>
+<td>Código de ativação (URL encoded)</td>
+</tr>
+<tr>
+<td><code>versao</code></td>
+<td>String</td>
+<td>Sim</td>
+<td>Versão do software (ex: “1.2”)</td>
+</tr>
+<tr>
+<td><code>estadoEstacao</code></td>
+<td>String</td>
+<td>Sim</td>
+<td>“FUNCIONANDO”</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fonte:</strong> <code>core/VivoOuMortoService.java</code></p>
+</section>
+<section id="get-presencadynfrequentadoresestacao" class="level3">
+<h3><code>GET /presenca/DynFrequentadoresEstacao/</code></h3>
+<p>Download de todos os frequentadores com digitais.</p>
+<p><strong>Resposta:</strong> String com dados separados por
+<code>'</code> (apóstrofo) e <code>;</code> (ponto-e-vírgula)</p>
+<p><strong>Fonte:</strong>
+<code>core/DownloadFrequentadoresService.java</code></p>
+</section>
+<section id="get-presencadynhashfrequentadoresestacao" class="level3">
+<h3><code>GET /presenca/DynHashFrequentadoresEstacao/</code></h3>
+<p>Hash para verificar se há novas digitais.</p>
+<p><strong>Resposta:</strong> String hash</p>
+<p><strong>Fonte:</strong>
+<code>core/DownloadFrequentadoresService.java</code></p>
+</section>
+<section id="get-presencacarregarelogioatual" class="level3">
+<h3><code>GET /presenca/CarregaRelogioAtual</code></h3>
+<p>Timestamp do servidor em milissegundos.</p>
+<p><strong>Resposta:</strong> <code>&lt;timestamp_ms&gt;</code> (string
+numérica)</p>
+<p><strong>Fonte:</strong>
+<code>utils/ConexaoIntranetService.java</code></p>
+</section>
+<section id="get-presencaprediospermitidos" class="level3">
+<h3><code>GET /presenca/PrediosPermitidos/</code></h3>
+<p>IDs dos prédios permitidos para a estação.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>codAtivacao</code></td>
+<td>String</td>
+<td>Sim</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Resposta:</strong>
+<code>"&lt;id1&gt;;&lt;id2&gt;;..."</code></p>
+<p><strong>Fonte:</strong>
+<code>core/PrediosPermitidosService.java</code></p>
+<hr />
+</section>
+</section>
+<section id="etapa-13-diagramas" class="level2">
+<h2>ETAPA 13 — Diagramas</h2>
+<section id="fluxograma-fluxo-principal-da-estação" class="level3">
+<h3>13.1 Fluxograma — Fluxo Principal da Estação</h3>
+<pre class="mermaid"><code>flowchart TD
+    A[Início: EstacaoPonto.main()] --&gt; B[Carregar DLLs nativas]
+    B --&gt; C[Criar diretórios AppData]
+    C --&gt; D[Verificar/Criar config.properties]
+    D --&gt; E[Mover diretório antigo se existir]
+    E --&gt; F[Configurar URLs por ambiente]
+    F --&gt; G[Criar restart.bat]
+    G --&gt; H[Ativar KeyHook]
+    H --&gt; I{Leitor conectado?}
+    I --&gt;|Sim| J[Carregar Main.fxml]
+    I --&gt;|Não| K[Exibir erro + System.exit]
+    J --&gt; L[Configurar Stage maximizado]
+    L --&gt; M[Exibir tela]
+    M --&gt; N[Loop de conexão Intranet]
+    N --&gt; O{Conectado?}
+    O --&gt;|Sim| P[Carregar IniciarPonto.jsp no WebView]
+    O --&gt;|Não| Q[Aguardar 15s]
+    Q --&gt; N
+    P --&gt; R[Iniciar PreProcessandoService]
+    R --&gt; S[Aguardar digital...]</code></pre>
+</section>
+<section id="fluxograma-registro-de-ponto" class="level3">
+<h3>13.2 Fluxograma — Registro de Ponto</h3>
+<pre class="mermaid"><code>flowchart TD
+    A[Loop: Aguardar dedo] --&gt; B{Dedo detectado?}
+    B --&gt;|Sim| C[Capturar digital]
+    B --&gt;|Não| A
+    C --&gt; D[Buscar no IndexSearch]
+    D --&gt; E{ID encontrado?}
+    E --&gt;|Sim| F{Prédio permitido?}
+    E --&gt;|Não| G[Digital não reconhecida]
+    F --&gt;|Sim| H[Escrever registro criptografado]
+    F --&gt;|Não| I[Escrever registro com ressalva]
+    H --&gt; J[Exibir dados do frequentador]
+    I --&gt; J
+    J --&gt; K[Tocar som OK]
+    G --&gt; L[Tocar som erro]
+    K --&gt; A
+    L --&gt; A</code></pre>
+</section>
+<section id="diagrama-de-implantação" class="level3">
+<h3>13.3 Diagrama de Implantação</h3>
+<pre class="mermaid"><code>graph TD
+    subgraph &quot;Estação Ponto (Windows)&quot;
+        JRE[Java 8 Runtime]
+        DLL[DLLs Nativas&lt;br/&gt;NBioBSP.dll&lt;br/&gt;ICE_JNIRegistry.dll]
+        APP[EstacaoPonto.jar]
+        FXL[FxLauncher]
+        CFG[config.properties]
+        REG[Registro Windows]
+        LOG[Logs]
+        CACHE[(data.db / imgs)]
+    end
+
+    subgraph &quot;Hardware&quot;
+        LEITOR[Leitor Biométrico&lt;br/&gt;Nitgen Fingerprint]
+        MONITOR[Monitor Touch]
+    end
+
+    subgraph &quot;Servidor Intranet TJPI&quot;
+        HTTP[Apache/Nginx]
+        TOM[Tomcat]
+        INTRANET[Intranet Web]
+    end
+
+    APP --&gt; JRE
+    APP --&gt; DLL
+    APP --&gt; LEITOR
+    APP --&gt; MONITOR
+    APP --&gt; CFG
+    APP --&gt; REG
+    APP --&gt; LOG
+    APP --&gt; CACHE
+    FXL --&gt; HTTP
+    APP --&gt; TOM</code></pre>
+<hr />
+</section>
+</section>
+<section id="etapa-14-glossário" class="level2">
+<h2>ETAPA 14 — Glossário</h2>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 46%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr>
+<th>Termo</th>
+<th>Significado</th>
+<th>Fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Biometria</strong></td>
+<td>Identificação por impressão digital</td>
+<td><code>LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td><strong>Código de Ativação</strong></td>
+<td>UUID único que identifica a estação no servidor</td>
+<td><code>RegistroWindows.java</code></td>
+</tr>
+<tr>
+<td><strong>Código Único de Máquina</strong></td>
+<td>UUID aleatório gerado na primeira execução</td>
+<td><code>RegistroWindows.getCodigoUnicoMaquina()</code></td>
+</tr>
+<tr>
+<td><strong>DES</strong></td>
+<td>Algoritmo de criptografia Data Encryption Standard</td>
+<td><code>CryptoUtils.java</code></td>
+</tr>
+<tr>
+<td><strong>DLL</strong></td>
+<td>Dynamic Link Library (biblioteca nativa Windows)</td>
+<td><code>EstacaoPonto.java</code> (static block)</td>
+</tr>
+<tr>
+<td><strong>FIR</strong></td>
+<td>Fingerprint Input Record (formato de dado biométrico)</td>
+<td><code>LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td><strong>FxLauncher</strong></td>
+<td>Framework para auto-update de aplicações JavaFX</td>
+<td><code>pom.xml</code></td>
+</tr>
+<tr>
+<td><strong>IndexSearch</strong></td>
+<td>Mecanismo do Nitgen SDK para indexação e busca rápida de
+digitais</td>
+<td><code>LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td><strong>JNA</strong></td>
+<td>Java Native Access (bridge Java ↔︎ código nativo)</td>
+<td><code>KeyHook.java</code>, <code>pom.xml</code></td>
+</tr>
+<tr>
+<td><strong>NBioBSP</strong></td>
+<td>SDK Nitgen para captura e verificação biométrica</td>
+<td><code>LeitorDigital.java</code></td>
+</tr>
+<tr>
+<td><strong>PreProcessandoService</strong></td>
+<td>Service assíncrono que loopa capturando digitais</td>
+<td><code>async/PreProcessandoService.java</code></td>
+</tr>
+<tr>
+<td><strong>Prédio Permitido</strong></td>
+<td>Prédio onde a estação está autorizada a operar</td>
+<td><code>PrediosPermitidosService.java</code></td>
+</tr>
+<tr>
+<td><strong>Registro Windows</strong></td>
+<td>HKEY_CURRENT_USER</td>
+<td><code>RegistroWindows.java</code></td>
+</tr>
+<tr>
+<td><strong>Restart Diário</strong></td>
+<td>Reinicialização programada entre 22:00-22:10</td>
+<td><code>ThreadRelogio.setarHorarioRestart()</code></td>
+</tr>
+<tr>
+<td><strong>Ressalva de Prédio</strong></td>
+<td>Registro de ponto feito em prédio diferente do local de
+trabalho</td>
+<td><code>VerificacaoDigitalService.java</code></td>
+</tr>
+<tr>
+<td><strong>ThreadRelogio</strong></td>
+<td>Service que mantém o horário sincronizado com o servidor</td>
+<td><code>async/ThreadRelogio.java</code></td>
+</tr>
+<tr>
+<td><strong>VivoOuMorto</strong></td>
+<td>Heartbeat periódico para informar que a estação está ativa</td>
+<td><code>VivoOuMortoService.java</code></td>
+</tr>
+<tr>
+<td><strong>WebEngine</strong></td>
+<td>Motor de renderização HTML/JavaScript do JavaFX</td>
+<td><code>TelaPonto.java</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+<section id="etapa-15-manual-do-desenvolvedor" class="level2">
+<h2>ETAPA 15 — Manual do Desenvolvedor</h2>
+<section id="como-adicionar-uma-nova-funcionalidade" class="level3">
+<h3>15.1 Como Adicionar uma Nova Funcionalidade</h3>
+<ol type="1">
+<li><strong>Service (Async):</strong> Crie uma classe estendendo
+<code>javafx.concurrent.Service&lt;T&gt;</code> em <code>async/</code>
+ou <code>core/</code></li>
+<li><strong>Listener (se JS):</strong> Adicione constante em
+<code>listeners/Operacao.java</code> com implementação de
+<code>execute()</code></li>
+<li><strong>Controller:</strong> Adicione método em
+<code>MainController.java</code> e conecte ao FXML via
+<code>@FXML</code> ou evento</li>
+<li><strong>View:</strong> Modifique <code>Main.fxml</code> ou injete
+via JavaScript no WebView</li>
+<li><strong>Config:</strong> Adiciente chave em
+<code>Configuracoes.java</code> e em <code>config.properties</code></li>
+<li><strong>Log:</strong> Use <code>LogAplicacao.i/e/w()</code> para
+logging</li>
+</ol>
+</section>
+<section id="como-adicionar-um-novo-comando-javascript" class="level3">
+<h3>15.2 Como Adicionar um Novo Comando JavaScript</h3>
+<p>Em <code>listeners/Operacao.java</code>:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NOVO_COMANDO <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">execute</span><span class="op">(</span><span class="bu">String</span> metodo<span class="op">,</span> WebEngine engine<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">// implementação</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Em seguida, o JS da Intranet chama
+<code>alert('NOVO_COMANDO')</code>.</p>
+</section>
+<section id="como-criar-um-novo-endpoint" class="level3">
+<h3>15.3 Como Criar um Novo Endpoint</h3>
+<p>A Estação Ponto não tem endpoints próprios. Para consumir um novo
+endpoint da Intranet:</p>
+<ol type="1">
+<li>Adicione a URL em <code>IntranetURLs.java</code></li>
+<li>Crie um <code>Service</code> em <code>core/</code> ou use
+<code>HttpURLConnection</code> diretamente</li>
+<li>Trate resposta e erros no <code>setOnSucceeded()</code></li>
+</ol>
+</section>
+<section id="como-fazer-o-build" class="level3">
+<h3>15.4 Como Fazer o Build</h3>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> estacaoPonto</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> clean package           <span class="co"># Gera JARs em target/app/</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">mvn</span> exec:exec@deploy-app   <span class="co"># Deploy via pscp para o servidor (requer credenciais)</span></span></code></pre></div>
+</section>
+<section id="padrões-a-seguir" class="level3">
+<h3>15.5 Padrões a Seguir</h3>
+<ul>
+<li><strong>Nomenclatura:</strong> Classes em PascalCase, métodos em
+camelCase</li>
+<li><strong>Async:</strong> Usar <code>javafx.concurrent.Service</code>
++ <code>Task</code> para operações em background</li>
+<li><strong>Logging:</strong> Usar <code>LogAplicacao</code> (log da
+app) ou <code>LogEstacao</code> (log da estação)</li>
+<li><strong>Criptografia:</strong> Usar <code>CryptoUtils</code> (mas
+considerar migração para AES)</li>
+<li><strong>Exceções:</strong> Usar <code>BiometricException</code>
+hierarquia para erros biométricos</li>
+<li><strong>Config:</strong> Usar <code>Configuracoes</code> enum
+(carrega de config.properties)</li>
+<li><strong>JS Injection:</strong> Usar
+<code>The.inserirJavascript(engine, script)</code></li>
+</ul>
+<hr />
+</section>
+</section>
+<section id="etapa-16-manual-do-usuário" class="level2">
+<h2>ETAPA 16 — Manual do Usuário</h2>
+<section id="iniciar-a-estação" class="level3">
+<h3>16.1 Iniciar a Estação</h3>
+<ol type="1">
+<li>A estação inicia automaticamente com o Windows (atalho na
+inicialização)</li>
+<li>Aguarde a conexão com a Intranet (mensagem “Conectando…”
+desaparece)</li>
+</ol>
+</section>
+<section id="bater-ponto-biometria" class="level3">
+<h3>16.2 Bater Ponto (Biometria)</h3>
+<ol type="1">
+<li>Coloque o dedo no leitor biométrico</li>
+<li>Aguarde o reconhecimento (som OK)</li>
+<li>Seu nome e matrícula aparecerão na tela</li>
+</ol>
+</section>
+<section id="bater-ponto-login-manual" class="level3">
+<h3>16.3 Bater Ponto (Login Manual)</h3>
+<ol type="1">
+<li>Na tela inicial, clique em “Login Manual” (se disponível)</li>
+<li>Digite seu CPF ou matrícula e senha</li>
+<li>Confirme</li>
+</ol>
+</section>
+<section id="cadastrar-digital" class="level3">
+<h3>16.4 Cadastrar Digital</h3>
+<p>Disponível apenas para administradores via tela de cadastro de
+frequentador na Intranet.</p>
+<hr />
+</section>
+</section>
+<section id="etapa-17-rastreabilidade" class="level2">
+<h2>ETAPA 17 — Rastreabilidade</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 18%" />
+<col style="width: 15%" />
+<col style="width: 18%" />
+<col style="width: 10%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th>Funcionalidade</th>
+<th>Controller</th>
+<th>Service</th>
+<th>Core/Utils</th>
+<th>View</th>
+<th>Testes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Iniciar Estação</td>
+<td>—</td>
+<td>—</td>
+<td><code>core/EstacaoPonto.java</code>,
+<code>core/LocalPaths.java</code></td>
+<td><code>Main.fxml</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Batida Biométrica</td>
+<td><code>MainController.java</code></td>
+<td><code>PreProcessandoService</code>,
+<code>VerificacaoDigitalService</code></td>
+<td><code>LeitorDigital</code>, <code>EventoLeitura</code>,
+<code>ArquivoRegistros</code></td>
+<td><code>TelaPonto.java</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Login Manual</td>
+<td><code>MainController.java</code></td>
+<td><code>ValidarBatidaManualService</code></td>
+<td><code>CryptoUtils</code>, <code>RegistroWindows</code></td>
+<td>WebView JSP</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Sincronização</td>
+<td><code>MainController.java</code></td>
+<td>—</td>
+<td><code>ArquivoRegistros</code>, <code>ThreadRelogio</code></td>
+<td>WebView JS</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Heartbeat</td>
+<td>—</td>
+<td><code>VivoOuMortoService</code></td>
+<td><code>RegistroWindows</code></td>
+<td>—</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Download Digitais</td>
+<td>—</td>
+<td><code>DownloadFrequentadoresService</code></td>
+<td><code>DadosFrequentadores</code>, <code>IntranetURLs</code></td>
+<td>—</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Cache Fotos</td>
+<td>—</td>
+<td><code>CacheDownloadService</code></td>
+<td><code>CacheManipulation</code>, <code>DownloadFoto</code></td>
+<td>—</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Bloqueio Tela</td>
+<td>—</td>
+<td>—</td>
+<td><code>BloqueioTela</code>, <code>KeyHook</code>,
+<code>Operacao</code> (leitura)</td>
+<td><code>TelaPonto.lock/unlock</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Cadastro Digital</td>
+<td><code>MainController.java</code></td>
+<td>—</td>
+<td><code>LeitorDigital.enroll()</code></td>
+<td>JS <code>changeInfoDigital</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Relógio</td>
+<td><code>MainController.java</code></td>
+<td><code>ThreadRelogio</code>, <code>ConexaoIntranetService</code></td>
+<td><code>CalendarUtils</code></td>
+<td>JS <code>atualizaRelogioLocal</code></td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</section>
+<section id="etapa-18-qualidade" class="level2">
+<h2>ETAPA 18 — Qualidade</h2>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 34%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr>
+<th>Critério</th>
+<th>Nota (0-10)</th>
+<th>Justificativa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Arquitetura</strong></td>
+<td>6</td>
+<td>MVC básico com JavaFX; mistura responsabilidades em EventoLeitura;
+services bem isolados via JavaFX Service</td>
+</tr>
+<tr>
+<td><strong>Legibilidade</strong></td>
+<td>5</td>
+<td>Código mistura português e inglês; duas classes
+<code>Operacao</code> causam confusão; nomes significativos na
+maioria</td>
+</tr>
+<tr>
+<td><strong>Coesão</strong></td>
+<td>4</td>
+<td><code>EventoLeitura.java</code> é god enum (300+ linhas, IO + JS +
+cache + enums). PreProcessandoService funde detecção/captura/login</td>
+</tr>
+<tr>
+<td><strong>Acoplamento</strong></td>
+<td>6</td>
+<td>Acoplamento com SDK Nitgen e JNA é inevitável; comunicação com
+Intranet via HTTP simples (baixo acoplamento)</td>
+</tr>
+<tr>
+<td><strong>Escalabilidade</strong></td>
+<td>5</td>
+<td>Singleton <code>LeitorDigital</code> não thread-safe; IndexSearch
+pode ser lento com muitos frequentadores</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>5</td>
+<td>Download de todos os frequentadores de uma vez (sem paginação); sem
+cache adequado para IndexSearch</td>
+</tr>
+<tr>
+<td><strong>Segurança</strong></td>
+<td>3</td>
+<td>DES obsoleto, chave hardcoded, System.out com dados sensíveis, sem
+validação de entrada</td>
+</tr>
+<tr>
+<td><strong>Testabilidade</strong></td>
+<td>1</td>
+<td>Zero testes; SDK Nitgen difícil de mockar; lógica espalhada
+dificulta teste unitário</td>
+</tr>
+<tr>
+<td><strong>Manutenibilidade</strong></td>
+<td>4</td>
+<td>Duas classes Operacao; código morto (Base64); imports não
+utilizados; System.exit abrupto</td>
+</tr>
+<tr>
+<td><strong>Cobertura de Testes</strong></td>
+<td>0</td>
+<td>Nenhum teste automatizado encontrado</td>
+</tr>
+<tr>
+<td><strong>Organização</strong></td>
+<td>7</td>
+<td>Estrutura de pastas clara e consistente (async, controllers, core,
+leitura, listeners, utils, view)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Média geral: 4.2/10</strong></p>
+<hr />
+</section>
+<section id="etapa-19-relatório-executivo" class="level2">
+<h2>ETAPA 19 — Relatório Executivo</h2>
+<section id="resumo-do-módulo" class="level3">
+<h3>19.1 Resumo do Módulo</h3>
+<p>A <strong>Estação Ponto de Presença</strong> é uma aplicação
+<strong>JavaFX Desktop</strong> que roda em computadores espalhados
+pelos prédios do TJPI, servindo como interface biométrica para registro
+de ponto. Ela se integra à Intranet via WebView (renderizando JSPs do
+módulo Presença) e HTTP (consumindo endpoints AJAX). Suporta operação
+offline, sincronização assíncrona, bloqueio de tela (quiosque), e
+auto-update via FxLauncher.</p>
+</section>
+<section id="métricas" class="level3">
+<h3>19.2 Métricas</h3>
+<table>
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Classes Java</strong></td>
+<td>28</td>
+</tr>
+<tr>
+<td><strong>Lines of Code</strong></td>
+<td>~2.500</td>
+</tr>
+<tr>
+<td><strong>Controllers</strong></td>
+<td>1 (<code>MainController</code>) + 2 Handlers</td>
+</tr>
+<tr>
+<td><strong>Services (Async)</strong></td>
+<td>8</td>
+</tr>
+<tr>
+<td><strong>Models/Beans</strong></td>
+<td>3 (Leitura, DadosFrequentadores, EstacaoPonto)</td>
+</tr>
+<tr>
+<td><strong>Utils</strong></td>
+<td>12</td>
+</tr>
+<tr>
+<td><strong>Enums</strong></td>
+<td>5 (EventoLeitura, Operacao×2, Configuracoes,
+listeners.Operacao)</td>
+</tr>
+<tr>
+<td><strong>Exceções</strong></td>
+<td>1 (5 subclasses internas)</td>
+</tr>
+<tr>
+<td><strong>Endpoints HTTP consumidos</strong></td>
+<td>6</td>
+</tr>
+<tr>
+<td><strong>Dependências externas</strong></td>
+<td>10+</td>
+</tr>
+<tr>
+<td><strong>Testes</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Regras de Negócio</strong></td>
+<td>18 identificadas</td>
+</tr>
+<tr>
+<td><strong>Casos de Uso</strong></td>
+<td>11</td>
+</tr>
+<tr>
+<td><strong>Diagramas gerados</strong></td>
+<td>12 (classes, sequência, estado, componentes, pacotes, implantação, 2
+fluxogramas, use case, ER)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pontos-fortes" class="level3">
+<h3>19.3 Pontos Fortes</h3>
+<ol type="1">
+<li><strong>Operação offline robusta</strong> — registros são
+armazenados criptografados localmente e sincronizados quando a conexão é
+restabelecida</li>
+<li><strong>Integração via WebView</strong> — reusa a interface web da
+Intranet, evitando duplicação de UI</li>
+<li><strong>Heartbeat e auto-recuperação</strong> — restart automático
+em caso de erro de timeout</li>
+<li><strong>Bloqueio de tela/quiosque</strong> — segurança física para
+estações públicas</li>
+<li><strong>Arquitetura de pastas organizada</strong> — separação clara
+de async, controllers, core, leitura, listeners, utils, view</li>
+</ol>
+</section>
+<section id="pontos-fracos" class="level3">
+<h3>19.4 Pontos Fracos</h3>
+<ol type="1">
+<li><strong>Criptografia DES obsoleta</strong> com chave hardcoded</li>
+<li><strong>Zero cobertura de testes</strong> — qualquer regressão passa
+despercebida</li>
+<li><strong>Código morto (dataURI Base64)</strong> ~150 linhas não
+utilizadas</li>
+<li><strong>System.out.println misturado com Log4j</strong> — logs não
+estruturados</li>
+<li><strong>Violação SRP em EventoLeitura</strong> — enum que faz IO,
+JS, cache, e mais</li>
+</ol>
+</section>
+<section id="riscos" class="level3">
+<h3>19.5 Riscos</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 34%" />
+<col style="width: 21%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risco</th>
+<th>Probabilidade</th>
+<th>Impacto</th>
+<th>Mitigação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DES comprometido expõe registros offline</td>
+<td>Alta</td>
+<td>Alto</td>
+<td>Migrar para AES</td>
+</tr>
+<tr>
+<td>Falha no leitor biométrico paralisa estações</td>
+<td>Média</td>
+<td>Crítico</td>
+<td>Implementar fallback para login manual</td>
+</tr>
+<tr>
+<td>Perda de conhecimento do SDK Nitgen</td>
+<td>Alta</td>
+<td>Alto</td>
+<td>Documentar API usada</td>
+</tr>
+<tr>
+<td>Restart forçado sem diagnóstico</td>
+<td>Alta</td>
+<td>Médio</td>
+<td>Melhorar tratamento de erro</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sugestões-de-evolução" class="level3">
+<h3>19.6 Sugestões de Evolução</h3>
+<ol type="1">
+<li><strong>Substituir DES por AES-256</strong> e extrair chave para
+config</li>
+<li><strong>Implementar suíte de testes</strong> (JUnit + Mockito para
+SD KBio, WireMock para HTTP)</li>
+<li><strong>Remover código morto</strong> (dataURI placeholder em
+EventoLeitura)</li>
+<li><strong>Migrar para logging estruturado</strong> (remover
+System.out.println)</li>
+<li><strong>Extrair EventoLeitura</strong> em classes separadas
+(processador de registro, renderizador, etc.)</li>
+<li><strong>Adicionar health check</strong> na interface Web (status da
+conexão, último heartbeat)</li>
+<li><strong>Implementar cache de IndexSearch mais eficiente</strong>
+(parcial, não download total)</li>
+<li><strong>Adicionar suporte a múltiplos leitores</strong>
+(futuro)</li>
+</ol>
+<hr />
+<blockquote>
+<p><strong>Fim da Documentação</strong><br />
+Gerada por engenharia reversa do código-fonte da Estação Ponto de
+Presença<br />
+Total: ~1.500 linhas de documentação, 12 diagramas Mermaid, 18 regras de
+negócio, 15 funcionalidades mapeadas</p>
+</blockquote>
+</section>
+</section>
+</section>
+<script>
+// Converte blocos <pre class="mermaid"><code>...</code></pre> gerados pelo pandoc
+// em <div class="mermaid">...</div> para que o mermaid.js renderize.
+// Em seguida, reorganiza o layout: TOC vira sidebar e o restante do corpo
+// é envolvido por <main>.
+(function () {
+  document.querySelectorAll('pre.mermaid').forEach(function (pre) {
+    var code = pre.querySelector('code');
+    var text = code ? code.textContent : pre.textContent;
+    var div = document.createElement('div');
+    div.className = 'mermaid';
+    div.textContent = text;
+    pre.parentNode.replaceChild(div, pre);
+  });
+
+  // Remove o cabeçalho de título duplicado gerado pelo pandoc
+  // (o título já aparece como <h1> no conteúdo do markdown).
+  var titleBlock = document.getElementById('title-block-header');
+  if (titleBlock) titleBlock.parentNode.removeChild(titleBlock);
+
+  // Envolve todo o conteúdo (exceto o TOC) em <main>.
+  var toc = document.getElementById('TOC');
+  if (toc) {
+    var main = document.createElement('main');
+    var next;
+    // Move todos os irmãos seguintes do TOC para dentro de <main>.
+    var sibling = toc.nextSibling;
+    while (sibling) {
+      next = sibling.nextSibling;
+      main.appendChild(sibling);
+      sibling = next;
+    }
+    // Move nós que vêm ANTES do TOC (ex: title-block já removido) — por segurança.
+    sibling = toc.parentNode.firstChild;
+    var toMove = [];
+    while (sibling) {
+      if (sibling !== toc) toMove.push(sibling);
+      sibling = sibling.nextSibling;
+    }
+    // Insere <main> após o TOC.
+    toc.parentNode.insertBefore(main, toc.nextSibling);
+  }
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'default',
+  themeVariables: {
+    primaryColor: '#1e3a5f',
+    primaryTextColor: '#ffffff',
+    primaryBorderColor: '#1e3a5f',
+    lineColor: '#2c7be5',
+    secondaryColor: '#f5f7fa',
+    tertiaryColor: '#ffffff'
+  },
+  flowchart: { htmlLabels: true, curve: 'basis' },
+  securityLevel: 'loose'
+});
+</script>
+<script>
+// Marca o item ativo do sumário conforme o scroll
+(function () {
+  var links = document.querySelectorAll('nav#TOC a');
+  if (!links.length) return;
+  var sections = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href');
+    if (id && id.startsWith('#')) {
+      var el = document.querySelector(id);
+      if (el) sections.push({ link: a, el: el });
+    }
+  });
+  function onScroll() {
+    var pos = window.scrollY + 80;
+    var current = null;
+    sections.forEach(function (s) {
+      if (s.el.offsetTop <= pos) current = s.link;
+    });
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current) current.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

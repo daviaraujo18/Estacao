@@ -1,0 +1,32 @@
+# docker-compose.yml — ambiente de desenvolvimento do EstacaoPonto
+#
+# Uso rapido:
+#   docker compose run --rm estacaoponto            # abre um shell bash
+#   docker compose run --rm estacaoponto mvn compile # compila o projeto
+#   docker compose run --rm estacaoponto mvn package  # empacota o JAR
+#   docker compose run --rm estacaoponto mvn exec:java -Dexec.mainClass=core.EstacaoPonto
+#
+# O codigo-fonte e montado em /app, entao alteracoes feitas no host aparecem
+# imediatamente dentro do container.
+#
+services:
+  estacaoponto:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: estacaoponto:dev
+    container_name: estacaoponto-dev
+    volumes:
+      # Codigo-fonte montado em /app (alteracoes no host refletem no container)
+      # ".." sobe um nivel a partir de docker/ ate a raiz do projeto (onde esta o pom.xml)
+      - ..:/app
+      # Repositorio Maven local persistente entre execucoes (cache de deps)
+      - maven-repo:/root/.m2
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    # Padrao: shell interativo. Sobrescreva com: docker compose run --rm estacaoponto <cmd>
+    command: bash
+
+volumes:
+  maven-repo:
