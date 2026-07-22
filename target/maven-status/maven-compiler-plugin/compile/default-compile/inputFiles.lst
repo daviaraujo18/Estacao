@@ -11,8 +11,8 @@
 /app/src/main/java/view/BloqueioTela.java
 /app/src/main/java/exception/BiometricException.java
 /app/src/main/java/utils/ArquivoRegistros.java
-/app/src/main/java/core/Configuracoes.java
 /app/src/main/java/core/ValidarBatidaManualService.java
+/app/src/main/java/core/Configuracoes.java
 /app/src/main/java/utils/Constantes.java
 /app/src/main/java/view/SoundService.java
 /app/src/main/java/listeners/OnAlertListener.java
@@ -20,10 +20,10 @@
 /app/src/main/java/controllers/MainController.java
 /app/src/main/java/core/IntranetURLs.java
 /app/src/main/java/async/ThreadRelogio.java
-/app/src/main/java/utils/KeyHook.java
 /app/src/main/java/utils/WinRegistry.java
-/app/src/main/java/core/PrediosPermitidosService.java
+/app/src/main/java/utils/KeyHook.java
 /app/src/main/java/core/DownloadFrequentadoresService.java
+/app/src/main/java/core/PrediosPermitidosService.java
 /app/src/main/java/listeners/Operacao.java
 /app/src/main/java/utils/ScriptsBat.java
 /app/src/main/java/core/CacheDownloadService.java
