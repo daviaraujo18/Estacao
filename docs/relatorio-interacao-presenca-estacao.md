@@ -233,10 +233,116 @@ POST /presenca/ajax/SincronizarRegistrosPonto
 
 **Parâmetros:** `registros` (dados criptografados em DES), `codAtivacao`
 
-**Resposta:** `"sincronizado"`
+**Resposta:** ver "Formato de resposta — negociação de conteúdo (Sprint R, Tarefa R.6 e ajuste
+pós-R.6)" abaixo. Por padrão, permanece o texto puro `"sincronizado"` (compatibilidade com o
+client Java atual); o contrato JSON rico é **opt-in**. Quando `codAtivacao` é ausente/inválido, o
+comportamento anterior é preservado: resposta em texto puro `"sincronizado"` (early return, fora
+do escopo de R.6), independente do formato solicitado.
 
 **Estação:** chamado via JS `sincronizaPonto(dados, codAtivacao)` em `MainController.iniciarSincronizacao()`
 **Presença:** `SincronizarRegistrosPonto.java` — cria `RegistroEstacaoPonto` com os dados brutos + IP + timestamp, salva no banco
+
+#### Campo `punch_type` explícito (compatibilidade retroativa — Sprint R, Tarefa R.4)
+
+O `Presenca::SincronizarRegistrosPontoController` (Rails, `Frequencia/api-ponto`) descriptografa
+`registros` e processa cada linha no formato:
+
+```
+<user_id>-<dd:mm:yyyy:hh:mm:ss>
+```
+
+A partir da Tarefa R.4, cada linha pode opcionalmente trazer um terceiro campo, separado por `-`
+ao final, com o tipo de marcação explícito:
+
+```
+<user_id>-<dd:mm:yyyy:hh:mm:ss>-<punch_type>
+```
+
+Onde `punch_type` é `entry` ou `exit`. Regras de resolução (ADR-001, Seção 3, revisando ADR-08):
+
+- **Se presente e válido** (`entry` ou `exit`): usado diretamente como fonte de verdade. O
+  `PunchTypeService.determine` NÃO é chamado para esse registro.
+- **Se ausente ou inválido** (ex: linha sem o terceiro campo, valor diferente de `entry`/`exit`,
+  string vazia): tratado como ausente, sem gerar erro — cai no fallback existente
+  (`PunchTypeService.determine`, que infere o tipo pelo último registro do dia do usuário).
+
+**Estado atual (importante):** a Estação real ainda **não envia** o campo `punch_type` — não há
+cadastro biométrico nem máquina em produção usando este campo hoje. Portanto, na prática, 100% dos
+registros sincronizados atualmente seguem passando pelo caminho de **fallback** via
+`PunchTypeService` (ADR-08), que permanece o comportamento ativo por padrão. O suporte ao campo
+explícito é uma extensão de contrato retrocompatível, preparada para quando a Estação/biometria
+passar a enviá-lo (ver Tarefas R.5/R.6), e não descontinua nem deprecia o `PunchTypeService`.
+
+Exemplos de linha aceitos:
+
+```
+12-15:07:2026:14:30:45            # sem punch_type -> fallback PunchTypeService
+12-15:07:2026:14:30:45-entry      # punch_type explícito válido -> usado diretamente
+12-15:07:2026:14:30:45-exit       # punch_type explícito válido -> usado diretamente
+12-15:07:2026:14:30:45-foo        # valor inválido -> tratado como ausente -> fallback
+```
+
+#### Formato de resposta — negociação de conteúdo (Sprint R, Tarefa R.6 e ajuste pós-R.6)
+
+O `user_id` de cada linha é o resultado do matching biométrico já realizado do lado da Estação
+(hash MD5 + download de digitais via `DynFrequentadoresEstacaoController`, Sprint 3/4) — este
+endpoint **não reimplementa** esse matching, apenas valida que o `user_id` recebido corresponde a
+um cadastro existente antes de vincular o `TimeRecord` (ADR-001, Seção 3, passos 3-5).
+
+A lógica de aceite/rejeição de registros roda **sempre da mesma forma**, independente do formato de
+resposta — o que muda é apenas a representação de saída, decidida por **content negotiation**:
+
+- **Modo padrão (compatibilidade — nenhuma sinalização explícita do client):** a resposta continua
+  sendo o texto puro `"sincronizado"` com status HTTP `200`, exatamente como era antes da Tarefa
+  R.6 (desde a Sprint 5). Este é o comportamento que o client Java atual da Estação (fora deste
+  repositório) recebe sem precisar de nenhuma mudança — a introdução do JSON rico em R.6 não quebra
+  esse client.
+- **Modo rico (opt-in — JSON estruturado):** o client sinaliza explicitamente que quer o contrato
+  rico de uma das duas formas:
+  - enviando o header HTTP `Accept: application/json`; ou
+  - enviando o parâmetro de requisição `confirmacaoVisual=1` (convenção de nomenclatura em
+    português alinhada aos demais parâmetros do módulo, ex.: `codAtivacao`, `codigoUnicoMaquina`).
+
+  Nesse caso a resposta é **JSON** (Content-Type `application/json`):
+
+```json
+{
+  "status": "sincronizado",
+  "registros_aceitos": [
+    {
+      "user_id": 12,
+      "nome": "Fulano de Tal",
+      "foto": { "disponivel": false, "url": null, "motivo": "Foto não cadastrada para o usuário 12" },
+      "horario": "15/07/2026 14:30:45"
+    }
+  ],
+  "registros_rejeitados": [
+    { "linha": "99999-15:07:2026:14:30:45", "erro": "Usuário não encontrado para o identificador 99999" }
+  ]
+}
+```
+
+Regras (aplicam-se ao modo rico; no modo padrão os registros rejeitados também não geram
+`TimeRecord`, mas isso não é reportado ao client — apenas o texto `"sincronizado"`/`200` é
+retornado, preservando o comportamento pré-R.6):
+
+- **Registro aceito** (linha bem formada e `user_id` correspondente a um `User` cadastrado): o
+  `TimeRecord` é criado com FK `user_id` não nula, e o item em `registros_aceitos` traz `nome`
+  (`User#nome_completo`), `foto` e `horario` (`punched_at` formatado `dd/mm/yyyy HH:MM:SS`) — dados
+  usados pela Estação para a confirmação visual.
+- **Campo `foto`:** o schema atual (`db/schema.rb`) não possui coluna de foto/avatar em `users`
+  nem ActiveStorage configurado no projeto. Por isso `foto.disponivel` é sempre `false` e
+  `foto.url` é sempre `null`, com `foto.motivo` explicando a ausência — nenhum campo de foto foi
+  inventado; quando o cadastro de foto existir num schema futuro, este contrato pode evoluir para
+  `disponivel: true` sem quebrar os consumidores.
+- **Registro rejeitado** (linha malformada OU `user_id` sem cadastro correspondente): o
+  `TimeRecord` **não é criado** (nunca com FK nula) e o item em `registros_rejeitados` traz a
+  `linha` original e uma mensagem de `erro` clara.
+- **Status HTTP:** `200 OK` quando todos os registros do payload foram aceitos; `422 Unprocessable
+  Entity` quando há pelo menos um registro rejeitado (segue o padrão já usado por
+  `Admin::UsersController`/`Admin::SessionsController` no projeto). Registros aceitos no mesmo
+  payload continuam sendo persistidos mesmo quando o status geral é `422` — a rejeição é reportada
+  por item, não descarta o lote inteiro.
 
 ### 3.8 UploadFile
 
