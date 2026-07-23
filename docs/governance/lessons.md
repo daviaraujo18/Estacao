@@ -19,6 +19,14 @@
 
 **Solução final:** Incluir esses módulos no `ApplicationController`. Com eles, `render :action, layout:` funciona normalmente em API mode.
 
+**Atualização (R.2 — especialização `Presenca::`/`Admin::ApplicationController`):** ao reativar o módulo administrativo (que depende de renderização implícita — actions sem `render` explícito), surgiram mais 3 lacunas do modo API não cobertas pela lista acima:
+1. **`protect_from_forgery` nunca é chamado automaticamente.** Incluir `ActionController::RequestForgeryProtection` só disponibiliza o módulo — sem chamar `protect_from_forgery with: :exception` explicitamente, o callback `:verify_authenticity_token` nunca é registrado, e qualquer `skip_before_action :verify_authenticity_token` em um controller filho falha com `ArgumentError` (esse erro estava mascarado por outro `ArgumentError` anterior — `require_login` indefinido — que interrompia a definição da classe antes de chegar nessa linha).
+2. **`allow_forgery_protection` não herda de `config.action_controller.allow_forgery_protection`** quando a base é `ActionController::API` (só `ActionController::Base` herda essa config automaticamente do Railtie). É preciso replicar manualmente: `self.allow_forgery_protection = Rails.application.config.action_controller.allow_forgery_protection != false` — senão a proteção CSRF fica sempre ativa, inclusive em `test.rb` onde deveria estar desligada, quebrando testes de integração que não enviam token.
+3. **`config.api_only = true` exclui `:new`/`:edit` das rotas padrão de `resources`** (comportamento documentado de `ActionDispatch::Routing::Mapper::Resources`, não é bug) — qualquer módulo com formulários HTML sob um app `api_only` precisa declarar essas rotas explicitamente (`get ... as: :new_x` / `as: :edit_x`).
+4. **`ActionController::API` usa `BasicImplicitRender`** (sempre `head :no_content` quando a action não chama `render`), não `ImplicitRender` (que busca template automaticamente como em `ActionController::Base`). Sem `include ActionController::ImplicitRender`, qualquer action sem `render`/`redirect_to` explícito devolve 204 vazio mesmo com a view existindo no caminho certo.
+
+**Lição:** ao herdar de `ActionController::API` para reaproveitar renderização de views HTML "como se fosse Base", trate a lista de gaps como não-exaustiva — cada novo padrão de uso (CSRF skip, resources com formulário, action sem render explícito) pode revelar mais um módulo/comportamento que `ActionController::Base` dá de graça e `API` não. Validar com a suíte de testes completa após qualquer mudança em `ApplicationController`, não assumir que a lista de módulos incluídos já é suficiente.
+
 ---
 
 ### 22/07/2026 — `iteration_A.md` desatualizado em relação ao git log (status de tarefa "Pendente" já implementada)
