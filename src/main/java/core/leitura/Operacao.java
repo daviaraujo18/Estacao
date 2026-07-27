@@ -50,8 +50,11 @@ public enum Operacao {
                         Long resposta = ci.getValue();
                         if (resposta != ConexaoIntranetService.NAO_CONECTADO) {
                             EventoLeitura.LEITURA_EM_ANALISE.process(MainController.INSTANCE.tela, null);
-                            String login = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val()");
-                            String senha = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val()");
+                            // JS puro (não jQuery): o WebView do JavaFX não suporta
+                            // <script type="module"> — jQuery nunca carrega de verdade
+                            // na Estação real (ver import map em application.html.erb).
+                            String login = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "document.getElementById('accessKey').value");
+                            String senha = (String) The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "document.getElementById('plainPassword').value");
                             LogEstacao.i("Solicitação de Login manual: " +login+" hora: "+MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
                             ValidarBatidaManualService validarBatidaManualService = new ValidarBatidaManualService(login, senha);
 
@@ -63,8 +66,8 @@ public enum Operacao {
                         }
 
                         MainController.INSTANCE.getCds().loginManual = false;
-                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=accessKey]').val('')");
-                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "jQuery('input[name=plainPassword]').val('')");
+                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "document.getElementById('accessKey').value = ''");
+                        The.inserirJavascript(MainController.INSTANCE.tela.getWebEngine(), "document.getElementById('plainPassword').value = ''");
                     }
             );
             ci.start();

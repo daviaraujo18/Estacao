@@ -98,7 +98,7 @@ public class CryptoUtils {
 		String result = (new String(UrlBase64.encode(in)));
 
 		if (result.endsWith(".")) {
-			if (!result.endsWith("src/test")) {
+			if (!result.endsWith("..")) {
 				return result.substring(0, result.length() - 1);
 			} else {
 				return result.substring(0, result.length() - 2);
@@ -112,7 +112,7 @@ public class CryptoUtils {
 		int mod = in.length() % 4;
 		if (mod != 0) {
 			if (mod == 2) {
-				in = in + "src/test";
+				in = in + "..";
 			} else if (mod == 3) {
 				in = in + ".";
 			} else {
