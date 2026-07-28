@@ -192,6 +192,16 @@ public enum Operacao {
             MainController.INSTANCE.getCds().loginManual = true;
 
         }
+    },
+
+    // DIAGNÓSTICO TEMPORÁRIO — remover depois de identificar o problema do
+    // botão "Registrar Ponto". Captura erros JS não tratados da página via
+    // window.onerror (ver layout application.html.erb) e grava no log, já
+    // que o WebView do JavaFX não expõe console.log/erros por padrão.
+    JSERROR("jserror:"){
+        public void execute(String metodo, WebEngine engine){
+            LogAplicacao.e("[JS ERROR] " + metodo);
+        }
     }
     ;
 

@@ -12,6 +12,8 @@ docker compose -f docker/docker-compose.yml build
 
 # --network host: sem isso, "localhost" dentro do container aponta pro
 # proprio container, nao pro host onde a Frequencia (Rails) roda em dev.
+mkdir -p "$(pwd)/.estacao-home"
+
 docker run --rm \
   --network host \
   -e DISPLAY="$DISPLAY" \
@@ -19,6 +21,7 @@ docker run --rm \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v "$(pwd)":/app \
   -v docker_maven-repo:/root/.m2 \
+  -v "$(pwd)/.estacao-home":/root/.local/share/TJPI/EstacaoPonto \
   -w /app \
   estacaoponto:dev bash -c "
     mkdir -p /root/.local/share/TJPI/EstacaoPonto &&

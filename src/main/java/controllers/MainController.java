@@ -168,8 +168,17 @@ public class MainController implements Initializable {
         LogAplicacao.i("Reinicia captura de digital.");//#flag
         if(this.getCds().getState().equals(Worker.State.SUCCEEDED)){
             this.inicializarLeitor();
+            this.INSTANCE.getCds().start();
+        } else {
+            // start() só é válido em estado READY; se o serviço já estiver
+            // RUNNING/SCHEDULED (ex: reiniciado pelo fluxo de login manual
+            // um instante antes), lança IllegalStateException — silenciosa
+            // no log (exceção não tratada na FX Application Thread), e
+            // travava a limpeza da UI que vinha logo depois (barra de
+            // progresso ficava visível pra sempre). restart() é seguro em
+            // qualquer estado.
+            this.INSTANCE.getCds().restart();
         }
-        this.INSTANCE.getCds().start();
     }
 
     /*

@@ -151,11 +151,19 @@ public class DadosFrequentadores  {
                 TelaPonto.INSTANCE.getProgressBar().setVisible(false);
                 TelaPonto.INSTANCE.getLabelProgressBar().setVisible(false);
             });
-            TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.5);
+
+            // Sem fotos pra baixar (comum: nenhum frequentador com foto
+            // cadastrada), não há motivo pra encolher o painel do WebView
+            // e mostrar a barra de progresso — isso escondia/cortava
+            // brevemente o relógio a cada recarregamento de página, mesmo
+            // sem nada de fato acontecendo.
+            if (!getmapaIdFotosFrequentadores().isEmpty()) {
+                TelaPonto.INSTANCE.getSplitPanel().getDividers().get(1).setPosition(0.5);
+                TelaPonto.INSTANCE.getProgressBar().setVisible(true);
+                TelaPonto.INSTANCE.getLabelProgressBar().setVisible(true);
+            }
             TelaPonto.INSTANCE.getBotaoCadastrarDigital().setVisible(false);
             TelaPonto.INSTANCE.getBotaoAtualizarDigital().setVisible(false);
-            TelaPonto.INSTANCE.getProgressBar().setVisible(true);
-            TelaPonto.INSTANCE.getLabelProgressBar().setVisible(true);
 
             novo.start();
             TelaPonto.INSTANCE.getProgressBar().progressProperty().bind(downloads.progressProperty());

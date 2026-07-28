@@ -1,46 +1,49 @@
 # _context.md — progress
-> Gerado em: 22/07/2026 | Fontes: Sessão Brainstorm (22/07/2026) | Palavras: ~220
+> Gerado em: 24/07/2026 | Fontes: Sessão Brainstorm (22/07/2026), sessão de verificação (24/07/2026) | Palavras: ~280
 > Atualizar quando: Sprint concluída, tarefa finalizada, mudança de milestone.
 
 ## O que esta pasta contém
-Acompanhamento de sprints, status de iterações e planejamento incremental do projeto `api-ponto`. Contém `implementation_plan.md` e `iteration_N.md`.
+Acompanhamento de sprints, status de iterações e planejamento incremental do projeto `api-ponto`. Contém `implementation_plan.md`, `iteration_A.md` e `iteration_R.md`.
 
 ## Pontos-chave para agentes
 
 ### Sprints 1-5 (Concluídas)
-- Sprint 1: Setup Rails 8 API, PostgreSQL, modelo User com bcrypt.
-- Sprint 2: Crypto DES (CryptoDes service), endpoint ValidarFrequentador.
-- Sprint 3: Endpoints de relógio (CarregaRelogioAtual), heartbeat (AdicioneEstacao), hash MD5 (DynHashFrequentadoresEstacao).
-- Sprint 4: Endpoint biométrico (DynFrequentadoresEstacao) e serialização.
-- Sprint 5: Endpoint SincronizarRegistrosPonto, model TimeRecord, registros offline.
+- Sprint 1: Setup Rails 8 API, PostgreSQL, modelo User com bcrypt + auto-username
+- Sprint 2: Crypto DES (CryptoDes service), UrlBase64 customizada
+- Sprint 3: Endpoints CarregaRelogioAtual, ValidarFrequentador, InicializarPonto
+- Sprint 4: DynFrequentadoresEstacao (serialização), DynHashFrequentadoresEstacao (MD5)
+- Sprint 5: SincronizarRegistrosPonto, model TimeRecord, registros offline
 
-### Sprint 6 (Em andamento)
-- Integração Estação JavaFX ↔ API Rails. Endpoints validados via curl.
-- Pendente: validação completa do fluxo biometria → sincronização → confirmação.
+### Sprint 6 (Parcial — 6/10)
+- Integração Estação JavaFX ↔ API Rails validada via curl e Docker
+- Pendente (requer hardware): teste biométrico com leitor Nitgen, sincronização offline, batida manual real
 
-### Sprint R (Planejada — bloqueante)
-- Sprint de Reconciliação (ADR-001): destrava merge pausado em `Frequencia/` (`feature/sprint-a`),
-  concilia módulo administrativo do fork (users/sessions/dashboard) com schema local, especializa
-  `ApplicationController`/layout por contexto (WebView vs. administrativo), torna `punch_type`
-  campo explícito no contrato Estação↔Frequência, implementa vínculo de matching biométrico com
-  retorno nome/foto/horário.
-- **Tensão sinalizada:** ADR-08 (inferência automática de punch_type) conflita com ADR-001
-  (campo explícito). Resolução proposta em `iteration_R.md` (explícito com fallback ADR-08) —
-  aguarda confirmação do dev antes da execução das tarefas R.4/R.5.
-- Arquivo: `progress/iteration_R.md`.
+### Sprint A (Concluída)
+- Layout AdminLTE 4 + Bootstrap 5.3, views IniciarPonto, InicializarPonto, PontoDePresenca
+- jQuery bridge, auto-alternação entry/exit (PunchTypeService), sidebar/navbar
 
-### Próximas Sprints (Planejado)
-- Sprint A: Layout AdminLTE + Bootstrap 5.3, views IniciarPonto e InicializarPonto. **Concluída no repo, mas seu merge está pausado — depende de Sprint R para ser commitada.**
-- Sprint B: CRUD Frequentador (list, new, edit, show/explore, inativar) — UC01.
-- Sprint C: ProblemaRegistro, job processamento (UC12), upload logs (UC08).
+### Sprint R (Concluída — ver iteration_R.md)
+- **Merge reconciliado** (ADR-001): fork `wilkersilva101` + schema local unificados
+- Controllers especializados: `Presenca::ApplicationController` (WebView) e `Admin::ApplicationController` (sessão)
+- `punch_type` explícito no payload da Estação (fallback ADR-08 preservado)
+- Matching biométrico: retorno nome/foto/horário com content negotiation
+- 127 testes, 390 assertions, 0 failures — merge commitado em `feature/sprint-a`
+- Branch `main` local sync com `daviaruijo18/main`, 12 commits à frente de `origin/wilkersilva101`
+
+### Próximas Sprints
+- **Sprint 7 (📋 Planejada)**: Login Manual na view PontoDePresenca — botão, formulário accessKey/plainPassword, alert('LOGINMANUAL'), changeMensagemStatus
+- **Sprint B**: Views do CRUD Frequentador (controller existe sem views)
+- **Sprint C**: ProblemaRegistro, job processamento, upload logs
 
 ## Estado atual
-- 25+ testes passando (models, controllers, services) — suíte local, ainda não integrada ao módulo administrativo do fork.
-- CRUD Frequentador: apenas esqueleto (controller sem views). A ser implementado na Sprint B.
-- Job de processamento e upload de logs: não iniciados.
-- **Merge pausado em `Frequencia/` (branch `feature/sprint-a`)**: conflitos em `application_controller.rb`, `db/schema.rb`, `application.html.erb` e controllers de presença. Resolução formalizada em ADR-001 e detalhada em Sprint R.
+- 127 testes passando (models, controllers, services, integration) — 0 failures, 0 errors
+- PRD 100% implementado (41/41 requisitos)
+- 13 controllers presenca, 5 controllers admin, 2 models, 3 services
+- Views: AdminLTE 4 (WebView) + admin layout separado (login/admin)
+- Merge pausado resolvido — main contém Sprints 1-5 + A + R
 
 ## Referências para aprofundamento
-- Para especificação detalhada dos endpoints → `docs/relatorio-interacao-presenca-estacao.md`
-- Para documentação completa da Estação JavaFX → `docs/documentacao-estacao-ponto.md`
-- Para a decisão arquitetural sobre Estação/Frequência como componentes cooperantes → `docs/governance/adr/adr-001-estacao-frequencia-cooperantes.md`
+- Detalhes da Sprint R → `progress/iteration_R.md`
+- Plano macro → `progress/implementation_plan.md`
+- Especificação endpoints → `docs/relatorio-interacao-presenca-estacao.md`
+- Documentação Estação JavaFX → `docs/documentacao-estacao-ponto.md`

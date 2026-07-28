@@ -34,6 +34,21 @@ public enum EventoLeitura {
 
     },
 
+    /**
+     * Login manual bem-sucedido: o ponto já foi sincronizado imediatamente
+     * (ValidarBatidaManualService, mesmo endpoint/critérios do botão
+     * "Simular digital" — PunchTypeService decide entrada/saída). Em vez de
+     * montar dados pro process() em JS, só recarrega a página: o servidor já
+     * renderiza quem bateu o ponto e o status atualizado.
+     */
+    LOGIN_MANUAL_SUCESSO{
+        @Override
+        public void process(TelaPonto tela, Leitura leitura) {
+            The.inserirJavascript(tela.getWebEngine(), "window.location.reload()");
+            tela.sound.playOK();
+        }
+    },
+
     DIGITAL_NAO_RECONHECIDA{
         @Override
         public void after(TelaPonto tela) {
@@ -70,7 +85,7 @@ public enum EventoLeitura {
         @Override
         public void after(TelaPonto tela) {
             LogEstacao.w("Usuário ou Senha Inválidos!");
-//            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus(' Usuário ou Senha Inválidos!')");
+            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus('Usuário ou Senha Inválidos!')");
             tela.sound.playError();
         }
     },
@@ -79,6 +94,7 @@ public enum EventoLeitura {
         public void after(TelaPonto tela) {
 
             LogEstacao.w("Usuário não tem autorização para registrar com login/senha. Entre em contato com a SEAD");
+            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus('Usuário sem permissão para login manual!')");
             tela.sound.playError();
         }
     },
@@ -87,6 +103,7 @@ public enum EventoLeitura {
         public void after(TelaPonto tela) {
 
             LogEstacao.w("Não foi possível conexão com Intranet - timeout");
+            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus('Sem conexão com o servidor!')");
             tela.sound.playError();
         }
     },
@@ -95,6 +112,7 @@ public enum EventoLeitura {
         public void after(TelaPonto tela) {
 
             LogEstacao.w("Estação não esta liberada para aceitar batidas com login/senha.");
+            The.inserirJavascript(tela.getWebEngine(), "changeMensagemStatus('Estação não liberada para login manual!')");
             tela.sound.playError();
         }
     }

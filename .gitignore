@@ -5,6 +5,7 @@ log
 *.iml
 *.bat
 config.properties
+.estacao-home/
 *.rar
 *.zip
 target/
