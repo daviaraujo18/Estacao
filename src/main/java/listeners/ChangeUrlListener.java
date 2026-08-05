@@ -38,11 +38,19 @@ public class ChangeUrlListener implements ChangeListener<Object> {
 //            LogAplicacao.i("Carregando pagina: " + tela.getWebEngine().getLocation());
             if (urlAtualContem("Frequentador?type=create")) {
                 //if (urlAtualContem("presenca/Frequentador")) {
+                // Pausa o loop de captura biométrica em background (mesma
+                // proteção que já existia pro fluxo antigo, acionado pelo
+                // clique na imagem do topo — TelaPonto.initWebEngine()).
+                // Sem isso, o PreProcessandoService continua usando o
+                // leitor concorrentemente com o Enroll() manual, corrompendo
+                // o estado nativo do SDK e derrubando a JVM.
+                MainController.INSTANCE.getCds().parar(true);
                 tela.getSplitPanel().getDividers().get(1).setPosition(0.5);
                 tela.getBotaoCadastrarDigital().setVisible(true);
                 tela.getBotaoAtualizarDigital().setVisible(false);
             }
             else if(urlAtualContem("Frequentador?type=update")){
+                MainController.INSTANCE.getCds().parar(true);
                 tela.getSplitPanel().getDividers().get(1).setPosition(0.5);
                 tela.getBotaoCadastrarDigital().setVisible(false);
                 tela.getBotaoAtualizarDigital().setVisible(true);

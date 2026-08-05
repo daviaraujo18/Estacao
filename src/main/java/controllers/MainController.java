@@ -98,8 +98,7 @@ public class MainController implements Initializable {
             String digitaisHash = getLeitorDigital().enroll();
 
             if (digitaisHash != null || !digitaisHash.equals("null")) {
-                The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
-                The.inserirJavascript(tela.getWebEngine(), "jQuery('#digitaisHash').val('" + digitaisHash + "');");
+                The.inserirJavascript(tela.getWebEngine(), "document.getElementById('digitaisHash').value = '" + digitaisHash + "';");
                 The.inserirJavascript(tela.getWebEngine(), "changeInfoDigital('success','Digitais identificadas!');");
             }
         } catch (BiometricException ex) {

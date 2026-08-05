@@ -14,27 +14,18 @@ public class SoundService {
     private AudioClip audioOk;
     private AudioClip audioError;
 
+    // NOTE: o player de mídia nativo do JavaFX (com.sun.media.jfxmediaimpl)
+    // trava com EXCEPTION_ACCESS_VIOLATION (crash nativo, não capturável por
+    // try/catch) em builds OpenJFX que não têm os codecs nativos completos
+    // (ex: Zulu 8 FX no Windows). Som é um recurso cosmético — desativado
+    // por completo aqui pra não arriscar derrubar o processo inteiro durante
+    // o fluxo de biometria. Reativar exigiria trocar de runtime JavaFX
+    // (ex: um build com suporte a mídia completo) e validar antes.
     public void init() {
-
-        audioOk = new AudioClip(AUDIO_OK);
-        audioError = new AudioClip(AUDIO_ERROR);
     }
 
     public void playOK(){
-//        if (audioOk.isPlaying()){
-//            LogAplicacao.i("//Estacao: o som de OK ja esta tocando.");
-//        }else{
-//            LogAplicacao.i("//Estacao: o som de OK vai tocar agora.");
-//        }
-        audioOk.play();
-        
     }
     public void playError(){
-//        if (audioOk.isPlaying()) {
-//            LogAplicacao.i("//Estacao: o som de ERRO ja esta tocando.");
-//        }else{
-//            LogAplicacao.i("//Estacao: o som de ERRO vai tocar agora.");
-//        }
-        audioError.play();
     };
 }
