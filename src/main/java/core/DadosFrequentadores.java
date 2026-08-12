@@ -123,6 +123,16 @@ public class DadosFrequentadores  {
 
             @Override
             protected Void call() throws Exception {
+                // NOTE: já existia aqui uma pausa do loop de captura em
+                // background antes desta chamada, pensada pra evitar corrida
+                // com o PreProcessandoService — mas esse fluxo roda a cada
+                // reload de página (inclusive depois de login manual, que já
+                // reinicia o loop sozinho em VerificacaoDigitalHandler), e as
+                // duas retomadas concorrentes deixavam o loop parado pra
+                // sempre sem erro nenhum. Removida: o lock real em
+                // LeitorDigital (LOCK) já garante exclusão mútua de verdade
+                // no acesso ao dispositivo nativo, tornando essa pausa
+                // redundante e, nesse caso, prejudicial.
                 // Adiciona os dados ao NBio_SearchIndex
                 try {
                     if (data == null || data.isEmpty()) {

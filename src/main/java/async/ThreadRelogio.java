@@ -128,8 +128,19 @@ public class ThreadRelogio extends Service<String> {
 
     public String getMomentoAtual() {
         calculaHorario();
-        return dataServidorAtual.get(Calendar.DAY_OF_MONTH) + ":" + dataServidorAtual.get(Calendar.MONTH) + ":" + dataServidorAtual.get(Calendar.YEAR) + ":"
-                + horarioAtual + ":" + dataServidorAtual.get(Calendar.SECOND);
+        // Formato esperado pelo servidor: dd:MM:yyyy:HH:mm:ss, cada campo com
+        // exatamente 2 dígitos (regex do lado Rails exige \d{2}). A versão
+        // anterior concatenava os valores crus do Calendar sem zero à
+        // esquerda (ex: mês "8" em vez de "08", segundo "3" em vez de "03")
+        // e sem corrigir o índice de mês 0-based do Calendar — toda linha
+        // caía fora do formato esperado e era rejeitada silenciosamente.
+        return String.format("%02d:%02d:%04d:%02d:%02d:%02d",
+                dataServidorAtual.get(Calendar.DAY_OF_MONTH),
+                dataServidorAtual.get(Calendar.MONTH) + 1,
+                dataServidorAtual.get(Calendar.YEAR),
+                dataServidorAtual.get(Calendar.HOUR_OF_DAY),
+                dataServidorAtual.get(Calendar.MINUTE),
+                dataServidorAtual.get(Calendar.SECOND));
     }
 
 //    public String getMomentoBatimentoFrequentador() {

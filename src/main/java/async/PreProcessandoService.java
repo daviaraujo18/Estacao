@@ -33,12 +33,8 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
     private Result getResult() {
         try {
             getLeitor().abrirLeitor();
+            LogAplicacao.i("Loop de captura pronto (leitor aberto), aguardando dedo...");
             while (!parar) {
-                boolean b = getLeitor().temDedo();
-                if (b && !clickDesbloqueioTela) {
-                    String digital =  getLeitor().capturarDigital();
-                    return new Result(Operacao.REGISTRO_FREQUENCIA, digital);
-                }
                 if(loginManual){
                     getLeitor().fecharLeitor();
                     return new Result(Operacao.LOGINMANUAL, "");
@@ -48,11 +44,24 @@ public class PreProcessandoService extends Service<PreProcessandoService.Result>
                     clickDesbloqueioTela = false;
                     return new Result(Operacao.DESBLOQUEIO, digital);
                 }
+                // NOTE: antes fazia temDedo() (CheckFinger) primeiro e só
+                // chamava capturarDigital() quando retornasse true — mas
+                // CheckFinger() se mostrou pouco confiável sob passthrough
+                // USB (nunca detectava o dedo, mesmo com o dedo encostado),
+                // enquanto Capture() (usado aqui e também por Enroll(), que
+                // sempre funcionou) espera o dedo internamente sem precisar
+                // desse pré-check. Chamando direto, do mesmo jeito que o
+                // cadastro de digital já fazia com sucesso.
+                String digital = getLeitor().capturarDigital();
+                if (digital != null && !digital.isEmpty()) {
+                    return new Result(Operacao.REGISTRO_FREQUENCIA, digital);
+                }
             }
         } catch (Exception e) {
-			LogAplicacao.e(e);
+            java.io.StringWriter sw = new java.io.StringWriter();
+            e.printStackTrace(new java.io.PrintWriter(sw));
+            LogAplicacao.e("DIAG exceção no loop de captura: " + e.getClass().getName() + " - " + e.getMessage() + "\n" + sw.toString());
             PreProcessandoService.this.restart();
-//            e.printStackTrace();
         }
         return null;
     }

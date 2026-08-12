@@ -1,5 +1,5 @@
 # _context.md — progress
-> Gerado em: 24/07/2026 | Fontes: Sessão Brainstorm (22/07/2026), sessão de verificação (24/07/2026) | Palavras: ~280
+> Gerado em: 27/07/2026 | Fontes: Sessão Brainstorm (22/07/2026), sessão de verificação (24/07/2026), implementação T7.1-T7.9 (27/07/2026) | Palavras: ~300
 > Atualizar quando: Sprint concluída, tarefa finalizada, mudança de milestone.
 
 ## O que esta pasta contém
@@ -31,16 +31,16 @@ Acompanhamento de sprints, status de iterações e planejamento incremental do p
 - Branch `main` local sync com `daviaruijo18/main`, 12 commits à frente de `origin/wilkersilva101`
 
 ### Próximas Sprints
-- **Sprint 7 (📋 Planejada)**: Login Manual na view PontoDePresenca — botão, formulário accessKey/plainPassword, alert('LOGINMANUAL'), changeMensagemStatus
+- **Sprint 7 (✅ Concluída)**: Login Manual na view PontoDePresenca — botão, formulário accessKey/plainPassword, alert('LOGINMANUAL'), changeMensagemStatus, documentação (subseção 7.3)
 - **Sprint B**: Views do CRUD Frequentador (controller existe sem views)
 - **Sprint C**: ProblemaRegistro, job processamento, upload logs
 
 ## Estado atual
-- 127 testes passando (models, controllers, services, integration) — 0 failures, 0 errors
+- 155 testes passando (models, controllers, services, integration) — 493 assertions, 0 failures, 0 errors
 - PRD 100% implementado (41/41 requisitos)
 - 13 controllers presenca, 5 controllers admin, 2 models, 3 services
 - Views: AdminLTE 4 (WebView) + admin layout separado (login/admin)
-- Merge pausado resolvido — main contém Sprints 1-5 + A + R
+- Merge pausado resolvido — main contém Sprints 1-5 + A + R + 7
 
 ## Referências para aprofundamento
 - Detalhes da Sprint R → `progress/iteration_R.md`

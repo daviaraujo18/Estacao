@@ -2,9 +2,11 @@ package core.leitura;
 
 import controllers.MainController;
 import core.DadosFrequentadores;
+import core.SincronizacaoImediata;
 import java.util.Map;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import utils.ArquivoRegistros;
 import utils.LogAplicacao;
 
 /**
@@ -73,7 +75,31 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                     }
                 }
 
-                Leitura l = new Leitura(resultado, digitalHash, String.valueOf(id), MainController.INSTANCE.getThreadRelogio().getMomentoAtual());
+                String momento = MainController.INSTANCE.getThreadRelogio().getMomentoAtual();
+
+                // Sincroniza na hora (mesmo padrão do login manual,
+                // ValidarBatidaManualService) em vez de esperar o ciclo
+                // periódico de ArquivoRegistros/ThreadRelogio — assim a
+                // batida biométrica já está confirmada no servidor a tempo
+                // do reload da tela mostrar a mesma mensagem de confirmação
+                // que o login manual mostra. Só grava na fila local
+                // (ArquivoRegistros) se essa chamada falhar — se gravasse
+                // sempre, a MESMA batida seria reenviada de novo pelo ciclo
+                // periódico, criando um TimeRecord duplicado fora de ordem
+                // e quebrando a alternância entrada/saída.
+                if (resultado == EventoLeitura.DIGITAL_RECONHECIDA || resultado == EventoLeitura.DIGITAL_RECONHECIDA_RESSALVA_PREDIO) {
+                    boolean sincronizado = false;
+                    try {
+                        sincronizado = SincronizacaoImediata.sincronizar(id, momento, "biometric");
+                    } catch (Exception e) {
+                        LogAplicacao.e(e);
+                    }
+                    if (!sincronizado) {
+                        ArquivoRegistros.escreverRegistro(id + "-" + momento);
+                    }
+                }
+
+                Leitura l = new Leitura(resultado, digitalHash, String.valueOf(id), momento);
                 return l;
             }
 

@@ -11,12 +11,9 @@ import utils.LogAplicacao;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -101,38 +98,12 @@ public class ValidarBatidaManualService extends Service<Leitura> {
              * Mesmo formato/endpoint usado por simularDigitalTeste() no JS:
              * POST registros=userId-dd:MM:yyyy:HH:mm:ss&codAtivacao=...,
              * resposta em texto puro "sincronizado" (sem confirmacaoVisual).
+             * Reaproveitado por SincronizacaoImediata, também usado pelo
+             * reconhecimento biométrico.
              */
             private boolean sincronizar(long userId) throws IOException {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy:HH:mm:ss");
-                String registro = userId + "-" + sdf.format(new Date());
-                String codAtivacao = RegistroWindows.getCodigoAtivacaoRegistro();
-
-                String corpo = "registros=" + URLEncoder.encode(registro, "UTF-8")
-                        + "&codAtivacao=" + URLEncoder.encode(codAtivacao, "UTF-8")
-                        + "&authenticationMode=manual";
-
-                URL url = new URL(Configuracoes.base_intranet_url.get() + "/presenca/ajax/SincronizarRegistrosPonto");
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("POST");
-                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                con.setConnectTimeout(HTTP_MAX_TIMEOUT);
-                con.setReadTimeout(HTTP_MAX_TIMEOUT);
-                con.setDoOutput(true);
-
-                try (OutputStream os = con.getOutputStream()) {
-                    os.write(corpo.getBytes(StandardCharsets.UTF_8));
-                }
-
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream(), "UTF-8"));
-                String inputLine;
-                StringBuffer resposta = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    resposta.append(inputLine);
-                }
-                in.close();
-
-                return "sincronizado".equals(resposta.toString().trim());
+                return SincronizacaoImediata.sincronizar(userId, sdf.format(new Date()), "manual");
             }
         };
     }

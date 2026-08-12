@@ -637,6 +637,109 @@ Ambos os lados usam **DES/CBC/PKCS5Padding** com a mesma chave fixa `"cryp:gpf"`
 | Estação | Criptografa | `CryptoUtils.encryptDES("cryp:gpf", texto)` |
 | Presença | Descriptografa | `CryptoUtil.decryptDES("cryp:gpf", texto)` no `ValidarFrequentador.java` |
 
+### 7.3 Login Manual via API Rails (v2)
+
+> A seção 7 descreve a implementação original (Java/Tomcat). Esta subseção documenta o novo backend Rails 8 que substitui o Módulo Presença como contraparte da Estação.
+
+A view de login manual está em `Frequencia/api-ponto/app/views/presenca/ponto_de_presenca/index.html.erb` e contém:
+
+| Elemento | Seletor | Finalidade |
+|----------|---------|------------|
+| Botão toggle | `#btnLoginManual` | Alterna entre `#biometriaArea` (padrão) e `#loginManualForm` |
+| Formulário | `#loginManualForm form` | Container dos campos, `onsubmit="return false"` |
+| Campo usuário | `input[name=accessKey]` | `id="accessKey"`, `placeholder="Digite seu usuário"`, ícone `fa-user` |
+| Campo senha | `input[name=plainPassword]` | `id="plainPassword"`, `type="password"`, ícone `fa-lock` |
+| Feedback | `#loginFeedback` | `alert alert-danger`, oculto por padrão, auto-dismiss 5s |
+
+#### Fluxo JS → Estação
+
+```mermaid
+sequenceDiagram
+    participant USR as Usuário
+    participant VIEW as View Rails (WebView)
+    participant EST as Estação Ponto (JavaFX)
+    participant DES as CryptoUtils (DES)
+    participant API as API Rails 8
+    participant DB as PostgreSQL
+
+    USR->>VIEW: Preenche accessKey + plainPassword, clica "Entrar"
+    VIEW->>VIEW: submit do form (onsubmit="return false")
+    VIEW->>EST: alert('LOGINMANUAL')
+    EST->>EST: OnAlertListener → Operacao.LOGINMANUAL.execute()
+    EST->>VIEW: Lê accessKey + plainPassword via jQuery
+    EST->>DES: encryptDES("cryp:gpf", accessKey)
+    EST->>DES: encryptDES("cryp:gpf", plainPassword)
+    EST->>API: GET /api/v1/validar_frequentador?loginAccessKey=<DES>&plainPassword=<DES>
+    API->>API: Descriptografa credenciais
+    API->>API: UserServices.authenticatedAndDetachedUser(login, senha)
+    alt autenticado
+        API-->>EST: { status: "ok", frequentador: { id, nome, ... } }
+        EST-->>EST: Cria Leitura(DIGITAL_RECONHECIDA, id)
+        EST->>VIEW: process('DIGITAL_RECONHECIDA', dados)
+        VIEW-->>USR: Exibe nome e horário
+    else credenciais inválidas
+        API-->>EST: { status: "erro", mensagem: "Usuário ou Senha Inválidos!" }
+        EST-->>VIEW: changeMensagemStatus('Usuário ou Senha Inválidos!')
+        VIEW-->>USR: Exibe feedback vermelho por 5s
+    else usuário inativo
+        API-->>EST: { status: "erro", mensagem: "Frequentador inativo!" }
+        EST-->>VIEW: changeMensagemStatus('Frequentador inativo!')
+        VIEW-->>USR: Exibe feedback vermelho por 5s
+    end
+```
+
+#### Ponte JavaScript
+
+A view expõe duas funções JavaScript que a Estação invoca via `The.inserirJavascript`:
+
+| Função | Quando a Estação chama | Efeito |
+|--------|----------------------|--------|
+| `alert('LOGINMANUAL')` | OnAlertListener detecta o alert disparado no submit do form | `Operacao.LOGINMANUAL.execute()` lê campos, criptografa e chama a API |
+| `changeMensagemStatus(mensagem)` | Após resposta de erro da API (`EventoLeitura.USUARIO_SENHA_INVALIDOS`) | Exibe `#loginFeedback` com classes `alert alert-danger` por 5s |
+
+**`window.changeMensagemStatus`** — código na view (`index.html.erb:326-341`):
+
+```javascript
+window.changeMensagemStatus = function(mensagem) {
+    var el = document.getElementById('loginFeedback');
+    if (!el) return;
+    el.textContent = mensagem;
+    el.className = 'alert alert-danger';
+    el.style.display = 'block';
+    setTimeout(function() {
+        el.style.display = 'none';
+    }, 5000);
+};
+```
+
+#### Sincronização da batida
+
+Após a autenticação, a Estação chama `POST /api/v1/sincronizar_registros_ponto` com o parâmetro opcional `authenticationMode=manual`. O controller registra:
+
+```ruby
+# Frequencia/api-ponto/app/controllers/presenca/sincronizar_registros_ponto_controller.rb:66
+authentication_mode: params[:authenticationMode] == "manual" ? "manual" : "biometric"
+```
+
+- Se `authenticationMode=manual` → `TimeRecord.authentication_mode = "manual"`
+- Se não informado → `"biometric"` (comportamento backward compatible)
+
+#### Referências cruzadas — Código da Estação
+
+| Arquivo | Linha | Conteúdo |
+|---------|-------|----------|
+| `listeners/Operacao.java` | 53-54 | Enum `LOGINMANUAL` — operação executada ao interceptar `alert('LOGINMANUAL')` |
+| `core/leitura/EventoLeitura.java` | 69-76 | Evento `USUARIO_SENHA_INVALIDOS` — disparado quando API retorna credenciais inválidas |
+| `core/ValidarBatidaManualService.java` | — | Service que orquestra a chamada DES + HTTP para o endpoint de validação |
+| `utils/CryptoUtils.java` | — | Criptografia DES/CBC/PKCS5Padding com chave `"cryp:gpf"` |
+
+#### Endpoints envolvidos
+
+| Método | Rota Rails | Parâmetros | Resposta |
+|--------|-----------|------------|----------|
+| `GET` | `/api/v1/validar_frequentador` | `loginAccessKey` (DES), `plainPassword` (DES) | `{ status, frequentador }` ou `{ status, mensagem }` |
+| `POST` | `/api/v1/sincronizar_registros_ponto` | `authenticationMode` (opcional), linha criptografada | `{ status, message, totalRegistros, registros }` |
+
 ---
 
 ## 8. Cadastro de Digitais

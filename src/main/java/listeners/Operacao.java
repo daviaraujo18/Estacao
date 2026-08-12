@@ -112,7 +112,14 @@ public enum Operacao {
             int hora = Integer.parseInt(horario[4]);
             int minutos = Integer.parseInt(horario[5]);
             Calendar dataServidor = Calendar.getInstance();
-            dataServidor.set(ano, mes, dia, hora, minutos);
+            // "mes" vem 1-indexado do servidor (ex: agosto=8), mas
+            // Calendar.set espera mes 0-indexado (0=Janeiro) — sem o -1,
+            // toda a base de horario do ThreadRelogio nascia um mes
+            // adiantada (agosto virava setembro), o que fazia o punched_at
+            // das batidas cair fora da janela de "hoje" usada por
+            // TimeRecord.last_today/PunchTypeService, quebrando a alternancia
+            // entrada/saida das batidas biometricas.
+            dataServidor.set(ano, mes - 1, dia, hora, minutos);
             LogEstacao.i("Horário do servidor: "+((Calendar)(dataServidor.clone())).getTime()); //#flag
             MainController.INSTANCE.criarThreadRelogio(dataServidor);
 
@@ -163,6 +170,13 @@ public enum Operacao {
         @Override
         public void execute(String metodo, WebEngine engine) {
             LogEstacao.i("Sincronizando");
+            try {
+                // Só limpa a fila de envio (regstemp.txt) quando o servidor
+                // confirma o recebimento — ver ArquivoRegistros.lerArquivoSincronizado().
+                ArquivoRegistros.limparFilaDeEnvioConfirmada();
+            } catch (IOException ex) {
+                LogAplicacao.e(ex);
+            }
         }
     },
     VIVO_MORTO("deadOrAlive"){

@@ -87,8 +87,17 @@ public class ArquivoRegistros {
 		String linha = "";
 		while ((linha = bufferedReader.readLine()) != null) {
 			if (linha != null && !linha.isEmpty()) {
-				conteudo += linha;
-				conteudo += separador;
+				// Cada linha já está criptografada individualmente (ver
+				// escreverRegistro() — proteção do arquivo em repouso).
+				// Precisa descriptografar aqui antes de juntar, senão o
+				// servidor recebe vários blocos DES concatenados por ";"
+				// em vez de um texto reconhecível — não bate nem como
+				// criptografia de bloco único, nem como texto puro.
+				String linhaDescriptografada = CryptoUtils.decryptDES("cryp:gpf", linha);
+				if (linhaDescriptografada != null && !linhaDescriptografada.isEmpty()) {
+					conteudo += linhaDescriptografada;
+					conteudo += separador;
+				}
 			}
 		}
 		if (!conteudo.isEmpty()) {
@@ -98,50 +107,84 @@ public class ArquivoRegistros {
 		return conteudo;
 	}
 
+	private static final Object LOCK = new Object();
+
+	/**
+	 * Move os registros pendentes de regs.txt pra fila de envio
+	 * (regstemp.txt, acumulada) e retorna o conteúdo total dessa fila.
+	 *
+	 * regstemp.txt só é limpo quando o envio é CONFIRMADO pelo servidor
+	 * (ver Operacao.SINCRONIZANDO, listeners/Operacao.java) — se o envio
+	 * falhar ou nunca for confirmado, o conteúdo continua na fila e é
+	 * reenviado no próximo ciclo, em vez de ser perdido.
+	 */
 	public static String lerArquivoSincronizado() {
-		boolean deuCerto = false;
-		List<String> dadosArquivoPrincipal = null;
 		try {
-			dadosArquivoPrincipal = FileUtils.readLines(arquivo) ;
-			if(dadosArquivoPrincipal.size()>0){
-				FileUtils.writeLines(arquivoTemp, dadosArquivoPrincipal, true);
-//				escrever(dadosArquivoPrincipal,arquivoTemp);
-			}
-			deuCerto = true;
-		} catch (Exception ex) {
+			moverRegistrosPendentesParaFilaDeEnvio();
+			return lerArquivo(arquivoTemp);
+		} catch (IOException ex) {
 			LogAplicacao.e(ex);
-			deuCerto = false;
-		} 
-		if(deuCerto){
-			try {
-				if(!dadosArquivoPrincipal.isEmpty()){
-					limparArquivoPrincipal();
-				}	
-				return lerArquivo(arquivoTemp);
-			} catch (IOException ex) {
-				LogAplicacao.e(ex);
+			return "";
+		}
+	}
+
+	/**
+	 * Move regs.txt pra fila de envio via rename atômico (em vez de
+	 * ler-o-conteúdo-depois-limpar) — elimina a janela de corrida em que um
+	 * novo registro escrito por escreverRegistro() bem no meio do processo
+	 * seria apagado sem nunca ter sido lido.
+	 */
+	private static void moverRegistrosPendentesParaFilaDeEnvio() throws IOException {
+		synchronized (LOCK) {
+			if (!arquivo.exists() || arquivo.length() == 0) {
+				return;
+			}
+			File movido = new File(LocalPaths.PATH_REGISTROS + "regs_pending_" + System.nanoTime() + ".txt");
+			List<String> linhas;
+			if (arquivo.renameTo(movido)) {
+				linhas = FileUtils.readLines(movido);
+				movido.delete();
+			} else {
+				// Rename pode falhar entre volumes diferentes; cai pro
+				// comportamento antigo (menos seguro, mas não trava a
+				// sincronização).
+				LogAplicacao.e("Não foi possível mover regs.txt atomicamente, usando fallback");
+				linhas = FileUtils.readLines(arquivo);
+				limparArquivoPrincipal();
+			}
+			if (!linhas.isEmpty()) {
+				FileUtils.writeLines(arquivoTemp, linhas, true);
 			}
 		}
-		return "";
+	}
+
+	/**
+	 * Limpa a fila de envio (regstemp.txt) — só deve ser chamada depois de
+	 * confirmação real de entrega pelo servidor.
+	 */
+	public static void limparFilaDeEnvioConfirmada() throws IOException {
+		limparArquivo();
 	}
 
 	public static boolean escreverRegistro(String registro) {
 		if (registro == null) {
 			return false;
 		}
-		try {
+		synchronized (LOCK) {
+			try {
 
-			FileWriter fileWriter = new FileWriter(arquivo, true);
-			PrintWriter printWriter = new PrintWriter(fileWriter);
-			String registroCriptografado = CryptoUtils.encryptDES("cryp:gpf", registro);
-			printWriter.println(registroCriptografado);
-			printWriter.flush();
-			printWriter.close();
-			return true;
-		} catch (IOException ex) {
-			LogAplicacao.e(ex);
+				FileWriter fileWriter = new FileWriter(arquivo, true);
+				PrintWriter printWriter = new PrintWriter(fileWriter);
+				String registroCriptografado = CryptoUtils.encryptDES("cryp:gpf", registro);
+				printWriter.println(registroCriptografado);
+				printWriter.flush();
+				printWriter.close();
+				return true;
+			} catch (IOException ex) {
+				LogAplicacao.e(ex);
 //            ex.printStackTrace();
-			return false;
+				return false;
+			}
 		}
 	}
 

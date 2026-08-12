@@ -28,6 +28,18 @@ public class LeitorDigital {
 
     public static boolean ativo;
 
+    // Lock único pra qualquer acesso ao dispositivo nativo (bsp/indexSearchEngine).
+    // O loop de captura em background (PreProcessandoService), o cadastro manual
+    // (Enroll) e o recarregamento do IndexSearch (DadosFrequentadores) rodam em
+    // threads/Services diferentes e concorriam pelo mesmo handle nativo sem
+    // nenhuma exclusão mútua real — causava tanto corrupção de heap
+    // (EXCEPTION_ACCESS_VIOLATION) quanto NBioAPIERROR_DEVICE_ALREADY_OPENED.
+    // Pausar o loop antes de operações mais longas (ver ChangeUrlListener,
+    // DadosFrequentadores) ajuda a reduzir contenção, mas não impede uma
+    // chamada nativa já em andamento de colidir com outra — só esse lock
+    // garante isso de verdade.
+    private static final Object LOCK = new Object();
+
     private static LeitorDigital INSTANCE = null;
     private LeitorDigital() {
         INSTANCE = this;
@@ -58,7 +70,7 @@ public class LeitorDigital {
     }
 
     public void addDigitalToIndexSearch(Map<String,String> mapaIdHashFrequentadores) {
-
+        synchronized (LOCK) {
         try {
             LogAplicacao.i("Adicionando dados ao IndexSearch");
             abrirLeitor();
@@ -86,10 +98,11 @@ public class LeitorDigital {
             LogAplicacao.e(e.getMessage());
             System.exit(0);
         }
-
+        }
     }
 
     public void saveDB() {
+        synchronized (LOCK) {
         // Salvando dados no arquivo
         LogAplicacao.i("Salvando dados no arquivo data.db");
         int nRet = indexSearchEngine.SaveDB(LocalPaths.PATH_DATA+"data.db");
@@ -98,9 +111,11 @@ public class LeitorDigital {
         } else {
             LogAplicacao.e("NBioAPIERROR: "+nRet);
         }
+        }
     }
 
     public void loadDB() {
+        synchronized (LOCK) {
         // Salvando dados no arquivo
         LogAplicacao.i("Carregando dados do data.db");
         int nRet = indexSearchEngine.LoadDB(LocalPaths.PATH_DATA+"data.db");
@@ -109,9 +124,11 @@ public class LeitorDigital {
         } else {
             LogAplicacao.e("NBioAPIERROR: "+nRet);
         }
+        }
     }
 
     public void clearDB() {
+        synchronized (LOCK) {
         // Salvando dados no arquivo
         LogAplicacao.i("Carregando dados do data.db");
         int nRet = indexSearchEngine.ClearDB();
@@ -120,10 +137,11 @@ public class LeitorDigital {
         } catch (BiometricException e) {
             LogAplicacao.e(e);
         }
+        }
     }
 
     public int searchDigitalOnIndexSearchEngine(String hashDigital) {
-
+        synchronized (LOCK) {
         try {
             abrirLeitor();
 
@@ -144,6 +162,7 @@ public class LeitorDigital {
             LogAplicacao.e(e.getMessage());
             return -1;
         }
+        }
     }
 
 
@@ -155,6 +174,7 @@ public class LeitorDigital {
      * @return hashDasDigitais
      */
     public String enroll() throws BiometricException {
+        synchronized (LOCK) {
         abrirLeitor();
 
         NBioBSPJNI.FIR_HANDLE hSavedFIR = bsp.new FIR_HANDLE();
@@ -170,6 +190,7 @@ public class LeitorDigital {
         fecharLeitor();
 
         return textSavedFIR.TextFIR;
+        }
     }
 
     public String capturarDigital_popup() throws Exception {
@@ -188,6 +209,7 @@ public class LeitorDigital {
      * @return digital formato texto(String)
      */
     public String capturarDigital( WINDOW_OPTION window_option) throws Exception {
+        synchronized (LOCK) {
         NBioBSPJNI.FIR_HANDLE hSavedFIR = bsp.new FIR_HANDLE();
         bsp.Capture(NBioBSPJNI.FIR_PURPOSE.VERIFY, hSavedFIR, -1, null, window_option);
         if(bsp.IsErrorOccured()) {
@@ -198,12 +220,14 @@ public class LeitorDigital {
             bsp.GetTextFIRFromHandle(hSavedFIR, textSavedFIR);
             return textSavedFIR.TextFIR;
         }
+        }
     }
 
     /**
      * abre conexao com o leitor de digital
      */
     public void abrirLeitor() throws BiometricException {
+        synchronized (LOCK) {
         if(!ativo){
 
             bsp = new NBioBSPJNI();
@@ -227,18 +251,21 @@ public class LeitorDigital {
 
             checkErrors();
         }
+        }
     }
 
     public void fecharLeitor() {
+        synchronized (LOCK) {
         if(ativo){
             bsp.CloseDevice();
             deviceEnumInfo = null;
             ativo = false;
         }
+        }
     }
 
     public boolean verificaCompatibilidadeDigitais(String digital, String digitalCapturada) throws BiometricException {
-
+        synchronized (LOCK) {
         abrirLeitor();
 
         NBioBSPJNI.INPUT_FIR firDigital = bsp.new INPUT_FIR();
@@ -273,6 +300,7 @@ public class LeitorDigital {
         } else {
             LogAplicacao.e("Erro na Verificacao. Verifique o Hardware");
             return false;
+        }
         }
     }
 
@@ -349,9 +377,11 @@ public class LeitorDigital {
 
     public boolean temDedo()
     {
+        synchronized (LOCK) {
         Boolean temDedo=false;
         bsp.CheckFinger(temDedo);
         return temDedo;
+        }
     }
 
     public void check() {
