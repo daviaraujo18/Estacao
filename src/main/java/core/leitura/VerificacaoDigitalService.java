@@ -3,6 +3,8 @@ package core.leitura;
 import controllers.MainController;
 import core.DadosFrequentadores;
 import core.SincronizacaoImediata;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -75,7 +77,17 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                     }
                 }
 
-                String momento = MainController.INSTANCE.getThreadRelogio().getMomentoAtual();
+                // Mesma fonte de horário do login manual (ValidarBatidaManualService):
+                // relógio real do Windows (new Date()), não o ThreadRelogio
+                // simulado. O ThreadRelogio só sincroniza com o servidor na
+                // carga da página e depois conta o tempo sozinho — se o
+                // relógio do Windows estiver desviado nesse instante (drift
+                // de VM/QEMU), a base fica errada e todas as batidas
+                // biométricas seguintes saem com um horário diferente do
+                // login manual. Usando new Date() em ambos os fluxos, os
+                // dois SEMPRE ficam no mesmo relógio, ainda que o relógio da
+                // VM esteja desviado da hora real.
+                String momento = new SimpleDateFormat("dd:MM:yyyy:HH:mm:ss").format(new Date());
 
                 // Sincroniza na hora (mesmo padrão do login manual,
                 // ValidarBatidaManualService) em vez de esperar o ciclo
