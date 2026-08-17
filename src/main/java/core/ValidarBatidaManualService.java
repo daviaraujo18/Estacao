@@ -14,8 +14,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static utils.Constantes.HTTP_MAX_TIMEOUT;
 
@@ -102,8 +100,7 @@ public class ValidarBatidaManualService extends Service<Leitura> {
              * reconhecimento biométrico.
              */
             private boolean sincronizar(long userId) throws IOException {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy:HH:mm:ss");
-                return SincronizacaoImediata.sincronizar(userId, sdf.format(new Date()), "manual");
+                return SincronizacaoImediata.sincronizar(userId, SincronizacaoImediata.momentoAtual(), "manual");
             }
         };
     }
