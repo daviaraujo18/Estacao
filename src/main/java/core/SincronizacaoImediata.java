@@ -1,5 +1,7 @@
 package core;
 
+import controllers.MainController;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,9 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 import static utils.Constantes.HTTP_MAX_TIMEOUT;
 
@@ -23,23 +22,21 @@ import static utils.Constantes.HTTP_MAX_TIMEOUT;
  */
 public class SincronizacaoImediata {
 
-    private static final TimeZone FUSO_BRASILIA = TimeZone.getTimeZone("America/Sao_Paulo");
-
     /**
-     * Momento atual formatado no fuso fixo America/Sao_Paulo (mesmo fuso
-     * configurado no Rails, config.time_zone). NÃO usar
-     * "new SimpleDateFormat(...).format(new Date())" sem fuso explícito —
-     * isso herda o fuso padrão do Windows onde a Estação está instalada, e
-     * se essa máquina não estiver configurada corretamente pra Brasília
-     * (comum em instalação nova, que geralmente vem em UTC), o horário da
-     * batida sai errado mesmo com o relógio da tela mostrando a hora
-     * certa — o relógio da tela vem de outro caminho (ThreadRelogio,
-     * campos copiados diretamente do servidor, imune a essa configuração).
+     * Momento atual usando o relógio do SERVIDOR (ThreadRelogio), não o
+     * relógio físico da máquina Windows onde a Estação está instalada.
+     * ThreadRelogio é sincronizado do Rails (Time.current) na carga da
+     * página e depois avança por tempo decorrido monotônico
+     * (System.nanoTime(), imune a fuso mal configurado e a ajustes manuais
+     * no relógio do Windows) — é a mesma fonte que já alimenta o relógio
+     * principal da tela (atualizaRelogioLocal). Antes, esse método usava
+     * "new Date()" (relógio local da máquina), que ficava sujeito tanto a
+     * fuso mal configurado quanto ao relógio da máquina estar fisicamente
+     * errado — o texto de confirmação de ponto podia sair com um horário
+     * diferente do relógio principal da tela por causa disso.
      */
     public static String momentoAtual() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy:HH:mm:ss");
-        sdf.setTimeZone(FUSO_BRASILIA);
-        return sdf.format(new Date());
+        return MainController.INSTANCE.getThreadRelogio().getMomentoAtual();
     }
 
     public static boolean sincronizar(long userId, String momento, String authenticationMode) throws IOException {

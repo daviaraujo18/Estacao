@@ -75,16 +75,12 @@ public class VerificacaoDigitalService extends Service<Leitura>{
                     }
                 }
 
-                // Mesma fonte de horário do login manual (ValidarBatidaManualService):
-                // relógio real (new Date()), não o ThreadRelogio simulado —
-                // que só sincroniza com o servidor na carga da página e
-                // depois conta o tempo sozinho. Formatado com fuso FIXO
-                // America/Sao_Paulo (SincronizacaoImediata.momentoAtual()),
-                // não o fuso padrão da máquina Windows — uma instalação com
-                // o fuso do sistema mal configurado (ex: UTC) faria o
-                // horário da batida sair errado mesmo com o relógio da tela
-                // certo, já que o relógio da tela vem de outro caminho
-                // (ThreadRelogio, campos copiados do servidor).
+                // Horário do SERVIDOR (SincronizacaoImediata.momentoAtual() ->
+                // ThreadRelogio), mesma fonte que já alimenta o relógio
+                // principal da tela — não o relógio físico da máquina
+                // Windows. Assim o texto de confirmação de ponto sempre bate
+                // com o relógio da tela, independente de fuso ou hora
+                // configurados errados na máquina onde a Estação roda.
                 String momento = SincronizacaoImediata.momentoAtual();
 
                 // Sincroniza na hora (mesmo padrão do login manual,
